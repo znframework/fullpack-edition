@@ -20,11 +20,11 @@ class InternalRedirect extends CallController implements InternalRedirectInterfa
     // @var array
     //
     //--------------------------------------------------------------------------------------------------------
-    protected $redirect = array
-    (
+    protected $redirect = 
+    [
         'time'   => 0,
         'data'   => []
-    );
+    ];
 
     //--------------------------------------------------------------------------------------------------------
     // action()

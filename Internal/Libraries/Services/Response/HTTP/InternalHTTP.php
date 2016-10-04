@@ -32,14 +32,14 @@ class InternalHTTP extends CLController implements InternalHTTPInterface
     // @var array
     //
     //--------------------------------------------------------------------------------------------------------
-    protected $types = array
-    (
+    protected $types = 
+    [
         'post',
         'get',
         'env',
         'server',
         'request'
-    );
+    ];
 
     //--------------------------------------------------------------------------------------------------------
     // Is Ajax

@@ -904,8 +904,8 @@ class InternalEmail extends CLController implements InternalEmailInterface
 
         $this->_buildContent();
 
-        $settings = array
-        (
+        $settings = 
+        [
             'host'       => $this->smtpHost,
             'user'       => $this->smtpUser,
             'password'   => $this->smtpPassword,
@@ -922,7 +922,7 @@ class InternalEmail extends CLController implements InternalEmailInterface
             'tos'        => $this->to,
             'mailPath'   => $this->mailPath,
             'returnPath' => $this->headers['Return-Path']
-        );
+        ];
 
         $send = $this->driver->send(key($this->to), $this->subject, $this->message, $this->header, $settings);
 
