@@ -23,18 +23,16 @@ class Data extends UserExtends implements DataInterface
             $usernameColumn  = INDIVIDUALSTRUCTURES_USER_CONFIG['matching']['columns']['username'];
             $joinColumn      = INDIVIDUALSTRUCTURES_USER_CONFIG['joining']['column'];
             $tableName       = INDIVIDUALSTRUCTURES_USER_CONFIG['matching']['table'];
-
-            $this->username  = $sessionUserName;
             $sessionPassword = Session::select($passwordColumn);
 
-            $r[$tbl] = DB::where($usernameColumn, $this->username, 'and')
+            $r[$tbl] = DB::where($usernameColumn, $sessionUserName, 'and')
                          ->where($passwordColumn, $sessionPassword)
                          ->get($tableName)
                          ->row();
 
             if( ! empty($joinTables) )
             {
-                $joinCol = DB::where($usernameColumn, $this->username, 'and')
+                $joinCol = DB::where($usernameColumn, $sessionUserName, 'and')
                              ->where($passwordColumn, $sessionPassword)
                              ->get($tableName)
                              ->row()
