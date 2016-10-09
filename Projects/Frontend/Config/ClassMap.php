@@ -1390,3 +1390,7 @@ $classMap['namespaces']['zn\viewobjects\view\htmlunittest'] = 'htmlunittest';
 $classMap['namespaces']['zn\viewobjects\view\validateunittest'] = 'validateunittest';
 $classMap['namespaces']['zn\viewobjects\view\validationunittest'] = 'validationunittest';
 $classMap['namespaces']['zn\viewobjects\view\validatorunittest'] = 'validatorunittest';
+$classMap['classes']['zn\individualstructures\user\information'] = 'Internal\Libraries\IndividualStructures\User\Information.php';
+$classMap['classes']['zn\individualstructures\user\informationinterface'] = 'Internal\Libraries\IndividualStructures\User\InformationInterface.php';
+$classMap['namespaces']['zn\individualstructures\user\information'] = 'information';
+$classMap['namespaces']['zn\individualstructures\user\informationinterface'] = 'informationinterface';
