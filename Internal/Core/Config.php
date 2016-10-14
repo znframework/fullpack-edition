@@ -63,17 +63,17 @@ class Config
 
             if( is_file($externalPath) )
             {
-                $allConfig = array_merge($allConfig, (array) require_once($externalPath));
+                $allConfig = array_merge($allConfig, (array) import($externalPath));
             }
 
             if( is_file($projectPath) )
             {
-                $allConfig = array_merge($allConfig, (array) require_once($projectPath));
+                $allConfig = array_merge($allConfig, (array) import($projectPath));
             }
 
             if( is_file($internalPath) )
             {
-                $allConfig = array_merge($allConfig, (array) require_once($internalPath));
+                $allConfig = array_merge($allConfig, (array) import($internalPath));
             }
 
             self::$config[$file] = $allConfig;
