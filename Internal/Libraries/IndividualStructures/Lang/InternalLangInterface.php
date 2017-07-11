@@ -20,7 +20,7 @@ interface InternalLangInterface
     // @return string
     //
     //--------------------------------------------------------------------------------------------------
-    function current() : String;
+    public function current() : String;
 
     //--------------------------------------------------------------------------------------------------
     // select()
@@ -33,7 +33,7 @@ interface InternalLangInterface
     // @return mixed
     //
     //--------------------------------------------------------------------------------------------------
-    function select(String $file = NULL, String $str = NULL, $changed = NULL);
+    public function select(String $file = NULL, String $str = NULL, $changed = NULL);
 
     //--------------------------------------------------------------------------------------------------
     // setLang()
@@ -44,7 +44,7 @@ interface InternalLangInterface
     // @return bool
     //
     //--------------------------------------------------------------------------------------------------
-    function set(String $l = NULL) : Bool;
+    public function set(String $l = NULL) : Bool;
 
     //--------------------------------------------------------------------------------------------------
     // getLang()

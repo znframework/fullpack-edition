@@ -22,7 +22,7 @@ class InternalLang implements InternalLangInterface
     // @return string
     //
     //--------------------------------------------------------------------------------------------------
-    function current() : String
+    public function current() : String
     {
         if( ! Config::get('Services','uri')['lang'] )
         {
@@ -45,7 +45,7 @@ class InternalLang implements InternalLangInterface
     // @return mixed
     //
     //--------------------------------------------------------------------------------------------------
-    function select(String $file = NULL, String $str = NULL, $changed = NULL)
+    public function select(String $file = NULL, String $str = NULL, $changed = NULL)
     {
         global $lang;
 
@@ -121,7 +121,7 @@ class InternalLang implements InternalLangInterface
     // @return bool
     //
     //--------------------------------------------------------------------------------------------------
-    function set(String $l = NULL) : Bool
+    public function set(String $l = NULL) : Bool
     {
         if( empty($l) )
         {
