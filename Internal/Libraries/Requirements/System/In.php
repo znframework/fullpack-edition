@@ -314,7 +314,7 @@ class In
     //--------------------------------------------------------------------------------------------------
     public static function cleanInjection(String $string = NULL) : String
     {
-        $urlInjectionChangeChars = Config::get('Security', 'urlChangeChars');
+        $urlInjectionChangeChars = Config::get('IndividualStructures', 'security')['urlChangeChars'];
 
         if( ! empty($urlInjectionChangeChars) ) foreach( $urlInjectionChangeChars as $key => $val )
         {
