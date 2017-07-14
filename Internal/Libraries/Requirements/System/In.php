@@ -190,32 +190,8 @@ class In
     //--------------------------------------------------------------------------------------------------
     public static function requestURI() : String
     {
-        $requestUri = URI::active()
-                    ? str_replace(DIRECTORY_INDEX.'/', '', URI::active())
-                    : substr(server('currentPath'), 1);
-
-        if( isset($requestUri[strlen($requestUri) - 1]) && $requestUri[strlen($requestUri) - 1] === '/' )
-        {
-                $requestUri = substr($requestUri, 0, -1);
-        }
-
-        if( defined('_CURRENT_PROJECT') )
-        {
-            $requestUri = self::cleanURIPrefix($requestUri, _CURRENT_PROJECT);
-        }
-
-        $requestUri = self::cleanInjection(self::routeURI($requestUri));
-
-        // 5.0.3 -> Updated ------------------------------------------------------
-        $currentLang = Lang::current();
-
-        if( ! empty(Lang::current()) && strlen($segment = URI::segment(1)) === 2 )
-        {
-            $currentLang = $segment;
-        }
-        // -----------------------------------------------------------------------
-        //
-        $requestUri = self::cleanURIPrefix($requestUri, Lang::current());
+        $requestUri = URI::active();
+        $requestUri = self::cleanInjection(self::routeURI(rtrim($requestUri, '/')));
 
         return (string) $requestUri;
     }
@@ -249,15 +225,15 @@ class In
     //--------------------------------------------------------------------------------------------------
     protected static function routeAll()
     {
-        $externalRouteFiles = (array) Folder::files(EXTERNAL_ROUTES_DIR, 'php');
-        $routeFiles         = (array) Folder::files(ROUTES_DIR, 'php');
+        $externalRouteFiles = (array) Folder::allFiles(EXTERNAL_ROUTES_DIR);
+        $routeFiles         = (array) Folder::allFiles(ROUTES_DIR);
         $files              = array_merge($externalRouteFiles, $routeFiles);
 
         if( ! empty($files)  )
         {
             foreach( $files as $file )
             {
-                import(ROUTES_DIR . $file);
+                import($file);
             }
 
             Route::all();
@@ -338,7 +314,7 @@ class In
     //--------------------------------------------------------------------------------------------------
     public static function cleanInjection(String $string = NULL) : String
     {
-        $urlInjectionChangeChars = Config::get('IndividualStructures', 'security')['urlChangeChars'];
+        $urlInjectionChangeChars = Config::get('Security', 'urlChangeChars');
 
         if( ! empty($urlInjectionChangeChars) ) foreach( $urlInjectionChangeChars as $key => $val )
         {
