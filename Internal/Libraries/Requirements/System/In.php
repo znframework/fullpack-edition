@@ -205,6 +205,16 @@ class In
         }
 
         $requestUri = self::cleanInjection(self::routeURI($requestUri));
+
+        // 5.0.3 -> Updated ------------------------------------------------------
+        $currentLang = Lang::current();
+
+        if( ! empty(Lang::current()) && strlen($segment = URI::segment(1)) === 2 )
+        {
+            $currentLang = $segment;
+        }
+        // -----------------------------------------------------------------------
+        //
         $requestUri = self::cleanURIPrefix($requestUri, Lang::current());
 
         return (string) $requestUri;

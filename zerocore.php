@@ -15,7 +15,7 @@ defined('REAL_BASE_DIR') || exit('You do not have permission to access this file
 //--------------------------------------------------------------------------------------------------
 // VERSION INFO CONSTANTS
 //--------------------------------------------------------------------------------------------------
-define('ZN_VERSION'          , '5.0.2');
+define('ZN_VERSION'          , '5.0.3');
 define('REQUIRED_PHP_VERSION', '7.0.0');
 //--------------------------------------------------------------------------------------------------
 
@@ -1347,6 +1347,16 @@ function internalCurrentProject()
     else
     {
         $currentPath   = server('currentPath');
+
+        // 5.0.3 -> Updated -------------------------------------------------------
+        //
+        // QUERY_STRING & REQUEST URI Empty Control
+		if( empty($currentPath) && ($requestUri = server('requestUri')) !== '/' )
+		{
+			$currentPath = $requestUri;
+		}
+        // ------------------------------------------------------------------------
+
         $internalDir   = ( ! empty($currentPath) ? explode('/', ltrim($currentPath, '/'))[0] : '' );
     }
 
