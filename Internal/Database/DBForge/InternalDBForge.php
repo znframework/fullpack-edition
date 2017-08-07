@@ -1,5 +1,7 @@
 <?php namespace ZN\Database;
 
+use Strings, Support;
+
 class InternalDBForge extends Connection implements InternalDBForgeInterface
 {
     //--------------------------------------------------------------------------------------------------------
@@ -28,6 +30,33 @@ class InternalDBForge extends Connection implements InternalDBForgeInterface
     //
     //--------------------------------------------------------------------------------------------------------
     protected $forge;
+
+    //--------------------------------------------------------------------------------------------------------
+    // Magic Call
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param string $method
+    // @param array  $parameters
+    //
+    //--------------------------------------------------------------------------------------------------------
+    public function __call($method, $parameters)
+    {
+        $split  = Strings::splitUpperCase($originMethodName = $method);
+        $table  = $split[0];
+        $method = $split[1] ?? NULL;
+
+        switch($method)
+        {
+            case 'Create'  : $method = 'createTable';
+            case 'Drop'    : $method = 'dropTable'  ;
+            case 'Alter'   : $method = 'alterTable' ;
+            case 'Rename'  : $method = 'renameTable';
+            case 'Truncate': $method = 'truncate'   ;
+            default        : Support::classMethod(get_called_class(), $originMethodName);
+        }
+
+        return $this->$method($table, ...$parameters);
+    }
 
     //--------------------------------------------------------------------------------------------------------
     // Construct

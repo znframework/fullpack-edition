@@ -1,6 +1,6 @@
 <?php namespace ZN\Database;
 
-use URI, Pagination, Arrays, Classes, Method, Config, Converter, Cache, Json, IS, Coalesce;
+use URI, Pagination, Arrays, Classes, Method, Config, Converter, Cache, Json, IS, Coalesce, Strings;
 
 class InternalDB extends Connection implements InternalDBInterface
 {
@@ -407,7 +407,9 @@ class InternalDB extends Connection implements InternalDBInterface
     //--------------------------------------------------------------------------------------------------------
     public function __call($method, $parameters)
     {
-        $method = strtolower($method);
+        $method = strtolower($originMethodName = $method);
+        $split  = Strings::splitUpperCase($originMethodName);
+        $crud   = $split[1] ?? NULL;
 
         if( in_array($method, $this->functionElements) )
         {
@@ -450,14 +452,71 @@ class InternalDB extends Connection implements InternalDBInterface
         {
             return $this->db->statements($method, ...$parameters);
         }
+        elseif( ($split[1] ?? NULL) === 'Join')
+        {
+            $type    = $split[0] ?? 'left';
+            $table1  = $split[2] ?? NULL;
+            $column1 = strtolower($table1 . '.' . $split[3]);
+            $table2  = $split[4] ?? NULL;
+            $column2 = strtolower($table2 . '.' . $split[5]);
+            $met     = $type . $split[1];
+
+            return $this->$met($column1, $column2, $parameters[0] ?? '=');
+        }
+        elseif( $split[0] === 'order' || $split[0] === 'group')
+        {
+            $column = strtolower($split[2] ?? NULL);
+            $type   = $split[0] === 'order' ? $split[3] ?? 'asc' : NULL;
+            $met    = $split[0] . 'By';
+
+            return $this->$met($column, $type);
+        }
+        elseif( $split[0] === 'where' || $split[0] === 'having' )
+        {
+            $met       = $split[0];
+            $column    = strtolower($split[1]);
+            $condition = $split[2] ?? NULL;
+            $operator  = isset($parameters[1]) ? ' ' . $parameters[1] : NULL;
+
+            return $this->$met($column . $operator, $parameters[0], $condition);
+        }
+        elseif
+        (
+            $crud === 'Delete' ||
+            $crud === 'Update' ||
+            $crud === 'Insert'
+        )
+        {
+            $table  = $split[0];
+            $method = $split[1];
+
+            return $this->$method($table, $parameters[0] ?? NULL);
+        }
         else
         {
-            die(\Errors::message
-            (
-                'Error',
-                'undefinedFunction',
-                Classes::onlyName(__CLASS__)."::$method()"
-            ));
+            $func = $split[1] ?? NULL;
+
+            if( $func === 'Row' || $func === 'Result' )
+            {
+                $method = $split[0];
+                $result = strtolower($func);
+            }
+
+            if( $select = ($split[2] ?? NULL) )
+            {
+                $result = 'value';
+
+                $this->select($select);
+            }
+
+            $return = $this->get($method);
+
+            if( ! isset($result) )
+            {
+                return $return;
+            }
+
+            return $return->$result($parameters[0] ?? ($result === 'row' ? 0 : 'object'));
         }
     }
 

@@ -1,4 +1,8 @@
-<?php trait FactoryAbility
+<?php namespace ZN\Services\Response;
+
+use Method;
+
+class InternalEnv
 {
     //--------------------------------------------------------------------------------------------------------
     //
@@ -10,28 +14,20 @@
     //--------------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------
-    // Class
+    // Magic Call
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param string $class
+    // @param string $method
+    // @param array  $parameters
     //
     //--------------------------------------------------------------------------------------------------------
-    public static function class(String $class)
+    public function __call($method, $parameters)
     {
-        $namespace = NULL;
-
-        if( defined('static::namespace') )
+        if( $method === 'all' )
         {
-            $namespace = suffix(static::namespace, '\\');
-        }
-        else
-        {
-            $calledClass = get_called_class();
-            $namespace   = str_ireplace(Strings::divide($calledClass, '\\', -1), NULL, $calledClass);
+            return Method::env();
         }
 
-        $class = $namespace.$class;
-
-        return uselib($class);
+        return Method::env($method, $parameters[0] ?? NULL);
     }
 }
