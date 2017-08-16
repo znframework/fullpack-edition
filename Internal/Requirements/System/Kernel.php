@@ -43,6 +43,11 @@ class Kernel
 
         headers(Config::get('General', 'headers'));
 
+        if( IS::timeZone($timezone = Config::get('DateTime', 'timeZone')) )
+        {
+            date_default_timezone_set($timezone);
+        }
+
         if( PROJECT_MODE !== 'publication' )
         {
             set_error_handler('Exceptions::table');
@@ -232,7 +237,7 @@ class Kernel
 
                         $pageClass->$function(...$parameters);
 
-                        $data = array_merge((array) $pageClass->view, View::$data, ...\ZN\In::$view);
+                        $data = (array) $pageClass->view;
 
                         if( is_file($wizardPath) && ! IS::import($viewPath) && ! IS::import($wizardPath) )
                         {
