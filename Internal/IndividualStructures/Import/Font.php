@@ -28,6 +28,7 @@ class Font extends BootstrapExtends
         $lastParam = $args->lastParam;
         $arguments = $args->arguments;
         $links     = $args->cdnLinks;
+        $strEx     = NULL;
 
         foreach( $arguments as $font )
         {
@@ -36,52 +37,40 @@ class Font extends BootstrapExtends
                 $font = '';
             }
 
-            $f = \Strings::divide($font, "/", -1);
-            // SVG IE VE MOZILLA DESTEKLEMIYOR
+            $f = \Strings::divide($font, '/', -1);
 
-            $fontFile = FONTS_DIR.$font;
+            $fontFile = FONTS_DIR . $font;
 
-            if( ! is_file($fontFile) )
+            if( ! is_file($fontFile) && is_dir($fontFile) )
             {
                 $fontFile = EXTERNAL_FONTS_DIR.$font;
             }
 
             $baseUrl  = URL::base($fontFile);
 
-            if( File::extension($fontFile) )
-            {
-                if( is_file($fontFile) )
-                {
-                    $strEx = Import::something($fontFile, NULL, true);
-
-                    break;
-                }
-            }
-
-            if( is_file($fontFile.".svg") )
+            if( is_file(suffix($fontFile, '.svg')) )
             {
                 $str .= '@font-face{font-family:"'.$f.'"; src:url("'.$baseUrl.'.svg") format("truetype")}'.$eol;
             }
 
-            if( is_file($fontFile.".woff") )
+            if( is_file(suffix($fontFile, '.woff')) )
             {
                 $str .= '@font-face{font-family:"'.$f.'"; src:url("'.$baseUrl.'.woff") format("truetype")}'.$eol;
             }
 
             // OTF IE VE CHROME DESTEKLEMIYOR
-            if( is_file($fontFile.".otf") )
+            if( is_file(suffix($fontFile, '.otf')) )
             {
                 $str .= '@font-face{font-family:"'.$f.'"; src:url("'.$baseUrl.'.otf") format("truetype")}'.$eol;
             }
 
             // TTF IE DESTEKLEMIYOR
-            if( is_file($fontFile.".ttf") )
+            if( is_file(suffix($fontFile, '.ttf')) )
             {
                 $str .= '@font-face{font-family:"'.$f.'"; src:url("'.$baseUrl.'.ttf") format("truetype")}'.$eol;
             }
 
             // CND ENTEGRASYON
-
             $cndFont = isset($links[strtolower($font)]) ? $links[strtolower($font)] : NULL;
 
             if( ! empty($cndFont) )
@@ -114,11 +103,6 @@ class Font extends BootstrapExtends
         }
 
         $str .= '</style>'.$eol;
-
-        if( isset($strEx) )
-        {
-            $str = $strEx;
-        }
 
         if( ! empty($str) )
         {
