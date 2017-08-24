@@ -31,7 +31,7 @@ trait ViewTrait
     //--------------------------------------------------------------------------------------------------------
     public static $usableMethods =
     [
-        'view:', 'script:', 'style:', 'font:', 'template:', 'page:', 'something:', 'theme:', 'resource:', 'plugin:'
+        'view', 'script', 'style', 'font', 'template', 'page', 'something', 'theme', 'resource', 'plugin'
     ];
 
     //--------------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ trait ViewTrait
     {
         $ex = explode(':', $parameters[0]);
 
-        if( Arrays::valueExists(self::$usableMethods, $met = ($ex[0] . ':')) )
+        if( Arrays::valueExists(self::$usableMethods, $met = $ex[0]) )
         {
             $parameters = Collection::data($parameters)->removeFirst()->addLast(true)->get();
 
