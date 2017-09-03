@@ -14,28 +14,34 @@ class File
     //--------------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------
-    // File
+    // File -> 5.3.2[edited]
     //--------------------------------------------------------------------------------------------------------
     //
     // @param  string $file
+    // @param  array  $data
     // @return content
     //
     //--------------------------------------------------------------------------------------------------------
-    public static function do(String $file) : String
+    public static function do(String $randomBufferClassPagePath, Array $randomBufferClassDataVariable = NULL) : String
     {
-        if( ! is_file($file) )
+        if( ! is_file($randomBufferClassPagePath) )
         {
             throw new InvalidArgumentException('Error', 'fileParameter', '1.($file)');
         }
 
+        if( is_array($randomBufferClassDataVariable) )
+        {
+            extract($randomBufferClassDataVariable, EXTR_OVERWRITE, 'ZN');
+        }
+
         ob_start();
 
-        require($file);
+        require $randomBufferClassPagePath;
 
-        $contents = ob_get_contents();
+        $randomBufferClassPageContents = ob_get_contents();
 
         ob_end_clean();
 
-        return $contents;
+        return $randomBufferClassPageContents;
     }
 }

@@ -1,8 +1,8 @@
 <?php namespace ZN\ViewObjects;
 
-use Errors, Exceptions, CallController, Config, File;
+use Errors, Exceptions, CallController, Config, File, Buffer;
 
-class TemplateWizard extends CallController implements TemplateWizardInterface
+class TemplateWizard extends CallController
 {
     //--------------------------------------------------------------------------------------------------------
     //
@@ -13,13 +13,20 @@ class TemplateWizard extends CallController implements TemplateWizardInterface
     //
     //--------------------------------------------------------------------------------------------------------
 
+	//--------------------------------------------------------------------------------------------------------
+    // Isolation -> 5.3.15
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param string $string
+    //
+    //--------------------------------------------------------------------------------------------------------
 	public static function isolation(String $data = '')
 	{
 		File::replace($data, ['<?php', '<?', '?>'], ['{[', '{[', ']}']);
 	}
 
     //--------------------------------------------------------------------------------------------------------
-    // Data
+    // Data -> 5.3.15[edited]
     //--------------------------------------------------------------------------------------------------------
     //
     // @param string $string
@@ -46,17 +53,9 @@ class TemplateWizard extends CallController implements TemplateWizardInterface
             self::_html($htmlAttributesTag, $htmlTagClose)
         );
 
-        $string = preg_replace(array_keys($pattern), array_values($pattern), $string);
+        $string  = preg_replace(array_keys($pattern), array_values($pattern), $string);
 
-        if( is_array($data) )
-        {
-            extract($data, EXTR_OVERWRITE);
-        }
-
-        ob_start();
-        eval("?>$string");
-        $content = ob_get_contents();
-        ob_end_clean();
+        $content = Buffer::code($string, $data);
 
         if( $lastError = Errors::last() )
         {

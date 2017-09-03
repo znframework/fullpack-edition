@@ -1,0 +1,9 @@
+{
+    "require": {
+        "monolog/monolog": "^1.23",
+        "kdyby/monolog": "^1.3",
+        "adeira/monolog": "^1.0",
+        "msbios/monolog": "^0.0.3",
+        "illuminate/queue": "^5.5"
+    }
+}
