@@ -1,6 +1,7 @@
 <?php namespace Project\Controllers;
 
-use Restful, Separator, File, Folder, Arrays, Strings;
+use Restful, Separator, File, Folder, Arrays, Strings, Lang, URI;
+use Converter, ZN\Core\Kernel as Kernel, Buffer, Cache, Config, User;
 
 class ZN
 {
@@ -90,6 +91,53 @@ class ZN
     public static function upgradeFiles()
     {
         return Arrays::keys(self::_restful());
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // ZN Run
+    //--------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------
+    public static function run()
+    {
+        Kernel::route();
+
+        $projectConfig = Config::get('Project', 'cache');
+
+        if
+        (
+            ($projectConfig['status'] ?? NULL) === true                                                                    &&
+            ( ! Arrays::valueExists(($projectConfig['machinesIP'] ?? []), User::ip()) )                                    &&
+            ( empty($projectConfig['include']) || Arrays::valueExists(($projectConfig['include'] ?? []), CURRENT_CFPATH) ) &&
+            ( empty($projectConfig['exclude']) || ! Arrays::valueExists(($projectConfig['exclude'] ?? []), CURRENT_CFPATH) )
+        )
+        {
+            $cacheName = ($projectConfig['prefix'] ?? Lang::get()) . '-' . Converter::slug(str_replace('/', '_', trim(URI::active(), '/')));
+
+            Cache::driver($projectConfig['driver']);
+
+            if( ! $select = Cache::select($cacheName, $projectConfig['compress']) )
+            {
+                $kernel = Buffer::callback(function()
+                {
+                    Kernel::start()::run()::end();
+                });
+
+                Cache::insert($cacheName, $kernel, $projectConfig['time'], $projectConfig['compress']);
+
+                echo $kernel;
+            }
+            else
+            {
+                echo $select;
+            }
+        }
+        else
+        {
+            Kernel::start()::run()::end();
+        }
     }
 
     //--------------------------------------------------------------------------------------------------------

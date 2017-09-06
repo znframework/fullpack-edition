@@ -11,6 +11,32 @@
     //
     //--------------------------------------------------------------------------------------------------
 
+    //--------------------------------------------------------------------------------------------------
+    // Proje Cache
+    //--------------------------------------------------------------------------------------------------
+    // Proje genelinde ön bellekleme oluşturmak kullanılır.
+    //
+    // status    : ön bellekleme işlemini devreye sokar.
+    // time      : belleklenen dosyaların saniye cinsinden ne kadar zaman saklanacağıdır.
+    // prefix    : bellekleme adına ön ek ekler.
+    // driver    : bellekleme sürücülerinden biri.
+    // compress  : sıkıştırma sürücülerinden biri.
+    // exclude   : belleklemeye girmeyecek olan controller/method bilgisi.
+    // include   : belleklemeye girecek olan controller/method bilgisi.
+    // machinesIp: belleklemeden etkilenmeyecek ip adreserleri tanımlanır.
+    //--------------------------------------------------------------------------------------------------
+    'cache' =>
+    [
+        'status'     => false,
+        'time'       => 60,
+        'prefix'     => NULL,
+        'driver'     => 'file',
+        'compress'   => false,
+        'exclude'    => [],
+        'include'    => [],
+        'machinesIP' => [],
+    ],
+
     //----------------------------------------------------------------------------------------------
     // Key
     //----------------------------------------------------------------------------------------------
