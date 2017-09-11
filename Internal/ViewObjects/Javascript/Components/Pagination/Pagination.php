@@ -13,6 +13,8 @@ class Pagination extends ComponentsExtends
     //
     //--------------------------------------------------------------------------------------------------------
 
+    protected $index = 0;
+
     //--------------------------------------------------------------------------------------------------------
     // Generate
     //--------------------------------------------------------------------------------------------------------
@@ -28,11 +30,11 @@ class Pagination extends ComponentsExtends
             $paginations($this);
         }
 
-        $i             = 0;
-        $attr['get']   = $get;
-        $attr['index'] = $i++;
-        $attr['type']  = $this->type ?? Config::get('ViewObjects', 'pagination')['type'];
-
-        return $this->prop($attr);
+        return $this->prop
+        ([
+            'get'   => $get,
+            'index' => $this->index++,
+            'type'  => $this->type ?? Config::get('ViewObjects', 'pagination')['type']
+        ]);
     }
 }
