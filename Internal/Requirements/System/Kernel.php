@@ -54,6 +54,12 @@ class Kernel
             set_error_handler('Exceptions::table');
         }
 
+        //--------------------------------------------------------------------------------------------------
+        // Middle Top Layer
+        //--------------------------------------------------------------------------------------------------
+        layer('MiddleTop');
+        //--------------------------------------------------------------------------------------------------
+
         if( $iniSet = Config::get('Htaccess', 'ini')['settings'] )
         {
             Config::iniSet($iniSet);
@@ -183,22 +189,26 @@ class Kernel
     {
         self::start();
 
+        //----------------------------------------------------------------------------------------------
+        // Middle Layer
+        //----------------------------------------------------------------------------------------------
+        layer('Middle');
+        //----------------------------------------------------------------------------------------------
+
         $parameters   = CURRENT_CPARAMETERS;
         $page         = CURRENT_CONTROLLER;
-        $isFile       = CURRENT_CFILE;
         $function     = CURRENT_CFUNCTION;
         $openFunction = CURRENT_COPEN_PAGE;
-        $namespace    = CURRENT_CNAMESPACE;
 
-        if( is_file($isFile) )
+        if( is_file(CURRENT_CFILE) )
         {
-            import($isFile);
+            import(CURRENT_CFILE);
 
             $view = $page;
 
             if( ! class_exists($page, false) )
             {
-                $page = $namespace.$page;
+                $page = CURRENT_CNAMESPACE . $page;
             }
 
             if( class_exists($page, false) )
@@ -213,7 +223,7 @@ class Kernel
                 {
                     try
                     {
-                        self::viewPathFinder($function, $openFunction, $view, $viewPath, $wizardPath);
+                        self::viewPathFinder($function, $viewPath, $wizardPath);
 
                         $pageClass = uselib($page);
 
@@ -242,6 +252,12 @@ class Kernel
             Route::redirectShow404(CURRENT_CONTROLLER, 'notFoundController', 'SystemNotFoundControllerError');
         }
 
+        //----------------------------------------------------------------------------------------------
+        // Middle Bottom Layer
+        //----------------------------------------------------------------------------------------------
+        layer('MiddleBottom');
+        //----------------------------------------------------------------------------------------------
+
         self::end();
     }
 
@@ -250,13 +266,11 @@ class Kernel
     //--------------------------------------------------------------------------------------------------
     //
     // @param string $function
-    // @param string $openFunction
-    // @param string $view
     // @param string &$viewPath
     // @param string &$wizardPath
     //
     //--------------------------------------------------------------------------------------------------
-    public static function viewPathFinder($function, $openFunction, $view, &$viewPath, &$wizardPath)
+    public static function viewPathFinder($function, &$viewPath, &$wizardPath)
     {
         if( ! $viewNameType = Config::get('ViewObjects', 'viewNameType') )
         {
@@ -265,13 +279,13 @@ class Kernel
 
         if( $viewNameType === 'file' )
         {
-            $viewFunction = $function === $openFunction ? NULL : '-' . $function;
-            $viewDir      = self::_view($view, $viewFunction);
+            $viewFunction = $function === CURRENT_COPEN_PAGE ? NULL : '-' . $function;
+            $viewDir      = self::_view($viewFunction);
         }
         else
         {
-            $viewFunction = $function === $openFunction ? $openFunction : $function;
-            $viewDir      = self::_view($view, DS . $viewFunction);
+            $viewFunction = $function === CURRENT_COPEN_PAGE ? CURRENT_COPEN_PAGE : $function;
+            $viewDir      = self::_view(DS . $viewFunction);
         }
 
         $viewPath   = $viewDir . '.php';
@@ -314,6 +328,12 @@ class Kernel
     {
         In::startingConfig('destruct');
 
+        //----------------------------------------------------------------------------------------------
+        // Bottom Top Layer
+        //----------------------------------------------------------------------------------------------
+        layer('BottomTop');
+        //----------------------------------------------------------------------------------------------
+
         if( PROJECT_MODE !== 'publication' )
         {
             restore_error_handler();
@@ -342,8 +362,10 @@ class Kernel
     // @param strnig $fix
     //
     //--------------------------------------------------------------------------------------------------
-    protected static function _view($view, $fix)
+    protected static function _view($fix)
     {
+        $view = CURRENT_CONTROLLER;
+
         if( $subdir = STRUCTURE_DATA['subdir'] )
         {
             $view = $subdir;
