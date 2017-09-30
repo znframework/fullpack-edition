@@ -15,15 +15,6 @@ class PDODriver extends DriverConnectionMappingAbstract
     //--------------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------
-    // Select Driver
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // @var string
-    //
-    //--------------------------------------------------------------------------------------------------------
-    protected $selectDriver;
-
-    //--------------------------------------------------------------------------------------------------------
     // Sub Driver
     //--------------------------------------------------------------------------------------------------------
     //
@@ -115,16 +106,25 @@ class PDODriver extends DriverConnectionMappingAbstract
     //--------------------------------------------------------------------------------------------------------
     public function connect($config = [])
     {
-        $this->config       = $config;
-        $this->selectDriver = explode(':', $this->config['driver'])[1] ?? 'mysql';
-        $this->connect      = $this->_subDrivers($this->config['user'], $this->config['password']);
+        $this->config = $config;
 
-        if( $this->selectDriver === 'mysql' )
+        try
         {
-            if( ! empty($this->config['charset']  ) ) $this->connect->exec("SET NAMES '".$this->config['charset']."'");
-            if( ! empty($this->config['charset']  ) ) $this->connect->exec('SET CHARACTER SET '.$this->config['charset']);
-            if( ! empty($this->config['collation']) ) $this->connect->exec("SET COLLATION_CONNECTION = '".$this->config['collation']."'");     
+            $this->connect = new PDO
+            (
+                $this->config['dsn'] ?: $this->_dsn($this->config), 
+                $this->config['user'], 
+                $this->config['password']
+            );
         }
+        catch( PDOException $e )
+        {
+            die(Errors::message('Database', 'connectError'));
+        }
+        
+        if( ! empty($this->config['charset']  ) ) $this->connect->exec("SET NAMES '".$this->config['charset']."'");
+        if( ! empty($this->config['charset']  ) ) $this->connect->exec('SET CHARACTER SET '.$this->config['charset']);
+        if( ! empty($this->config['collation']) ) $this->connect->exec("SET COLLATION_CONNECTION = '".$this->config['collation']."'");     
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -483,28 +483,33 @@ class PDODriver extends DriverConnectionMappingAbstract
     }
 
     //--------------------------------------------------------------------------------------------------------
-    // Protected Sub Drivers
+    // Protected DNS
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param string $usr
-    // @param string $pass
+    // @param  array $config
+    // @return string
     //
     //--------------------------------------------------------------------------------------------------------
-    protected function _subDrivers($usr, $pass)
+    protected function _dsn(Array $config) : String
     {
-        $namespace = 'ZN\Database\Drivers\PDO\Drivers\\';
+        $dsn  = 'mysql:';
 
-        $driver = $namespace.'PDO'.$this->selectDriver.'Driver';
+        $dsn .= ( ! empty($config['host']) )
+                ? 'host='.$config['host'].';'
+                : '';
 
-        $this->subDriver = new $driver;
+        $dsn .= ( ! empty($config['database']) )
+                ? 'dbname='.$config['database'].';'
+                : '';
 
-        try
-        {
-            return new PDO($this->subDriver->dsn($this->config), $usr, $pass);
-        }
-        catch( PDOException $e )
-        {
-            die(Errors::message('Database', 'connectError'));
-        }
+        $dsn .= ( ! empty($config['port']) )
+                ? 'PORT='.$config['port'].';'
+                : '';
+
+        $dsn .= ( ! empty($config['charset']) )
+                ? 'charset='.$config['charset']
+                : '';
+
+        return rtrim($dsn, ';');
     }
 }
