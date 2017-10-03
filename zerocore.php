@@ -13,7 +13,7 @@
 //--------------------------------------------------------------------------------------------------
 // VERSION INFO CONSTANTS
 //--------------------------------------------------------------------------------------------------
-define('ZN_VERSION'          , '5.3.78');
+define('ZN_VERSION'          , '5.3.8');
 define('REQUIRED_PHP_VERSION', '7.0.0');
 //--------------------------------------------------------------------------------------------------
 
@@ -1190,8 +1190,25 @@ function internalProjectContainerDir($path = NULL) : String
 
     if( ! empty($containers) && defined('_CURRENT_PROJECT') )
     {
-        return ! empty($containers[_CURRENT_PROJECT]) && ! file_exists($containerProjectDir)
-               ? PROJECTS_DIR . suffix($containers[_CURRENT_PROJECT], DS) . $path
+        $restoreFix = 'Restore';
+
+        // 5.3.8[added]
+        if( strpos(_CURRENT_PROJECT, $restoreFix) === 0 && is_dir(PROJECTS_DIR . ($restoredir = ltrim(_CURRENT_PROJECT, $restoreFix))) )
+        {
+            $condir = $restoredir;
+
+            if( $containers[$condir] ?? NULL )
+            {
+                $condir = $containers[$condir];
+            }
+        }
+        else
+        {
+            $condir = $containers[_CURRENT_PROJECT] ?? NULL;
+        }  
+        
+        return ! empty($condir) && ! file_exists($containerProjectDir)
+               ? PROJECTS_DIR . suffix($condir, DS) . $path
                : $containerProjectDir;
     }
 

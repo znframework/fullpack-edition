@@ -1,9 +1,9 @@
 {
-    "name": "znframework/multi-edition",
+    "name": "znframework/znframework",
     "type": "project",
     "description": "ZN Framework EIP",
     "keywords": ["zn","zeroneed"],
-    "homepage": "https://github.com/znframework/multi-edition",
+    "homepage": "https://github.com/znframework/znframework",
     "license": "MIT",
     "authors": 
     [
