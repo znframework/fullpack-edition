@@ -1,6 +1,8 @@
-<?php namespace ZN\IndividualStructures\Permission;
+<?php namespace ZN\ViewObjects\View;
 
-class Page extends PermissionExtends
+use CallController;
+
+class InternalSheet extends CallController
 {
     //--------------------------------------------------------------------------------------------------------
     //
@@ -12,14 +14,11 @@ class Page extends PermissionExtends
     //--------------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------
-    // page()
+    // Style Sheet Trait
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param numeric $roleId : 0
+    // methods
     //
     //--------------------------------------------------------------------------------------------------------
-    public function use(Int $roleId = 6)
-    {
-        return $this->common($roleId, NULL, NULL, 'page');
-    }
+    use SheetTrait;
 }

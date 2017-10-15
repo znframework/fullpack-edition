@@ -160,7 +160,7 @@ class InternalRedirect extends CallController implements InternalRedirectInterfa
     // @var string $action
     //
     //--------------------------------------------------------------------------------------------------------
-    public function action(String $action)
+    public function action(String $action = NULL)
     {
         $time = $this->redirect['time'];
         $data = $this->redirect['data'];

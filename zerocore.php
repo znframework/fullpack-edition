@@ -13,7 +13,7 @@
 //--------------------------------------------------------------------------------------------------
 // VERSION INFO CONSTANTS
 //--------------------------------------------------------------------------------------------------
-define('ZN_VERSION'          , '5.3.85');
+define('ZN_VERSION'          , '5.3.9');
 define('REQUIRED_PHP_VERSION', '7.0.0');
 //--------------------------------------------------------------------------------------------------
 
@@ -54,9 +54,9 @@ define('PROJECTS_CONFIG'    , import
 (
     (is_file(PROJECTS_DIR . 'Projects.php') ? PROJECTS_DIR : SETTINGS_DIR) . 'Projects.php'
 ));
-define('DEFAULT_PROJECT'    , PROJECTS_CONFIG['directory']['default'] );
-define('EXTERNAL_CONFIG_DIR', EXTERNAL_DIR . 'Config'.DS              );
-define('INTERNAL_CONFIG_DIR', INTERNAL_DIR . 'Config'.DS              );
+define('DEFAULT_PROJECT'    , PROJECTS_CONFIG['directory']['default']);
+define('EXTERNAL_CONFIG_DIR', EXTERNAL_DIR . 'Config'.DS             );
+define('INTERNAL_CONFIG_DIR', INTERNAL_DIR . 'Config'.DS             );
 //--------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------

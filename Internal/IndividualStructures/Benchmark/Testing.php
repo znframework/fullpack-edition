@@ -23,7 +23,7 @@ class Testing
     {
         $test = $test."_start";
 
-        Properties::$tests[$test]     = microtime();
+        Properties::$tests[$test]     = microtime(true);
         Properties::$usedtests[$test] = get_required_files();
         Properties::$memtests[$test]  = memory_get_usage();
     }
@@ -41,7 +41,7 @@ class Testing
         $getMemoryUsage = memory_get_usage();
         $test           = $test."_end";
 
-        Properties::$tests[$test]     = microtime();
+        Properties::$tests[$test]     = microtime(true);
         Properties::$usedtests[$test] = get_required_files();
         Properties::$memtests[$test]  = $getMemoryUsage;
     }

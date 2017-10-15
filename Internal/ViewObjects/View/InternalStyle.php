@@ -1,6 +1,8 @@
-<?php namespace ZN\IndividualStructures\Permission;
+<?php namespace ZN\ViewObjects\View;
 
-class Process extends PermissionExtends
+use Import, CallController;
+
+class InternalStyle extends CallController implements InternalStyleInterface
 {
     //--------------------------------------------------------------------------------------------------------
     //
@@ -12,56 +14,66 @@ class Process extends PermissionExtends
     //--------------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------
-    // start()
+    // Type
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param numeric $roleId : 0
-    // @param string  $process: empty
+    // @var string
     //
     //--------------------------------------------------------------------------------------------------------
-    public function start(Int $roleId = 0, String $process = NULL)
-    {
-        $this->content = $this->use($roleId, $process, 'object');
+    protected $type = 'text/css';
 
-        ob_start();
+    //--------------------------------------------------------------------------------------------------------
+    // Type
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param string $type()
+    //
+    //--------------------------------------------------------------------------------------------------------
+    public function type(String $type)
+    {
+        $this->type = $type;
+
+        return $this;
     }
 
     //--------------------------------------------------------------------------------------------------------
-    // end()
+    // Library
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param variadic $libraries
+    //
+    //--------------------------------------------------------------------------------------------------------
+    public function library(...$libraries)
+    {
+        Import::style(...$libraries);
+
+        return $this;
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Open
     //--------------------------------------------------------------------------------------------------------
     //
     // @param void
     //
     //--------------------------------------------------------------------------------------------------------
-    public function end()
+    public function open() : String
     {
-        if( ! empty($this->content) )
-        {
-            $content = ob_get_contents();
-        }
-        else
-        {
-            $content = '';
-        }
+        $script = "<style type=\"$this->type\">".EOL;
 
-        ob_end_clean();
-
-        $this->content = NULL;
-
-        echo $content;
+        return $script;
     }
 
     //--------------------------------------------------------------------------------------------------------
-    // process()
+    // Close
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param numeric $roleId : 0
-    // @param string  $process: empty
-    // @param string  $object : empty
+    // @param void
     //
     //--------------------------------------------------------------------------------------------------------
-    public function use(Int $roleId = 0, String $process = NULL, String $object = NULL)
+    public function close() : String
     {
-        return $this->common($roleId, $process, $object, 'process');
+        $script =  '</style>'.EOL;
+        return $script;
     }
 }
