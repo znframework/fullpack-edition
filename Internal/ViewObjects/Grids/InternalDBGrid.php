@@ -103,10 +103,28 @@ class InternalDBGrid extends Abstracts\GridAbstract
     // Inputs -> 5.4.0
     //--------------------------------------------------------------------------------------------------------
     //
-    // @var variadic
+    // @var array
     //
     //--------------------------------------------------------------------------------------------------------
     protected $inputs = [];
+
+    //--------------------------------------------------------------------------------------------------------
+    // Inputs -> 5.4.1
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @var array
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected $outputs = [];
+
+    //--------------------------------------------------------------------------------------------------------
+    // Inputs -> 5.4.02
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @var array
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected $select = [];
 
     //--------------------------------------------------------------------------------------------------------
     // Construct
@@ -170,6 +188,22 @@ class InternalDBGrid extends Abstracts\GridAbstract
     public function inputs(Array $inputs) : InternalDBGrid
     {
         $this->inputs = $inputs;
+
+        return $this;
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Outputs -> 5.4.1
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param string variadic $select
+    //
+    // @return InternalDBGrid
+    //
+    //--------------------------------------------------------------------------------------------------------
+    public function outputs(Array $outputs) : InternalDBGrid
+    {
+        $this->outputs = $outputs;
 
         return $this;
     }
@@ -508,7 +542,7 @@ class InternalDBGrid extends Abstracts\GridAbstract
         //----------------------------------------------------------------------------------------------------
         $table .= '<table id="DBGRID_TABLE"'.Html::attributes(VIEWOBJECTS_DATAGRID_CONFIG['attributes']['table']).'>'.EOL;
         $table .= $this->_thead($columns, $countColumns);
-        $table .= $this->_tbody($result, $countColumns, $joinsData);
+        $table .= $this->_tbody($result, $countColumns, $joinsData, $columns);
         $table .= $this->_pagination($pagination, $countColumns);
         $table .= '</table>'.EOL;
 
@@ -641,9 +675,10 @@ class InternalDBGrid extends Abstracts\GridAbstract
         //
         //----------------------------------------------------------------------------------------------------
         $hiddenJoins = NULL;
-
+        
         foreach( $result as $key => $value )
         {
+            static $i    = 0;
             $value       = Arrays::casing($value, 'lower', 'key');
             $hiddenValue = $value[strtolower($this->processColumn)] ?? NULL;
             $hiddenId    = Form::hidden('id', $hiddenValue);
@@ -652,11 +687,30 @@ class InternalDBGrid extends Abstracts\GridAbstract
             {
                 $hiddenJoins = Form::hidden('joinsId', $this->_encode($joinsData));
             }
+			
+			// 5.4.02[edited]
+            if( count($originColumns = $this->_origincolumns()) === count($value) )
+            {
+                $combine = array_combine($originColumns, $value);
+            }
+            else
+            {
+                $combine = $value;
+            }
 
             $table .= '<tr><td>'.($key + 1).'</td><td>'.
-                    implode('</td><td>', Arrays::force($value, function($data){ return \Limiter::word((string) $data, 20);})).
-                    '</td>'.$this->_hideButton('<td align="right">'.
-                
+                    implode('</td><td>', Arrays::force($value, function($data) use($i, $originColumns, $combine)
+                    {   
+                        static $i; $index = $i++;
+
+                        if( $output = ($this->outputs[$originColumns[$index] ?? NULL] ?? NULL) )
+                        {
+                            return (string) $output(new Html, $data, (object) $combine) ?: $data;   
+                        }
+
+                        return \Limiter::word((string) $data, 20);            
+                    })).
+                    '</td>'.$this->_hideButton('<td align="right">'. 
                     Form::action(CURRENT_CFPATH . URI::manipulation(['column' => $hiddenValue, 'process' => 'edit', 'order', 'type', 'page'], 'left'))
                         ->open('editButtonForm').
                     $hiddenId.
@@ -852,10 +906,18 @@ class InternalDBGrid extends Abstracts\GridAbstract
 
         if( ! empty($this->joins) )
         {
-            $select = Arrays::addFirst($this->select, $this->table.'.'.$this->processColumn.' as id');
+            $select = Arrays::addFirst($this->select, $this->table.'.'.$this->processColumn.' as ID');
         }
 
         DB::select(...$select);
+    }
+
+    protected function _origincolumns()
+    {
+        return Arrays::forceValues($this->select, function($data)
+        {
+            return explode(' ', $data)[0] ?? $data;
+        });
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -869,10 +931,7 @@ class InternalDBGrid extends Abstracts\GridAbstract
     {
         if( empty($this->search) && ! empty($this->select) )
         {
-            $this->search = Arrays::forceValues($this->select, function($data)
-            {
-                return explode(' ', $data)[0] ?? $data;
-            });
+            $this->search = $this->_origincolumns();
         }
 
         if( is_array($this->search) )
@@ -1094,5 +1153,7 @@ class InternalDBGrid extends Abstracts\GridAbstract
         $this->search  = NULL;
         $this->joins   = [];
         $this->inputs  = [];
+        $this->outputs = [];
+        $this->select  = [];
     }
 }
