@@ -1,6 +1,6 @@
 <?php namespace ZN\FileSystem;
 
-use Config, Folder, File, Converter, Encode, CallController, IS;
+use Config, Folder, File, Converter, Encode, CallController, IS, Mime, Lang;
 
 class InternalUpload extends CallController implements InternalUploadInterface
 {
@@ -20,7 +20,16 @@ class InternalUpload extends CallController implements InternalUploadInterface
     // @var array
     //
     //--------------------------------------------------------------------------------------------------------
-    private $settings = [];
+    private $settings = 
+    [
+        'encode'        => 'md5', 
+        'encodeLength'  => 8,
+        'extensions'    => [],
+        'mimes'         => [],
+        'convertName'   => true,
+        'prefix'        => NULL,
+        'maxsize'       => NULL
+    ];
 
     //--------------------------------------------------------------------------------------------------------
     // File
@@ -101,59 +110,14 @@ class InternalUpload extends CallController implements InternalUploadInterface
     // Settings
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param array $set
+    // @param array $settings 
     //
     //--------------------------------------------------------------------------------------------------------
-    public function settings(Array $set = []) : InternalUpload
+    public function settings(Array $settings = []) : InternalUpload
     {
-        $this->settingStatus = true;
-
-        // 1-extensions -> Dosyanın uzantısı
-        if( isset($set['extensions']) )
+        foreach( $settings as $key => $val )
         {
-            $this->settings['extensions']   = $set['extensions'];
-        }
-
-        // 2-encode -> Dosyanın şifrelenmesi
-        if( isset($set['encode']) )
-        {
-            $this->settings['encryption']   = $set['encode'];
-        }
-        else
-        {
-            $this->settings['encryption']   = 'md5';
-        }
-
-        // 3-prefix -> Yüklenen dosyaların önüne ön ek koymak
-        if( isset($set['prefix']) )
-        {
-            $this->settings['prefix']       = $set['prefix'];
-        }
-
-        // 4-mazsize -> Yükselenecebilecek maksimum dosya boyutu
-        if( isset($set['maxsize']) )
-        {
-            $this->settings['maxsize']      = $set['maxsize'];
-        }
-
-        // 5-encodeLength -> Şifrenin karakter uzunluğu
-        if( isset($set['encodeLength']) )
-        {
-            $this->settings['encodeLength'] = $set['encodeLength'];
-        }
-        else
-        {
-            $this->settings['encodeLength'] = 8;
-        }
-
-        // 4-mazsize -> Yükselenecebilecek maksimum dosya boyutu
-        if( isset($set['convertName']) )
-        {
-            $this->settings['convertName']  = $set['convertName'];
-        }
-        else
-        {
-            $this->settings['convertName']  = true;
+            $this->settings[$key] = $val;
         }
 
         return $this;
@@ -191,6 +155,23 @@ class InternalUpload extends CallController implements InternalUploadInterface
     }
 
     //--------------------------------------------------------------------------------------------------------
+    // Mimes -> 5.4.1[added]
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param string variadic $args
+    //
+    //--------------------------------------------------------------------------------------------------------
+    public function mimes(...$args) : InternalUpload
+    {
+        if( ! empty($args ) )
+        {
+            $this->settings['mimes'] = implode('|', $args);
+        }
+
+        return $this;
+    }
+
+    //--------------------------------------------------------------------------------------------------------
     // Encode
     //--------------------------------------------------------------------------------------------------------
     //
@@ -201,11 +182,11 @@ class InternalUpload extends CallController implements InternalUploadInterface
     {
         if( IS::hash($hash) )
         {
-            $this->settings['encryption'] = $hash;
+            $this->settings['encode'] = $hash;
         }
         else
         {
-            $this->settings['encryption'] = 'md5';
+            $this->settings['encode'] = 'md5';
         }
 
         return $this;
@@ -291,167 +272,40 @@ class InternalUpload extends CallController implements InternalUploadInterface
     //--------------------------------------------------------------------------------------------------------
     public  function start(String $fileName = 'upload', String $rootDir = UPLOADS_DIR) : Bool
     {
-        if( isset($this->settings['source']) )
-        {
-            $fileName = $this->settings['source'];
-        }
+        $fileName = $this->settings['source'] ?? $fileName;
+        $rootDir  = $this->settings['target'] ?? $rootDir;
 
-        if( isset($this->settings['target']) )
-        {
-            $rootDir = $this->settings['target'];
-        }
-
-        if( ! is_string($rootDir) )
-        {
-            $rootDir = UPLOADS_DIR;
-        }
-
-        if( ! Folder::exists($rootDir) )
+        if( ! Folder::exists($rootDir) ) 
         {
             Folder::create($rootDir);
         }
 
-        if( $this->settingStatus === false )
-        {
-            $this->settings();
-        }
+        $extensions = $this->_separator('extensions');
+        $mimes      = $this->_separator('mimes');
 
         $this->file = $fileName;
+        $encryption = $this->settings['prefix']      ?? '';
+        $name       = $_FILES[$fileName]['name']     ?? NULL;
+        $source     = $_FILES[$fileName]['tmp_name'] ?? NULL;
+        $root       = suffix($rootDir, '/');     
 
-        $root = suffix($rootDir, '/');
-
-        if( ! isset($_FILES[$fileName]['name']) )
-        {
-            $this->manuelError = 4;
-            return false;
-        }
-
-        $name = $_FILES[$fileName]['name'];
-
-        $encryption = '';
-
-        if( isset($this->settings['prefix']) )
-        {
-            $encryption = $this->settings['prefix'];
-        }
-
-        if( isset($this->settings['extensions']) )
-        {
-            $extensions = explode("|", $this->settings['extensions']);
-        }
-
-        $source = $_FILES[$fileName]['tmp_name'];
-
-        // Çoklu yükleme yapılıyorsa.
         if( is_array($name) )
         {
-            if( empty($name[0]) )
-            {
-                return ! $this->manuelError = 4;
-            }
-
             for( $index = 0; $index < count($name); $index++ )
             {
-                $src = $source[$index];
-                $nm  = $name[$index];
-
-                if( $this->settings['convertName'] === true )
-                {
-                    $nm = $this->_convertName($nm);
-                }
-
-                if( $this->settings['encryption'] )
-                {
-                    $encryption = $this->_encode();
-                }
-                else
-                {
-                    if( is_file($root.$nm) )
-                    {
-                        $encryption = $this->_encode();
-                    }
-                }
-
-                $encryptionName     = $encryption.$nm;
-                $target             = $root . $encryptionName;
-                $this->encodeName[] = $encryptionName;
-                $this->path[]       = $target;
-
-                if( isset($this->settings['extensions']) && ! in_array(File::extension($nm), $extensions) )
-                {
-                    $this->extensionControl = \Lang::select('FileSystem', 'upload:extensionError');
-                }
-                elseif( isset($this->settings['maxsize']) && $this->settings['maxsize'] < filesize($src) )
-                {
-                    $this->manuelError = 10;
-                }
-                else
-                {
-                    if( ! is_file($rootDir) )
-                    {
-                        move_uploaded_file($src, $target);
-                    }
-                    else
-                    {
-                        $this->manuelError = 9;
-                    }
-                }
+                $this->_upload($rootDir, $root, $source[$index], $name[$index], $extensions, $mimes, $encryption);
             }
 
-            return true;
+            $return = true;
         }
         else
         {
-            if( $this->settings['convertName'] === true )
-            {
-                 $name = $this->_convertName($name);
-            }
-
-            if( empty($_FILES[$fileName]['name']) )
-            {
-                $this->manuelError = 4;
-                return false;
-            }
-
-            if( isset($this->settings['maxsize']) && $this->settings['maxsize'] < filesize($source) )
-            {
-                $this->manuelError = 10;
-                return false;
-            }
-
-            if( $this->settings['encryption'] )
-            {
-                $encryption = $this->_encode();
-            }
-            else
-            {
-                if( is_file($root.$name) )
-                {
-                    $encryption = $this->_encode();
-                }
-            }
-
-            $encryptionName   = $encryption . $name;
-            $target           = $root . $encryptionName;
-            $this->encodeName = $encryptionName;
-            $this->path       = $target;
-
-            if( isset($this->settings['extensions']) && ! in_array(File::extension($name),$extensions) )
-            {
-                return ! $this->extensionControl = \Lang::select('FileSystem', 'upload:extensionError');
-            }
-            else
-            {
-                if( ! is_file($rootDir) )
-                {
-                    return move_uploaded_file($source, $target);
-                }
-                else
-                {
-                    return ! $this->manuelError = 9;
-                }
-            }
+            $return = $this->_upload($rootDir, $root, $source, $name, $extensions, $mimes, $encryption);
         }
+
+        $this->_default();
+
+        return $return;
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -465,8 +319,8 @@ class InternalUpload extends CallController implements InternalUploadInterface
     {
         if( ! empty($_FILES[$this->file]) )
         {
-            $datas = array
-            (
+            $datas = 
+            [
                 'name'       => $_FILES[$this->file]['name'],
                 'type'       => $_FILES[$this->file]['type'],
                 'size'       => $_FILES[$this->file]['size'],
@@ -474,7 +328,7 @@ class InternalUpload extends CallController implements InternalUploadInterface
                 'error'      => $_FILES[$this->file]['error'],
                 'path'       => $this->path,
                 'encodeName' => $this->encodeName
-            );
+            ];
 
             $values = [];
 
@@ -488,7 +342,7 @@ class InternalUpload extends CallController implements InternalUploadInterface
                 {
                     if( ! empty($datas[$key]) )
                     {
-                        foreach( $datas[$key] as $v )
+                        foreach( (array) $datas[$key] as $v )
                         {
                             $values[$key][] = $v;
                         }
@@ -522,7 +376,7 @@ class InternalUpload extends CallController implements InternalUploadInterface
 
         if( $errorNo === NULL )
         {
-            return \Lang::select('FileSystem', 'upload:unknownError');
+            return Lang::select('FileSystem', 'upload:unknownError');
         }
 
         if( is_array($errorNo) )
@@ -541,11 +395,11 @@ class InternalUpload extends CallController implements InternalUploadInterface
             $errorNo = $errno;
         }
 
-        $lang = \Lang::select('FileSystem');
+        $lang = Lang::select('FileSystem');
 
         $this->errors =
         [
-            '0'  => "scc",                          // Dosya başarı ile yüklendi.
+            '0'  => "scc",             // Dosya başarı ile yüklendi.
             '1'  => $lang['upload:1'], // Php.ini dosyasındaki maximum dosya boyutu aşıldı.
             '2'  => $lang['upload:2'], // Formtaki max_file_size direktifindeki dosya boyutu limiti aşıldı.
             '3'  => $lang['upload:3'], // Dosya yükleme işlemi tamamlanmadı.
@@ -556,31 +410,113 @@ class InternalUpload extends CallController implements InternalUploadInterface
             '9'  => $lang['upload:9'], // Dosya yükleme yolu geçerli değil.
             '10' => $lang['upload:10'] // Belirlenen maksimum dosya boyutu aşıldı!
         ];
-        // Manuel belirlenen hata oluşmuşsa
+       
         if( ! empty($this->manuelError) )
         {
             return $this->errors[$this->manuelError];
         }
-        // Uzantıdan kaynaklı hata oluşmussa
         elseif( ! empty($this->extensionControl) )
         {
             return $this->extensionControl;
         }
-        // Hata numarasına göre hata bildir.
         elseif( ! empty($this->errors[$errorNo]) )
         {
             if( $this->errors[$errorNo] === "scc" )
             {
                 return false;
             }
-            // 0 Dışında herhangi bir hata numarası oluşmussa
             return $this->errors[$errorNo];
         }
-        // Bu kontroller dışında hata oluşmussa bilinmeyen
-        // hata uyarısı ver.
         else
         {
-            return \Lang::select('FileSystem', 'upload:unknownError');
+            return Lang::select('FileSystem', 'upload:unknownError');
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Protected Separator
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @params
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected function _separator($key)
+    {
+        if( $set = ($this->settings[$key] ?? NULL) )
+        {
+            return explode('|', $set);
+        }
+
+        return [];
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Protected Upload
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @params
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected function _upload($rootDir, $root, $src, $nm, $extensions, $mimes, $encryption)
+    {
+        if( empty($nm) )
+        {
+            return ! $this->manuelError = 4;
+        }   
+        
+        if( ($this->settings['convertName'] ?? NULL) === true )
+        {
+             $nm = $this->_convertName($nm);
+        }
+
+        if( $this->settings['encode'] ?? NULL )
+        {
+            $encryption = $this->_encode();
+        }
+        else
+        {
+            if( is_file($root.$nm) )
+            {
+                $encryption = $this->_encode();
+            }
+        }
+
+        $encryptionName     = $encryption . $nm;
+        $target             = $root . $encryptionName;
+
+        if( is_array($_FILES[$this->file]['name']) )
+        {
+            $this->encodeName[] = $encryptionName;
+            $this->path[]       = $target;
+        }
+        else
+        {
+            $this->encodeName = $encryptionName;
+            $this->path       = $target;
+        }
+
+        if( ! empty($extensions) && ! in_array(File::extension($nm), $extensions) )
+        {
+            return $this->extensionControl = Lang::select('FileSystem', 'upload:extensionError');
+        }
+        elseif( ! empty($mimes) && ! in_array(Mime::type($nm), $mimes) )
+        {
+            return $this->extensionControl = Lang::select('FileSystem', 'upload:mimeError');
+        }
+        elseif( ! empty($maxsize = ($this->settings['maxsize'] ?? NULL)) && $maxsize < filesize($src) )
+        {
+            return $this->manuelError = 10;
+        }
+        else
+        {
+            if( ! is_file($rootDir) )
+            {
+                return move_uploaded_file($src, $target);
+            }
+            else
+            {
+                return ! $this->manuelError = 9;
+            }
         }
     }
 
@@ -605,7 +541,7 @@ class InternalUpload extends CallController implements InternalUploadInterface
     //--------------------------------------------------------------------------------------------------------
     protected function _encode()
     {
-        $encode = $this->settings['encryption'];
+        $encode = $this->settings['encode'];
         $length = $this->settings['encodeLength'];
 
         if( ! IS::hash($encode) )
@@ -614,5 +550,26 @@ class InternalUpload extends CallController implements InternalUploadInterface
         }
 
         return substr(Encode::type(uniqid(rand()), $encode), 0, $length).'-';
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Protected Default
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected function _default()
+    {
+        $this->settings = 
+        [
+            'encode'        => 'md5', 
+            'encodeLength'  => 8,
+            'extensions'    => [],
+            'mimes'         => [],
+            'convertName'   => true,
+            'prefix'        => NULL,
+            'maxsize'       => NULL
+        ];
     }
 }
