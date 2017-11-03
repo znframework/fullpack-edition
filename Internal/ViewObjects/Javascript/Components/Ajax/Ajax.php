@@ -1,6 +1,6 @@
-<?php namespace ZN\DataTypes\Separator;
+<?php namespace ZN\ViewObjects\Javascript\Components;
 
-class Encode extends SeparatorExtends
+class Ajax extends ComponentsExtends
 {
     //--------------------------------------------------------------------------------------------------------
     //
@@ -12,25 +12,20 @@ class Encode extends SeparatorExtends
     //--------------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------
-    // Do
+    // Generate
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param array  $data
-    // @param string $key
-    // @param string $separator
+    // @param string   $id   = 'editor'
+    // @param callable $editors
     //
     //--------------------------------------------------------------------------------------------------------
-    public function do(Array $data, String $key = NULL, String $separator = NULL) : String
+    public function generate(String $function, Callable $ajax = NULL) : String
     {
-        $word      = NULL;
-        $key       = $key       ?: $this->key;
-        $separator = $separator ?: $this->separator;
- 
-        foreach( $data as $k => $v )
+        if( $ajax !== NULL )
         {
-            $word .= $this->_security($k).$key.$this->_security($v).$separator;
+            $ajax($this);
         }
-
-        return mb_substr($word, 0, -(mb_strlen($separator)));
+        
+        return $this->prop(['function' => $function]);
     }
 }

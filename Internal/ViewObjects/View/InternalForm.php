@@ -1,6 +1,7 @@
 <?php namespace ZN\ViewObjects\View;
 
-use Validation, Arrays, DB, Session;
+use Validation, Arrays, DB, Session, URI;
+use ZN\ViewObjects\View\HTML\Exception\InvalidArgumentException;
 
 class InternalForm
 {
@@ -62,6 +63,11 @@ class InternalForm
     // @param string $name
     // @param array  $attributes
     //
+    // Usable 3 Parameter For Enctype
+    // 1. multipart     => multipart/form-data
+    // 2. application   => application/x-www-form-urlencoded
+    // 3. text          => text/plain
+    //
     //--------------------------------------------------------------------------------------------------------
     public function open(String $name = NULL, Array $_attributes = []) : String
     {
@@ -72,10 +78,6 @@ class InternalForm
 
         $_attributes['name'] = $name;
 
-        // Usable 3 Parameter For Enctype
-        // 1. multipart     => multipart/form-data
-        // 2. application   => application/x-www-form-urlencoded
-        // 3. text          => text/plain
         if( isset($_attributes['enctype']) )
         {
             $enctype = $_attributes['enctype'];
@@ -91,18 +93,55 @@ class InternalForm
             $_attributes['method'] = 'post';
         }
 
-        $this->method = $_attributes['method'];
+        if( isset($this->settings['where']) )
+        {
+            $this->settings['getrow'] = DB::get($name)->row();
+        }
+        
+        if( $query = ($this->settings['query'] ?? NULL) )
+        {
+            $this->settings['getrow'] = DB::query($query)->row();
+        }
 
-        $return = '<form'.$this->attributes($_attributes).'>'.EOL;
+        $this->method = $method = $_attributes['method'];
+
+        $return  = '<form'.$this->attributes($_attributes).'>'.EOL;
+
+        // 5.4.2[added]
+        $return .= $this->_process($name, $method);
 
         if( isset($this->settings['token']) )
         {
             $return .= CSRFInput();
         }
 
-        $this->settings['token'] = NULL;
+        $this->_unsetopen();
 
         return $return;
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Validate Error Message
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------------
+    public function validateErrorMessage()
+    {
+        return Validation::error('string');
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Validate Error Array
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------------
+    public function validateErrorArray()
+    {
+        return Validation::error('array');
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -114,6 +153,8 @@ class InternalForm
     //--------------------------------------------------------------------------------------------------------
     public function close() : String
     {
+        unset($this->settings['getrow']);
+
         return '</form>'.EOL;
     }
 
@@ -154,13 +195,13 @@ class InternalForm
 
         if( ! empty($this->settings['attr']['name']) )
         {
-            if( isset($this->postback['bool']) && $this->postback['bool'] === true )
-            {
-                $method = ! empty($this->method) ? $this->method : $this->postback['type'];
-                $value  = Validation::postBack($this->settings['attr']['name'], $method);
+            $this->_posback($this->settings['attr']['name'], $value);
 
-                $this->postback = [];
-            }
+            // 5.4.2[added]
+            $this->_validate($this->settings['attr']['name'], $this->settings['attr']['name']);
+            
+            // 5.4.2[added]
+            $value = $this->_getrow('textarea', $value, $this->settings['attr']);
         }
 
         return '<textarea'.$this->attributes($_attributes).'>'.$value.'</textarea>'.EOL;
@@ -246,9 +287,6 @@ class InternalForm
             $selected = $flip[$this->settings['selectedValue']];
         }
 
-        // Son parametrenin durumuna multiple olması belirleniyor.
-        // Ancak bu parametrenin kullanımı gerekmez.
-        // Bunun için multiple() yöntemi oluşturulmuştur.
         if( $multiple === true )
         {
             $_attributes['multiple'] ="multiple";
@@ -261,13 +299,13 @@ class InternalForm
 
         if( ! empty($_attributes['name']) )
         {
-            if( isset($this->postback['bool']) && $this->postback['bool'] === true )
-            {
-                $method   = ! empty($this->method) ? $this->method : $this->postback['type'];
-                $selected = Validation::postBack($_attributes['name'], $method);
+            $this->_posback($_attributes['name'], $selected);
 
-                $this->postback = [];
-            }
+            // 5.4.2[added]
+            $this->_validate($_attributes['name'], $_attributes['name']);
+            
+            // 5.4.2[added]
+            $selected = $this->_getrow('select', $selected, $_attributes);
         }
 
         $selectbox = '<select'.$this->attributes($_attributes).'>';
@@ -302,7 +340,7 @@ class InternalForm
 
         $selectbox .= '</select>'.EOL;
 
-        $this->settings = [];
+        $this->_unsetselect();
 
         return $selectbox;
     }
@@ -342,7 +380,7 @@ class InternalForm
             $value = $this->settings['attr']['value'];
         }
 
-        $this->settings = [];
+        $this->settings['attr'] = [];
 
         $hiddens = NULL;
 
@@ -391,5 +429,82 @@ class InternalForm
         }
 
         return $this->_input($name, '', $_attributes, 'file');
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Protected Process
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected function _process($name, $method)
+    {
+        if( $process = ($this->settings['process'] ?? NULL) )
+        {
+            if( $method::FormProcessValue() )
+            {
+                if( Validation::check() )
+                {
+                    if( $process === 'update' )
+                    {
+                        DB::where
+                        (
+                            $whereColumn = $this->settings['whereColumn'], 
+                            $whereValue  = $this->settings['whereValue']
+                        )
+                        ->update(strtolower($method).':'.$name);       
+
+                        $this->settings['getrow'] = DB::where($whereColumn, $whereValue)->get($name)->row();
+                    }
+                    elseif( $process === 'insert' )
+                    {
+                        DB::insert(strtolower($method).':'.$name); 
+                    }
+                    else
+                    {
+                        throw new InvalidArgumentException('[Form::process()] method can take one of the values [update or insert].');
+                    }
+                }
+            }
+
+            return $this->hidden('FormProcessValue', 'FormProcessValue');
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Protected Unset Select Data
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected function _unsetselect()
+    {
+        unset($this->settings['table']);
+        unset($this->settings['query']);
+        unset($this->settings['option']);
+        unset($this->settings['exclude']);
+        unset($this->settings['include']);
+        unset($this->settings['order']);
+        unset($this->settings['selectedKey']);
+        unset($this->settings['selectedValue']);
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Protected Unset Select Data
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected function _unsetopen()
+    {
+        unset($this->settings['where']);
+        unset($this->settings['whereValue']);
+        unset($this->settings['whereColumn']);
+        unset($this->settings['query']);
+        unset($this->settings['token']);
+        unset($this->settings['process']);
     }
 }
