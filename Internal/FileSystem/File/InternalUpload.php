@@ -1,6 +1,6 @@
 <?php namespace ZN\FileSystem;
 
-use Config, Folder, File, Converter, Encode, CallController, IS, Mime, Lang;
+use Config, Folder, File, Converter, Encode, CallController, IS, Mime, Lang, Arrays;
 
 class InternalUpload extends CallController implements InternalUploadInterface
 {
@@ -457,7 +457,8 @@ class InternalUpload extends CallController implements InternalUploadInterface
         
         if( ($this->settings['convertName'] ?? NULL) === true )
         {
-             $nm = $this->_convertName($nm);
+            // 5.4.3[edited] 
+            $nm = Converter::slug($nm, true);
         }
 
         if( $this->settings['encode'] ?? NULL )
@@ -477,8 +478,8 @@ class InternalUpload extends CallController implements InternalUploadInterface
 
         if( is_array($_FILES[$this->file]['name']) )
         {
-            $this->encodeName[] = $encryptionName;
-            $this->path[]       = $target;
+            $this->encodeName = Arrays::addLast((array) $this->encodeName, $encryptionName);
+            $this->path       = Arrays::addLast((array) $this->path      , $target        );     
         }
         else
         {
@@ -509,18 +510,6 @@ class InternalUpload extends CallController implements InternalUploadInterface
                 return ! $this->manuelError = 9;
             }
         }
-    }
-
-    //--------------------------------------------------------------------------------------------------------
-    // Protected Convert Name
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    //--------------------------------------------------------------------------------------------------------
-    protected function _convertName($name = NULL)
-    {
-        return  Converter::slug(File::removeExtension($name)) . '.' . File::extension($name);
     }
 
     //--------------------------------------------------------------------------------------------------------
