@@ -19,9 +19,9 @@
     //
     //--------------------------------------------------------------------------------------------------------
     public function __call($method, $param)
-    {
-        $this->$method = $param[0] ?? NULL;
-
+    {   
+        $this->$method = (count($param ?? NULL) > 1) ? $param : ($param[0] ?? NULL);
+        
         $this->revolvings[$method] = $this->$method;
 
         return $this;
@@ -46,13 +46,27 @@
     // @param void
     //
     //--------------------------------------------------------------------------------------------------------
-    protected function defaultVariables()
+    protected function defaultVariables($type = 'all')
     {
-        $vars = get_class_vars(get_called_class());
+        $vars = $type === 'all' 
+              ? get_class_vars(get_called_class())
+              : $this->revolvings;        
 
         foreach( $vars as $key => $var )
         {
             $this->$key = NULL;
         }
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    // Default Revolving Variables
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------------
+    protected function defaultRevolvingVariables()
+    {
+        $this->defaultRevolvings('revolving');
     }
 }
