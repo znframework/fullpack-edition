@@ -1,7 +1,10 @@
 <?php namespace ZN\Database\Drivers;
 
 use ZN\Database\Abstracts\DriverConnectionMappingAbstract;
-use Support, Errors, Exception, SQLite3, stdClass;
+use ZN\IndividualStructures\Support;
+use ZN\ErrorHandling\Errors;
+use Exception, SQLite3, stdClass;
+use ZN\Database\Exception\ConnectionErrorException;
 
 class SQLiteDriver extends DriverConnectionMappingAbstract
 {
@@ -107,7 +110,7 @@ class SQLiteDriver extends DriverConnectionMappingAbstract
         }
         catch(Exception $e)
         {
-            die(Errors::message('Database', 'connectError'));
+            throw new ConnectionErrorException('Database', 'connectError');
         }
     }
 

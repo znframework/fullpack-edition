@@ -1,7 +1,11 @@
 <?php namespace ZN\Database\Drivers;
 
 use ZN\Database\Abstracts\DriverConnectionMappingAbstract;
-use Support, Errors, Security, stdClass;
+use ZN\IndividualStructures\Security;
+use ZN\IndividualStructures\Support;
+use ZN\ErrorHandling\Errors;
+use stdClass;
+use ZN\Database\Exception\ConnectionErrorException;
 
 class SQLServerDriver extends DriverConnectionMappingAbstract
 {
@@ -123,7 +127,7 @@ class SQLServerDriver extends DriverConnectionMappingAbstract
 
         if( empty($this->connect) )
         {
-            die(Errors::message('Database', 'connectError'));
+            throw new ConnectionErrorException('Database', 'connectError');
         }
     }
 
@@ -325,7 +329,7 @@ class SQLServerDriver extends DriverConnectionMappingAbstract
     //--------------------------------------------------------------------------------------------------------
     public function realEscapeString($data)
     {
-        return Security::escapeStringEncode($data);
+        return Security\Injection::escapeStringEncode($data);
     }
 
     //--------------------------------------------------------------------------------------------------------

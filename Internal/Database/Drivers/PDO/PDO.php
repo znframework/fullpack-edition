@@ -1,7 +1,10 @@
 <?php namespace ZN\Database\Drivers;
 
 use ZN\Database\Abstracts\DriverConnectionMappingAbstract;
-use Errors, stdClass, Support, PDO, PDOException;
+use ZN\IndividualStructures\Support;
+use ZN\ErrorHandling\Errors;
+use stdClass, PDO, PDOException;
+use ZN\Database\Exception\ConnectionErrorException;
 
 class PDODriver extends DriverConnectionMappingAbstract
 {
@@ -119,7 +122,7 @@ class PDODriver extends DriverConnectionMappingAbstract
         }
         catch( PDOException $e )
         {
-            die(Errors::message('Database', 'connectError'));
+            throw new ConnectionErrorException('Database', 'connectError');
         }
         
         if( ! empty($this->config['charset']  ) ) $this->connect->exec("SET NAMES '".$this->config['charset']."'");

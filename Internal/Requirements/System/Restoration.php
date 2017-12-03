@@ -1,6 +1,10 @@
 <?php namespace ZN\Requirements\System;
 
-use Config, Arrays, URI, ZN\In, IS, User, Folder;
+use Config, User;
+use ZN\In;
+use ZN\Services\URI;
+use ZN\FileSystem\Folder;
+use ZN\IndividualStructures\IS;
 
 class Restoration
 {
@@ -29,7 +33,7 @@ class Restoration
 
         if( $folders === 'full' )
         {
-            return Folder::copy(PROJECTS_DIR . $project, PROJECTS_DIR . $restoreFix . $project);
+            return Forge::copy(PROJECTS_DIR . $project, PROJECTS_DIR . $restoreFix . $project);
         }
         else
         {
@@ -37,13 +41,13 @@ class Restoration
 
             if( $folders !== 'standart' )
             {
-                $array = Arrays::merge($array, $folders);
+                $array = array_merge($array, $folders);
             }
     
             foreach( $array as $folder )
             {
                 $path   = $project . DS . $folder;
-                $return = Folder::copy(PROJECTS_DIR . $path, PROJECTS_DIR . $restoreFix . $path);
+                $return = Folder\Forge::copy(PROJECTS_DIR . $path, PROJECTS_DIR . $restoreFix . $path);
             }
 
             return $return;
@@ -61,11 +65,11 @@ class Restoration
     public static function end(String $project, String $type = NULL)
     {
         $project = prefix($project, self::$restoreFix);
-        $return  = Folder::copy($restoreFolder = PROJECTS_DIR . $project, PROJECTS_DIR . ltrim($project, self::$restoreFix));
+        $return  = Folder\Forge::copy($restoreFolder = PROJECTS_DIR . $project, PROJECTS_DIR . ltrim($project, self::$restoreFix));
 
         if( $type === 'delete' )
         {
-            return Folder::delete($restoreFolder);
+            return Folder\Forge::delete($restoreFolder);
         }
 
         return $return;
@@ -93,7 +97,7 @@ class Restoration
     //--------------------------------------------------------------------------------------------------------
     public static function routeURI($machinesIP, String $uri)
     {
-        if( ! Arrays::valueExists((array) $machinesIP, User::ip()) && In::requestURI() !== $uri )
+        if( ! in_array(User::ip(), (array) $machinesIP) && In::requestURI() !== $uri )
         {
             redirect($uri);
         }

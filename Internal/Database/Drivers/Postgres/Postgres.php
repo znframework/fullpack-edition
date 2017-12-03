@@ -1,7 +1,10 @@
 <?php namespace ZN\Database\Drivers;
 
 use ZN\Database\Abstracts\DriverConnectionMappingAbstract;
-use Support, Errors, stdClass;
+use ZN\IndividualStructures\Support;
+use ZN\ErrorHandling\Errors;
+use stdClass;
+use ZN\Database\Exception\ConnectionErrorException;
 
 class PostgresDriver extends DriverConnectionMappingAbstract
 {
@@ -119,7 +122,7 @@ class PostgresDriver extends DriverConnectionMappingAbstract
 
         if( empty($this->connect) )
         {
-            die(Errors::message('Database', 'connectError'));
+            throw new ConnectionErrorException('Database', 'connectError');
         }
 
         if( ! empty($this->config['charset']) )

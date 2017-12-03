@@ -1,4 +1,8 @@
-<?php trait MagicFactoryAbility
+<?php 
+
+use ZN\IndividualStructures\Support;
+
+trait MagicFactoryAbility
 {
     //--------------------------------------------------------------------------------------------------------
     //
@@ -9,6 +13,14 @@
     //
     //--------------------------------------------------------------------------------------------------------
 
+    //--------------------------------------------------------------------------------------------------------
+    // Golden
+    //--------------------------------------------------------------------------------------------------------
+    //
+    // @param string $method
+    // @param array  $parameters
+    //
+    //--------------------------------------------------------------------------------------------------------
     public function __call($method, $parameters)
     {
         if( ! defined('static::factory') )
@@ -45,8 +57,18 @@
                 $isThis = 'this';
             }
 
-            $namespace = str_ireplace(Strings::divide($calledClass, '\\', -1), NULL, $calledClass);
+            $separator = '\\';
+            $namespace = NULL;
 
+            if( strstr($calledClass, $separator) )
+            {
+                $namespace = explode($separator, $calledClass);
+                
+                array_pop($namespace);
+    
+                $namespace = implode($separator, $namespace) . $separator;
+            }
+            
             $return = uselib($namespace . $class)->$method(...$parameters);
 
             if( $isThis === 'this' )

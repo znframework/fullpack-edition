@@ -1,6 +1,7 @@
 <?php namespace ZN\Requirements\Models;
 
-use DB, DBTool, DBForge, Strings, Arrays, GeneralException;
+use DB, DBTool, DBForge, GeneralException;
+use ZN\DataTypes\Strings;
 
 class RelevanceModel extends \BaseController
 {
@@ -96,17 +97,17 @@ class RelevanceModel extends \BaseController
     {
         $lowerMethod = strtolower($method);
 
-        $split = Strings::splitUpperCase($method);
+        $split = Strings\Split::upperCase($method);
         
-        if( Arrays::valueExists($this->resultMethods, strtolower($lowerMethod)) )
+        if( in_array($lowerMethod, $this->resultMethods) )
         {
             return $this->_resultMethods($method, $parameters);
         }
-        elseif( Arrays::valueExists($this->manipulationMethods, strtolower($lowerMethod)) )
+        elseif( in_array($lowerMethod, $this->manipulationMethods) )
         {
             return $this->_manipulationMethods($method, $parameters);
         }
-        elseif( Arrays::valueExists($this->toolMethods, strtolower($lowerMethod)) )
+        elseif( in_array($lowerMethod, $this->toolMethods) )
         {
             return $this->_toolMethods($method, $parameters);
         }
@@ -369,10 +370,10 @@ class RelevanceModel extends \BaseController
     {
         $columns = DB::get($table)->columns();
 
-        $select  = Arrays::forceValues($columns, function($data) use($table)
+        $select  = array_map(function($data) use($table)
         {
             return prefix($data, $table . '.' . $data . ' as ' . $table . '_');
-        });
+        }, $columns);
 
         return implode(', ', $select);
     }
@@ -418,7 +419,7 @@ class RelevanceModel extends \BaseController
     //--------------------------------------------------------------------------------------------------------  
     protected function _texplode($value, $index = 0)
     {
-        $ex = explode('.', Strings::divide($value, ':', $index));
+        $ex = explode('.', Strings\Split::divide($value, ':', $index));
 
         return count($ex) === 3 ? $ex[0].$ex[1] : $ex[0];
     }

@@ -1,5 +1,9 @@
 <?php namespace ZN\Requirements\Controllers;
 
+use ZN\ErrorHandling\Errors;
+use ZN\DataTypes\Strings;
+use GeneralException;
+
 class CallController extends BaseController
 {
     //--------------------------------------------------------------------------------------------------------
@@ -20,12 +24,12 @@ class CallController extends BaseController
     //--------------------------------------------------------------------------------------------------------
     public function __call($method, $param)
     {
-        die(\Errors::message
+        throw new GeneralException
         (
             'Error',
             'undefinedFunction',
-            \Strings::divide(str_ireplace(INTERNAL_ACCESS, '', get_called_class()), '\\', -1)."::$method()"
-        ));
+            Strings\Split::divide(str_ireplace(INTERNAL_ACCESS, '', get_called_class()), '\\', -1)."::$method()"
+        );
     }
 }
 

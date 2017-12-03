@@ -1,7 +1,15 @@
 <?php namespace ZN;
 
-use Config, Import, Exceptions, Errors, GeneralException, Regex, Route;
-use View, Masterpage, Arrays, Http, Lang, URI, URL, IS, File, Folder;
+use Config, GeneralException, Regex, Route, View, Masterpage, Http;
+use ZN\Services\URL;
+use ZN\Services\URI;
+use ZN\Helpers\Logger;
+use ZN\DataTypes\Strings;
+use ZN\FileSystem\Folder;
+use ZN\ErrorHandling\Errors;
+use ZN\IndividualStructures\IS;
+use ZN\IndividualStructures\Lang;
+use ZN\IndividualStructures\Import;
 
 class In
 {
@@ -81,7 +89,7 @@ class In
 
         if( $requestMethods = $invalidRequest[$type] )
         {
-            $requestMethods = Arrays::lowerKeys($requestMethods);
+            $requestMethods = array_change_key_case($requestMethods);
 
             if( ! empty($requestMethod = $requestMethods[CURRENT_CFURI] ?? NULL) )
             {
@@ -151,39 +159,6 @@ class In
     }
 
     //--------------------------------------------------------------------------------------------------
-    // internalBaseDir() - ZN >= 4.2.6
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param int $index = 0
-    //
-    // @return string
-    //
-    //--------------------------------------------------------------------------------------------------
-    public static function baseDir(Int $index = 0) : String
-    {
-        $newBaseDir = BASE_DIR;
-
-        if( BASE_DIR !== '/' )
-        {
-            $baseDir = substr(BASE_DIR, 1, -1);
-
-            if( $index < 0 )
-            {
-                $baseDir    = explode('/', $baseDir);
-                $newBaseDir = '/';
-
-                for( $i = 0; $i < count($baseDir) + $index; $i++ )
-                {
-                    $newBaseDir .= suffix($baseDir[$i]);
-                }
-            }
-        }
-
-        return $newBaseDir;
-    }
-
-
-    //--------------------------------------------------------------------------------------------------
     // internalRequestURI()
     //--------------------------------------------------------------------------------------------------
     //
@@ -229,8 +204,8 @@ class In
     //--------------------------------------------------------------------------------------------------
     protected static function routeAll()
     {
-        $externalRouteFiles = (array) Folder::allFiles(EXTERNAL_ROUTES_DIR);
-        $routeFiles         = (array) Folder::allFiles(ROUTES_DIR);
+        $externalRouteFiles = (array) Folder\FileList::allFiles(EXTERNAL_ROUTES_DIR);
+        $routeFiles         = (array) Folder\FileList::allFiles(ROUTES_DIR);
         $files              = array_merge($externalRouteFiles, $routeFiles);
 
         if( ! empty($files)  )
@@ -362,7 +337,7 @@ class In
                 'maxMemoryUsage' => $maxMemoryUsage
             ];
 
-            $benchResult = Import::template('BenchmarkTable', $benchmarkData, true);
+            $benchResult = Import\Template::use('BenchmarkTable', $benchmarkData, true);
             //----------------------------------------------------------------------------------------------
 
             //----------------------------------------------------------------------------------------------
@@ -370,7 +345,7 @@ class In
             //----------------------------------------------------------------------------------------------
             echo $benchResult;
 
-            \Logger::report('Benchmarking Test Result', $benchResult, 'BenchmarkTestResults');
+            Logger::report('Benchmarking Test Result', $benchResult, 'BenchmarkTestResults');
             //----------------------------------------------------------------------------------------------
         }
 
@@ -379,27 +354,6 @@ class In
         //----------------------------------------------------------------------------------------------
         layer('Bottom');
         //----------------------------------------------------------------------------------------------
-
-        self::opcache(); 
-    }
-
-    //--------------------------------------------------------------------------------------------------
-    // opcache() -> 5.3.5[added]
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    //--------------------------------------------------------------------------------------------------
-    public static function opcache()
-    {
-        // 5.3.4[added] - 5.3.51[edited]
-        if( function_exists('opcache_compile_file') && (Config::htaccess('cache')['opcache'] ?? NULL) === true )
-        {
-            if( ! opcache_compile_file(DIRECTORY_INDEX) )
-            {
-                echo Errors::message('Error', 'undefinedFunctionExtension', 'OPCACHE');
-            }
-        }
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -449,7 +403,7 @@ class In
         $controllerPath  = ! empty($controllerEx[0]) ? $controllerEx[0] : '';
         $controllerFunc  = ! empty($controllerEx[1]) ? $controllerEx[1] : 'main';
         $controllerFile  = CONTROLLERS_DIR . suffix($controllerPath, '.php');
-        $controllerClass = \Strings::divide($controllerPath, '/', -1);
+        $controllerClass = Strings\Split::divide($controllerPath, '/', -1);
 
         if( is_file($controllerFile) )
         {
@@ -462,9 +416,9 @@ class In
 
             if( ! is_callable([$controllerClass, $controllerFunc]) )
             {
-                \Logger::report('Error', \Lang::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
+                Logger::report('Error', Lang::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
 
-                die(Errors::message('Error', 'callUserFuncArrayError', $controllerFunc));
+                throw new GeneralException('Error', 'callUserFuncArrayError', $controllerFunc);
             }
 
             $exclude = $controllerClass . '::exclude';
@@ -674,7 +628,7 @@ class In
         //-----------------------URI ZERONEED PHP----------------------------------------------------
 
         //-----------------------ERROR REQUEST----------------------------------------------------
-        $htaccess .= 'ErrorDocument 403 '.BASE_DIR.DIRECTORY_INDEX.$eol.$eol;
+        $htaccess .= 'ErrorDocument 403 /'.BASE_DIR.DIRECTORY_INDEX.$eol.$eol;
         //-----------------------ERROR REQUEST----------------------------------------------------
 
         //-----------------------DIRECTORY INDEX--------------------------------------------------
@@ -739,9 +693,9 @@ class In
 
         $htaccessTxt = '.htaccess';
 
-        if( File::exists($htaccessTxt) )
+        if( is_file($htaccessTxt) )
         {
-            $getContents = trim(File::read($htaccessTxt));
+            $getContents = trim(file_get_contents($htaccessTxt));
         }
         else
         {
@@ -756,7 +710,7 @@ class In
             return false;
         }
 
-        if( ! File::write($htaccessTxt, trim($htaccess)) )
+        if( ! file_put_contents($htaccessTxt, trim($htaccess)) )
         {
             throw new GeneralException('Error', 'fileNotWrite', $htaccessTxt);
         }
@@ -780,7 +734,7 @@ class In
             {
                 switch( $key )
                 {
-                    case 'userAgent' :
+                    case 'userAgent':
                         $robots .= ! empty( $val ) ? 'User-agent: '.$val.EOL : '';
                     break;
 
@@ -799,7 +753,7 @@ class In
                 {
                     switch( $r )
                     {
-                        case 'userAgent' :
+                        case 'userAgent':
                             $robots .= ! empty( $v ) ? 'User-agent: '.$v.EOL : '';
                         break;
 
@@ -817,22 +771,21 @@ class In
 
         $robotTxt = 'robots.txt';
 
-        // robots.txt dosyası varsa içeriği al yok ise içeriği boş geç
-        if( File::exists($robotTxt) )
+        if( is_file($robotTxt) )
         {
-            $getContents = File::read($robotTxt);
+            $getContents = file_get_contents($robotTxt);
         }
         else
         {
             $getContents = '';
         }
-        // robots.txt değişkenin tuttuğu değer ile dosya içeri eşitse tekrar oluşturma
+
         if( trim($robots) === trim($getContents) )
         {
             return false;
         }
 
-        if( ! File::write($robotTxt, trim($robots)) )
+        if( ! file_put_contents($robotTxt, trim($robots)) )
         {
             throw new GeneralException('Error', 'fileNotWrite', $robotTxt);
         }

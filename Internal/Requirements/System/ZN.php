@@ -1,7 +1,13 @@
 <?php namespace Project\Controllers;
 
-use Restful, Separator, File, Folder, Arrays, Strings, Lang, URI, Route;
-use Converter, ZN\Core\Kernel as Kernel, Buffer, Cache, Config, User;
+use Restful, Separator, Strings, Route;
+use ZN\Core\Kernel, Cache, Config, User;
+use ZN\Services\URI;
+use ZN\FileSystem\File;
+use ZN\FileSystem\Folder;
+use ZN\Helpers\Converter;
+use ZN\IndividualStructures\Lang;
+use ZN\IndividualStructures\Buffer;
 
 class ZN
 {
@@ -71,8 +77,8 @@ class ZN
                     }
                 }
 
-                Folder::create($dirname);
-                File::write($file, $content);
+                Folder\Forge::create($dirname);
+                file_put_contents($file, $content);
             }
 
             return true;
@@ -90,7 +96,7 @@ class ZN
     //--------------------------------------------------------------------------------------------------
     public static function upgradeFiles()
     {
-        return Arrays::keys(self::_restful());
+        return array_keys(self::_restful());
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -109,9 +115,9 @@ class ZN
         if
         (
             ($projectConfig['status'] ?? NULL) === true                                                                    &&
-            ( ! Arrays::valueExists(($projectConfig['machinesIP'] ?? []), User::ip()) )                                    &&
-            ( empty($projectConfig['include']) || Arrays::valueExists(($projectConfig['include'] ?? []), CURRENT_CFPATH) ) &&
-            ( empty($projectConfig['exclude']) || ! Arrays::valueExists(($projectConfig['exclude'] ?? []), CURRENT_CFPATH) )
+            ( ! in_array(User::ip(), ($projectConfig['machinesIP'] ?? [])) )                                    &&
+            ( empty($projectConfig['include']) || in_array(CURRENT_CFPATH, ($projectConfig['include'] ?? [])) ) &&
+            ( empty($projectConfig['exclude']) || ! in_array(CURRENT_CFPATH, ($projectConfig['exclude'] ?? [])) )
         )
         {
             $converterName = Converter::slug(URI::active());
@@ -122,7 +128,7 @@ class ZN
 
             if( ! $select = Cache::select($cacheName, $projectConfig['compress']) )
             {
-                $kernel = Buffer::callback(function()
+                $kernel = Buffer\Callback::do(function()
                 {
                     Kernel::run();
                 });

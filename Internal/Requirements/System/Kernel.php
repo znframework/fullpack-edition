@@ -1,8 +1,16 @@
 <?php namespace ZN\Core;
 
-use Arrays, Import, Route, Throwable, Exceptions, Config, Errors;
-use Generate, Folder, File, Restoration, URL, Lang, IS;
-use View, Masterpage, ZN\In, Logger, Http;
+use Route, Throwable, Config, Generate, Restoration, URL, View, Masterpage, Http;
+use ZN\In;
+use ZN\Helpers\Logger;
+use ZN\FileSystem\File;
+use ZN\FileSystem\Folder;
+use ZN\IndividualStructures\IS;
+use ZN\IndividualStructures\Lang;
+use ZN\IndividualStructures\Import;
+use GeneralException;
+use ZN\ErrorHandling\Errors;
+use ZN\ErrorHandling\Exceptions;
 
 class Kernel
 {
@@ -24,16 +32,15 @@ class Kernel
 
         $appcon = Config::get('Project');
 
-        if( empty($appcon) )
-        {
-            trace('["Container"] Not Found! Check the [\'containers\'] setting in the [Settings/Projects.php] file.');
-        }
+        if( empty($appcon) ) trace('["Container"] Not Found! Check the [\'containers\'] setting in the [Settings/Projects.php] file.');
 
         define('PROJECT_MODE', strtolower($appcon['mode']));
 
         In::projectMode(PROJECT_MODE, $appcon['errorReporting']);
 
-        if( Config::get('Htaccess', 'cache')['obGzhandler'] && substr_count(server('acceptEncoding'), 'gzip') )
+        $htaccessConfig = Config::get('Htaccess');
+
+        if( $htaccessConfig['cache']['obGzhandler'] && substr_count(server('acceptEncoding'), 'gzip') )
         {
             ob_start('ob_gzhandler');
         }
@@ -41,46 +48,25 @@ class Kernel
         {
             ob_start();
         }
-
+        
         headers(Config::get('Project', 'headers'));
 
-        if( IS::timeZone($timezone = Config::get('DateTime', 'timeZone')) )
-        {
-            date_default_timezone_set($timezone);
-        }
-
-        if( PROJECT_MODE !== 'publication' )
-        {
-            set_error_handler('Exceptions::table');
-        }
-
+        if( IS::timeZone($timezone = Config::get('DateTime', 'timeZone')) ) date_default_timezone_set($timezone);
+        
         //--------------------------------------------------------------------------------------------------
         // Middle Top Layer
         //--------------------------------------------------------------------------------------------------
         layer('MiddleTop');
         //--------------------------------------------------------------------------------------------------
 
-        if( $iniSet = Config::get('Htaccess', 'ini')['settings'] )
-        {
-            Config::iniSet($iniSet);
-        }
-
-        if( Config::get('Htaccess','createFile') === true )
-        {
-            In::createHtaccessFile();
-        }
-
-        if( Config::get('Robots','createFile') === true )
-        {
-            In::createRobotsFile();
-        }
+        if( $iniSet = $htaccessConfig['ini']['settings'] ) Config::iniSet($iniSet);
+        if( PROJECT_MODE !== 'publication' ) set_error_handler('ZN\ErrorHandling\Exceptions::table');
+        if( Config::htaccess('createFile') === true ) In::createHtaccessFile();
+        if( Config::robots  ('createFile') === true ) In::createRobotsFile();
 
         $generateConfig = Config::get('FileSystem', 'generate');
 
-        if( $generateConfig['databases'] === true )
-        {
-            Generate::databases();
-        }
+        if( $generateConfig['databases'] === true ) Generate::databases();
 
         if( $grandVision = $generateConfig['grandVision'] )
         {
@@ -100,78 +86,10 @@ class Kernel
             }
         }
 
-        if( $composer = Config::get('Autoloader', 'composer') )
-        {
-            $path = 'vendor/autoload.php';
-
-            if( $composer === true )
-            {
-                if( file_exists($path) )
-                {
-                    import($path);
-                }
-                else
-                {
-                    Logger::report('Error', Lang::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
-
-                    die(Errors::message('Error', 'fileNotFound', $path));
-                }
-            }
-            elseif( is_file($composer) )
-            {
-                require_once($composer);
-            }
-            else
-            {
-                $path = suffix($composer) . $path;
-
-                Logger::report('Error', Lang::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
-
-                die(Errors::message('Error', 'fileNotFound', $path));
-            }
-        }
-
-        $starting = Config::get('Starting');
-
-        if( $starting['autoload']['status'] === true )
-        {
-            $startingAutoload       = Folder::allFiles(AUTOLOAD_DIR, $starting['autoload']['recursive']);
-            $commonStartingAutoload = Folder::allFiles(EXTERNAL_AUTOLOAD_DIR, $starting['autoload']['recursive']);
-
-            if( ! empty($startingAutoload) ) foreach( $startingAutoload as $file )
-            {
-                if( File::extension($file) === 'php' )
-                {
-                    if( is_file($file) )
-                    {
-                        import($file);
-                    }
-                }
-            }
-
-            if( ! empty($commonStartingAutoload) ) foreach( $commonStartingAutoload as $file )
-            {
-                if( File::extension($file) === 'php' )
-                {
-                    $commonIsSameExistsFile = str_ireplace(EXTERNAL_AUTOLOAD_DIR, AUTOLOAD_DIR, $file);
-
-                    if( ! is_file($commonIsSameExistsFile) && is_file($file) )
-                    {
-                        import($file);
-                    }
-                }
-            }
-        }
-
-        if( ! empty($starting['handload']) )
-        {
-            Import::handload(...$starting['handload']);
-        }
-
-        if( PROJECT_MODE === 'restoration' )
-        {
-            Restoration::mode();
-        }
+        if( $composer = Config::get('Autoloader', 'composer') ) self::_composer($composer);
+        if( ($starting = Config::get('Starting'))['autoload']['status'] === true ) self::_starting($starting);
+        if( ! empty($starting['handload']) ) Import\Handload::use(...$starting['handload']);
+        if( PROJECT_MODE === 'restoration' ) Restoration::mode();
 
         In::invalidRequest('disallowMethods', true);
         In::invalidRequest('allowMethods', false);
@@ -215,8 +133,9 @@ class Kernel
             {
                 if( ! is_callable([$page, $function]) )
                 {
-                    $parameters = Arrays::addFirst($parameters, $function);
-                    $function   = $openFunction;
+                    array_unshift($parameters, $function);
+                    
+                    $function = $openFunction;
                 }
 
                 if( is_callable([$page, $function]) )
@@ -270,10 +189,7 @@ class Kernel
     //--------------------------------------------------------------------------------------------------
     public static function viewPathFinder($function, &$viewPath, &$wizardPath)
     {
-        if( ! $viewNameType = Config::get('ViewObjects', 'viewNameType') )
-        {
-            $viewNameType = 'file';
-        }
+        $viewNameType = Config::get('ViewObjects', 'viewNameType') ?: 'file';
 
         if( $viewNameType === 'file' )
         {
@@ -329,14 +245,21 @@ class Kernel
 
         if( ($data['masterpage'] ?? NULL) === true || ! empty($data) )
         {
-            Import::headData($data)->bodyContent($usableView ?? '')->masterpage($data);
+            (new Import\Masterpage)->headData($data)->bodyContent($usableView ?? '')->use($data);
         }
         elseif( ! empty($usableView) )
         {
             echo $usableView;
         }
     }
-
+    
+    //--------------------------------------------------------------------------------------------------
+    // End
+    //--------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------
     public static function end()
     {
         In::startingConfig('destruct');
@@ -365,6 +288,81 @@ class Kernel
         }
 
         ob_end_flush();
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // Protected Static Starting Autoload -> 5.4.5
+    //--------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------
+    protected static function _starting($starting)
+    {   
+        $startingAutoload       = Folder\FileList::allFiles(AUTOLOAD_DIR, $starting['autoload']['recursive']);
+        $commonStartingAutoload = Folder\FileList::allFiles(EXTERNAL_AUTOLOAD_DIR, $starting['autoload']['recursive']);
+
+        if( ! empty($startingAutoload) ) foreach( $startingAutoload as $file )
+        {
+            if( File\Extension::get($file) === 'php' )
+            {
+                if( is_file($file) )
+                {
+                    import($file);
+                }
+            }
+        }
+
+        if( ! empty($commonStartingAutoload) ) foreach( $commonStartingAutoload as $file )
+        {
+            if( File\Extension::get($file) === 'php' )
+            {
+                $commonIsSameExistsFile = str_ireplace(EXTERNAL_AUTOLOAD_DIR, AUTOLOAD_DIR, $file);
+
+                if( ! is_file($commonIsSameExistsFile) && is_file($file) )
+                {
+                    import($file);
+                }
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // Protected Static Composer -> 5.4.5
+    //--------------------------------------------------------------------------------------------------
+    //
+    // @param void
+    //
+    //--------------------------------------------------------------------------------------------------
+    protected static function _composer($composer)
+    {
+        $path = 'vendor/autoload.php';
+
+        if( $composer === true )
+        {
+            if( file_exists($path) )
+            {
+                import($path);
+            }
+            else
+            {
+                Logger::report('Error', Lang::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
+
+                throw new GeneralException('Error', 'fileNotFound', $path);
+            }
+        }
+        elseif( is_file($composer) )
+        {
+            import($composer);
+        }
+        else
+        {
+            $path = suffix($composer) . $path;
+
+            Logger::report('Error', Lang::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
+
+            throw new GeneralException('Error', 'fileNotFound', $path);
+        }
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -397,6 +395,6 @@ class Kernel
     //--------------------------------------------------------------------------------------------------
     protected static function _load($path, $data)
     {
-        return Import::view(str_replace(PAGES_DIR, NULL, $path), $data, true);
+        return Import\View::use(str_replace(PAGES_DIR, NULL, $path), $data, true);
     }
 }

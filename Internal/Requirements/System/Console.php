@@ -1,7 +1,13 @@
 <?php namespace ZN\Requirements\System;
 
-use Arrays, Json, Crontab, IS, Folder, Logger, Config;
-use ZN\Core\Structure, Generate, Cache, ZN, Restoration;
+use Crontab, Config, Generate, Cache, ZN;
+use ZN\Helpers\Logger;
+use ZN\Core\Structure;
+use ZN\DataTypes\Arrays;
+use ZN\DataTypes\Json;
+use ZN\FileSystem\Folder;
+use ZN\IndividualStructures\IS;
+use ZN\IndividualStructures\Lang;
 
 class Console
 {
@@ -52,14 +58,14 @@ class Console
     {
         Logger::report('TerminalCommands', implode(' ', $commands), 'TerminalCommands');
 
-        $realCommands = implode(' ', Arrays::removeFirst($commands, 3));
+        $realCommands = implode(' ', Arrays\RemoveElement::first($commands, 3));
 
-        $commands = Arrays::removeFirst($commands);
+        array_shift($commands);
 
         if( ($commands[0] ?? NULL) !== 'project-name' )
         {
-            $commands = Arrays::addFirst($commands, DEFAULT_PROJECT);
-            $commands = Arrays::addFirst($commands, 'project-name');
+            array_unshift($commands, DEFAULT_PROJECT);
+            array_unshift($commands, 'project-name');
         }
 
         self::$project = $commands[1] ?? DEFAULT_PROJECT;
@@ -71,19 +77,19 @@ class Console
             self::_commandList(); exit;
         }
 
-        $parameters = Arrays::removeFirst($commands, 4);
+        $parameters = Arrays\RemoveElement::first($commands, 4);
 
-        self::$parameters = Arrays::forceValues($parameters, function($data)
+        self::$parameters = array_map(function($data)
         {
             $return = $data;
 
-            if( Json::check($return) )
+            if( Json\ErrorInfo::check($return) )
             {
-                $return = Json::decodeArray($return);
+                $return = json_decode($return, true);
             }
 
             return $return;
-        });
+        }, $parameters);
 
         switch( $command )
         {
@@ -108,7 +114,7 @@ class Console
             case 'end-restoration'      : self::_result(Restoration::end(self::$command));              break;
             case 'end-restoration-delete': self::_result(Restoration::endDelete(self::$command));       break;
             case 'create-project'       : self::_result(Generate::project(self::$command));             break;
-            case 'delete-project'       : self::_result(Folder::delete(PROJECTS_DIR . self::$command)); break;
+            case 'delete-project'       : self::_result(Folder\Forge::delete(PROJECTS_DIR . self::$command)); break;
             case 'create-controller'    : self::_result(Generate::controller(self::$command,
             [
                 'extends'   => 'Controller',
@@ -279,8 +285,8 @@ class Console
         echo '| RESULT                                                                                                |' . EOL;
         echo '+-------------------------------------------------------------------------------------------------------+' . EOL;
 
-        $success = \Lang::select('Success', 'success');
-        $error   = \Lang::select('Error', 'error');
+        $success = Lang::select('Success', 'success');
+        $error   = Lang::select('Error', 'error');
         $nodata  = 'No Data';
 
         if( $result === true || $result === NULL )
@@ -353,7 +359,9 @@ class Console
 
         if( $funcparamEx[1] ?? NULL )
         {
-            $parameters = Arrays::removeFirst($funcparamEx);
+            array_shift($funcparamEx);
+
+            $parameters = $funcparamEx;
         }
 
         if( strtolower($classEx[0]) === 'external' )
