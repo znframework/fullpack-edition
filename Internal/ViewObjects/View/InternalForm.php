@@ -88,11 +88,6 @@ class InternalForm
             }
         }
 
-        if( ! isset($_attributes['method']) )
-        {
-            $_attributes['method'] = 'post';
-        }
-
         if( isset($this->settings['where']) )
         {
             $this->settings['getrow'] = DB::get($name)->row();
@@ -103,12 +98,12 @@ class InternalForm
             $this->settings['getrow'] = DB::query($query)->row();
         }
 
-        $this->method = $method = $_attributes['method'];
+        $this->method = ($_attributes['method'] = $_attributes['method'] ?? $this->settings['attr']['method'] ?? 'post');
 
         $return  = '<form'.$this->attributes($_attributes).'>'.EOL;
 
         // 5.4.2[added]
-        $return .= $this->_process($name, $method);
+        $return .= $this->_process($name, $this->method);
 
         if( isset($this->settings['token']) )
         {
