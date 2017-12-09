@@ -84,16 +84,31 @@ class View
             $randomPageVariable = suffix($randomPageVariable, '.php');
         }
 
-        $randomPagePath = $randomPageDir.$randomPageVariable;
+        $randomPagePath = $randomPageDir . $randomPageVariable;
+        
+        if( ($active = \Theme::$active) !== NULL )
+        {
+            $activeRandomPagePath = $randomPageDir . suffix($active) . $randomPageVariable;
+
+            if( is_file($activeRandomPagePath) )
+            {
+                $randomPagePath = $activeRandomPagePath;
+            }
+        }  
 
         if( $randomIsWizard === true )
         {
             TemplateWizard::isolation($randomPagePath);
         }
-
+        
         if( is_file($randomPagePath) )
         {
             $return = Buffer\File::do($randomPagePath, $randomDataVariable);
+
+            if( $active !== NULL )
+            {
+                TemplateWizard::themeIntegration($active, $return);
+            }
 
             if( $randomObGetContentsVariable === false )
             {
