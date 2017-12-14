@@ -38,19 +38,21 @@ Thank you for all your support.
 <p>Some of the supported features.</p>
 
 <p>
-* ZN Framework is following innovations which are developed by PHP.
-* ZN Framework does not require any configuration during installation.
-* It's built with EIP support on MVC architecture.
-* Allows to build Multiple Application Developments
-* Allows the use of common file for the use of multiple domains.
-* Compatible with different hosting accounts.
-* Supports SEO Friendly URL Structure.
-* Provides Powerful Auto Loading
-* Provides easy access to libraries without "include" requirement.
-* Supports a large number of different database platforms.
-* Provides Multilingual development.
-* Written on "camel Case" notation.
-* Manipulation and integration processes are easy.
-* Provides enhanced security measures.
-* Allows the command console submissions.
+<ul>
+<li>ZN Framework is following innovations which are developed by PHP.</li>
+<li>ZN Framework does not require any configuration during installation.</li>
+<li>It's built with EIP support on MVC architecture.</li>
+<li>Allows to build Multiple Application Developments.</li>
+<li>Allows the use of common file for the use of multiple domains.</li>
+<li>Compatible with different hosting accounts.</li>
+<li>Supports SEO Friendly URL Structure.</li>
+<li>Provides Powerful Auto Loading.</li>
+<li>Provides easy access to libraries without "include" requirement.</li>
+<li>Supports a large number of different database platforms.</li>
+<li>Provides Multilingual development.</li>
+<li>Written on "camel Case" notation.</li>
+<li>Manipulation and integration processes are easy.</li>
+<li>Provides enhanced security measures.</li>
+<li>Allows the command console submissions.</li>
+</ul>
 </p>
