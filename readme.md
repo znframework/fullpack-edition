@@ -9,7 +9,7 @@
 	<br>
 </p>
 
-<h3><span style="color:#00BFFF">#</span> What is ZN</h3>
+<h2># What is ZN</h2>
 
 <p>
 The basic principle of ZN Framework is to let users write simple and readable codes. Because of this principle, our libraries are built by using both dynamic and static access methods with a Powerful Autoloading Architecture.
@@ -19,7 +19,7 @@ In general, we have tried to stay on PSR coding standarts but at same points our
 Development of ZN Framework with the principle of SIMPLICITY grows each day further. We give importance of Developers for not forced to use different structures from 3rd party sources while developing and integrating structures.
 </p>
 
-<h3># Contribute</h3>
+<h2># Contribute</h2>
 
 <p>
 It is important to get your contributions and feedbacks for making ZN Framework more awesome! Please share your opinion and suggestions after you have tried.
@@ -33,7 +33,7 @@ We are open for all kind of different opinion, suggestion and critisms as well a
 Thank you for all your support.
 </p>
 
-<h3># Supported Features</h3>
+<h2># Supported Features</h2>
 
 <p>Some of the supported features.</p>
 
