@@ -9,7 +9,7 @@
 	<br>
 </p>
 
-<h2>What is ZN</h2>
+<h2># What is ZN</h2>
 
 <p>
 The basic principle of ZN Framework is to let users write simple and readable codes. Because of this principle, our libraries are built by using both dynamic and static access methods with a Powerful Autoloading Architecture.
@@ -17,4 +17,40 @@ The basic principle of ZN Framework is to let users write simple and readable co
 In general, we have tried to stay on PSR coding standarts but at same points our vision made us to stay away on some of them.
 
 Development of ZN Framework with the principle of SIMPLICITY grows each day further. We give importance of Developers for not forced to use different structures from 3rd party sources while developing and integrating structures.
+</p>
+
+<h2># Contribute</h2>
+
+<p>
+It is important to get your contributions and feedbacks for making ZN Framework more awesome! Please share your opinion and suggestions after you have tried.
+
+Because we believe on easy, simple and readable codes for Developers, receiving feedbacks will make us happier to build up our further steps based on your critisms and how much we serve our targets.
+
+Our aim is to make ZN Framework users doesn't require any other additional structures.
+
+We are open for all kind of different opinion, suggestion and critisms as well as infrastructure of our project. We believe that ZN Framework will be placed on place where it deserves to be by your contributions!
+
+Thank you for all your support.
+</p>
+
+<h2># Supported Features</h2>
+
+<p>Some of the supported features.</p>
+
+<p>
+* ZN Framework is following innovations which are developed by PHP.
+* ZN Framework does not require any configuration during installation.
+* It's built with EIP support on MVC architecture.
+* Allows to build Multiple Application Developments
+* Allows the use of common file for the use of multiple domains.
+* Compatible with different hosting accounts.
+* Supports SEO Friendly URL Structure.
+* Provides Powerful Auto Loading
+* Provides easy access to libraries without "include" requirement.
+* Supports a large number of different database platforms.
+* Provides Multilingual development.
+* Written on "camel Case" notation.
+* Manipulation and integration processes are easy.
+* Provides enhanced security measures.
+* Allows the command console submissions.
 </p>
