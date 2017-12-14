@@ -9,25 +9,12 @@
 	<br>
 </p>
 
-# ZN Framework - PHP Web Framework
-[Download](https://www.znframework.com/download) - 
-[Upgrade](https://www.znframework.com/upgrade) - 
-[Documentation](https://docs.znframework.com)
+<h2>What is ZN</h2>
 
 <p>
-# We are following innovations which are developed by PHP.<br />
-# Does not require any adjustment during installation.<br />
-# It's built with EIP support on MVC architecture.<br />
-# Allows to build Multiple Application Developments<br />
-# Allows the use of common file for the use of multiple domains.<br />
-# Compatible with different hosting accounts.<br />
-# Supports SEO Friendly URL Structure.<br />
-# Provides Powerful Auto Loading<br />
-# Provides easy access to libraries without "include" requirement.<br />
-# Supports a large number of different database platforms.<br />
-# Provides Multilingual development.<br />
-# Written on "camel Case" notation.<br />
-# Manipulation and integration processes are easy.<br />
-# Provides enhanced security measures.<br />
-# Allows the command console submissions. (ZN> = 4.3.0)
+The basic principle of ZN Framework is to let users write simple and readable codes. Because of this principle, our libraries are built by using both dynamic and static access methods with a Powerful Autoloading Architecture.
+
+In general, we have tried to stay on PSR coding standarts but at same points our vision made us to stay away on some of them.
+
+Development of ZN Framework with the principle of SIMPLICITY grows each day further. We give importance of Developers for not forced to use different structures from 3rd party sources while developing and integrating structures.
 </p>
