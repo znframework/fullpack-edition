@@ -1,4 +1,3 @@
-<img style="max-height: 200px;" src ="https://cloud.teslaerp.com/tesla/Application/Resources/Uploads/znframework/gallery/zn/1513281205_logosmall.png" />
 [![Latest Stable Version](https://poser.pugx.org/znframework/multi-edition/v/stable)](https://packagist.org/packages/znframework/multi-edition)
 [![Total Downloads](https://poser.pugx.org/znframework/multi-edition/downloads)](https://packagist.org/packages/znframework/multi-edition)
 [![Latest Unstable Version](https://poser.pugx.org/znframework/multi-edition/v/unstable)](https://packagist.org/packages/znframework/multi-edition)
