@@ -1,10 +1,10 @@
+<p align="center">
 [![Latest Stable Version](https://poser.pugx.org/znframework/multi-edition/v/stable)](https://packagist.org/packages/znframework/multi-edition)
 [![Total Downloads](https://poser.pugx.org/znframework/multi-edition/downloads)](https://packagist.org/packages/znframework/multi-edition)
 [![Latest Unstable Version](https://poser.pugx.org/znframework/multi-edition/v/unstable)](https://packagist.org/packages/znframework/multi-edition)
 [![License](https://poser.pugx.org/znframework/multi-edition/license)](https://packagist.org/packages/znframework/multi-edition)
 
-<p align="center">
-  <img width="200" height="120" src="https://cloud.teslaerp.com/tesla/Application/Resources/Uploads/znframework/gallery/zn/1513281205_logosmall.png">
+  <img width="200" height="110" src="https://cloud.teslaerp.com/tesla/Application/Resources/Uploads/znframework/gallery/zn/1513281205_logosmall.png">
 </p>
 
 # ZN Framework - PHP Web Framework
