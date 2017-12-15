@@ -13,7 +13,7 @@
 //--------------------------------------------------------------------------------------------------
 // VERSION INFO CONSTANTS
 //--------------------------------------------------------------------------------------------------
-define('ZN_VERSION'          , '5.4.61');
+define('ZN_VERSION'          , '5.4.7');
 define('REQUIRED_PHP_VERSION', '7.0.0');
 //--------------------------------------------------------------------------------------------------
 
@@ -1251,7 +1251,7 @@ function internalIsWritable(String $path)
 }
 
 //--------------------------------------------------------------------------------------------------
-// Internal Current Project
+// Internal Current Project -> 5.4.7[edited]
 //--------------------------------------------------------------------------------------------------
 //
 // @param void
@@ -1288,8 +1288,8 @@ function internalCurrentProject()
 			$currentPath = $requestUri;
 		}
         // ------------------------------------------------------------------------
-
-        $internalDir   = ( ! empty($currentPath) ? explode('/', ltrim($currentPath, '/'))[0] : '' );
+        
+        $internalDir = ( ! empty($currentPath) ? explode('/', ltrim($currentPath, '/'))[0] : '' );
     }
 
     if( is_array($projectDir) )

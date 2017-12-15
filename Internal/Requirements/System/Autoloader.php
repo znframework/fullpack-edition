@@ -82,7 +82,7 @@ class Autoloader
         }
 
         $classInfo = self::getClassFileInfo($class);
-        $file      = ($path = $classInfo['path']);
+        $file      = $classInfo['path'];
         
         if( is_file($file) )
         {
@@ -101,7 +101,7 @@ class Autoloader
         else
         {
             // 5.4.2[added]
-            if( PROJECT_TYPE === 'EIP' && strpos($path, 'Projects/' . CURRENT_PROJECT) !== 0 )
+            if( PROJECT_TYPE === 'EIP' && strpos($file, 'Projects/' . CURRENT_PROJECT) !== 0 )
             {
                 self::restart();
             }
@@ -433,6 +433,7 @@ class Autoloader
                         if( ! is_dir($dir) )
                         {
                             mkdir($dir, $directoryPermission, true);
+                            file_put_contents($dir . '.htaccess', 'Deny from all');
                         }
 
                         if( ! is_dir($newDir) )

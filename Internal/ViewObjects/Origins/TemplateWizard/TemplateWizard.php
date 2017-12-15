@@ -1,6 +1,5 @@
 <?php namespace ZN\ViewObjects;
 
-use Config;
 use ZN\FileSystem\File;
 use ZN\IndividualStructures\Buffer;
 
@@ -136,7 +135,7 @@ class TemplateWizard
     //--------------------------------------------------------------------------------------------------------
     protected static function config()
     {
-        return Config::get('ViewObjects', 'wizard');
+        return \Config::get('ViewObjects', 'wizard');
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -156,7 +155,7 @@ class TemplateWizard
     }
 
     //--------------------------------------------------------------------------------------------------------
-    // Protected Keywords -> 5.4.4[edited]
+    // Protected Keywords -> 5.4.4|5.4.7[edited]
     //--------------------------------------------------------------------------------------------------------
     //
     // @param string $htmlRegexChar
@@ -172,7 +171,9 @@ class TemplateWizard
             [
                 '/@endforelse:/'                                         => '<?php endif; ?>',                                       
                 '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)\:/s'            => '<?php if( ! empty($2) ): foreach($1): ?>',
-                '/@empty\:/'                                             => '<?php endforeach; else: ?>',           
+                '/@empty\:/'                                             => '<?php endforeach; else: ?>',     
+                '/@loop\s*\((.*?)\)\:/s'                                 => '<?php foreach($1 as $key => $value): ?>',    
+                '/@endloop:/'                                            => '<?php endforeach; ?>',         
                 '/@(endif|endforeach|endfor|endwhile|break|continue)\:/' => '<?php $1 ?>',
                 '/@(elseif|if|else|foreach|for|while)\s*(.*?)\:/s'       => '<?php $1$2: ?>'
             ];
@@ -194,11 +195,25 @@ class TemplateWizard
 
         if( self::config()['printable'] ?? true )
         {
-            $array =
+            $suffix   = '\:/s';
+            $coalesce = '\?';
+            $constant = '@((\w+)(\[(\'|\")*.*?(\'|\")*\])*)';
+            $variable = '/@\$(\w+.*?)';
+            
+            $outputVariableCoalesce = '<?php echo $$1 ?? NULL ?>';
+            $outputVariable         = '<?php echo $$1 ?>';
+
+            $outputCosntantCoalesce = '<?php echo defined("$2") ? ($1 ?? NULL) : NULL ?>';
+            $outputCosntant         = '<?php echo $1 ?>';
+            
+            $array    =
             [
-                '/@\$(\w+.*?)\:/s'                           => '<?php echo $$1 ?>', // Variable
-                '/@@(\w+(\_|\[(\'|\")*.*?(\'|\")*\])*)\:/s'  => '<?php echo $1 ?>',  // Constant
-                '/@(\w+(\_|\[(\'|\")*.*?(\'|\")*\])*)\:/s'   => '<?php echo $1 ?>'   // Constant
+                $variable . $coalesce . $suffix         => $outputVariableCoalesce, // Variable
+                $variable        . $suffix              => $outputVariable,         // Variable
+                '/@' . $constant . $coalesce . $suffix  => $outputCosntantCoalesce, // Constant
+                '/@' . $constant . $suffix              => $outputCosntant,         // Constant
+                '/'  . $constant . $coalesce . $suffix  => $outputCosntantCoalesce, // Constant
+                '/'  . $constant . $suffix              => $outputCosntant          // Constant
             ];
         }
 
@@ -206,7 +221,7 @@ class TemplateWizard
     }
 
     //--------------------------------------------------------------------------------------------------------
-    // Protected Functions
+    // Protected Functions -> 5.4.7[edited]
     //--------------------------------------------------------------------------------------------------------
     //
     // @param string $htmlRegexChar
@@ -218,10 +233,11 @@ class TemplateWizard
 
         if( self::config()['functions'] ?? true )
         {
-            $array =
+            $function = '@(\w+.*?(\)|\}|\]|\-\>\w+))\:/s';
+            $array    =
             [
-                '/@@(\w+.*?\))\:/s' => '<?php echo $1 ?>', // Function
-                '/@(\w+.*?\))\:/s'  => '<?php echo $1 ?>'  // Function
+                '/@' . $function => '<?php echo $1 ?>', // Function
+                '/'  . $function => '<?php if( is_scalar($1) ) echo $1; ?>'  // Function
             ];
         }
 

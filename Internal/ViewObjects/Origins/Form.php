@@ -1,6 +1,5 @@
 <?php namespace ZN\ViewObjects;
 
-use Validation, DB, URI;
 use ZN\ViewObjects\Exception\InvalidArgumentException;
 use ZN\DataTypes\Arrays;
 
@@ -87,12 +86,12 @@ class Form
        
         if( isset($this->settings['where']) )
         {
-            $this->settings['getrow'] = DB::get($name)->row();
+            $this->settings['getrow'] = \DB::get($name)->row();
         }
         
         if( $query = ($this->settings['query'] ?? NULL) )
         {
-            $this->settings['getrow'] = DB::query($query)->row();
+            $this->settings['getrow'] = \DB::query($query)->row();
         }
         
         $this->method = ($_attributes['method'] = $_attributes['method'] ?? $this->settings['attr']['method'] ?? 'post');
@@ -121,7 +120,7 @@ class Form
     //--------------------------------------------------------------------------------------------------------
     public function validateErrorMessage()
     {
-        return Validation::error('string');
+        return \Validation::error('string');
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -133,7 +132,7 @@ class Form
     //--------------------------------------------------------------------------------------------------------
     public function validateErrorArray()
     {
-        return Validation::error('array');
+        return \Validation::error('array');
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -193,7 +192,11 @@ class Form
             $value = $this->_getrow('textarea', $value, $this->settings['attr']);
         }
 
-        return '<textarea'.$this->attributes($_attributes).'>'.$value.'</textarea>'.EOL;
+        $perm   = $this->settings['attr']['perm'] ?? NULL;
+
+        $return = '<textarea'.$this->attributes($_attributes).'>'.$value.'</textarea>'.EOL;
+
+        return $this->_perm($perm, $return);
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -226,17 +229,17 @@ class Form
                     $table   = $tableEx[1];
                     $db      = $tableEx[0];
 
-                    $db = DB::differentConnection($db);
+                    $db = \DB::differentConnection($db);
                     $result = $db->select($current, $key)->get($table)->result();
                 }
                 else
                 {
-                    $result = DB::select($current, $key)->get($table)->result();
+                    $result = \DB::select($current, $key)->get($table)->result();
                 }
             }
             else
             {
-                $result = DB::query($this->settings['query'])->result();
+                $result = \DB::query($this->settings['query'])->result();
             }
 
             foreach( $result as $row )
@@ -291,6 +294,8 @@ class Form
             $selected = $this->_getrow('select', $selected, $_attributes);
         }
 
+        $perm      = $this->settings['attr']['perm'] ?? NULL;
+
         $selectbox = '<select'.$this->attributes($_attributes).'>';
 
         if( is_array($options) ) foreach( $options as $key => $value )
@@ -325,7 +330,7 @@ class Form
 
         $this->_unsetselect();
 
-        return $selectbox;
+        return $this->_perm($perm, $selectbox);
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -413,22 +418,22 @@ class Form
         {
             if( $method::FormProcessValue() )
             {
-                if( Validation::check() )
+                if( \Validation::check() )
                 {
                     if( $process === 'update' )
                     {
-                        DB::where
+                        \DB::where
                         (
                             $whereColumn = $this->settings['whereColumn'], 
                             $whereValue  = $this->settings['whereValue']
                         )
                         ->update(strtolower($method).':'.$name);       
 
-                        $this->settings['getrow'] = DB::where($whereColumn, $whereValue)->get($name)->row();
+                        $this->settings['getrow'] = \DB::where($whereColumn, $whereValue)->get($name)->row();
                     }
                     elseif( $process === 'insert' )
                     {
-                        DB::insert(strtolower($method).':'.$name); 
+                        \DB::insert(strtolower($method).':'.$name); 
                     }
                     else
                     {
