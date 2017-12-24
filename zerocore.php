@@ -211,7 +211,7 @@ foreach( CONTAINER_DIRS as $key => $value )
     if( PROJECT_TYPE === 'EIP' ) // For EIP edition
     {
         define($key, internalProjectContainerDir($value));
-        define('EXTERNAL_' . $key, 'External/' . $value);
+        define('EXTERNAL_' . $key, 'External/' . $value . '/');
     }
     else // For SE edition
     {
