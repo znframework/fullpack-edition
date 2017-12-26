@@ -370,7 +370,17 @@ class Kernel
             $view = $subdir;
         }
 
-        return PAGES_DIR . suffix(\Theme::$active) . $view . $fix;
+        $view .= $fix;
+
+        if( ($active = \Theme::$active) !== NULL )
+        {
+            if( is_dir(PAGES_DIR . $active) )
+            {
+                $view = suffix($active) . $view;
+            }
+        }
+
+        return PAGES_DIR . $view;
     }
 
     //--------------------------------------------------------------------------------------------------
