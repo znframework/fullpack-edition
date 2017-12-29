@@ -30,7 +30,7 @@ define('PROJECT_TYPE', 'EIP');
 |
 */
 
-define('ZN_VERSION', '5.4.84');
+define('ZN_VERSION', '5.4.9');
 define('REQUIRED_PHP_VERSION', '7.0.0');
 
 /*
