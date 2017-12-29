@@ -76,19 +76,13 @@ class Config
         if( empty(self::$config[$file]) )
         {
             $path = suffix($file, '.php');
-
-            $externalPath = EXTERNAL_CONFIG_DIR . $path;
-            $settingsPath = SETTINGS_DIR        . $path;
-            $projectPath  = CONFIG_DIR          . $path;
-            $internalPath = INTERNAL_CONFIG_DIR . $path;
-
+			
             self::$config[$file] = array_merge
             (
-                (array) import($externalPath),
-                (array) import($projectPath ),
-                (array) import($settingsPath),
-                (array) import($internalPath)
+                (array) import(SETTINGS_DIR . $path),
+                (array) import(CONFIG_DIR   . $path)   
             );
+
         }
     }
 
