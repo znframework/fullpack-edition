@@ -1,4 +1,13 @@
 <?php namespace ZN;
+/**
+ * ZN PHP Web Framework
+ * 
+ * "Simplicity is the ultimate sophistication." ~ Da Vinci
+ * 
+ * @package ZN
+ * @license MIT [http://opensource.org/licenses/MIT]
+ * @author  Ozan UYKUN [ozan@znframework.com]
+ */
 
 use ZN\Services\URL;
 use ZN\Services\URI;
@@ -12,76 +21,62 @@ use ZN\IndividualStructures\Import;
 
 class In
 {
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // Author     : Ozan UYKUN <ozanbote@gmail.com>
-    // Site       : www.znframework.com
-    // License    : The MIT License
-    // Copyright  : (c) 2012-2016, znframework.com
-    //
-    //--------------------------------------------------------------------------------------------------------
-
+    /**
+     * Keep view data
+     * 
+     * @var array
+     */
     public static $view       = [];
+    
+    /**
+     * Keep masterpage data
+     * 
+     * @var array
+     */
     public static $masterpage = [];
 
-    //--------------------------------------------------------------------------------------------------
-    // Project Mode
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param string $mode: publication, development, restoration
-    // @param int    $report: -1
-    //
-    // @return void
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Changes project mode
+     * 
+     * @param string $mode - [publication|development|restoration]
+     * @param int    $report = 1
+     * 
+     * @return void
+     */
     public static function projectMode(String $mode, Int $report = -1)
     {
-        //----------------------------------------------------------------------------------------------
-        // Kullanılabilir Uygulama Seçenekleri
-        //----------------------------------------------------------------------------------------------
         switch( strtolower($mode) )
         {
-            //------------------------------------------------------------------------------------------
-            // Publication Yayın Modu
-            // Tüm hatalar kapalıdır.
-            // Projenin tamamlanmasından sonra bu modun kullanılması önerilir.
-            //------------------------------------------------------------------------------------------
+            # Publication Release Mode
+            # All faults are off.
+            # It is recommended to use this mode after the completion of the project.
             case 'publication' :
                 error_reporting(0);
             break;
-            //------------------------------------------------------------------------------------------
-
-            //------------------------------------------------------------------------------------------
-            // Restoration Onarım Modu
-            // Hataların görünümü görecelidir.
-            //------------------------------------------------------------------------------------------
+            
+            # Restoration Repair Mode
+            # The appearance of the faults is relative.
             case 'restoration' :
-            //------------------------------------------------------------------------------------------
-            // Development Geliştirme Modu
-            // Tüm hatalar açıktır.
-            //------------------------------------------------------------------------------------------
+            
+            # Development Development Mode
+            # All faults are open.
             case 'development' :
                 error_reporting($report);
             break;
-            //------------------------------------------------------------------------------------------
-
-            //------------------------------------------------------------------------------------------
-            // Farklı bir kullanım hatası
-            //------------------------------------------------------------------------------------------
+            
+            # Default output
             default: trace('Invalid Application Mode! Available Options: ["development"], ["restoration"] or ["publication"]');
-            //------------------------------------------------------------------------------------------
         }
-        //----------------------------------------------------------------------------------------------
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalInvalidRequest() - ZN >= 4.3.5
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param string $type
-    // @param bool   $bool
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Invalid user requests are diverted to different pages.
+     * 
+     * @param string $type
+     * @param bool   $bool
+     * 
+     * @return void
+     */
     public static function invalidRequest(String $type, Bool $bool)
     {
         $invalidRequest = \Config::get('Services', 'route')['requestMethods'];
@@ -100,15 +95,13 @@ class In
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalDefaultProjectKey() - ZN >= 4.2.7
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    // @return string
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Creates the default project key.
+     * 
+     * @param string $fix = NULL
+     * 
+     * @return string
+     */
     public static function defaultProjectKey(String $fix = NULL) : String
     {
         if( defined('_CURRENT_PROJECT') )
@@ -124,29 +117,25 @@ class In
         return md5(URL::base(strtolower(CURRENT_PROJECT)) . $fix);
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // isSubdomain() -> 4.4.1
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    // @return string
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * protected is subdomain
+     * 
+     * @param void
+     * 
+     * @return bool
+     */
     protected static function isSubdomain()
     {
         return (bool) (PROJECTS_CONFIG['directory']['others'][host()] ?? false);
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalGetCurrentProject() - ZN >= 4.2.6
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    // @return string
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Get current project.
+     * 
+     * @param void
+     * 
+     * @return string
+     */
     public static function getCurrentProject() : String
     {
         if( self::isSubdomain() )
@@ -157,15 +146,13 @@ class In
         return (CURRENT_PROJECT === DEFAULT_PROJECT ? '' : suffix(CURRENT_PROJECT));
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalRequestURI()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    // @return string
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Get request uri.
+     * 
+     * @param void
+     * 
+     * @return string
+     */
     public static function requestURI() : String
     {
         $requestUri = URI::active();
@@ -174,14 +161,14 @@ class In
         return (string) $requestUri;
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalCleanURIPrefix()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param string $uri
-    // @param string $cleanData
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Clean uri prefix
+     * 
+     * @param string $uri       = NULL
+     * @param string $cleanData = NULL
+     * 
+     * @return string
+     */
     public static function cleanURIPrefix(String $uri = NULL, String $cleanData = NULL) : String
     {
         $suffixData = suffix((string) $cleanData);
@@ -194,13 +181,13 @@ class In
         return $uri;
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalRouteAll()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * All of the routes are processed.
+     * 
+     * @param void
+     * 
+     * @return void
+     */
     protected static function routeAll()
     {
         $externalRouteFiles = (array) Folder\FileList::allFiles(EXTERNAL_ROUTES_DIR);
@@ -218,15 +205,13 @@ class In
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalRouteURI()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param string $requestUri
-    //
-    // @return string
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Set the new uri route.
+     * 
+     * @param string $requestUri = NULL
+     * 
+     * @return string
+     */
     public static function routeURI(String $requestUri = NULL) : String
     {
         self::routeAll();
@@ -281,15 +266,13 @@ class In
         return $requestUri;
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalCleanInjection()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param string $string
-    //
-    // @return string
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Clears the URI from the injection.
+     * 
+     * @param string $string = NULL
+     * 
+     * @return string
+     */
     public static function cleanInjection(String $string = NULL) : String
     {
         $urlInjectionChangeChars = \Config::get('Security', 'urlChangeChars');
@@ -297,38 +280,27 @@ class In
         return str_ireplace(array_keys($urlInjectionChangeChars), array_values($urlInjectionChangeChars), $string);
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalBenchmarkReport()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Get benchmark report table
+     * 
+     * @param void
+     * 
+     * @return void
+     */
     public static function benchmarkReport()
     {
         if( \Config::get('Project', 'benchmark') === true )
         {
-            //----------------------------------------------------------------------------------------------
-            // System Elapsed Time Calculating
-            //----------------------------------------------------------------------------------------------
-            $elapsedTime    = round(FINISH_BENCHMARK - START_BENCHMARK, 4);
-            //----------------------------------------------------------------------------------------------
+            # System elapsed time calculating
+            $elapsedTime = round(FINISH_BENCHMARK - START_BENCHMARK, 4);
+            
+            # Get memory usage
+            $memoryUsage = memory_get_usage();
 
-            //----------------------------------------------------------------------------------------------
-            // Get Memory Usage
-            //----------------------------------------------------------------------------------------------
-            $memoryUsage    = memory_get_usage();
-            //----------------------------------------------------------------------------------------------
-
-            //----------------------------------------------------------------------------------------------
-            // Get Maximum Memory Usage
-            //----------------------------------------------------------------------------------------------
+            # Get maximum memory usage
             $maxMemoryUsage = memory_get_peak_usage();
-            //----------------------------------------------------------------------------------------------
 
-            //----------------------------------------------------------------------------------------------
-            // Template Benchmark Performance Result Table
-            //----------------------------------------------------------------------------------------------
+            # Template benchmark performance result table
             $benchmarkData =
             [
                 'elapsedTime'    => $elapsedTime,
@@ -337,31 +309,26 @@ class In
             ];
 
             $benchResult = Import\Template::use('BenchmarkTable', $benchmarkData, true);
-            //----------------------------------------------------------------------------------------------
-
-            //----------------------------------------------------------------------------------------------
-            // Get Benchmark Performance Result Table
-            //----------------------------------------------------------------------------------------------
+            
+            # Echo benchmark performance result table
             echo $benchResult;
 
+            # Report log
             Logger::report('Benchmarking Test Result', $benchResult, 'BenchmarkTestResults');
-            //----------------------------------------------------------------------------------------------
         }
 
-        //----------------------------------------------------------------------------------------------
-        // Bottom Layer
-        //----------------------------------------------------------------------------------------------
+        # The layer that came in after the whole system.
+        # The codes to be executed after the system runs are written to this layer.
         layer('Bottom');
-        //----------------------------------------------------------------------------------------------
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalStartingConfig()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param string $config
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Configures the startup controller settings.
+     * 
+     * @param string $config
+     * 
+     * @return void
+     */
     public static function startingConfig($config)
     {
         if( $destruct = \Config::get('Starting', $config) )
@@ -387,14 +354,14 @@ class In
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalStartingController()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param string $startController
-    // @param array  $param
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Run the startup controllers.
+     * 
+     * @param string $startController = NULL
+     * @param array  $param           = []
+     * 
+     * @return bool
+     */
     public static function startingController(String $startController = NULL, Array $param = [])
     {
         $controllerEx = explode(':', $startController);
@@ -454,279 +421,13 @@ class In
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // internalCreateHtaccessFile()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    //--------------------------------------------------------------------------------------------------
-    public static function createHtaccessFile()
-    {
-        // Cache.php ayar dosyasından ayarlar çekiliyor.
-        $htaccessSettings = \Config::get('Htaccess');
-
-        $config = $htaccessSettings['cache'];
-        $eol    = EOL;
-        $tab    = HT;
-
-        //-----------------------GZIP-------------------------------------------------------------
-        // mod_gzip = true ayarı yapılmışsa aşağıdaki kodları ekler.
-        // Gzip ile ön bellekleme başlatılmış olur.
-        if( $config['modGzip']['status'] === true )
-        {
-            $modGzip  = '<ifModule mod_gzip.c>' . $eol;
-            $modGzip .= $tab.'mod_gzip_on Yes' . $eol;
-            $modGzip .= $tab.'mod_gzip_dechunk Yes' . $eol;
-            $modGzip .= $tab.'mod_gzip_item_include file .('.$config['modGzip']['includedFileExtension'].')$' . $eol;
-            $modGzip .= $tab.'mod_gzip_item_include handler ^cgi-script$' . $eol;
-            $modGzip .= $tab.'mod_gzip_item_include mime ^text/.*' . $eol;
-            $modGzip .= $tab.'mod_gzip_item_include mime ^application/x-javascript.*' . $eol;
-            $modGzip .= $tab.'mod_gzip_item_exclude mime ^image/.*' . $eol;
-            $modGzip .= $tab.'mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*' . $eol;
-            $modGzip .= '</ifModule>' . $eol . $eol;
-        }
-        else
-        {
-            $modGzip = '';
-        }
-        //-----------------------GZIP-------------------------------------------------------------
-
-        //-----------------------EXPIRES----------------------------------------------------------
-        // mod_expires = true ayarı yapılmışsa aşağıdaki kodları ekler.
-        // Tarayıcı ile ön bellekleme başlatılmış olur.
-        if( $config['modExpires']['status'] === true )
-        {
-            $exp = '';
-            foreach($config['modExpires']['fileTypeTime'] as $type => $value)
-            {
-                $exp .= $tab.'ExpiresByType '.$type.' "access plus '.$value.' seconds"'.$eol;
-            }
-
-            $modExpires  = '<ifModule mod_expires.c>' . $eol;
-            $modExpires .= $tab.'ExpiresActive On' . $eol;
-            $modExpires .= $tab.'ExpiresDefault "access plus '.$config['modExpires']['defaultTime'].' seconds"' . $eol;
-            $modExpires .= rtrim($exp, $eol) . $eol;
-            $modExpires .= '</ifModule>' . $eol . $eol;
-        }
-        else
-        {
-            $modExpires = '';
-        }
-        //-----------------------EXPIRES----------------------------------------------------------
-
-        //-----------------------HEADERS----------------------------------------------------------
-        // mod_headers = true ayarı yapılmışsa aşağıdaki kodları ekler.
-        // Header ile ön bellekleme başlatılmış olur.
-        if( $config['modHeaders']['status'] === true )
-        {
-            $fmatch = '';
-            foreach( $config['modHeaders']['fileExtensionTimeAccess'] as $type => $value )
-            {
-                $fmatch .= $tab.'<filesMatch "\.('.$type.')$">' . $eol;
-                $fmatch .= $tab.$tab.'Header set Cache-Control "max-age='.$value['time'].', '.$value['access'].'"' . $eol;
-                $fmatch .= $tab.'</filesMatch>'.$eol;
-            }
-
-            $modHeaders  = '<ifModule mod_headers.c>' . $eol;
-            $modHeaders .= rtrim($fmatch, $eol) . $eol;
-            $modHeaders .= '</ifModule>' . $eol;
-        }
-        else
-        {
-            $modHeaders = '';
-        }
-        //-----------------------HEADERS----------------------------------------------------------
-
-        //-----------------------HEADER SET-------------------------------------------------------
-
-        if( $htaccessSettings['headers']['status'] === true )
-        {
-            $headersIniSet  = "<ifModule mod_expires.c>".$eol;
-
-            foreach( $htaccessSettings['headers']['settings'] as $val )
-            {
-                $headersIniSet .= $tab."$val".$eol;
-            }
-
-            $headersIniSet .= "</ifModule>".$eol.$eol;
-        }
-        else
-        {
-            $headersIniSet = '';
-        }
-        //-----------------------HEADER SET-------------------------------------------------------
-
-        //-----------------------HTACCESS SET-----------------------------------------------------
-
-        if( ! empty($htaccessSettings['settings']) )
-        {
-            $htaccessSettingsStr = '';
-
-            foreach( $htaccessSettings['settings'] as $key => $val )
-            {
-                if( ! is_numeric($key) )
-                {
-                    if( is_array($val) )
-                    {
-                        $htaccessSettingsStr .= "<$key>".$eol;
-
-                        foreach( $val as $k => $v)
-                        {
-                            if( ! is_numeric($k) )
-                            {
-                                $htaccessSettingsStr .= $tab."$k $v".$eol;
-                            }
-                            else
-                            {
-                                $htaccessSettingsStr .= $tab.$v.$eol;
-                            }
-                        }
-
-                        $keyex = explode(" ", $key);
-                        $htaccessSettingsStr .= "</$keyex[0]>".$eol.$eol;
-                    }
-                    else
-                    {
-                        $htaccessSettingsStr .= "$key $val".$eol;
-                    }
-                }
-                else
-                {
-                    $htaccessSettingsStr .= $val.$eol;
-                }
-            }
-        }
-        else
-        {
-            $htaccessSettingsStr = '';
-        }
-        //-----------------------HTACCESS SET-----------------------------------------------------
-
-        // Htaccess dosyasına eklenecek veriler birleştiriliyor...
-
-        $htaccess  = '#----------------------------------------------------------------------------------------------------'.$eol;
-        $htaccess .= '# This file automatically created and updated'.$eol;
-        $htaccess .= '#----------------------------------------------------------------------------------------------------'.$eol.$eol;
-        $htaccess .= $modGzip.$modExpires.$modHeaders.$headersIniSet.$htaccessSettingsStr;
-
-        //-----------------------URI ZERONEED PHP----------------------------------------------------
-        
-        if( ! server('pathInfo') )
-        {
-            $indexSuffix = '?';  $flag = 'QSA';
-        }
-        else
-        {
-            $indexSuffix = NULL; $flag = 'L';
-        }
-
-        $htaccess .= "<IfModule mod_rewrite.c>".$eol;
-        $htaccess .= $tab."RewriteEngine On".$eol;
-        $htaccess .= $tab."RewriteBase /".$eol;
-        $htaccess .= $tab."RewriteCond %{REQUEST_FILENAME} !-f".$eol;
-        $htaccess .= $tab."RewriteCond %{REQUEST_FILENAME} !-d".$eol;
-        $htaccess .= $tab.'RewriteRule ^(.*)$  '.($_SERVER['SCRIPT_NAME'] ?? NULL).$indexSuffix.'/$1 ['.$flag.']'.$eol;
-        $htaccess .= "</IfModule>".$eol.$eol;
-        
-        //-----------------------URI ZERONEED PHP----------------------------------------------------
-
-        //-----------------------ERROR REQUEST----------------------------------------------------
-        $htaccess .= 'ErrorDocument 403 /'.BASE_DIR.DIRECTORY_INDEX.$eol.$eol;
-        //-----------------------ERROR REQUEST----------------------------------------------------
-
-        //-----------------------DIRECTORY INDEX--------------------------------------------------
-        $htaccess .= 'DirectoryIndex '.DIRECTORY_INDEX.$eol.$eol;
-        //-----------------------DIRECTORY INDEX--------------------------------------------------
-
-        if( ! empty($uploadSet['status']) )
-        {
-            $uploadSettings = $htaccessSettings['upload'];
-        }
-        else
-        {
-            $uploadSettings = [];
-        }
-        //-----------------------UPLOAD SETTINGS--------------------------------------------------
-
-        //-----------------------SESSION SETTINGS-------------------------------------------------
-
-        if( ! empty($htaccessSettings['session']['status']) )
-        {
-            $sessionSettings = $htaccessSettings['session']['settings'];
-        }
-        else
-        {
-            $sessionSettings = [];
-        }
-        //-----------------------SESSION SETTINGS-------------------------------------------------
-
-        //-----------------------INI SETTINGS-----------------------------------------------------
-        if( $htaccessSettings['ini']['status'] === true )
-        {
-            $iniSettings = $htaccessSettings['ini']['settings'];
-        }
-        else
-        {
-            $iniSettings = [];
-        }
-        //-----------------------INI SETTINGS-----------------------------------------------------
-
-        // Ayarlar birleştiriliyor.
-        $allSettings = array_merge($iniSettings, $uploadSettings, $sessionSettings);
-
-        if( ! empty($allSettings) )
-        {
-            $sets = '';
-
-            foreach( $allSettings as $k => $v )
-            {
-                if( $v !== '' )
-                {
-                    $sets .= $tab."php_value $k $v".$eol;
-                }
-            }
-
-            if( ! empty($sets) )
-            {
-                $htaccess .= $eol."<IfModule mod_php5.c>".$eol;
-                $htaccess .= $sets;
-                $htaccess .= "</IfModule>" . $eol;
-            }
-        }
-
-        $htaccessTxt = '.htaccess';
-
-        if( is_file($htaccessTxt) )
-        {
-            $getContents = trim(file_get_contents($htaccessTxt));
-        }
-        else
-        {
-            $getContents = '';
-        }
-
-        $htaccess .= '#----------------------------------------------------------------------------------------------------';
-        $htaccess  = trim($htaccess);
-
-        if( $htaccess === $getContents )
-        {
-            return false;
-        }
-
-        if( ! file_put_contents($htaccessTxt, trim($htaccess)) )
-        {
-            throw new \GeneralException('Error', 'fileNotWrite', $htaccessTxt);
-        }
-    }
-
-    //--------------------------------------------------------------------------------------------------
-    // internalCreateRobotsFile()
-    //--------------------------------------------------------------------------------------------------
-    //
-    // @param void
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Creates robots.txt
+     * 
+     * @param void
+     * 
+     * @return void
+     */
     public static function createRobotsFile()
     {
         $rules  = \Config::get('Robots', 'rules');
@@ -734,7 +435,7 @@ class In
 
         if( IS::array($rules) ) foreach( $rules as $key => $val )
         {
-            if( ! is_numeric($key) ) // Single Use
+            if( ! is_numeric($key) ) # Single usage
             {
                 switch( $key )
                 {
@@ -753,7 +454,7 @@ class In
             }
             else
             {
-                if( IS::array($val) ) foreach( $val as $r => $v ) // Multi Use
+                if( IS::array($val) ) foreach( $val as $r => $v ) # Multi usage
                 {
                     switch( $r )
                     {

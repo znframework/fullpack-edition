@@ -1,38 +1,34 @@
 <?php namespace Project\Controllers;
- 
+/**
+ * ZN PHP Web Framework
+ * 
+ * "Simplicity is the ultimate sophistication." ~ Da Vinci
+ * 
+ * @package ZN
+ * @license MIT [http://opensource.org/licenses/MIT]
+ * @author  Ozan UYKUN [ozan@znframework.com]
+ */
 class Theme
 {
-    //--------------------------------------------------------------------------------------------------------
-    // Theme -> 5.4.6
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // Author     : Ozan UYKUN <ozanbote@gmail.com>
-    // Site       : www.znframework.com
-    // License    : The MIT License
-    // Copyright  : (c) 2012-2016, znframework.com
-    //
-    //--------------------------------------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------------------------------------
-    // Active
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // @var string
-    //
-    //--------------------------------------------------------------------------------------------------------
+    /**
+     * Active status
+     * 
+     * @var string
+     */
     public static $active = NULL;
 
-    //--------------------------------------------------------------------------------------------------------
-    // Active
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // @param string $active
-    //
-    //--------------------------------------------------------------------------------------------------------
+    /**
+     * Active theme.
+     * 
+     * @param string $active = 'Default'
+     * 
+     * @return void
+     */
     public static function active(String $active = 'Default')
     {
-        self::$active = $active;
+        self::$active = suffix($active);
     }
 }
 
+# Alias Theme
 class_alias('Project\Controllers\Theme', 'Theme');

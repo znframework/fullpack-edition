@@ -1,35 +1,31 @@
 <?php namespace ZN\ViewObjects;
+/**
+ * ZN PHP Web Framework
+ * 
+ * "Simplicity is the ultimate sophistication." ~ Da Vinci
+ * 
+ * @package ZN
+ * @license MIT [http://opensource.org/licenses/MIT]
+ * @author  Ozan UYKUN [ozan@znframework.com]
+ */
 
 class Wizard
 {
-    //--------------------------------------------------------------------------------------------------------
-    // Wizard -> 5.4.1
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // Author     : Ozan UYKUN <ozanbote@gmail.com>
-    // Site       : www.znframework.com
-    // License    : The MIT License
-    // Copyright  : (c) 2012-2016, znframework.com
-    //
-    //--------------------------------------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------------------------------------
-    // Protected Check
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // @var array
-    //
-    //--------------------------------------------------------------------------------------------------------
+    /**
+     * Keeps check.
+     * 
+     * @var array
+     */
     protected $check = ['template', 'view', 'page', 'something'];
 
-    //--------------------------------------------------------------------------------------------------------
-    // Magic Call
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // @param string $method
-    // @param array  $parameters
-    //
-    //--------------------------------------------------------------------------------------------------------
+    /**
+     * Magic call
+     * 
+     * @param string $method
+     * @param array  @parameters
+     * 
+     * @return string
+     */
     public function __call($method, $parameters)
     {   
         $submethod = $parameters[0];

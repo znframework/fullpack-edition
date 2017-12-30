@@ -1,79 +1,89 @@
 <?php
-$style  = 'border:solid 1px #E1E4E5;';
-$style .= 'background:#FEFEFE;';
-$style .= 'padding:10px;';
-$style .= 'margin-bottom:10px;';
+Import::style('bootstrap', 'awesome', 'external-template-style'); Import::script('jquery', 'bootstrap');
 
-$table  = 'font-family:Calibri, Ebrima, Century Gothic, Consolas, Courier New, Courier, monospace, Tahoma, Arial;';
-$table .= 'color:#666;';
-$table .= 'text-align:left;';
-$table .= 'font-size:14px;';
-
-$color =  'color:#000;';
 $lang  = ZN\IndividualStructures\Lang::select('Templates');
 
-if( isset($trace['params']) )
-{
-    unset($trace['params']);
-}
+unset($trace['params']);
 
+Import::template('ExternalTemplateStyles');
 ?>
 
-<div style="<?php echo $style; ?>">
-<table style="<?php echo $table; ?>">
-    <?php if( ! empty($type) ): ?>
-    <tr><td  style="<?php echo $color; ?>"><?php echo $lang['type']; ?> : </td><td><span><?php echo '['.$type.']'; ?></span></td></tr>
-    <?php endif ?>
+<div class="col-lg-12" style="z-index:1000000; margin-top:15px">
+    <div class="panel panel-default panel-top-header">
 
-    <?php if( ! empty($message) ): ?>
-    <tr><td  style="<?php echo $color; ?>"><?php echo $lang['message']; ?>: </td><td><span><?php echo $message; ?></span></td></tr>
-    <?php endif ?>
+        <div class="panel-heading" style="background:#222; border:none;">
+            <h3 class="panel-title panel-text h-panel-header">
+            <i class="fa fa-exclamation-triangle fa-fw"></i> 
+            <?php echo '<span class="text-color">'.($type ?? 'ERROR').'</span> &raquo; ' ?>
+            <?php echo $message ?? NULL; ?></h3>
+        </div>
 
-    <?php if( ! empty($file) ): ?>
-    <tr><td style="<?php echo $color; ?>"><?php echo $lang['file']; ?> : </td><td><span><?php echo $file; ?></span></td></tr>
-    <?php endif ?>
-
-    <?php if( ! empty($line) ): ?>
-    <tr><td style="<?php echo $color; ?>"><?php echo $lang['line']; ?> : </td><td><span><?php echo '['.$line.']'; ?></span></td></tr>
-
-    
-    <tr>
-        <td colspan="2" style="border:solid 1px #E1E4E5; padding:10px;">
-            <span><?php 
-        
-            $content = file($file);
-            $newdata = '<?php' . EOL;
-            $intline = $line;
+        <div class="panel-body" style="margin-bottom:-17px;">
+            <div class="list-group">
+                <?php
+                displayExceptionTable($file, $line, NULL, $lang);
             
-            for( $i = (($startLine = ($intline - 10)) < 0 ? 0 : $startLine); $i < ($intcount = $intline + 10); $i++ )
-            {
-                if( ! isset($content[$i]) )
-                {
-                    break;
-                }
-
-                $index = $i + 1;
-               
-                if( $index == $intline )
-                {
-                    $problem = '⬤';
-                }
-                else
-                {
-                    $problem = '  ';
-                }
-                
-                $newdata .= $index . $problem .
-                str_repeat(' ', strlen($intcount) - strlen($i)) . 
-                ($content[$i] ?? NULL);
-            }
-
-            echo str_replace('<div style="">&#60;&#63;php<br />', NULL, Converter::highlight($newdata));
-            ?></span>
-        </td>
-    </tr>
-
-    <?php endif ?>
-    
-</table>
+                foreach( $trace as $key => $debug )
+                    if( $debug['file'] !== $file && ! empty($debug['file']) )
+                        displayExceptionTable($debug['file'], $debug['line'], $key, $lang);
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
+<?php 
+if( isset($trace) ) foreach( $trace as $key => $bug )
+{
+    $bug['type'] = NULL;
+    $bug['key']  = $key;
+    $bug['message'] = $bug['file'];
+}
+
+function displayExceptionTable($file, $line, $key, $lang)
+{
+    ?>
+    <a href="#openExceptionMessage<?php echo $key?>" class="list-group-item panel-header" data-toggle="collapse">
+        <span><i class="fa fa-angle-down fa-fw panel-text"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+        <?php echo $file ?? NULL; ?></span>
+    </a>
+    <div id="openExceptionMessage<?php echo $key?>" class="collapse<?php echo $key !== NULL ? '' : ' in'?>">
+    <pre style="background:#222; margin-top:-20px; border:0px">
+    <?php
+    $content = file($file);
+    $newdata = '<?php' . EOL;
+    $intline = $line;
+    $errorBlock = '<div class="error-block col-lg-12"></div>';
+
+    for( $i = (($startLine = ($intline - 10)) < 0 ? 0 : $startLine); $i < ($intcount = $intline + 10); $i++ )
+    {
+        if( ! isset($content[$i]) )
+        {
+            break;
+        }
+
+        $index = $i + 1;
+        $line  = $content[$i];
+
+        if( $index == $intline )
+        {
+            $problem = ' {!!!!}';
+            
+        }
+        else
+        {
+            $problem = ' ';
+        }
+        
+        $newdata .= $index.'.' . $problem .
+        str_repeat(' ', strlen($intcount) - strlen($i + 1)) . 
+        (str_replace($key !== NULL ? EOL : NULL, NULL, $line) ?? NULL);
+    }
+
+    echo str_replace(['<div style="">&#60;&#63;php<br />', '{!!!!}'], [NULL, $errorBlock], Converter::highlight($newdata, 
+    [
+        'default:color' => '#ccc',
+        'keyword:color' => '#00BFFF',
+        'string:color'  => '#fff'
+    ]));
+    ?></pre></div><?php
+}

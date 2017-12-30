@@ -1,4 +1,13 @@
 <?php namespace ZN\Core;
+/**
+ * ZN PHP Web Framework
+ * 
+ * "Simplicity is the ultimate sophistication." ~ Da Vinci
+ * 
+ * @package ZN
+ * @license MIT [http://opensource.org/licenses/MIT]
+ * @author  Ozan UYKUN [ozan@znframework.com]
+ */
 
 use ZN\Classes\Config;
 use ZN\DataTypes\Strings;
@@ -6,114 +15,26 @@ use ZN\In;
 
 class Structure
 {
-    //--------------------------------------------------------------------------------------------------
-    //
-    // Author     : Ozan UYKUN <ozanbote@gmail.com>
-    // Site       : www.znframework.com
-    // License    : The MIT License
-    // Copyright  : (c) 2012-2016, znframework.com
-    //
-    //--------------------------------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------------------------------
-    // DATAS
-    //--------------------------------------------------------------------------------------------------
-    //
-    // Genel Kullanım: Çalıştırılmak istenen yapının ihtiyaç duyduğu verileri döndürür.
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Get structure data
+     * 
+     * @param string $requestUri = NULL
+     * 
+     * @return array
+     */
     public static function data($requestUri = NULL)
     {
-        //----------------------------------------------------------------------------------------------
-        // Namespace
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var string
-        //
-        //----------------------------------------------------------------------------------------------
-        $namespace = PROJECT_CONTROLLER_NAMESPACE;
-
-        //----------------------------------------------------------------------------------------------
-        // Page
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var string
-        //
-        //----------------------------------------------------------------------------------------------
-        $page = '';
-
-        //----------------------------------------------------------------------------------------------
-        // Open Function
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var string
-        //
-        //----------------------------------------------------------------------------------------------
+        $namespace    = PROJECT_CONTROLLER_NAMESPACE;
+        $page         = '';
         $openFunction = Config::get('Services', 'route')['openFunction'];
+        $function     = $openFunction ?: 'main';
+        $parameters   = [];
+        $segments     = '';
+        $isFile       = '';
+        $url          = explode('?', $requestUri ?? In::requestURI());
+        $segments     = explode('/', $url[0]);
 
-        //----------------------------------------------------------------------------------------------
-        // Function
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var string
-        //
-        //----------------------------------------------------------------------------------------------
-        $function = $openFunction
-                  ? $openFunction
-                  : 'main';
-
-        //----------------------------------------------------------------------------------------------
-        // Parameters
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var array
-        //
-        //----------------------------------------------------------------------------------------------
-        $parameters = [];
-
-        //----------------------------------------------------------------------------------------------
-        // Segments
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var string
-        //
-        //----------------------------------------------------------------------------------------------
-        $segments = '';
-
-        //----------------------------------------------------------------------------------------------
-        // Is File
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var string
-        //
-        //----------------------------------------------------------------------------------------------
-        $isFile = '';
-
-        //----------------------------------------------------------------------------------------------
-        // Request Uri
-        //----------------------------------------------------------------------------------------------
-        //
-        // @var string
-        //
-        //----------------------------------------------------------------------------------------------
-        if( $requestUri === NULL )
-        {
-            $requestUri = In::requestURI();
-        }
-
-        //----------------------------------------------------------------------------------------------
-        //  $_GET kontrolü yapılarak temel URL bilgisi elde ediliyor.
-        //----------------------------------------------------------------------------------------------
-        $url = explode('?', $requestUri);
-
-        //----------------------------------------------------------------------------------------------
-        //  Temel URL adresi / karakteri ile bölümlere ayrılıyor.
-        //----------------------------------------------------------------------------------------------
-        $segments = explode('/', $url[0]);
-
-        //----------------------------------------------------------------------------------------------
-        //  Controller/Sayfa: Controller/ dizini içinde çalıştırılacak dosya adı.
-        //----------------------------------------------------------------------------------------------
+        # The controller information in the URL to be executed is captured.
         if( isset($segments[0]) )
         {
             $page   = $segments[0];
@@ -146,9 +67,7 @@ class Structure
             unset($segments[0]);
         }
 
-        //----------------------------------------------------------------------------------------------
-        //  Fonksiyon: Çalıştırılacak dosyaya ait yöntem adı.
-        //----------------------------------------------------------------------------------------------
+        # The method information in the URL to be executed is captured.
         if( isset($segments[1]) )
         {
             $function = $segments[1];
@@ -156,34 +75,47 @@ class Structure
             unset($segments[1]);
         }
 
-        //----------------------------------------------------------------------------------------------
-        //  Parametreler: Çalıştırılacak yönteme gönderilecek parametreler.
-        //----------------------------------------------------------------------------------------------
+        # The segments information in the URL to be executed is captured.
         if( isset($segments[2]) )
         {
             $parameters = $segments;
         }
 
-        //----------------------------------------------------------------------------------------------
-        // Return Array
-        //----------------------------------------------------------------------------------------------
-        //
-        // @key array  $parameters
-        // @key string $page
-        // @key string $file
-        // @key string $function
-        // @key string $openFunction
-        //
-        //----------------------------------------------------------------------------------------------
         return
         [
-            'parameters'   => array_values($parameters),
             'page'         => $page,
             'file'         => $isFile,
             'function'     => $function,
             'namespace'    => $namespace,
             'openFunction' => $openFunction,
-            'subdir'       => $ifTrim ?? NULL
+            'subdir'       => $ifTrim ?? NULL,
+            'parameters'   => array_values($parameters)
         ];
+    }
+
+    /**
+     * Structure short path descriptions.
+     * 
+     * @param void
+     * 
+     * @return void
+     */
+    public static function defines()
+    {
+        define('STRUCTURE_DATA', self::data());
+        define('CURRENT_COPEN_PAGE', STRUCTURE_DATA['openFunction']);
+        define('CURRENT_CPARAMETERS', STRUCTURE_DATA['parameters']);
+        define('CURRENT_CFILE', STRUCTURE_DATA['file']);
+        define('CURRENT_CFUNCTION', STRUCTURE_DATA['function']);
+        define('CURRENT_CPAGE', ($page = STRUCTURE_DATA['page']) . '.php');
+        define('CURRENT_CONTROLLER', $page);
+        define('CURRENT_CNAMESPACE', $namespace = STRUCTURE_DATA['namespace'] );
+        define('CURRENT_CCLASS', $namespace . CURRENT_CONTROLLER);
+        define('CURRENT_CFPATH', str_replace
+        (
+            CONTROLLERS_DIR, '', CURRENT_CONTROLLER) . '/' . CURRENT_CFUNCTION
+        );
+        define('CURRENT_CFURI', strtolower(CURRENT_CFPATH));
+        define('CURRENT_CFURL', SITE_URL . CURRENT_CFPATH);
     }
 }
