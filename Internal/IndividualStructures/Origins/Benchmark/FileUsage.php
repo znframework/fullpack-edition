@@ -62,12 +62,12 @@ class FileUsage
 
         if( ! isset(Properties::$usedtests[$restart]) )
         {
-            throw new BenchmarkException('[Benchmark::usedFileCount(\''.$result.'\')] -> Parameter is not a valid test start!');
+            throw new \GeneralException('[Benchmark::usedFileCount(\''.$result.'\')] -> Parameter is not a valid test start!');
         }
 
         if( ! isset(Properties::$usedtests[$resend]) )
         {
-            throw new BenchmarkException('[Benchmark::usedFileCount(\''.$result.'\')] -> Parameter is not a valid test end!');
+            throw new \GeneralException('[Benchmark::usedFileCount(\''.$result.'\')] -> Parameter is not a valid test end!');
         }
 
         return count(Properties::$usedtests[$resend]) - count(Properties::$usedtests[$restart]);

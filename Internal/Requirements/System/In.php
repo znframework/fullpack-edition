@@ -18,6 +18,8 @@ use ZN\ErrorHandling\Errors;
 use ZN\IndividualStructures\IS;
 use ZN\IndividualStructures\Lang;
 use ZN\IndividualStructures\Import;
+use Project\Controllers\View;
+use Project\Controllers\Masterpage;
 
 class In
 {
@@ -412,8 +414,8 @@ class In
 
             $return = $startingControllerClass->$controllerFunc(...$param);
 
-            self::$view[]       = array_merge((array) $startingControllerClass->view, \View::$data);
-            self::$masterpage[] = array_merge((array) $startingControllerClass->masterpage, \Masterpage::$data);
+            self::$view[]       = array_merge((array) $startingControllerClass->view, View::$data);
+            self::$masterpage[] = array_merge((array) $startingControllerClass->masterpage, Masterpage::$data);
         }
         else
         {
