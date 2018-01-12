@@ -1416,7 +1416,3 @@ $classMap['namespaces']['zn\viewobjects\validateunittest'] = 'validateunittest';
 $classMap['namespaces']['zn\viewobjects\validationunittest'] = 'validationunittest';
 $classMap['namespaces']['zn\viewobjects\validatorunittest'] = 'validatorunittest';
 $classMap['namespaces']['project\commands\example'] = 'example';
-$classMap['classes']['zn\individualstructures\exception\activationcolumnexception'] = 'Internal/IndividualStructures/Exception/ActivationColumnException.php';
-$classMap['classes']['zn\singleton'] = 'Internal/Requirements/System/Singleton.php';
-$classMap['namespaces']['zn\individualstructures\exception\activationcolumnexception'] = 'activationcolumnexception';
-$classMap['namespaces']['zn\singleton'] = 'singleton';

@@ -107,7 +107,7 @@ class Processor extends RemoteCommon implements ProcessorInterface
 
             case 'ssh':
                 \SSH::run($command);
-                $this->output = $this->_split($return = SSH::output());
+                $this->output = $this->_split($return = \SSH::output());
                 $this->return = 0;
             break;
         }
