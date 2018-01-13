@@ -14,7 +14,6 @@ use ZN\IndividualStructures\Lang;
 use ZN\DataTypes\Arrays;
 use ZN\CryptoGraphy\Encode;
 use ZN\FileSystem\File;
-use ZN\FileSystem\Folder;
 use ZN\Helpers\Converter;
 
 class Upload implements UploadInterface
