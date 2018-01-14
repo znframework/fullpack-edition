@@ -33,21 +33,10 @@ class Loader
 
         switch( $type )
         {
-            case 'require':
-                return require $file;
-            break;
-
-            case 'require_once':
-                return require_once $file;
-            break;
-
-            case 'include':
-                return include $file;
-            break;
-
-            case 'include_once':
-                return include_once $file;
-            break;
+            case 'require'     : return require      $file;
+            case 'require_once': return require_once $file;
+            case 'include'     : return include      $file;
+            case 'include_once': return include_once $file;
         }
     }
 

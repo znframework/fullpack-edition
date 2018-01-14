@@ -533,7 +533,7 @@ class DBGrid extends GridAbstract
         //----------------------------------------------------------------------------------------------------
         if( Method::post('deleteButton') )
         {
-           $this->_delete($join);
+           $this->_delete();
         }
 
         //----------------------------------------------------------------------------------------------------
@@ -967,7 +967,7 @@ class DBGrid extends GridAbstract
     // @param void
     //
     //--------------------------------------------------------------------------------------------------------
-    protected function _delete($join)
+    protected function _delete()
     {
         if( ! empty($this->joins) )
         {
