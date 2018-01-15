@@ -396,7 +396,7 @@ function uselib(String $class, Array $parameters = [])
 
         if( ! class_exists($class) )
         {
-            throw new GeneralException('Error', 'classError', $class);
+            throw new GeneralException('Error', 'classError', $class ?? $classInfo['class']);
         }
     }
 
