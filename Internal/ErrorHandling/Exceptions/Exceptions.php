@@ -195,7 +195,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
                 return false;
             }
 
-            if( \Config::get('Project', 'invalidParameterErrorType') === 'external' )
+            if( $projects['invalidParameterErrorType'] === 'external' )
             {
                 $exceptionData = $passed;
             }
