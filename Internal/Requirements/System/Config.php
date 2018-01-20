@@ -60,8 +60,8 @@ class Config
 
             self::$config[$file] = array_merge
             (
-                (array) import(SETTINGS_DIR . $path),
-                (array) import(CONFIG_DIR   . $path)   
+                import(SETTINGS_DIR . $path) ?: [],
+                import(CONFIG_DIR   . $path) ?: []  
             );
         }
     }

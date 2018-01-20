@@ -64,7 +64,7 @@ class Console
 
         if( $command === NULL )
         {
-            self::_commandList(); exit;
+            new Commands\CommandList; exit;
         }
 
         $parameters = Arrays\RemoveElement::first($commands, 4);

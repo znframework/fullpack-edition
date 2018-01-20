@@ -12,7 +12,6 @@
 use stdClass;
 use ZN\IndividualStructures\Lang;
 use ZN\FileSystem\Exception\IOException;
-use ZN\FileSystem\Folder;
 
 class DriverTool extends DriverExtends
 {
