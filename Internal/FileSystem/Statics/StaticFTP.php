@@ -9,9 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-class Upload
+class FTP
 {
     use StaticAbility;
 
-    const target = 'ZN\FileSystem\Upload';
+    const target = 'ZN\FileSystem\FTP';
 }

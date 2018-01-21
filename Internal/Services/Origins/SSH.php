@@ -67,8 +67,6 @@ class SSH implements SSHInterface
     {
         Support::func('ssh2_connect', 'SSH(Secure Shell)');
 
-        parent::__construct();
-
         if( ! empty($config) )
         {
             $config = \Config::get('Services', 'ssh', $config);
