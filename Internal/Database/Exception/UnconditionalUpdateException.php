@@ -11,7 +11,7 @@
 
 use GeneralException;
 
-class UnconditionalDeleteException extends GeneralException
+class UnconditionalUpdateException extends GeneralException
 {
     const lang = 
     [
