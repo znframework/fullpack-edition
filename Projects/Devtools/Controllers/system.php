@@ -268,30 +268,10 @@ class System extends Controller
     //--------------------------------------------------------------------------------------------------------
     public function info(String $params = NULL)
     {
-        $return   = Restful::post('https://api.znframework.com/statistics/upgrade', ['version' => ZN_VERSION]);
-        $return   = Separator::decodeArray($return);
-
         if( Method::post('upgrade') )
         {
-            if( ! empty($return) )
+            if( ! ZN::upgrade() )
             {
-                $upgradeFolder = 'Upgrade'.md5('upgrade').'/';
-
-                Folder::create($upgradeFolder);
-
-                foreach( $return as $file => $content )
-                {
-                    $file = $upgradeFolder . $file;
-
-                    $dirname = File::pathInfo($file, 'dirname');
-
-                    Folder::create($dirname);
-                    File::write($file, $content);
-                }
-
-                Folder::copy($upgradeFolder, '/');
-                Folder::delete($upgradeFolder);
-
                 redirect(currentUri(), 0, ['success' => LANG['success']]);
             }
             else
@@ -300,7 +280,7 @@ class System extends Controller
             }
         }
 
-        $this->masterpage->pdata['upgrades'] = Arrays::keys($return);
+        $this->masterpage->pdata['upgrades'] = ZN::upgradeFiles();
         $this->masterpage->page              = 'info';
     }
 
