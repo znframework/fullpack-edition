@@ -25,12 +25,6 @@ class Initialize extends Controller
     public function main(String $params = NULL)
     {
         define('DASHBOARD_CONFIG', Config::get('Dashboard'));
-        define('DASHBOARD_VERSION', DASHBOARD_CONFIG['version']);
-
-        if( ZN_VERSION < DASHBOARD_VERSION )
-        {
-            trace(lang('DevtoolsErrors', 'versionError', ['%' => DASHBOARD_VERSION, '#' => ZN_VERSION]));
-        }
 
         if( ! Session::lastversion() )
         {   
