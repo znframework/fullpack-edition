@@ -173,9 +173,29 @@ class ZN
      */
     protected static function _restful()
     {
-        $return = \Restful::post('https://api.znframework.com/statistics/upgrade', ['version' => ZN_VERSION]);
+        $return  = \Restful::useragent(true)->get('https://api.github.com/repos/znframework/multi-edition/tags');
+        $lastest = $return[0];
 
-        return Separator\Decode::array($return);
+        $updatedFiles = [];
+        
+        if( ZN_VERSION < $lastest->name ) foreach( $return as $version )
+        {
+            if( ZN_VERSION < $version->name )
+            {
+                $commit = \Restful::useragent(true)->get($lastest->commit->url);
+
+                foreach( $commit->files as $file )
+                {
+                    $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return $updatedFiles;
     }
 
     /**

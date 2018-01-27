@@ -60,7 +60,16 @@ class Restful implements RestfulInterface
     //--------------------------------------------------------------------------------------------------------
     public function __call($method, $parameters)
     {
-        return $this->info($method);
+        # Return CURL info.
+        if( $return = $this->info($method) )
+        {
+            return $return;
+        }
+        
+        # Set CURL option.
+        \CURL::$method(...$parameters);
+ 
+        return $this;
     }
 
     //--------------------------------------------------------------------------------------------------------
