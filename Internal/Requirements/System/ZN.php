@@ -55,24 +55,20 @@ class ZN
 
         if( ! empty($return) )
         {
+            $upgradeFolder = 'Upgrade'.md5('upgrade').'/';
+
+            \Folder::create($upgradeFolder);
+
             foreach( $return as $file => $content )
             {
-                $dirname = File\Info::pathInfo($file, 'dirname');
+                $file = $upgradeFolder . $file;
 
-                if( PROJECT_TYPE === 'SE' )
-                {
-                    $dirname = self::_spath($dirname);
-                    $file    = self::_spath($file);
+                $dirname = \File::pathInfo($file, 'dirname');
 
-                    if( $file === 'zeroneed.php' )
-                    {
-                        $content = str_replace(", 'EIP'", ", 'SE'", $content);
-                    }
-                }
-
-                Folder\Forge::create($dirname);
-                file_put_contents($file, $content);
+                \Folder::create($dirname); \File::write($file, $content);
             }
+
+            \Folder::copy($upgradeFolder, '/'); \Folder::delete($upgradeFolder);
 
             return true;
         }
