@@ -186,7 +186,10 @@ class ZN
 
                 foreach( $commit->files as $file )
                 {
-                    $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
+                    if( ! isset($updatedFiles[$file->filename]) )
+                    {
+                        $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
+                    }        
                 }
             }
             else
