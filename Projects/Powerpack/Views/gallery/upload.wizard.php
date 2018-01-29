@@ -1,0 +1,1 @@
+@View::get('sections/content'):
