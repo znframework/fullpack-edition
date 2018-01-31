@@ -169,7 +169,7 @@ class ZN
      */
     protected static function _restful()
     {
-        $return  = \Restful::useragent(true)->get('https://api.github.com/repos/znframework/multi-edition/tags');
+        $return  = \Restful::useragent(true)->get('https://api.github.com/repos/znframework/fullpack-edition/tags');
         $lastest = $return[0];
 
         $updatedFiles = [];
