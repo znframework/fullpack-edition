@@ -1,9 +1,9 @@
 {
-    "name": "znframework/multi-edition",
+    "name": "znframework/fullpack-edition",
     "type": "project",
-    "description": "ZN Framework EIP",
+    "description": "ZN Framework Fullpack Edition",
     "keywords": ["zn","zeroneed"],
-    "homepage": "https://github.com/znframework/multi-edition",
+    "homepage": "https://github.com/znframework/fullpack-edition",
     "license": "MIT",
     "authors": 
     [
