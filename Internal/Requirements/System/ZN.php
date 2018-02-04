@@ -178,7 +178,7 @@ class ZN
         {
             if( ZN_VERSION < $version->name )
             {
-                $commit = \Restful::useragent(true)->get($lastest->commit->url);
+                $commit = \Restful::useragent(true)->get($version->commit->url);
 
                 foreach( $commit->files as $file )
                 {
@@ -193,7 +193,7 @@ class ZN
                 break;
             }
         }
-
+        
         return $updatedFiles;
     }
 
