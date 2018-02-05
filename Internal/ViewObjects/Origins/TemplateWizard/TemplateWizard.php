@@ -15,7 +15,7 @@ use ZN\IndividualStructures\Buffer;
 class TemplateWizard
 {
     /**
-     * CRLF
+     * CRLF added[5.5.6]
      * 
      * @const string
      */
