@@ -15,6 +15,20 @@ use ZN\IndividualStructures\Buffer;
 class TemplateWizard
 {
     /**
+     * CRLF
+     * 
+     * @const string
+     */
+    const CRLF = '(\n|' . PHP_EOL . '|\:)';
+
+    /**
+     * Get config
+     * 
+     * @var array
+     */
+    protected static $config;
+
+    /**
      * Theme integration.
      * 
      * @param string $themeName
@@ -70,6 +84,8 @@ class TemplateWizard
      */
     public static function data(String $string, Array $data = []) : String
     {
+        self::$config = \Config::get('ViewObjects', 'wizard');;
+        
         self::_textControl($string); // 5.4.6[added]
 
         $pattern = array_merge
@@ -98,7 +114,7 @@ class TemplateWizard
      */
     protected static function _textControl(&$string)
     {
-        if( self::config()['html'] ?? true )
+        if( self::$config['html'] ?? true )
         {
             preg_match_all('/\<(style|script)(.*?)*\>(.*?)\<\/(style|script)\>/si', $string, $standart);
             preg_match_all('/\#(style|script)(.*?)*\s(.*?)\s\##(style|script)/si', $string, $wizard);
@@ -133,18 +149,6 @@ class TemplateWizard
     }
 
     /**
-     * protected config.
-     * 
-     * @para void
-     * 
-     * @return array
-     */
-    protected static function config()
-    {
-        return \Config::get('ViewObjects', 'wizard');
-    }
-
-    /**
      * protected required
      * 
      * @param void
@@ -171,17 +175,17 @@ class TemplateWizard
     {
         $array = [];
 
-        if( self::config()['keywords'] ?? true )
+        if( self::$config['keywords'] ?? true )
         {
             $array =
             [
-                '/@endforelse:/'                                         => '<?php endif; ?>',                                       
-                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)\:/s'            => '<?php if( ! empty($2) ): foreach($1): ?>',
-                '/@empty\:/'                                             => '<?php endforeach; else: ?>',     
-                '/@loop\s*\((.*?)\)\:/s'                                 => '<?php foreach($1 as $key => $value): ?>',    
-                '/@endloop:/'                                            => '<?php endforeach; ?>',         
-                '/@(endif|endforeach|endfor|endwhile|break|continue)\:/' => '<?php $1 ?>',
-                '/@(elseif|if|else|foreach|for|while)\s*(.*?)\:/s'       => '<?php $1$2: ?>'
+                '/@endforelse'.self::CRLF.'*/'                                       => '<?php endif; ?>',                                       
+                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/s'            => '<?php if( ! empty($2) ): foreach($1): ?>',
+                '/@empty'.self::CRLF.'/'                                             => '<?php endforeach; else: ?>',     
+                '/@loop\s*\((.*?)\)'.self::CRLF.'/s'                                 => '<?php foreach($1 as $key => $value): ?>',    
+                '/@endloop'.self::CRLF.'/'                                           => '<?php endforeach; ?>',         
+                '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'/' => '<?php $1 ?>',
+                '/@(elseif|if|else|foreach|for|while)\s*(.*?)'.self::CRLF.'/s'       => '<?php $1$2: ?>'
             ];
         }
 
@@ -199,9 +203,9 @@ class TemplateWizard
     {
         $array = [];
 
-        if( self::config()['printable'] ?? true )
+        if( self::$config['printable'] ?? true )
         {
-            $suffix   = '\:/s';
+            $suffix   = self::CRLF.'/s';
             $coalesce = '\?';
             $constant = '@((\w+)(\[(\'|\")*.*?(\'|\")*\])*)';
             $variable = '/@\$(\w+.*?)';
@@ -237,9 +241,9 @@ class TemplateWizard
     {
         $array = [];
 
-        if( self::config()['functions'] ?? true )
+        if( self::$config['functions'] ?? true )
         {
-            $function = '@(\w+.*?(\)|\}|\]|\-\>\w+))\:/s';
+            $function = '@(\w+.*?(\)|\}|\]|\-\>\w+))'.self::CRLF.'/s';
             $array    =
             [
                 '/@' . $function => '<?php echo $1 ?>', // Function
@@ -261,7 +265,7 @@ class TemplateWizard
     {
         $array = [];
 
-        if( self::config()['comments'] ?? true )
+        if( self::$config['comments'] ?? true )
         {
             $array =
             [
@@ -284,7 +288,7 @@ class TemplateWizard
     {
         $array = [];
 
-        if( self::config()['jsdata'] ?? true )
+        if( self::$config['jsdata'] ?? true )
         {
             $array =
             [
@@ -306,7 +310,7 @@ class TemplateWizard
     {
         $array = [];
 
-        if( self::config()['tags'] ?? true )
+        if( self::$config['tags'] ?? true )
         {
             $array =
             [
@@ -331,15 +335,15 @@ class TemplateWizard
         $array             = [];
         $htmlAttributesTag = '(^|\s)\#(!*\w+)\s*(\[(.*?)\])*';
 
-        if( self::config()['html'] ?? true )
+        if( self::$config['html'] ?? true )
         {
             $array =
             [
                 '/\/#/'                                         => '+[symbol??dies]+',
                 '/\s+\#\#(\w+)/'                                => '</$1>',
-                '/'.$htmlAttributesTag.'\:/'                    => '<$2 $4>',
+                '/'.$htmlAttributesTag.self::CRLF.'/'           => '<$2 $4>',
                 '/'.$htmlAttributesTag.'\s+/'                   => '<$2 $4>',
-                '/'.$htmlAttributesTag.'\s*\(\s*(.*?)\s*\)\:/s' => '<$2 $4>$5</$2>',
+                '/'.$htmlAttributesTag.'\s*\(\s*(.*?)\s*\)'.self::CRLF.'/s' => '<$2 $4>$5</$2>',
                 '/'.$htmlAttributesTag.'\s*/'                   => '<$2 $4>',
                 '/\<(\w+)\s+\>/'                                => '<$1>',
                 '/\+\[symbol\?\?dies\]\+/'                      => '#'
