@@ -22,7 +22,7 @@ Import::template('ExternalTemplateStyles');
                 displayExceptionTable($file, $line, NULL);
             
                 foreach( $trace as $key => $debug )
-                    if( $debug['file'] !== $file && ! empty($debug['file']) )
+                    if( is_array($debug) && $debug['file'] !== $file && ! empty($debug['file']) )
                         displayExceptionTable($debug['file'], $debug['line'], $key);
                 ?>
             </div>
