@@ -559,7 +559,7 @@ class Autoloader
         define('SETTINGS_DIR', (PROJECT_TYPE === 'SE' ? 'Config' : 'Settings').'/');
         define('PROJECTS_CONFIG', import((is_file(PROJECTS_DIR . 'Projects.php') ? PROJECTS_DIR : SETTINGS_DIR) . 'Projects.php'));
         define('DEFAULT_PROJECT', PROJECTS_CONFIG['directory']['default']);
-        define('SSL_STATUS', (server('https') === 'on' ? 'https' : 'http') . '://');
+        define('SSL_STATUS', ((($_SERVER['HTTPS'] ?? NULL) === 'on' && $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http') . '://');
         define('EOL', PHP_EOL);
         define('CRLF', "\r\n" );
         define('CR', "\r");
