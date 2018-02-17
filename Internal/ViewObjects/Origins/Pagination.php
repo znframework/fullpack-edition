@@ -84,33 +84,40 @@ class Pagination implements PaginationInterface
      */
     protected $prevTag = '[prev]';
 
-     /**
+    /**
      * Default next tag name
      * 
      * @var string
      */
     protected $nextTag = '[next]';
 
-     /**
+    /**
      * Default first tag name
      * 
      * @var string
      */
     protected $firstTag = '[first]';
 
-     /**
+    /**
      * Default last tag name
      * 
      * @var string
      */
     protected $lastTag = '[last]';
 
-     /**
+    /**
      * Default url
      * 
      * @var string
      */
     protected $url = CURRENT_CFPATH;
+
+    /**
+     * Default url
+     * 
+     * @var string
+     */
+    protected $output = 'bootstrap';
 
     /**
      * Magic constructor
@@ -286,7 +293,7 @@ class Pagination implements PaginationInterface
             return suffix($urlEx[0]) . $page . '?' . rtrim($urlEx[1], '/');
         }
 
-        return suffix($this->url) . $page;
+        return ($this->type !== 'ajax' ? suffix($this->url) : $this->url) . $page;
     }
 
     /**
