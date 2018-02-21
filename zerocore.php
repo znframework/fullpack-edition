@@ -31,7 +31,7 @@ require REQUIREMENTS_DIR . 'Autoloader.php';
 |
 */
 
-Autoloader::defines('5.5.72', 'Nikola Tesla');
+Autoloader::defines('5.5.73', 'Nikola Tesla');
 
 /*
 |--------------------------------------------------------------------------
