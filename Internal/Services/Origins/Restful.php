@@ -133,10 +133,10 @@ class Restful implements RestfulInterface
     // Data
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param array $data
+    // @param mixed $data
     //
     //--------------------------------------------------------------------------------------------------------
-    public function data(Array $data) : Restful
+    public function data($data) : Restful
     {
         $this->data = $data;
 
@@ -179,10 +179,10 @@ class Restful implements RestfulInterface
     //--------------------------------------------------------------------------------------------------------
     //
     // @param string $url
-    // @param array  $data
+    // @param mixed  $data = NULL
     //
     //--------------------------------------------------------------------------------------------------------
-    public function post(String $url = NULL, Array $data = [])
+    public function post(String $url = NULL, $data = NULL)
     {
         $response = \CURL::init($this->url ?? $url)
                         ->option('returntransfer', true)
@@ -199,10 +199,10 @@ class Restful implements RestfulInterface
     //--------------------------------------------------------------------------------------------------------
     //
     // @param string $url
-    // @param array  $data
-    //
+    // @param mixed  $data = NULL
+    // 
     //--------------------------------------------------------------------------------------------------------
-    public function put(String $url = NULL, Array $data = [])
+    public function put(String $url = NULL, $data = NULL)
     {
         return $this->_customRequest($url, URL::buildQuery($this->data ?? $data), __FUNCTION__);
     }
@@ -212,10 +212,10 @@ class Restful implements RestfulInterface
     //--------------------------------------------------------------------------------------------------------
     //
     // @param string $url
-    // @param array  $data
+    // @param mixed  $data = NULL
     //
     //--------------------------------------------------------------------------------------------------------
-    public function delete(String $url = NULL, Array $data = [])
+    public function delete(String $url = NULL, $data = NULL)
     {
         return $this->_customRequest($url, $this->data ?? $data, __FUNCTION__);
     }
