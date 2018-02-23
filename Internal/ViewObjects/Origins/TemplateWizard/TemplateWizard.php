@@ -91,13 +91,13 @@ class TemplateWizard
         $pattern = array_merge
         (
             self::_symbolsHeader(),
+            self::_tags(),
             self::_keywords(),
             self::_printable(),
             self::_functions(),
             self::_symbolsFooter(),
             self::_comments(),
             self::_required(),
-            self::_tags(),
             self::_jsdata(),
             self::_html()
         );
@@ -315,9 +315,13 @@ class TemplateWizard
         {
             $array =
             [
-				// 5.3.4[added]
+				# 5.3.4[added]
 				'/\{\[\=(.*?)\]\}/'      => '<?php echo $1 ?>',
-                '/\{\[\s*(.*?)\s*\]\}/s' => '<?php $1 ?>'
+                '/\{\[\s*(.*?)\s*\]\}/s' => '<?php $1 ?>',
+
+                # 5.5.80
+                '/@php\:*/'              => '<?php',
+                '/@endphp\:*/'           => '?>'
             ];
         }
 
