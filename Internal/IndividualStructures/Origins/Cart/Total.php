@@ -20,23 +20,14 @@ class Total extends CartExtends
     //--------------------------------------------------------------------------------------------------------
     public function items() : Int
     {
-        $totalItems  = 0;
+        $totalItems = 0;
 
-        if( $sessionCart = $this->driver->select(md5('SystemCartData')) )
+        if( ! empty(Properties::$items) ) foreach( Properties::$items as $item )
         {
-            Properties::$items = $sessionCart;
-
-            if( ! empty(Properties::$items) ) foreach( Properties::$items as $item )
-            {
-                $totalItems += $item['quantity'];
-            }
-
-            return $totalItems;
+            $totalItems += $item['quantity'];
         }
-        else
-        {
-            return $totalItems;
-        }
+
+        return $totalItems;
     }
 
 
@@ -49,16 +40,9 @@ class Total extends CartExtends
     //--------------------------------------------------------------------------------------------------------
     public function prices() : Int
     {
-        Properties::$items = (array) $this->driver->select(md5('SystemCartData'));
-
-        if( empty(Properties::$items) )
-        {
-            return 0;
-        }
-
         $total = 0;
 
-        foreach( Properties::$items as $values )
+        if( ! empty(Properties::$items) ) foreach( Properties::$items as $values )
         {
             $quantity = (int)   ($values['quantity'] ?? 1);
             $price    = (float) ($values['price']    ?? 0);

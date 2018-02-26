@@ -20,23 +20,16 @@ class Insert extends CartExtends
     //--------------------------------------------------------------------------------------------------------
     public function item(Array $product) : Bool
     {
-        // Ürünün adet parametresinin belirtilmemesi durumunda 1 olarak kabul edilmesi istenmiştir.
         if( ! isset($product['quantity']) )
         {
             $product['quantity'] = 1;
         }
 
-        // Sepettin daha önce oluşturulup oluşturulmadığına göre işlemler gerçekleştiriliyor.
-        if( $sessionCart = $this->driver->select(md5('SystemCartData')) )
-        {
-            Properties::$items = $sessionCart;
-        }
-
         array_push(Properties::$items, $product);
 
-        $this->driver->insert(md5('SystemCartData'), Properties::$items);
+        $this->driver->insert($this->key, Properties::$items);
 
-        Properties::$items = $this->driver->select(md5('SystemCartData'));
+        Properties::$items = $this->driver->select($this->key);
 
         return true;
     }
