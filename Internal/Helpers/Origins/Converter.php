@@ -488,10 +488,10 @@ class Converter
 
         $str = self::accent(trim($str));
 
-        $str = preg_replace('/&\w+\;/', '' , $str);
-        $str = preg_replace("/\W/"    , '-' , $str);
-        $str = preg_replace("/\_/"    , '-', $str);
-        $str = preg_replace('/\-+/'   , '-', $str);
+        $str = preg_replace('/\&\#*\w+\;/', '' , $str);
+        $str = preg_replace("/\W/"        , '-', $str);
+        $str = preg_replace("/\_/"        , '-', $str);
+        $str = preg_replace('/\-+/'       , '-', $str);
 
         return strtolower(trim($str, '-')) . ($ext ?? NULL);
     }
