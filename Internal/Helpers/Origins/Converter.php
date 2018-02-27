@@ -117,15 +117,38 @@ class Converter
         'я'                                                             => 'ya'
     ];
 
-    //--------------------------------------------------------------------------------------------------------
-    // Byte
-    //--------------------------------------------------------------------------------------------------------
-    //
-    // @param float $bytes
-    // @param int   $precision
-    // @param bool  $unit
-    //
-    //--------------------------------------------------------------------------------------------------------
+    /**
+     * Convert string to bytes.
+     * 
+     * @param string $data
+     * 
+     * @return float
+     */
+    public static function toBytes(String $data) : Float
+    {
+        $number = substr($data, 0, -2);
+
+        switch( strtoupper(substr($data, -2)) )
+        {
+            case 'KB': return $number * 1024;
+            case 'MB': return $number * pow(1024, 2);
+            case 'GB': return $number * pow(1024, 3);
+            case 'TB': return $number * pow(1024, 4);
+            case 'PB': return $number * pow(1024, 5);
+
+            default  : return $data;
+        }
+    }
+
+    /**
+     * Calculate byte
+     * 
+     * @param float $bytes
+     * @param int   $precision = 1
+     * @param bool  $unit      = true
+     * 
+     * @return string
+     */
     public static function byte(Float $bytes, Int $precision = 1, Bool $unit = true) : String
     {
         $byte   = 1024;
@@ -138,72 +161,48 @@ class Converter
 
         if( $bytes <= $byte && $bytes > -1 )
         {
-            $un = ( ! empty($unit) )
-                  ? " Bytes"
-                  : "";
-
-            $return = $bytes.$un;
+            $un     = 'B';
+            $return = $bytes;
         }
         elseif( $bytes <= $kb && $bytes > $byte )
         {
-            $un = ( ! empty($unit) )
-                  ? " KB"
-                  : "";
-
-            $return =  round(($bytes / $byte),$precision).$un;
+            $un     = 'KB';
+            $return = round(($bytes / $byte),$precision);
         }
         elseif( $bytes <= $mb && $bytes > $kb )
         {
-            $un = ( ! empty($unit) )
-                  ? " MB"
-                  : "";
-
-            $return =  round(($bytes / $kb),$precision).$un;
+            $un     = 'MB';
+            $return = round(($bytes / $kb),$precision);
         }
         elseif( $bytes <= $gb && $bytes > $mb )
         {
-            $un = ( ! empty($unit) )
-                  ? " GB"
-                  : "";
-
-            $return =   round(($bytes / $mb),$precision).$un;
+            $un     = 'GB';
+            $return = round(($bytes / $mb),$precision);
         }
         elseif( $bytes <= $tb && $bytes > $gb )
         {
-            $un = ( ! empty($unit) )
-                  ? " TB"
-                  : "";
-
-            $return =   round(($bytes / $gb),$precision).$un;
+            $un     = 'TB';
+            $return = round(($bytes / $gb),$precision);
         }
         elseif( $bytes <= $pb && $bytes > $tb )
         {
-            $un = ( ! empty($unit) )
-                  ? " PB"
-                  : "";
-
-            $return =   round(($bytes / $tb),$precision).$un;
+            $un     = 'PB';
+            $return = round(($bytes / $tb),$precision);
         }
         elseif( $bytes <= $eb && $bytes > $pb )
         {
-            $un = ( ! empty($unit) )
-                  ? " EB"
-                  : "";
-
-            $return =   round(($bytes / $pb),$precision).$un;
+            $un     = 'EB';
+            $return = round(($bytes / $pb),$precision);
         }
         else
         {
-            $un = ( ! empty($unit) )
-                  ? " Bytes"
-                  : "";
-
-            $return = str_replace(",", ".", number_format($bytes)).$un;
+            $un     = 'B';
+            $return = str_replace(",", ".", number_format($bytes));
         }
 
-        return $return;
+        return $return . ( ! empty($unit) ? $un : NULL );
     }
-
+    
     //--------------------------------------------------------------------------------------------------------
     // Money -> 5.3.9[updated]
     //--------------------------------------------------------------------------------------------------------

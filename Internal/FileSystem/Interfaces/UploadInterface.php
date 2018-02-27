@@ -42,10 +42,10 @@ interface UploadInterface
     // Convert Name
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param bool $convert
+    // @param bool|string $convert
     //
     //--------------------------------------------------------------------------------------------------------
-    public function convertName(Bool $convert = true) : Upload;
+    public function convertName($convert = true) : Upload;
 
     //--------------------------------------------------------------------------------------------------------
     // Encode
@@ -69,10 +69,10 @@ interface UploadInterface
     // Maxsize
     //--------------------------------------------------------------------------------------------------------
     //
-    // @param int $maxsize
+    // @param int|string $maxsize
     //
     //--------------------------------------------------------------------------------------------------------
-    public function maxsize(Int $maxsize = 0) : Upload;
+    public function maxsize($maxsize = 0) : Upload;
 
     //--------------------------------------------------------------------------------------------------------
     // Encode Length
