@@ -312,7 +312,7 @@ trait FormElementsTrait
             }
             else
             {
-                $default = Validation::postBack($name, $method);
+                $default = Validation::postBack($name, $method) ?: $default;
             }   
         }
     }
