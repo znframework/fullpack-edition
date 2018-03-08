@@ -13,6 +13,11 @@
 
     @foreach( $znframework as $key => $version ):
         {[
+            if( $key === 10 )
+            {
+                break;
+            }
+
             if( ! Session::select($version->name) )
             {
                 $detail = \Restful::useragent(true)->get($version->commit->url);

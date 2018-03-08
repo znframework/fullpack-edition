@@ -10,6 +10,7 @@
  */
 
 use ZN\FileSystem\File;
+use ZN\Services\URL;
 use ZN\IndividualStructures\Buffer;
 
 class TemplateWizard
@@ -53,6 +54,10 @@ class TemplateWizard
                     if( is_file(THEMES_DIR . $suffix) )
                     {
                         return str_replace($path, THEMES_URL . $suffix, $orig);
+                    }
+                    elseif( is_file(EXTERNAL_THEMES_DIR . $suffix) )
+                    {
+                        return str_replace($path, URL::base(EXTERNAL_THEMES_DIR) . $suffix, $orig);
                     }
                 }     
 
