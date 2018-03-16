@@ -20,7 +20,7 @@ class TemplateWizard
      * 
      * @const string
      */
-    const CRLF = '(\n|' . PHP_EOL . '|\:)';
+    const CRLF = '(\n|' . PHP_EOL . '|\:|$)';
 
     /**
      * Get config
