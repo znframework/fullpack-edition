@@ -29,6 +29,13 @@ class ZN
     public static $use;
 
     /**
+     * Upgrade Error
+     * 
+     * @var string
+     */
+    public static $upgradeError;
+
+    /**
      * Get ZN version
      * 
      * @var string
@@ -164,6 +171,16 @@ class ZN
     {
         return uselib($class, $parameters);
     }
+    
+    /**
+     * Get upgrade error
+     * 
+     * @return string
+     */
+    public static function upgradeError()
+    {
+        return self::$upgradeError ?: false;
+    }
 
     /**
      * protected restful
@@ -174,11 +191,19 @@ class ZN
      */
     protected static function _restful()
     {
-        $return  = \Restful::useragent(true)->get('https://api.github.com/repos/znframework/fullpack-edition/tags');
-        $lastest = $return[0];
+        $return = \Restful::useragent(true)->get('https://api.github.com/repos/znframework/fullpack-edition/tags');
 
         $updatedFiles = [];
-        
+
+        if( isset($return->message) )
+        {
+            self::$upgradeError = $return->message;
+
+            return $updatedFiles;
+        }
+
+        $lastest = $return[0];
+ 
         if( ZN_VERSION < $lastest->name ) foreach( $return as $version )
         {
             if( ZN_VERSION < $version->name )

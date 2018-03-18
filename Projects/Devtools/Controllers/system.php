@@ -276,6 +276,11 @@ class System extends Controller
             }
             else
             {
+                if( $upgradeError = ZN::upgradeError() )
+                {
+                    $this->masterpage->error = $upgradeError;
+                }
+                
                 $this->masterpage->error = LANG['alreadyVersion'];
             }
         }
