@@ -65,7 +65,12 @@ class ZN
 
                 $dirname = \File::pathInfo($file, 'dirname');
 
-                \Folder::create($dirname); \File::write($file, $content);
+                \Folder::create($dirname); 
+                
+                if( ! empty($content) )
+                {
+                    \File::write($file, $content);
+                } 
             }
 
             \Folder::copy($upgradeFolder, '/'); \Folder::delete($upgradeFolder);
