@@ -270,7 +270,7 @@ class System extends Controller
     {
         if( Method::post('upgrade') )
         {
-            if( ! ZN::upgrade() )
+            if( ! empty(ZN::upgrade()) )
             {
                 redirect(currentUri(), 0, ['success' => LANG['success']]);
             }
