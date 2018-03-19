@@ -493,7 +493,7 @@ class Converter
         $str = preg_replace("/\_/"        , '-', $str);
         $str = preg_replace('/\-+/'       , '-', $str);
 
-        return strtolower(trim($str, '-')) . ($ext ?? NULL);
+        return mb_convert_case(trim($str, '-'), MB_CASE_LOWER) . ($ext ?? NULL);
     }
 
     //--------------------------------------------------------------------------------------------------------
