@@ -82,6 +82,8 @@ class Exceptions extends \Exception implements ExceptionsInterface
     //--------------------------------------------------------------------------------------------------------
     public static function table($no = NULL, String $msg = NULL, String $file = NULL, String $line = NULL, Array $trace = NULL)
     {
+        
+        
         if( is_object($no) )
         {
             $msg   = $no->getMessage();
@@ -198,6 +200,8 @@ class Exceptions extends \Exception implements ExceptionsInterface
                 $exceptionData['message'] = $templateWizardData->message;
             }
         }
+
+        ob_end_clean();
 
         return Import\Template::use('ExceptionTable', $exceptionData, true);
     }

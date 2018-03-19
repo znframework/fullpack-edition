@@ -1,4 +1,5 @@
 <?php
+
 Import::style('bootstrap', 'awesome', 'external-template-style'); Import::script('jquery', 'bootstrap');
 
 unset($trace['params']);
@@ -83,5 +84,5 @@ function displayExceptionTable($file, $line, $key)
         'keyword:color' => '#00BFFF',
         'string:color'  => '#fff'
     ]));
-    ?></pre></div><?php
+    ?></pre></div><?php exit;
 }
