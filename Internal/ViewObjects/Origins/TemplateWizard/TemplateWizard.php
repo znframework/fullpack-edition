@@ -41,11 +41,14 @@ class TemplateWizard
     {
         $data = preg_replace_callback
         (
-            '/<(link|img|script|div)\s(.*?)(href|src)\=\"(.*?)\"(.*?)\>/i', 
+            [
+                '/<(link|img|script|div)\s(.*?)(href|src)\=\"(.*?)\"(.*?)\>/i',
+                '/(background)(-url)(\:)\((.*?)\)/i'
+            ], 
             function($selector) use ($themeName)
             {
                 $orig = $selector[0];
-                $path = $selector[4];
+                $path = trim($selector[4], '\'');
 
                 if( ! \IS::url($path) && ! is_file($path) )
                 {
