@@ -582,27 +582,27 @@ class Autoloader
     {
         self::defineCurrentProject();
         
-        define('CONTROLLERS_DIR' , PROJECT_DIR.'Controllers/');
         define('VIEWS_DIR', PROJECT_DIR.'Views/');
         define('PAGES_DIR', VIEWS_DIR); 
         define('CONTAINER_DIRS', 
         [
-            'ROUTES_DIR'    => 'Routes'   , 'DATABASES_DIR' => 'Databases'          ,
-            'CONFIG_DIR'    => 'Config'   , 'STORAGE_DIR'   => 'Storage'            ,
-            'COMMANDS_DIR'  => 'Commands' , 'LANGUAGES_DIR' => 'Languages'          ,
-            'LIBRARIES_DIR' => 'Libraries', 'MODELS_DIR'    => 'Models'             ,
-            'STARTING_DIR'  => 'Starting' , 'AUTOLOAD_DIR'  => 'Starting/Autoload'  ,
-                                            'HANDLOAD_DIR'  => 'Starting/Handload'  ,
-                                            'LAYERS_DIR'    => 'Starting/Layers'    ,
-            'RESOURCES_DIR' => 'Resources', 'PROCESSOR_DIR' => 'Resources/Processor',
-                                            'FILES_DIR'     => 'Resources/Files'    ,
-                                            'FONTS_DIR'     => 'Resources/Fonts'    ,
-                                            'SCRIPTS_DIR'   => 'Resources/Scripts'  ,
-                                            'STYLES_DIR'    => 'Resources/Styles'   ,
-                                            'TEMPLATES_DIR' => 'Resources/Templates',
-                                            'THEMES_DIR'    => 'Resources/Themes'   ,
-                                            'PLUGINS_DIR'   => 'Resources/Plugins'  ,
-                                            'UPLOADS_DIR'   => 'Resources/Uploads'
+            'ROUTES_DIR'    => 'Routes'   , 'DATABASES_DIR'   => 'Databases'          ,
+            'CONFIG_DIR'    => 'Config'   , 'STORAGE_DIR'     => 'Storage'            ,
+            'COMMANDS_DIR'  => 'Commands' , 'LANGUAGES_DIR'   => 'Languages'          ,
+            'LIBRARIES_DIR' => 'Libraries', 'MODELS_DIR'      => 'Models'             ,
+            'STARTING_DIR'  => 'Starting' , 'AUTOLOAD_DIR'    => 'Starting/Autoload'  ,
+                                            'HANDLOAD_DIR'    => 'Starting/Handload'  ,
+                                            'LAYERS_DIR'      => 'Starting/Layers'    ,
+                                            'CONTROLLERS_DIR' => 'Controllers'        ,
+            'RESOURCES_DIR' => 'Resources', 'PROCESSOR_DIR'   => 'Resources/Processor',
+                                            'FILES_DIR'       => 'Resources/Files'    ,
+                                            'FONTS_DIR'       => 'Resources/Fonts'    ,
+                                            'SCRIPTS_DIR'     => 'Resources/Scripts'  ,
+                                            'STYLES_DIR'      => 'Resources/Styles'   ,
+                                            'TEMPLATES_DIR'   => 'Resources/Templates',
+                                            'THEMES_DIR'      => 'Resources/Themes'   ,
+                                            'PLUGINS_DIR'     => 'Resources/Plugins'  ,
+                                            'UPLOADS_DIR'     => 'Resources/Uploads'
         ]);
 
         foreach( CONTAINER_DIRS as $key => $value )
