@@ -300,9 +300,12 @@ class Masterpage
 
             if( ! empty($content) )
             {
-                $nameEx     = explode(":", $name);
+                $nameEx     = explode(':', $name);
                 $httpOrName = ( $nameEx[0] === 'http' ) ? 'http-equiv' : ( isset($nameEx[1]) ? $nameEx[0] : 'name' );
-                $name       = $nameEx[1] ?? $nameEx[0];
+
+                array_shift($nameEx);
+
+                $name = implode(':', $nameEx);
 
                 if( ! is_array($content) )
                 {

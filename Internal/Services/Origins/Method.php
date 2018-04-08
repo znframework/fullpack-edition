@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\DataTypes\Json;
+
 class Method implements MethodInterface
 {
     //--------------------------------------------------------------------------------------------------------
@@ -151,7 +153,14 @@ class Method implements MethodInterface
         {
             if( is_scalar($input[$name]) )
             {
-                return htmlspecialchars($input[$name], ENT_QUOTES, "utf-8");
+                if( Json\ErrorInfo::check($input[$name]) )
+                {
+                    return $input[$name];
+                }
+                else
+                {
+                    return htmlspecialchars($input[$name], ENT_QUOTES, "utf-8");
+                }
             }
             elseif( is_array($input[$name]) )
             {
