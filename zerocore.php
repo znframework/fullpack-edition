@@ -31,7 +31,7 @@ require REQUIREMENTS_DIR . 'Autoloader.php';
 |
 */
 
-Autoloader::defines('5.6.10', 'Rasmus Lerdorf');
+Autoloader::defines('5.6.11', 'Rasmus Lerdorf');
 
 /*
 |--------------------------------------------------------------------------

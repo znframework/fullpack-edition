@@ -116,6 +116,7 @@
     [
         'name'      =>
         [
+            'Dashboard/css/style.css',
             'Dashboard/css/bootstrap.css',
             'Dashboard/css/sb-admin.css',
             'Dashboard/css/plugins/morris.css',
@@ -153,7 +154,7 @@
     // dizinindeki dosya/dosyaların isimlerini yazmanız yeterlidir.
     //
     //--------------------------------------------------------------------------------------------------
-    'style' => ['style'], // string veya array
+    'style' => [], // string veya array
 
     //--------------------------------------------------------------------------------------------------
     // Script

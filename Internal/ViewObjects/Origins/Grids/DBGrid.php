@@ -910,7 +910,7 @@ class DBGrid extends GridAbstract
 
         if( ! empty($this->joins) )
         {
-            array_unshit($select, $this->table.'.'.$this->processColumn.' as ID');
+            array_unshift($select, $this->table.'.'.$this->processColumn.' as ID');
         }
 
         \DB::select(...$select);
