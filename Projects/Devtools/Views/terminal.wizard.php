@@ -100,7 +100,7 @@
                     <div class="content">
         				<div class="terminal" id="terminal" onclick="document.getElementById('command').focus();">
 
-    					<pre></pre>
+    					<pre style="color:{{$settings['textColor']}}"></pre>
 
 						{[ echo 'php zerocore > ';]}
 						<input type="text" name="command" id="command" autocomplete="off" />
@@ -127,6 +127,7 @@
                                     {
                                         $('/#command').val("");
                                         $('/#terminal pre').html(data);
+                                        $('#terminal').scrollTop($('#terminal')[0].scrollHeight);
 
                                         $.ajax
                                         ({

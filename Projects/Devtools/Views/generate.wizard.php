@@ -44,7 +44,7 @@
                         @endif:
                     </a>
 
-                    <pre id="b@$key:" key="{{$key}}" link="{{ZN\FileSystem\File\Info::absolutePath($file)}}" class="collapse"><div style="width/:100%; height/:800px;" id="editor{{$key}}" contenteditable="true">@@Security::phpTagEncode(Security::htmlEncode(File::read($relativePath))):</div></pre>
+                    <pre id="b@$key:" key="{{$key}}" link="{{ZN\FileSystem\File\Info::absolutePath($file)}}" class="collapse"><div style="font-size/:14px; font-family/:consolas, monospace; width/:100%; height/:800px;" id="editor{{$key}}" contenteditable="true">@@Security::phpTagEncode(Security::htmlEncode(File::read($relativePath))):</div></pre>
                     <script>
                         var editor = ace.edit("editor{{$key}}");
                         editor.setTheme("ace/theme/{{SELECT_EDITOR_THEME}}");

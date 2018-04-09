@@ -23,7 +23,7 @@
                 <div class="list-group">
 
                     @foreach( $supportQueries as $query ):
-                    <a href="/#" class="list-group-item">
+                    <a onclick="showQueryToORMArea(this)" support="{{strip_tags($query)}}" href="javascript::;" class="list-group-item">
                         <i class="fa fa-fw fa-code"></i> @$query:
                     </a>
                     @endforeach:
@@ -44,7 +44,7 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                @@Form::class('form-control')->textarea('sql', Validation::postBack('sql')):
+                @@Form::class('form-control')->id('sql')->textarea('sql', Validation::postBack('sql')):
                 </div>
             </div>
         </div>
@@ -73,3 +73,12 @@
 @endif:
 
 @@Form::close():
+
+<script>
+
+function showQueryToORMArea(element)
+{
+    $('#sql').val($(element).attr('support'));
+}
+
+</script>
