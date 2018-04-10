@@ -9,7 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Services\Method;
 use ZN\CryptoGraphy\Encode;
 use ZN\IndividualStructures\Lang;
 
@@ -142,7 +141,7 @@ class Login extends UserExtends
             \Session::insert($usernameColumn, $username);
             \Session::insert($passwordColumn, $password);
 
-            if( Method::post($rememberMe) || ! empty($rememberMe) )
+            if( ! empty($rememberMe) )
             {
                 if( \Cookie::select($usernameColumn) !== $username )
                 {
