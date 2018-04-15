@@ -117,19 +117,19 @@ class GrandModel extends \BaseController
      */
     public function __call($method, $parameters)
     {
-        if( $return = $this->_callColumn($method, $parameters, 'row') )
+        if( ($return = $this->_callColumn($method, $parameters, 'row')) !== NULL )
         {
             return $return;
         }
-        elseif( $return = $this->_callColumn($method, $parameters, 'result') )
+        elseif( ($return = $this->_callColumn($method, $parameters, 'result')) !== NULL )
         {
             return $return;
         }
-        elseif( $return = $this->_callColumn($method, $parameters, 'update') )
+        elseif( ($return = $this->_callColumn($method, $parameters, 'update')) !== NULL )
         {
             return $return;
         }
-        elseif( $return = $this->_callColumn($method, $parameters, 'delete') )
+        elseif( ($return = $this->_callColumn($method, $parameters, 'delete')) !== NULL )
         {
             return $return;
         }
@@ -898,6 +898,8 @@ class GrandModel extends \BaseController
 
             return $this->where($col, $params[0])->$func();
         }
+
+        return NULL;
     }
 }
 

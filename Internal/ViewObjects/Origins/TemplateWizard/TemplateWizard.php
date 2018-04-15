@@ -187,14 +187,16 @@ class TemplateWizard
         {
             $array =
             [
-                '/@endforelse'.self::CRLF.'*/m'                                       => '<?php endif; ?>',                                       
-                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'            => '<?php if( ! empty($2) ): foreach($1): ?>',
-                '/@empty'.self::CRLF.'/m'                                             => '<?php endforeach; else: ?>',     
-                '/@loop\s*\((.*?)\)'.self::CRLF.'/sm'                                 => '<?php foreach($1 as $key => $value): ?>',    
-                '/@endloop'.self::CRLF.'/m'                                           => '<?php endforeach; ?>',         
-                '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'/m' => '<?php $1 ?>',
-                '/@(elseif|if|foreach|for|while)\s*(.*?)'.self::CRLF.'/sm'            => '<?php $1$2: ?>',
-                '/@else'.self::CRLF.'*/m'                                             => '<?php else: ?>',
+                '/@endforelse'.self::CRLF.'*/m'                                            => '<?php endif; ?>',                                       
+                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'                 => '<?php if( ! empty($2) ): foreach($1): ?>',
+                '/@empty'.self::CRLF.'/m'                                                  => '<?php endforeach; else: ?>',     
+                '/@loop\s*\((.*?)\)'.self::CRLF.'/sm'                                      => '<?php foreach($1 as $key => $value): ?>',    
+                '/@endloop'.self::CRLF.'/m'                                                => '<?php endforeach; ?>',         
+                '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'/m'      => '<?php $1 ?>',
+                '/@(elseif|if|foreach|for|while)\s*(.*?)'.self::CRLF.'/sm'                 => '<?php $1$2: ?>',
+                '/@else'.self::CRLF.'*/m'                                                  => '<?php else: ?>',
+                '/@(view|script|style|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>',
+                '/@view(\(\))*'.self::CRLF.'/sm'                                           => '<?php echo $view ?>',   
             ];
         }
 

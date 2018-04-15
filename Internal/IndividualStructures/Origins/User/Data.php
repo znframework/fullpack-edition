@@ -29,10 +29,9 @@ class Data extends UserExtends
 
         if( ! empty($sessionUserName) )
         {
-            $joinTables      = INDIVIDUALSTRUCTURES_USER_CONFIG['joining']['tables'];
-            $usernameColumn  = INDIVIDUALSTRUCTURES_USER_CONFIG['matching']['columns']['username'];
-            $joinColumn      = INDIVIDUALSTRUCTURES_USER_CONFIG['joining']['column'];
-            $tableName       = INDIVIDUALSTRUCTURES_USER_CONFIG['matching']['table'];
+            $joinTables  = INDIVIDUALSTRUCTURES_USER_CONFIG['joining']['tables'];
+            $joinColumn  = INDIVIDUALSTRUCTURES_USER_CONFIG['joining']['column'];
+            $tableName   = INDIVIDUALSTRUCTURES_USER_CONFIG['matching']['table'];
 
             $this->_multiUsernameColumns($sessionUserName);
 
@@ -43,13 +42,7 @@ class Data extends UserExtends
 
             if( ! empty($joinTables) )
             {
-                $this->_multiUsernameColumns($sessionUserName);
-
-                $joinCol = \DB::where($usernameColumn, $sessionUserName, 'and')
-                             ->where($passwordColumn, $sessionPassword)
-                             ->get($tableName)
-                             ->row()
-                             ->$joinColumn;
+                $joinCol = $r[$tbl]->$joinColumn;
 
                 foreach( $joinTables as $table => $joinColumn )
                 {
