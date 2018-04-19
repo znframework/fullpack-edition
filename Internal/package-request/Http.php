@@ -9,7 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Lang;
 use ZN\Request;
 use ZN\Datatype;
 use ZN\Ability\Singleton;
@@ -226,16 +225,7 @@ class Http implements HttpInterface
      */
     public static function browserLang(String $default = 'en') : String
     {
-        $languages = Lang::shortCodes();
-
-        $lang = strtolower(substr(($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? $default), 0, 2));
-
-        if( isset($languages[$lang]) )
-        {
-            return strtolower($lang);
-        }
-
-        return $default;
+        return strtolower(substr(($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? $default), 0, 2));
     }
 
     /**

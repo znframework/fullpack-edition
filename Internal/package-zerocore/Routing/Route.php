@@ -227,10 +227,7 @@ class Route extends FilterProperties implements RouteInterface
                         $newRow = $arrayTransform[$val];
                         $return = $rows->$newRow;
 
-                        if( Lang::shortCodes($newRow) )
-                        {
-                            Lang::set($newRow);
-                        }
+                        Lang::set($newRow);
                     }
                 }
 
