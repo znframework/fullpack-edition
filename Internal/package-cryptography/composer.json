@@ -1,0 +1,23 @@
+{
+    "name": "znframework/package-cryptography",
+    "description": "ZN Framework Cryptography Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "cryptography"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Cryptography\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

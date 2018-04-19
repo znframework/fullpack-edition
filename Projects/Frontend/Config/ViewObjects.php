@@ -1,34 +1,5 @@
-<?php $lang = Lang::select('ViewObjects'); return
+<?php return
 [
-    /*
-    |--------------------------------------------------------------------------
-    | View Name Type
-    |--------------------------------------------------------------------------
-    |
-    | If the views are created in a certain standard, they are automatically 
-    | loaded by the controllers. There are 2 options for this;
-    |
-    | directory: Views/controllerName/methodName.php
-    |
-    | file: Views/controllerName-methodName.php
-    |
-    */
-
-    'viewNameType' => 'directory',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Ajax Code Continue
-    |--------------------------------------------------------------------------
-    |
-    | After Ajax operations, it is specified whether the code will continue to 
-    | flow. If you get unexpected output on ajax requests, set this value to 
-    | false.
-    |
-    */
-
-    'ajaxCodeContinue' => true,
-
     /*
     |--------------------------------------------------------------------------
     | Wizard
@@ -137,98 +108,6 @@
 
     /*
     |--------------------------------------------------------------------------
-    | Calendar
-    |--------------------------------------------------------------------------
-    |
-    | Includes default settings for the calendar.
-    |
-    */
-
-    'calendar' =>
-    [
-        'prevName'      => '<<',
-        'nextName'      => '>>',
-        'dayType'       => 'short',
-        'monthType'     => 'long',
-        'type'          => 'classic', # classic, ajax
-        'class'         =>
-        [
-            'table'     => '',
-            'monthName' => '',
-            'dayName'   => '',
-            'days'      => '',
-            'links'     => '',
-            'current'   => '',
-        ],
-        'style'         =>
-        [
-            'table'     => '',
-            'monthName' => '',
-            'dayName'   => '',
-            'days'      => '',
-            'links'     => '',
-            'current'   => '',
-        ],
-        'monthNames'    =>
-        [
-            'tr' =>
-            [
-                'Ocak'      => 'Oca',
-                'Şubat'     => 'Şub',
-                'Mart'      => 'Mar',
-                'Nisan'     => 'Nis',
-                'Mayıs'     => 'May',
-                'Haziran'   => 'Haz',
-                'Temmuz'    => 'Tem',
-                'Ağustos'   => 'Ağu',
-                'Eylül'     => 'Eyl',
-                'Ekim'      => 'Eki',
-                'Kasım'     => 'Kas',
-                'Aralık'    => 'Ara'
-            ],
-            'en' =>
-            [
-                'January'   => 'Jan',
-                'February'  => 'Feb',
-                'March'     => 'Mar',
-                'April'     => 'Apr',
-                'May'       => 'May',
-                'June'      => 'Jun',
-                'July'      => 'Jul',
-                'August'    => 'Aug',
-                'September' => 'Sep',
-                'October'   => 'Oct',
-                'November'  => 'Nov',
-                'December'  => 'Dec'
-            ]
-        ],
-        'dayNames' =>
-        [
-            'tr' =>
-            [
-                'Pazartesi' => 'Pzt',
-                'Salı'      => 'Sal',
-                'Çarşamba'  => 'Çar',
-                'Perşembe'  => 'Per',
-                'Cuma'      => 'Cum',
-                'Cumartesi' => 'Cts',
-                'Pazar'     => 'Paz'
-            ],
-            'en' =>
-            [
-                'Monday'    => 'Mon',
-                'Tuesday'   => 'Tue',
-                'Wednesday' => 'Wed',
-                'Thursday'  => 'Thu',
-                'Friday'    => 'Fri',
-                'Saturday'  => 'Sat',
-                'Sunday'    => 'Sun'
-            ]
-        ]
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Datagrid
     |--------------------------------------------------------------------------
     |
@@ -236,24 +115,8 @@
     |
     */
 
-    'datagrid' =>
+    'dbgrid' =>
     [
-        'buttonNames' =>
-        [
-            'add'           => $lang['dbgrid:addButton'],
-            'edit'          => $lang['dbgrid:editButton'],
-            'update'        => $lang['dbgrid:updateButton'],
-            'save'          => $lang['dbgrid:saveButton'],
-            'close'         => $lang['dbgrid:closeButton'],
-            'delete'        => $lang['dbgrid:deleteButton'],
-            'deleteSelected'=> $lang['dbgrid:deleteSelectedName'],
-            'deleteAll'     => $lang['dbgrid:deleteAllName']
-        ],
-        'placeHolders' =>
-        [
-            'search' => $lang['dbgrid:searchHolder'],
-            'inputs' => $lang['dbgrid:inputsHolder'],
-        ],
         'styleElement' =>
         [
             '#DBGRID_TABLE tr:nth-child(even)' => ['background' => '#E6F9FF'],
@@ -286,20 +149,52 @@
         [
             'style' =>
             [
-                'links' => 'color:#0085B2;
-                            width:30px; height:30px;
-                            text-align:center;
-                            padding-top:4px;
-                            display:inline-block;
-                            background:white;
-                            border:solid 1px #ddd;
-                            border-radius: 4px;
-                            -webkit-border-radius: 4px;
-                            -moz-border-radius: 4px;
-                            text-decoration:none;',
-
+                'links'   => 'color:#0085B2;width:30px; height:30px;text-align:center;padding-top:4px;display:inline-block;background:white;border:solid 1px #ddd;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-decoration:none;',
                 'current' => 'font-weight:bold;'
             ]
+        ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | ML Grid
+    |--------------------------------------------------------------------------
+    |
+    | It edits the table created by the ML::table() method.
+    |
+    | styleElement: Used to give built-in style to the table.
+    | attributes  : Used to add attributes to objects in the table.
+    | pagination  : It arranges the pagination bar on the table.
+    |
+    */
+
+    'mlgrid' =>
+    [
+        'styleElement' =>
+        [
+            #'#ML_TABLE tr:nth-child(even)' => ['background' => '#E6F9FF'],
+            #'#ML_TABLE tr:nth-child(odd)'  => ['background' => '#FFF']
+        ],
+        'attributes'    =>
+        [
+            'table'   => ['class' => 'table table-bordered table-hover table-striped'],
+            'add'     => ['style' => 'height:30px; color:#0085B2; background:none; border:solid 1px #ccc; cursor:pointer; border-radius:4px'],
+            'update'  => ['style' => 'height:30px; color:#0085B2; background:none; border:solid 1px #ccc; cursor:pointer; border-radius:4px'],
+            'delete'  => ['style' => 'height:30px; color:#0085B2; background:none; border:solid 1px #ccc; cursor:pointer; border-radius:4px'],
+            'clear'   => ['style' => 'height:30px; color:#0085B2; background:none; border:solid 1px #ccc; cursor:pointer; border-radius:4px'],
+            'textbox' => ['style' => 'height:30px; color:#0085B2; border:solid 1px #ccc; text-indent:10px; border-radius:4px']
+        ],
+        'pagination' =>
+        [
+            'style' =>
+            [
+                'links' => 'color:#0085B2; width:30px; height:30px; text-align:center; padding-top:4px;
+                            display:inline-block; background:white; border:solid 1px #ddd; border-radius: 4px;
+                            -webkit-border-radius: 4px; -moz-border-radius: 4px;text-decoration:none;',
+
+                'current' => 'font-weight:bold;'
+            ],
+            'class' => []
         ]
     ]
 ];

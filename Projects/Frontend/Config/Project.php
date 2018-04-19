@@ -2,6 +2,47 @@
 [
     /*
     |--------------------------------------------------------------------------
+    | Project Language
+    |--------------------------------------------------------------------------
+    |
+    | It is used to change the system's error output or the language used in 
+    | language libraries.
+    |
+    */
+
+    'language' => 'en',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Timezone
+    |--------------------------------------------------------------------------
+    |
+    | Sets the region for the time zone.
+    |
+    */
+
+    'timezone' => 'Europe/Istanbul',
+
+   /*
+    |--------------------------------------------------------------------------
+    | Set Locale
+    |--------------------------------------------------------------------------
+    |
+    | Local settings for time zone.
+    |
+    | charset : Sets the date and time character set.
+    | language: Sets the date and time language.
+    |
+    */
+
+    'locale' =>
+    [
+        'charset'  => 'tr_TR.UTF-8',
+        'language' => 'turkish',
+    ],
+    
+    /*
+    |--------------------------------------------------------------------------
     | Mode
     |--------------------------------------------------------------------------
     |
@@ -36,36 +77,6 @@
     */
 
     'benchmark' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Cache
-    |--------------------------------------------------------------------------
-    |
-    | It is used to create a project-wide cache.
-    | 
-    | status: activates the caching process.
-    | time: Storage time in seconds.
-    | prefix: Adds a prefix to the cache name.
-    | driver: Cache driver.
-    | compress: Compress driver.
-    | exclude: exclude controller/method information.
-    | include: include controller/method information.
-    | machinesIp: IP addresses that will not be affected from caching.
-    |
-    */
-
-    'cache' =>
-    [
-        'status'     => false,
-        'time'       => 60,
-        'prefix'     => NULL,
-        'driver'     => 'file',
-        'compress'   => false,
-        'exclude'    => [],
-        'include'    => [],
-        'machinesIP' => [],
-    ],
 
     /*
     |--------------------------------------------------------------------------

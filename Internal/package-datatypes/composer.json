@@ -1,0 +1,23 @@
+{
+    "name": "znframework/package-datatypes",
+    "description": "ZN Framework Datatypes Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "datatypes"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\DataTypes\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

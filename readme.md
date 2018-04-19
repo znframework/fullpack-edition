@@ -1,13 +1,13 @@
 <p align="center">
 	<img width="800" height="300" src="https://cloud.teslaerp.com/tesla/Application/Resources/Uploads/znframework/gallery/zn/1513284150_zn800.jpg"><br>
 	<a title="copy to clipboard" class="copy_on_clip" data-clipboard-target="#latest_stable_version_markdown">
-		<img class="spinned latest_stable_version_img" src="https://poser.pugx.org/znframework/fullpack-edition/v/stable" style="display: inline;">
+		<img class="spinned latest_stable_version_img" src="https://poser.pugx.org/znframework/znframework/v/stable" style="display: inline;">
 	</a>
 	<a title="copy to clipboard" class="copy_on_clip" data-clipboard-target="#latest_unstable_version_markdown">
-		<img class="spinned latest_unstable_version_img" src="https://poser.pugx.org/znframework/fullpack-edition/v/unstable" style="display: inline;">
+		<img class="spinned latest_unstable_version_img" src="https://poser.pugx.org/znframework/znframework/v/unstable" style="display: inline;">
 	</a>
 	<a title="copy to clipboard" class="copy_on_clip" data-clipboard-target="#license_markdown">
-		<img class="spinned license_img" src="https://poser.pugx.org/znframework/fullpack-edition/license" style="display: inline;">
+		<img class="spinned license_img" src="https://poser.pugx.org/znframework/znframework/license" style="display: inline;">
 	</a>
 </p>
 

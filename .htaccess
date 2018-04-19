@@ -63,4 +63,8 @@ ErrorDocument 403 /fullpack-edition/zeroneed.php
 
 DirectoryIndex zeroneed.php
 
+<IfModule mod_php5.c>
+	php_value session.cookie_lifetime 10
+</IfModule>
+
 #----------------------------------------------------------------------

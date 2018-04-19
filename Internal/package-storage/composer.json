@@ -1,0 +1,25 @@
+{
+    "name": "znframework/package-storage",
+    "description": "ZN Framework Storage Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "storage"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-protection": "5.6.*",
+        "znframework/package-cryptography": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Storage\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

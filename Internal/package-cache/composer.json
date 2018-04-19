@@ -1,0 +1,26 @@
+{
+    "name": "znframework/package-cache",
+    "description": "ZN Framework Cache",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "cache"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-filesystem": "5.6.*",
+        "znframework/package-compression": "5.6.*",
+        "znframework/package-buffering": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Cache\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

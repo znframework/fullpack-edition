@@ -1,0 +1,26 @@
+{
+    "name": "znframework/package-crontab",
+    "description": "ZN Framework Crontab Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "crontab"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-filesystem": "5.6.*",
+        "znframework/package-datatypes": "5.6.*",
+        "znframework/package-prompt": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Crontab\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

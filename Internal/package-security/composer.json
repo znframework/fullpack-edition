@@ -1,0 +1,23 @@
+{
+    "name": "znframework/package-security",
+    "description": "ZN Framework Security Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "security"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Security\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

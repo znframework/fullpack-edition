@@ -1,0 +1,27 @@
+{
+    "name": "znframework/package-services",
+    "description": "ZN Framework Services Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "services", "cdn", "curl", "restful"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-request": "5.6.*",
+        "znframework/package-protection": "5.6.*",
+        "znframework/package-response": "5.6.*",
+        "znframework/package-xml": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Services\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

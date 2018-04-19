@@ -1,0 +1,24 @@
+{
+    "name": "znframework/package-shopping",
+    "description": "ZN Framework Shopping Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "shopping", "cart", "commerce"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-helpers": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Shopping\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

@@ -1,14 +1,15 @@
 <?php
 
-$lang  = ZN\IndividualStructures\Lang::select('IndividualStructures'); 
+$lang  = ZN\Lang::select('IndividualStructures'); 
 
-Import::style('bootstrap', 'awesome', 'external-template-style'); Import::script('jquery', 'bootstrap');
-Import::template('ExternalTemplateStyles');
+ZN\Inclusion\Style::use('bootstrap', 'awesome', 'external-template-style'); 
+ZN\Inclusion\Script::use('jquery', 'bootstrap');
+ZN\Inclusion\Template::use('ExternalTemplateStyles');
 ?>
 <style>
 .table-bordered>tbody>tr>td 
 {
-    border: 1px solid #222;
+    border: 1px solid #222; color : #ccc; font-size:14px;
 }
 </style>
 
@@ -35,14 +36,14 @@ Import::template('ExternalTemplateStyles');
             </div>
         </div>
 
-        <a href="#openServerData<?php echo $key?>" class="list-group-item panel-header" data-toggle="collapse">
+        <a href="#openServerData" class="list-group-item panel-header" data-toggle="collapse">
             <span><i class="fa fa-angle-down fa-fw panel-text"></i>&nbsp;&nbsp;&nbsp;&nbsp; Server Request Data</span>
         </a>
         <div class="panel-body collapse" id="openServerData" style="margin-bottom:-17px;">
             <div class="list-group panel-text">
                 <table class="table table-bordered">
                     <?php foreach( $_SERVER as $key => $value ): ?>
-                    <tr><td width="20%" class=><?php echo $key ?></td><td><?php echo $value ?></td></tr>
+                    <tr><td width="20%" class=><?php echo $key ?? NULL ?></td><td><?php echo $value ?? NULL ?></td></tr>
                     <?php endforeach; ?>
                 
                 </table>

@@ -53,7 +53,7 @@
     'session.upload_progress.min_freq' => '', # 1
 
     # Cookie Settings
-    'session.cookie_lifetime'          => '', # 0
+    'session.cookie_lifetime'          => 10, # 0
     'session.cookie_path'              => '', # /
     'session.cookie_domain'            => '', # NULL
     'session.cookie_secure'            => '', # NULL

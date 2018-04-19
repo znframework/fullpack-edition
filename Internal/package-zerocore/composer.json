@@ -1,0 +1,22 @@
+{
+    "name": "znframework/package-zerocore",
+    "description": "ZN Framework Core Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "zerocore"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

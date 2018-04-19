@@ -1,0 +1,27 @@
+{
+    "name": "znframework/package-helpers",
+    "description": "ZN Framework Helpers Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "helpers"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-database": "5.6.*",
+        "znframework/package-datatypes": "5.6.*",
+        "znframework/package-hypertext": "5.6.*",
+        "znframework/package-protection": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Helpers\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

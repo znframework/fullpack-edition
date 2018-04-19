@@ -1,0 +1,26 @@
+{
+    "name": "znframework/package-captcha",
+    "description": "ZN Framework Captcha Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "captcha"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-image": "5.6.*",
+        "znframework/package-storage": "5.6.*",
+        "znframework/package-cryptography": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Captcha\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

@@ -1,0 +1,21 @@
+{
+    "name": "znframework/default-project",
+    "type": "project",
+    "description": "ZN Framework Default Project For Multi Edition",
+    "keywords": ["zn","zeroneed","default project"],
+    "homepage": "https://github.com/znframework/default-project",
+    "license": "MIT",
+    "authors": 
+    [
+        {
+            "name": "Ozan UYKUN",
+            "email": "ozanbote@gmail.com",
+            "homepage": "http://www.znframework.com",
+            "role": "Developer"
+        }
+    ],
+    "require": 
+    {
+        "php": ">=7.0.0"
+    }
+}

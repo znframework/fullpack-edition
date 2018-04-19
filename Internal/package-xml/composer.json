@@ -1,0 +1,24 @@
+{
+    "name": "znframework/package-xml",
+    "description": "ZN Framework XML Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "xml"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-hypertext": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\XML\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

@@ -1,0 +1,24 @@
+{
+    "name": "znframework/package-compression",
+    "description": "ZN Framework Compression Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "compression"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.6.*",
+        "znframework/package-filesystem": "5.6.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Compression\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}
