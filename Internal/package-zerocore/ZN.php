@@ -563,6 +563,10 @@ class ZN
             return $updatedFiles;
         }
 
+        usort($return, function($data1, $data2){ return strcmp($data1->name, $data2->name); });
+
+        rsort($return);
+
         $lastest = $return[0];
  
         if( ZN_VERSION < $lastest->name ) foreach( $return as $version )
