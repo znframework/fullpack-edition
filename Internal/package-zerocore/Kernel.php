@@ -354,7 +354,7 @@ class Kernel
         }
         elseif( is_file($composer) )
         {
-            require composer;
+            require $composer;
         }
         else
         {
