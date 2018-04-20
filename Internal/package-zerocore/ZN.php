@@ -81,7 +81,7 @@ class ZN
                 } 
             }
 
-            Filesystem::copy($upgradeFolder, '/'); Filesystem::deleteFolder($upgradeFolder);
+            Filesystem::copy($upgradeFolder, REAL_BASE_DIR); Filesystem::deleteFolder($upgradeFolder);
 
             return true;
         }
