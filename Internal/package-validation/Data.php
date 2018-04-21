@@ -349,7 +349,7 @@ class Data implements DataInterface
      */
     protected function _phone()
     {
-        if( isset($config['phone']) )
+        if( isset($this->config['phone']) )
         {
             if( ! Validator::phone($this->edit, $this->config['phone']) )
             {
@@ -367,7 +367,7 @@ class Data implements DataInterface
      */
     protected function _oldPassword()
     {
-        if( isset($config['oldPassword']) )
+        if( isset($this->config['oldPassword']) )
         {
             $pm = '';
             $pm = $this->config['oldPassword'];
