@@ -101,20 +101,6 @@ trait RulesPropertiesTrait
     }
 
     /**
-     * Match Old Password
-     * 
-     * @param string $oldPassword
-     * 
-     * @return Data
-     */
-    public function oldPassword(String $oldPassword) : Data
-    {
-        $this->settings['config']['oldPassword'] = $oldPassword;
-
-        return $this;
-    }
-
-    /**
      * Compare
      * 
      * @param int $min = NULL

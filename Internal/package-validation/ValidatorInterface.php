@@ -12,6 +12,117 @@
 interface ValidatorInterface
 {
     /**
+     * Trim data.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function trim(String $data) : String;
+
+    /**
+     * Nasty code clean.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function nc(String $data) : String;
+
+    /**
+     * Encode html tags.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function html(String $data) : String;
+
+    /**
+     * Encode cross site scripting.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function xss(String $data) : String;
+
+    /**
+     * Encode injection data.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function injection(String $data) : String;
+
+    /**
+     * Encode script tags.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function script(String $data) : String;
+
+    /**
+     * Encode PHP tags.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function php(String $data) : String;
+
+    /**
+     * Empty control.
+     * 
+     * @param string $data
+     * 
+     * @return bool
+     */
+    public static function required(String $data) : Bool;
+
+    /**
+     * Control captcha code.
+     * 
+     * @param string $data
+     * 
+     * @return bool
+     */
+    public static function captcha(String $data) : Bool;
+
+    /**
+     * Match password.
+     * 
+     * @param string $data
+     * @param string $check
+     * 
+     * @return bool
+     */
+    public static function matchPassword(String $data, String $check) : Bool;
+
+    /**
+     * Match.
+     * 
+     * @param string $data
+     * @param string $check
+     * 
+     * @return bool
+     */
+    public static function match(String $data, String $check) : Bool;
+
+    /**
+     * Pattern.
+     * 
+     * @param string $data
+     * @param string $check
+     * 
+     * @return bool
+     */
+    public static function pattern(String $data, String $check) : Bool;
+
+    /**
      * Checks whether the grant is between the specified values.
      * 
      * @param float $value

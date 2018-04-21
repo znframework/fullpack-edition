@@ -10,9 +10,160 @@
  */
 
 use ZN\IS;
+use ZN\Security;
+use ZN\Singleton;
 
 class Validator implements ValidatorInterface
 {
+    /**
+     * Trim data.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function trim(String $data) : String
+    {
+        return trim($data);
+    }
+
+    /**
+     * Nasty code clean.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function nc(String $data) : String
+    {
+        $secnc = Security\Properties::$ncEncode;
+
+        return Security\NastyCode::encode($data, $secnc['badChars'], $secnc['changeBadChars']);
+    }
+
+    /**
+     * Encode html tags.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function html(String $data) : String
+    {
+        return Security\Html::encode($data);
+    }
+
+    /**
+     * Encode cross site scripting.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function xss(String $data) : String
+    {
+        return Security\CrossSiteScripting::encode($data);
+    }
+
+    /**
+     * Encode injection data.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function injection(String $data) : String
+    {
+        return Security\Injection::encode($data);
+    }
+
+    /**
+     * Encode script tags.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function script(String $data) : String
+    {
+        return Security\Script::encode($data);
+    }
+
+    /**
+     * Encode PHP tags.
+     * 
+     * @param string $data
+     * 
+     * @return string
+     */
+    public static function php(String $data) : String
+    {
+        return Security\PHP::encode($data);
+    }
+
+    /**
+     * Empty control.
+     * 
+     * @param string $data
+     * 
+     * @return bool
+     */
+    public static function required(String $data) : Bool
+    {
+        return ! empty($data);
+    }
+
+    /**
+     * Control captcha code.
+     * 
+     * @param string $data
+     * 
+     * @return bool
+     */
+    public static function captcha(String $data) : Bool
+    {
+        return $data === Singleton::class('ZN\Captcha\Render')->getCode();
+    }
+
+    /**
+     * Match password.
+     * 
+     * @param string $data
+     * @param string $check
+     * 
+     * @return bool
+     */
+    public static function matchPassword(String $data, String $check) : Bool
+    {
+        return self::match($data, $check);
+    }
+
+    /**
+     * Match.
+     * 
+     * @param string $data
+     * @param string $check
+     * 
+     * @return bool
+     */
+    public static function match(String $data, String $check) : Bool
+    {
+        return $data === $check;
+    }
+
+    /**
+     * Pattern.
+     * 
+     * @param string $data
+     * @param string $check
+     * 
+     * @return bool
+     */
+    public static function pattern(String $data, String $check) : Bool
+    {
+        return preg_match($check, $data);
+    }
+
     /**
      * Checks whether the grant is between the specified values.
      * 
@@ -66,7 +217,7 @@ class Validator implements ValidatorInterface
         if( $pattern !== NULL)
         {
             $phoneData = preg_replace('/([^\*])/', 'key:$1', $pattern);
-            $phoneData = '/'.str_replace(['*', 'key:'], ['[0-9]', '\\'], $phoneData).'/';
+            $phoneData = '/^'.str_replace(['*', 'key:'], ['[0-9]', '\\'], $phoneData).'$/';
         }
         else
         {
