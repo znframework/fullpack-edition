@@ -40,7 +40,7 @@ class Singleton
 
                 $class = $classInfo['namespace'];
             }
-
+            
             self::$singleton[$lower] = new $class;
         }
 
