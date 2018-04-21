@@ -29,6 +29,7 @@ class ComposerStaticInit18a22f10e44b8b77ed023b6677d08bad
             'ZN\\Helpers\\' => 11,
             'ZN\\Generator\\' => 13,
             'ZN\\Filesystem\\' => 14,
+            'ZN\\EventHandler\\' => 16,
             'ZN\\Email\\' => 9,
             'ZN\\DateTime\\' => 12,
             'ZN\\Database\\' => 12,
@@ -119,6 +120,10 @@ class ComposerStaticInit18a22f10e44b8b77ed023b6677d08bad
         'ZN\\Filesystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/package-filesystem',
+        ),
+        'ZN\\EventHandler\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/package-event-handler',
         ),
         'ZN\\Email\\' => 
         array (

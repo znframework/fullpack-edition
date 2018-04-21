@@ -24,6 +24,7 @@ return array(
     'ZN\\Helpers\\' => array($vendorDir . '/package-helpers'),
     'ZN\\Generator\\' => array($vendorDir . '/package-generator'),
     'ZN\\Filesystem\\' => array($vendorDir . '/package-filesystem'),
+    'ZN\\EventHandler\\' => array($vendorDir . '/package-event-handler'),
     'ZN\\Email\\' => array($vendorDir . '/package-email'),
     'ZN\\DateTime\\' => array($vendorDir . '/package-datetime'),
     'ZN\\Database\\' => array($vendorDir . '/package-database'),
