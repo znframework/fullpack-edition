@@ -21,6 +21,46 @@ trait RulesPropertiesTrait
     protected $settings = [];
 
     /**
+     * Valid Card Number
+     * 
+     * @param string $type
+     * 
+     * @return Data
+     */
+    public function card(String $type) : Data
+    {
+        $this->settings['config']['card'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Valid Card CVC
+     * 
+     * @param string $type
+     * 
+     * @return Data
+     */
+    public function cvc(String $type) : Data
+    {
+        $this->settings['config']['cvc'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Valid Card Date
+     * 
+     * @return Data
+     */
+    public function cardDate() : Data
+    {
+        $this->settings['config'][] = 'cardDate';
+
+        return $this;
+    }
+
+    /**
      * Method
      * 
      * @param string $method

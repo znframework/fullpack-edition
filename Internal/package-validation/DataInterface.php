@@ -33,6 +33,13 @@ interface DataInterface
     public function rules(String $name, Array $config = [], $viewName = '', String $met = 'post');
 
     /**
+     * Sets user messages
+     * 
+     * @param array $settings
+     */
+    public function messages(Array $settings);
+
+    /**
      * Get error
      * 
      * @param string $name = 'array' - options[array|string]

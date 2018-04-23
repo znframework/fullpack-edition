@@ -16,6 +16,50 @@ use ZN\Singleton;
 class Validator implements ValidatorInterface
 {
     /**
+     * Is valid card
+     * 
+     * @param string $data
+     * @param string $type = NULL
+     * 
+     * @return bool
+     */
+    public static function card(String $data, String $type = NULL) : Bool
+    {
+        return CreditCard\Validator::card($data, $type);
+    }
+
+    /**
+     * Is valid cvc
+     * 
+     * @param int    $cvc
+     * @param string $type
+     */
+    public static function cvc(Int $cvc, String $type = NULL) : Bool
+    {
+        return CreditCard\Validator::cvc($cvc, $type);
+    }
+
+    /**
+     * Is valid date
+     * 
+     * @param string $year
+     * @param string $month
+     * 
+     * @return bool
+     */
+    public static function cardDate(String $date) : Bool
+    {
+        $dateEx = explode('/', $date);
+
+        if( ! isset($dateEx[1]) )
+        {
+            return false;
+        }
+
+        return CreditCard\Validator::date($dateEx[1], $dateEx[0]);
+    }
+
+    /**
      * Trim data.
      * 
      * @param string $data

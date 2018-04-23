@@ -48,6 +48,13 @@ class Data implements DataInterface
     protected $messages = [];
 
     /**
+     * Keeps user messages
+     * 
+     * @var array
+     */
+    protected $userMessages = [];
+
+    /**
      * Keeps index
      * 
      * @var int
@@ -59,7 +66,7 @@ class Data implements DataInterface
      */
     protected $method;
 
-   /**
+    /**
      * Defines rules for control of the grant.
      * 
      * @param string $name
@@ -109,11 +116,11 @@ class Data implements DataInterface
             {
                 if( is_numeric($key) )
                 {  
-                    $this->validInArray($function, $edit, $name, $viewName);
+                    $this->validInArray($function, $edit, $name, [':name' => $viewName]);
                 }
                 else
                 {
-                    $this->validIssetArray($function, $edit, $val, $name, $viewName);
+                    $this->validIssetArray($function, $edit, (array) $val, $name, $viewName);
                 }
             }    
         }
@@ -123,6 +130,16 @@ class Data implements DataInterface
         array_push($this->errors, $this->messages);
 
         $this->defaultVariables();
+    }
+
+    /**
+     * Sets user messages
+     * 
+     * @param array $settings
+     */
+    public function messages(Array $settings)
+    {
+        $this->userMessages = $settings;
     }
 
     /**
@@ -172,7 +189,7 @@ class Data implements DataInterface
      */
     public function error(String $name = 'array')
     {
-        if( $name === "string" || $name === "array" || $name === "echo" )
+        if( $name === 'string' || $name === 'array' || $name === 'echo' )
         {
             if( count($this->errors) > 0 )
             {
@@ -181,19 +198,19 @@ class Data implements DataInterface
 
                 foreach( $this->errors as $key => $value )
                 {
-                    if( is_array($value) )foreach($value as $k => $val)
+                    if( is_array($value) ) foreach($value as $k => $val)
                     {
                         $result .= $val;
-                        $resultArray[] = str_replace("<br>", '', $val);
+                        $resultArray[] = str_replace('<br>', '', $val);
                     }
                 }
 
-                if( $name === "string" || $name === "echo" )
+                if( $name === 'string' || $name === 'echo' )
                 {
                     return $result;
                 }
 
-                if( $name === "array")
+                if( $name === 'array')
                 {
                     return $resultArray;
                 }
@@ -272,38 +289,54 @@ class Data implements DataInterface
     {
         $data = $this->setMethodType($name, $this->method);
      
-        if( ! Validator::$key($data, ...(array) $check) )
+        if( ! Validator::$key($data, ...$check) )
         {
-            if( in_array($key, ['minchar', 'maxchar']) )
-            {
-                $this->setMessages($key, $name, ["%" => $viewName, "#" => $check]);
-            }
-            elseif( in_array($key, ['between', 'betweenBoth']) )
-            {
-                $this->setMessages($key, $name, ['%' => $viewName, '#' => $check[0], '$' => $check[1] ?? 0]);
-            }
-            else
-            {
-                $this->setMessages($key, $name, $viewName);
-            }
+            $this->setMessages($key, $name, $this->replaceParameters($check, $viewName));
         }
     }
 
     /**
      * protected messages
-     * 
-     * @param string $type
-     * @param string $name
-     * @param string $viewName
-     * 
-     * @return void
      */
-    protected function setMessages($type, $name, $viewName)
+    protected function setMessages($type, $name, $check)
     {
-        $message = Lang::select('ViewObjects', 'validation:'.$type, $viewName);
+        if( $userMessage = ($this->userMessages[$type] ?? NULL) )
+        {
+            $message = $this->replaceUserMessage($check, $userMessage);
+        }
+        else
+        {
+            $message = Lang::select('ViewObjects', 'validation:'.$type, $check);
+        }
 
         $this->messages[$this->index] = $message.'<br>'; $this->index++;
         $this->error[$name]           = $message;
+    }
+
+    /**
+     * Protected replace user message
+     */
+    protected function replaceUserMessage($check, $userMessage)
+    {
+        return str_replace(array_keys($check), array_values($check), $userMessage);
+    }
+
+    /**
+     * Protected replace parameters
+     */
+    protected function replaceParameters($check, $viewName)
+    {
+        $newCheck = [];
+
+        foreach( $check as $key => $p )
+        {
+            $newCheck[] = ':p' . ($key + 1);
+        }
+
+        array_unshift($newCheck, ':name');
+        array_unshift($check, $viewName);
+
+        return array_combine($newCheck, $check);
     }
 
     /**
@@ -330,7 +363,7 @@ class Data implements DataInterface
      */
     protected function setMethodType($name, $met)
     {
-        if( $met === "data" )
+        if( $met === 'data' )
         {
             return $name;
         }
@@ -349,7 +382,7 @@ class Data implements DataInterface
      */
     protected function setMethodNewValue($name, $val, $met)
     {
-        if( $met === "data" )
+        if( $met === 'data' )
         {
             return;
         }
