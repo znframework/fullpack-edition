@@ -74,6 +74,8 @@ class Filesystem
         }
         else
         {
+            $name = Base::suffix($name, DS);
+
             $getFiles = self::getFiles($name);
 
             if( ! empty($getFiles) )
@@ -82,7 +84,7 @@ class Filesystem
                 {
                     foreach( $getFiles as $val )
                     {
-                        self::deleteFolder($name."/".$val);
+                        self::deleteFolder($name.$val);
                     }
                 }
             }
@@ -143,9 +145,12 @@ class Filesystem
 
         if( is_dir($source) )
         {
+            $source = Base::suffix($source, DS);
+            $target = Base::suffix($target, DS);
+
             if( ! self::getFiles($source) )
             {
-                $emptyFilePath = Base::suffix($source, DS) . 'empty';
+                $emptyFilePath = $source . 'empty';
 
                 self::createFile($emptyFilePath);
 
@@ -160,8 +165,8 @@ class Filesystem
 
                 if( is_array($getFiles = self::getFiles($source)) ) foreach( $getFiles as $val )
                 {
-                    $sourceDir = $source."/".$val;
-                    $targetDir = $target."/".$val;
+                    $sourceDir = $source.$val;
+                    $targetDir = $target.$val;
 
                     if( is_file($sourceDir) )
                     {

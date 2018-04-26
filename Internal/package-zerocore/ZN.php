@@ -579,7 +579,10 @@ class ZN
                 {
                     if( ! isset($updatedFiles[$file->filename]) )
                     {
-                        $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
+                        if( ! empty($file->raw_url) )
+                        {
+                            $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
+                        }
                     }        
                 }
             }
