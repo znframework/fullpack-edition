@@ -21,12 +21,10 @@ class Structure
     public static function data($requestUri = NULL)
     {
         $namespace    = PROJECT_CONTROLLER_NAMESPACE;
-        $page         = '';
-        $openFunction = Config::get('Routing', 'openFunction') ?: 'main';
-        $function     = $openFunction ?: 'main';
+        $openFunction = $function = Config::get('Routing', 'openFunction') ?: 'main';
         $parameters   = [];
-        $segments     = '';
         $isFile       = '';
+        $page         = '';
         $url          = explode('?', $requestUri ?? In::requestURI());
         $segments     = explode('/', $url[0]);
 
@@ -40,30 +38,6 @@ class Structure
             if( ! is_file($isFile) )
             {
                 $isFile = EXTERNAL_CONTROLLERS_DIR . $suffixExtension;
-            }
-
-            if( ! is_file($isFile) )
-            {
-                $if        = '';
-                $nsegments = $segments;
-
-                for( $i = 0; $i < count($segments); $i++ )
-                {
-                    $if    .= $segments[$i].'/';
-                    $ifTrim = rtrim($if, '/');
-                    $isF    = CONTROLLERS_DIR . Base::suffix($ifTrim , '.php');
-
-                    if( is_file($isF) )
-                    {
-                        $page     = Datatype::divide($ifTrim, '/', -1);
-                        $isFile   = $isF;
-                        $segments = $nsegments;
-
-                        break;
-                    }
-
-                    array_shift($nsegments);
-                }
             }
 
             unset($segments[0]);
@@ -104,20 +78,20 @@ class Structure
      */
     public static function defines()
     {
-        define('STRUCTURE_DATA', self::data());
-        define('CURRENT_COPEN_PAGE', STRUCTURE_DATA['openFunction']);
+        define('STRUCTURE_DATA'     , self::data());
+        define('CURRENT_COPEN_PAGE' , STRUCTURE_DATA['openFunction']);
         define('CURRENT_CPARAMETERS', STRUCTURE_DATA['parameters']);
-        define('CURRENT_CFILE', STRUCTURE_DATA['file']);
-        define('CURRENT_CFUNCTION', STRUCTURE_DATA['function']);
-        define('CURRENT_CPAGE', ($page = STRUCTURE_DATA['page']) . '.php');
-        define('CURRENT_CONTROLLER', $page);
-        define('CURRENT_CNAMESPACE', $namespace = STRUCTURE_DATA['namespace'] );
-        define('CURRENT_CCLASS', $namespace . CURRENT_CONTROLLER);
-        define('CURRENT_CFPATH', str_replace
+        define('CURRENT_CFILE'      , STRUCTURE_DATA['file']);
+        define('CURRENT_CFUNCTION'  , STRUCTURE_DATA['function']);
+        define('CURRENT_CPAGE'      , ($page = STRUCTURE_DATA['page']) . '.php');
+        define('CURRENT_CONTROLLER' , $page);
+        define('CURRENT_CNAMESPACE' , $namespace = STRUCTURE_DATA['namespace'] );
+        define('CURRENT_CCLASS'     , $namespace . CURRENT_CONTROLLER);
+        define('CURRENT_CFPATH'     , str_replace
         (
             CONTROLLERS_DIR, '', CURRENT_CONTROLLER) . '/' . CURRENT_CFUNCTION
         );
-        define('CURRENT_CFURI', strtolower(CURRENT_CFPATH));
-        define('CURRENT_CFURL', Request::getSiteURL() . CURRENT_CFPATH);
+        define('CURRENT_CFURI'      , strtolower(CURRENT_CFPATH));
+        define('CURRENT_CFURL'      , Request::getSiteURL() . CURRENT_CFPATH);
     }
 }

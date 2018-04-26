@@ -41,6 +41,6 @@ class LuhnAlgorithm implements LuhnAlgorithmInterface
             }
         }
 
-        return ($checksum % 10) == 0 ? true : false;
+        return ($checksum % 10) == 0;
     }
 }

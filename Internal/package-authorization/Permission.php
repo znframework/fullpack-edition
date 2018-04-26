@@ -17,15 +17,19 @@ class Permission extends Factory
     [
         'methods' =>
         [
-            'start'   => 'Process::start',
-            'end'     => 'Process::end',
-            'process' => 'Process::use',
-            'page'    => 'Page::use',
-            'post'    => 'Method::post',
-            'get'     => 'Method::get',
-            'request' => 'Method::request',
-            'method'  => 'Method::use',
-            'roleid'  => 'PermissionExtends::roleId'
+            'start'          => 'Process::start',
+            'end'            => 'Process::end',
+            'process'        => 'Process::use',
+            'page'           => 'Page::use',
+            'post'           => 'Method::post',
+            'get'            => 'Method::get',
+            'request'        => 'Method::request',
+            'method'         => 'Method::use',
+            'roleid'         => 'PermissionExtends::roleId',
+            'setpermrules'   => 'RoleRules::setPermRules',
+            'setnopermrules' => 'RoleRules::setNopermRules',
+            'getpermrules'   => 'RoleRules::getPermRules',
+            'getnopermrules' => 'RoleRules::getNopermRules'
         ]
     ];
 }

@@ -101,151 +101,9 @@ class DB extends Connection
     private $joinType   , $joinTable , $unionQuery = NULL, $caching = [];
 
     /**
-     * Magic call
-     * 
-     * @param string $method
-     * @param array  $parameters
-     * 
-     * @return mixed
+     * Callable talking queries.
      */
-    public function __call($method, $parameters)
-    {
-        $method = strtolower($originMethodName = $method);
-        $split  = Datatype::splitUpperCase($originMethodName);
-        $crud   = $split[1] ?? NULL;
-
-        # Is Function Elements
-        if( in_array($method, $this->functionElements) )
-        {
-            $functionMethod = $method;
-        }
-        else
-        {
-            $functionMethod = $this->functionElements[$method] ?? NULL;
-        }
-
-        # Is Vartype Elements
-        if( in_array($method, $this->vartypeElements) )
-        {
-            $vartypeMethod = $method;
-        }
-        else
-        {
-            $vartypeMethod  = $this->vartypeElements[$method]  ?? NULL;
-        }
-
-        # Math Functions
-        if( $functionMethod !== NULL )
-        {
-            $math = $this->_math($functionMethod, $parameters);
-
-            if( $math->return === true )
-            {
-                return $math->args;
-            }
-            else
-            {
-                $this->selectFunctions[] = $math->args;
-
-                return $this;
-            }
-        }
-        # Variable Types
-        elseif( $vartypeMethod !== NULL )
-        {
-            return $this->db->variableTypes($vartypeMethod, ...$parameters);
-        }
-        # Statements
-        elseif( in_array($method, $this->statementElements) )
-        {
-            return $this->db->statements($method, ...$parameters);
-        }
-        # Join
-        elseif( ($split[1] ?? NULL) === 'Join')
-        {
-            $type    = $split[0] ?? 'left';
-            $table1  = $split[2] ?? NULL;
-            $column1 = strtolower($table1 . '.' . $split[3]);
-            $table2  = $split[4] ?? NULL;
-            $column2 = strtolower($table2 . '.' . $split[5]);
-            $met     = $type . $split[1];
-
-            return $this->$met($column1, $column2, $parameters[0] ?? '=');
-        }
-        # Order By - Group By
-        elseif( $split[0] === 'order' || $split[0] === 'group')
-        {
-            $column = strtolower($split[2] ?? NULL);
-            $type   = $split[0] === 'order' ? $split[3] ?? 'asc' : NULL;
-            $met    = $split[0] . 'By';
-
-            return $this->$met($column, $type);
-        }
-        # Where - Having
-        elseif( $split[0] === 'where' || $split[0] === 'having' )
-        {
-            $met       = $split[0];
-            $column    = strtolower($split[1]);
-            $condition = $split[2] ?? NULL;
-            $operator  = isset($parameters[1]) ? ' ' . $parameters[1] : NULL;
-
-            return $this->$met($column . $operator, $parameters[0], $condition);
-        }
-        # Insert - Update - Delete
-        elseif
-        (
-            $crud === 'Delete' ||
-            $crud === 'Update' ||
-            $crud === 'Insert'
-        )
-        {
-            $table  = $split[0];
-            $method = $split[1];
-
-            if( is_string($parameters[0]) )
-            {
-                $prefix = $parameters[0] . ':';
-                $data   = [];
-            }
-            else
-            {
-                $prefix = NULL;
-                $data   = $parameters[0];
-            }
-
-            return $this->$method($prefix . $table, $data);
-        }
-        else
-        {
-            $func = $split[1] ?? NULL;
-
-            # Row & Result
-            if( $func === 'Row' || $func === 'Result' )
-            {
-                $method = $split[0];
-                $result = strtolower($func);
-            }
-
-            # Value
-            if( $select = ($split[2] ?? NULL) )
-            {
-                $result = 'value';
-
-                $this->select($select);
-            }
-
-            $return = $this->get($method);
-
-            # Return ->get()
-            if( ! isset($result) )
-            {
-                return $return;
-            }
-
-            # Return ->row(0) || result('object')
-            return $return->$result($parameters[0] ?? ($result === 'row' ? 0 : 'object'));
-        }
-    }
+    use CallableTalkingQueries;
 
     /**
      * Defines SQL SELECT
@@ -1798,10 +1656,17 @@ class DB extends Connection
     /**
      * Get table column value
      * 
+     * @param string $column = NULL - added 5.6.5
+     * 
      * @return string
      */
-    public function value()
+    public function value(String $column = NULL)
     {
+        if( preg_match('/[a-z]\w+/i', $column) )
+        {
+            return $this->row()->$column ?? false;
+        }
+
         return $this->row(true);
     }
 

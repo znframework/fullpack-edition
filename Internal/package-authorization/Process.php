@@ -62,13 +62,20 @@ class Process extends PermissionExtends
      */
     public static function use($roleId = 0, $process = NULL, $object = NULL)
     {
-        if( PermissionExtends::$roleId !== NULL )
+        if( is_array($process) )
         {
-            $object  = $process;
-            $process = $roleId;
-            $roleId  = PermissionExtends::$roleId;
+            return self::selectSetPermissionType($roleId, $process, 'process');
         }
-
+        else
+        {
+            if( self::$roleId !== NULL )
+            {
+                $object  = $process;
+                $process = $roleId;
+                $roleId  = self::$roleId;
+            }
+        }
+    
         return self::common($roleId, $process, $object, 'process');
     }
 }

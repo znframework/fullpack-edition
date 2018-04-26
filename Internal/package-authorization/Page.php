@@ -14,12 +14,19 @@ class Page extends PermissionExtends
     /**
      * Page
      * 
-     * @param mixed $roleId = 6
+     * @param mixed $roleId   = NULL
+     * @param array $table    = NULL
+     * @param mixed $callback = NULL
      * 
      * @return mixed
      */
-    public static function use($roleId = 6)
+    public static function use($roleId = NULL, Array $table = NULL, $callback = NULL)
     {
-        return self::common(PermissionExtends::$roleId ?? $roleId, NULL, NULL, 'page');
+        if( $roleId !== NULL && $table !== NULL )
+        {
+           return self::predefinedPermissionConfiguration($roleId, $table, $callback, 'page', [$roleId, NULL, NULL, 'page']);
+        }
+
+        return self::common(self::$roleId ?? $roleId, NULL, NULL, 'page');
     }
 }

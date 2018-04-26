@@ -14,49 +14,61 @@ class Method extends PermissionExtends
     /**
      * Post
      * 
-     * @param mixed $roleId = 6
+     * @param mixed $roleId   = NULL
+     * @param array $table    = NULL
+     * @param mixed $callback = NULL
      * 
      * @return bool
      */
-    public static function post($roleId = 6) : Bool
+    public static function post($roleId = NULL, Array $table = NULL, $callback = NULL) : Bool
     {
-        return self::use($roleId, __FUNCTION__);
+        return self::use($roleId, __FUNCTION__, $table, $callback);
     }
 
     /**
      * Get
      * 
-     * @param mixed $roleId = 6
+     * @param mixed $roleId   = NULL
+     * @param array $table    = NULL
+     * @param mixed $callback = NULL
      * 
      * @return bool
      */
-    public static function get($roleId = 6) : Bool
+    public static function get($roleId = NULL, Array $table = NULL, $callback = NULL) : Bool
     {
-        return self::use($roleId, __FUNCTION__);
+        return self::use($roleId, __FUNCTION__, $table, $callback);
     }
 
     /**
      * Request
      * 
-     * @param mixed $roleId = 6
-     * 
+     * @param mixed $roleId   = NULL
+     * @param array $table    = NULL
+     * @param mixed $callback = NULL
      * @return bool
      */
-    public static function request($roleId = 6) : Bool
+    public static function request($roleId = NULL, Array $table = NULL, $callback = NULL) : Bool
     {
-        return self::use($roleId, __FUNCTION__);
+        return self::use($roleId, __FUNCTION__, $table, $callback);
     }
 
     /**
      * Method
      * 
-     * @param mixed  $roleId = 6
-     * @param string $method = 'post'
+     * @param mixed  $roleId   = NULL
+     * @param string $method   = 'post'
+     * @param array  $table    = NULL
+     * @param mixed  $callback = NULL
      * 
      * @return bool
      */
-    public static function use($roleId = 6, $method = 'post') : Bool
+    public static function use($roleId = NULL, $method = 'post', Array $table = NULL, $callback = NULL) : Bool
     {
-        return self::common(PermissionExtends::$roleId ?? $roleId, $method, NULL, 'method');
+        if( $roleId !== NULL && $table !== NULL )
+        {
+            return self::predefinedPermissionConfiguration($roleId, $table, $callback, 'method', [$roleId, $method, NULL, 'method']);
+        }
+
+        return self::common(self::$roleId ?? $roleId, $method, NULL, 'method');
     }
 }

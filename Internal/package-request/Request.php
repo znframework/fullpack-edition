@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Helper;
 use ZN\Request as Req;
 
 class Request
@@ -62,7 +63,7 @@ class Request
      */
     public static function method(String $casing = 'upper') : String
     {
-        return mb_convert_case(Server::data('requestMethod'), Helper::toConstant('MB_CASE_', $casing));
+        return mb_convert_case(Server::data('requestMethod'), Helper::toConstant($casing, 'MB_CASE_'));
     }
 
     /**
