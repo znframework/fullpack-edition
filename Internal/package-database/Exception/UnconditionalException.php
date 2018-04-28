@@ -11,7 +11,7 @@
 
 use ZN\Exception;
 
-class UnconditionalDeleteException extends Exception
+class UnconditionalException extends Exception
 {
     const lang = 
     [

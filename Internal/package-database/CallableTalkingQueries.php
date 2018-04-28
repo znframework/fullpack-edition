@@ -25,7 +25,6 @@ trait CallableTalkingQueries
     {
         $method = strtolower($originMethodName = $method);
         $split  = Datatype::splitUpperCase($originMethodName);
-        $crud   = $split[1] ?? NULL;
 
         # Is Function Elements
         if( in_array($method, $this->functionElements) )
@@ -78,7 +77,7 @@ trait CallableTalkingQueries
             return $this->callWhereHavingTalkingQuery($split, $parameters);
         }
         # Insert - Update - Delete
-        elseif( in_array($crud, ['Delete', 'Update', 'Insert']) )
+        elseif( in_array($split[1] ?? NULL, ['Delete', 'Update', 'Insert']) )
         {
             return $this->callCrudTalkingQuery($split, $parameters);
         }
@@ -134,6 +133,21 @@ trait CallableTalkingQueries
             $data   = $parameters[0];
         }
 
+        # [5.6.5] In case of using 3rd section, it is accepted as a condition.
+        if( isset($split[2]) )
+        {
+            # For delete: tableDeleteColumn($value)
+            if( $method === 'Delete' )
+            {
+                $this->where($split[2], $data);
+            }
+            # For update: tableUpdateColumn($data, $value)
+            elseif( $method === 'Update' && isset($parameters[1]) )
+            {
+                $this->where($split[2], $parameters[1]);
+            }
+        }
+
         return $this->$method($prefix . $table, $data);
     }
 
@@ -168,12 +182,6 @@ trait CallableTalkingQueries
         if( $select = ($split[2] ?? NULL) )
         {
             $result = 'value';
-            
-            # Added 5.6.5
-            if( isset($parameters[0]) )
-            {
-                $this->where($split[2], $parameters[0]); 
-            }
 
             $this->select($select);
         }

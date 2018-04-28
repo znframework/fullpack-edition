@@ -17,8 +17,7 @@ use ZN\Request\URI;
 use ZN\Request\Method;
 use ZN\DataTypes\Arrays;
 use ZN\Filesystem\Converter;
-use ZN\Database\Exception\UnconditionalDeleteException;
-use ZN\Database\Exception\UnconditionalUpdateException;
+use ZN\Database\Exception\UnconditionalException;
 
 class DB extends Connection
 {
@@ -1407,11 +1406,6 @@ class DB extends Connection
      */
     public function update(String $table = NULL, Array $set = [])
     {
-        if( empty($this->where) )
-        {
-            throw new UnconditionalUpdateException();
-        }
-
         $this->_ignoreData($table, $set);
 
         $set  = $this->_p($set, 'column');
@@ -1461,7 +1455,7 @@ class DB extends Connection
     {
         if( empty($this->where) )
         {
-            throw new UnconditionalDeleteException();
+            throw new UnconditionalException();
         }
 
         $deleteQuery = 'DELETE '.

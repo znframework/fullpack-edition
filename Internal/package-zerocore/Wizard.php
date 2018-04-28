@@ -152,6 +152,8 @@ class Wizard
                 '/@(elseif|if|foreach|for|while)\s*(.*?)'.self::CRLF.'/sm'                 => '<?php $1$2: ?>',
                 '/@else'.self::CRLF.'*/m'                                                  => '<?php else: ?>',
                 '/@(view|script|style|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>',
+                '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                      => '<?php Permission::start($1) ?>',
+                '/@endperm'.self::CRLF.'/sm'                                               => '<?php Permission::end() ?>',
                 '/@view(\(\))*'.self::CRLF.'/sm'                                           => '<?php echo $view ?>',  
             ];
         }
