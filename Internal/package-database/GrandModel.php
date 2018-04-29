@@ -120,52 +120,26 @@ class GrandModel
      */
     public function __call($method, $parameters)
     {
-        if( ($return = $this->_callColumn($method, $parameters, 'row')) !== NULL )
+        if( ($return = $this->callColumnProcess($method, $parameters, 'row')) !== NULL )
         {
             return $return;
         }
-        elseif( ($return = $this->_callColumn($method, $parameters, 'result')) !== NULL )
+        elseif( ($return = $this->callColumnProcess($method, $parameters, 'result')) !== NULL )
         {
             return $return;
         }
-        elseif( ($return = $this->_callColumn($method, $parameters, 'update')) !== NULL )
+        elseif( ($return = $this->callColumnProcess($method, $parameters, 'update')) !== NULL )
         {
             return $return;
         }
-        elseif( ($return = $this->_callColumn($method, $parameters, 'delete')) !== NULL )
+        elseif( ($return = $this->callColumnProcess($method, $parameters, 'delete')) !== NULL )
         {
             return $return;
         }
         else
         {
-            // 5.3.7[added]
-            $param = $parameters[0] ?? NULL;
-
-            if( is_array($param) )
-            {
-                $data = [$method => $param];
-                
-                if( ! $this->modifyColumn($data) )
-                {  
-                    if( ! $this->renameColumn($data) )
-                    {
-                        if( ! $this->addColumn($data) )
-                        {
-                            $this->options[$method] = $param;
-                        }
-                    }
-                }
-            }
-            elseif( $param === NULL )
-            {
-                $this->dropColumn($method);
-            }
-            else
-            {
-                $this->options[$method] = $param;
-            }
-
-            return $this;
+            # 5.3.7[added]|5.6.5[updated]
+            return $this->callColumnForge($method, $parameters);
         }
 
         Support::classMethod(get_called_class(), $method);
@@ -204,7 +178,7 @@ class GrandModel
      */
     public function insert($data = NULL) : Bool
     {
-        $this->_postGet($table, $data);
+        $this->postGetExpression($table, $data);
 
         return $this->connect->insert($table, $data);
     }
@@ -271,7 +245,7 @@ class GrandModel
      */
     public function update($data = NULL, String $column = NULL, String $value = NULL) : Bool
     {
-        $this->_postGet($table, $data);
+        $this->postGetExpression($table, $data);
 
         if( $column !== NULL )
         {
@@ -841,14 +815,14 @@ class GrandModel
     }
 
     /**
-     * protected 
+     * protected post get expressions
      * 
      * @param string &$table
      * @param array  &$data
      * 
      * @return void
      */
-    protected function _postGet(&$table, &$data)
+    protected function postGetExpression(&$table, &$data)
     {
         $table = $this->grandTable;
 
@@ -864,7 +838,7 @@ class GrandModel
     }
 
     /**
-     * protected call column
+     * protected call column process - 5.6.2[update]
      * 
      * @param string $method
      * @param array  $params
@@ -872,7 +846,7 @@ class GrandModel
      * 
      * @return mixed
      */
-    protected function _callColumn($method, $params, $type)
+    protected function callColumnProcess($method, $params, $type)
     {
         if( stristr($method, $type) )
         {
@@ -882,7 +856,7 @@ class GrandModel
 
             if( $func === 'update' )
             {
-                // 5.3.7[added]
+                # 5.3.7[added]
                 if( ! empty($this->options) )
                 {
                     $params[1] = $params[0];
@@ -903,5 +877,40 @@ class GrandModel
         }
 
         return NULL;
+    }
+
+    /**
+     * Protected call column forge
+     */
+    protected function callColumnForge($method, $parameters)
+    {
+        # 5.3.7[added]
+        $param = $parameters[0] ?? NULL;
+
+        if( is_array($param) )
+        {
+            $data = [$method => $param];
+            
+            if( ! $this->modifyColumn($data) )
+            {  
+                if( ! $this->renameColumn($data) )
+                {
+                    if( ! $this->addColumn($data) )
+                    {
+                        $this->options[$method] = $param;
+                    }
+                }
+            }
+        }
+        elseif( $param === NULL )
+        {
+            $this->dropColumn($method);
+        }
+        else
+        {
+            $this->options[$method] = $param;
+        }
+
+        return $this;
     }
 }

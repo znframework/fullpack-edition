@@ -16,7 +16,7 @@ class Wizard
      * 
      * @const string
      */
-    const CRLF = '(\n|' . PHP_EOL . '|\:|$)';
+    const CRLF = '\s*(\n|' . PHP_EOL . '|\:|$)';
 
     /**
      * Get config
@@ -143,6 +143,14 @@ class Wizard
         {
             $array =
             [
+                '/@(view|script|style|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>',
+                '/@endform'.self::CRLF.'/sm'                                               => '<?php echo Form::close() ?>',
+                '/@form\s*\((.*?)\)'.self::CRLF.'/sm'                                      => '<?php echo Form::open($1) ?>',
+                '/@(hidden|textarea|text|checkbox|radio|file|email|submit|button|multiselect|select|password)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php echo Form::$1($2) ?>',
+                '/@(anchor|mailto|image)\s*\((.*?)\)'.self::CRLF.'/sm'                     => '<?php echo Html::$1($2) ?>',
+                '/@endperm'.self::CRLF.'/sm'                                               => '<?php Permission::end() ?>',
+                '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                      => '<?php Permission::start($1) ?>',  
+                '/@view'.self::CRLF.'/sm'                                                  => '<?php echo $view ?>',  
                 '/@endforelse'.self::CRLF.'*/m'                                            => '<?php endif; ?>',                                       
                 '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'                 => '<?php if( ! empty($2) ): foreach($1): ?>',
                 '/@empty'.self::CRLF.'/m'                                                  => '<?php endforeach; else: ?>',     
@@ -151,10 +159,6 @@ class Wizard
                 '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'*/m'     => '<?php $1 ?>',
                 '/@(elseif|if|foreach|for|while)\s*(.*?)'.self::CRLF.'/sm'                 => '<?php $1$2: ?>',
                 '/@else'.self::CRLF.'*/m'                                                  => '<?php else: ?>',
-                '/@(view|script|style|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>',
-                '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                      => '<?php Permission::start($1) ?>',
-                '/@endperm'.self::CRLF.'/sm'                                               => '<?php Permission::end() ?>',
-                '/@view(\(\))*'.self::CRLF.'/sm'                                           => '<?php echo $view ?>',  
             ];
         }
 
