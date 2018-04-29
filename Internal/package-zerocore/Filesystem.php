@@ -107,7 +107,7 @@ class Filesystem
            return false;
         }
 
-        return rmdir($folder);
+        return @rmdir($folder);
     }
 
     /**
