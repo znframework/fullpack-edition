@@ -63,10 +63,11 @@ interface RedirectInterface
      * Select redirect data
      * 
      * @param string $k
+     * @param bool   $isDelete = false
      * 
      * @return false|mixed
      */
-    public function selectData(String $k);
+    public function selectData(String $k, Bool $isDelete = false);
 
     /**
      * Redirect delete data
@@ -124,10 +125,11 @@ interface RedirectInterface
      * Select redirect data
      * 
      * @param string $key
+     * @param bool   $isDelete = false
      * 
      * @return mixed
      */
-    public function select(String $key);
+    public function select(String $key, Bool $isDelete = false);
 
     /**
      * Deletes redirect data

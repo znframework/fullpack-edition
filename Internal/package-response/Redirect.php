@@ -110,13 +110,19 @@ class Redirect implements RedirectInterface
      * Select redirect data
      * 
      * @param string $k
+     * @param bool   $isDelete = false
      * 
      * @return false|mixed
      */
-    public function selectData(String $k)
+    public function selectData(String $k, Bool $isDelete = false)
     {
         if( $data = ($_SESSION[$this->fix . $k] ?? NULL) )
         {
+            if( $isDelete === true )
+            {
+                $this->deleteData($k);
+            }
+
             return $data;
         }
         else
@@ -227,12 +233,13 @@ class Redirect implements RedirectInterface
      * Select redirect data
      * 
      * @param string $key
+     * @param bool   $isDelete = false
      * 
      * @return mixed
      */
-    public function select(String $key)
+    public function select(String $key, Bool $isDelete = false)
     {
-        return $this->selectData($key);
+        return $this->selectData($key, $isDelete);
     }
 
     /**
