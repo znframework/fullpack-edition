@@ -165,6 +165,7 @@ trait CallableTalkingQueries
     }
 
     /**
+     * updated[5.7.0.1]
      * Protected call result methods talking query
      */
     protected function callResultMethodsTalkingQuery($method, $split, $parameters)
@@ -178,12 +179,25 @@ trait CallableTalkingQueries
             $result = strtolower($func);
         }
 
+        $whereClause = $parameters[0] ?? ($result === 'row' ? 0 : 'object');
+
         # Value
         if( $select = ($split[2] ?? NULL) )
         {
-            $result = 'value';
+            if( isset($parameters[0]) )
+            {
+                $this->where(strtolower($split[2]), $parameters[0]);    
 
-            $this->select($select);
+                $whereClause = 0;
+            }
+            else
+            {
+                $result = 'value';
+
+                $this->select($select);
+
+                $whereClause = true;
+            }    
         }
 
         $return = $this->get($method);
@@ -195,7 +209,7 @@ trait CallableTalkingQueries
         }
         
         # Return ->row(0) || result('object')
-        return $return->$result($parameters[0] ?? ($result === 'row' ? 0 : 'object'));
+        return $return->$result($whereClause);
     }
 
     /**

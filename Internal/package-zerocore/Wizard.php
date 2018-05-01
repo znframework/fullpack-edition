@@ -150,15 +150,16 @@ class Wizard
                 '/@(anchor|mailto|image)\s*\((.*?)\)'.self::CRLF.'/sm'                     => '<?php echo Html::$1($2) ?>',
                 '/@endperm'.self::CRLF.'/sm'                                               => '<?php Permission::end() ?>',
                 '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                      => '<?php Permission::start($1) ?>',  
+                '/@login\s*\((.*?)\)'.self::CRLF.'/sm'                                     => '<?php if( User::isLogin() ): ?>', 
                 '/@view'.self::CRLF.'/sm'                                                  => '<?php echo $view ?>',  
-                '/@endforelse'.self::CRLF.'*/m'                                            => '<?php endif; ?>',                                       
+                '/@(endforelse|endlogin)'.self::CRLF.'*/m'                                 => '<?php endif; ?>',                                       
                 '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'                 => '<?php if( ! empty($2) ): foreach($1): ?>',
                 '/@empty'.self::CRLF.'/m'                                                  => '<?php endforeach; else: ?>',     
                 '/@loop\s*\((.*?)\)'.self::CRLF.'/sm'                                      => '<?php foreach($1 as $key => $value): ?>',    
                 '/@endloop'.self::CRLF.'/m'                                                => '<?php endforeach; ?>',         
                 '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'*/m'     => '<?php $1 ?>',
                 '/@(elseif|if|foreach|for|while)\s*(.*?)'.self::CRLF.'/sm'                 => '<?php $1$2: ?>',
-                '/@else'.self::CRLF.'*/m'                                                  => '<?php else: ?>',
+                '/@(else|not)'.self::CRLF.'*/m'                                            => '<?php else: ?>',
             ];
         }
 
