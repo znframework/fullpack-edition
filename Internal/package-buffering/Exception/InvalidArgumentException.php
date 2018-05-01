@@ -1,4 +1,4 @@
-<?php namespace ZN\IndividualStructures\Exception;
+<?php namespace ZN\Buffering\Exception;
 /**
  * ZN PHP Web Framework
  * 
