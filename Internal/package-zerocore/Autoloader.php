@@ -30,7 +30,7 @@ class Autoloader
      * 
      * @var string
      */
-    protected static $path = CONFIG_DIR . 'ClassMap.php';
+    protected static $path = PROJECT_DIR . 'ClassMap.php';
 
     /**
      * Starts the class load process.
