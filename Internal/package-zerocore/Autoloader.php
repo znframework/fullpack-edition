@@ -592,7 +592,15 @@ class Autoloader
      */
     protected static function isCurrentProject($file)
     {   
-        return strpos($file, PROJECTS_DIR . CURRENT_PROJECT) === 0;
+        return strpos($file, self::currentProjectDirectory()) === 0;
+    }
+
+    /**
+     * Protected current project directory
+     */
+    protected static function currentProjectDirectory()
+    {
+        return PROJECTS_DIR . ( defined('_CURRENT_PROJECT') ? _CURRENT_PROJECT : CURRENT_PROJECT );
     }
 
     /**
@@ -604,7 +612,7 @@ class Autoloader
     {
         $project = rtrim(PROJECTS_DIR, '/');
 
-        $file = preg_replace('/'.$project.'\/(.*?)\//', PROJECTS_DIR . CURRENT_PROJECT . '/', $file);
+        $file = preg_replace('/'.$project.'\/(.*?)\//', self::currentProjectDirectory() . '/', $file);
     }
 
     /**
