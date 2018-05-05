@@ -307,7 +307,7 @@ class Paginator implements PaginatorInterface
             return Base::suffix($urlEx[0]) . $page . '?' . rtrim($urlEx[1], '/');
         }
 
-        return ($this->type !== 'ajax' ? Base::suffix($this->url) : $this->url) . $page;
+        return $this->type === 'ajax' ? $this->url : Base::suffix($this->url) . $page;
     }
 
     /**
@@ -353,7 +353,7 @@ class Paginator implements PaginatorInterface
         }
         elseif( $this->type === 'ajax' )
         {
-            $this->url = '#prow=';
+            $this->url = 'javascript:;';
         }
         else
         {
