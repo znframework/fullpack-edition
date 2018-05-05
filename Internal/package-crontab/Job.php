@@ -412,7 +412,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     protected function _zeroneed()
     {
-        return 'define("CONSOLE_ENABLED", true); require "zeroneed.php"; ';
+        return 'define("CONSOLE_ENABLED", true); require "'.DIRECTORY_INDEX.'"; ';
     }
 
     /**

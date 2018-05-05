@@ -73,38 +73,37 @@ class Run
             case 'run-model'             : 
             case 'run-class'             : new Library(self::$command, self::$parameters); break;
             case 'run-cron'              : new Cron(self::$command, self::$parameters); break;
-            case 'cron-list'             : new CronList; break;
-            case 'remove-cron'           : new RemoveCron(self::$parameters); break;
             case 'run-command'           : new Library(self::$command, self::$parameters, PROJECT_COMMANDS_NAMESPACE); break;
             case 'run-external-command'  : new Library(self::$command, self::$parameters, EXTERNAL_COMMANDS_NAMESPACE); break;
             case 'run-function'          : new Method(self::$command, self::$parameters); break;
-            case 'start-restoration'     : new StartRestoration(self::$command, self::$parameters); break;
-            case 'end-restoration'       : new EndRestoration(self::$command); break;
-            case 'end-restoration-delete': new EndRestorationDelete(self::$command); break;
-            case 'create-project'        : new CreateProject(self::$command); break;
-            case 'delete-project'        : new DeleteProject(self::$command); break;
-            case 'create-controller'     : new CreateController(self::$command); break;
-            case 'create-grand-model'    : new CreateGrandModel(self::$command); break;
-            case 'create-grand-vision'   : new CreateGrandVision(self::$command); break;
-            case 'delete-grand-vision'   : new DeleteGrandVision(self::$command); break;
-            case 'create-model'          : new CreateModel(self::$command); break;
-            case 'delete-controller'     : new DeleteController(self::$command); break;
-            case 'delete-model'          : new DeleteModel(self::$command); break;
-            case 'clean-cache'           : new CleanCache; break;
-            # 5.3.5[added]
-            case 'generate-databases'    : new GenerateDatabases; break;
-            case 'command-list'          : new CommandList; break;
             default                      :
             # 5.3.5[added]
             if( strstr($realCommands, ':') )
             {
                 new ShortCommand($realCommands);
             }
+            # 5.7.2
+            elseif( class_exists($class = ('ZN\Console\\'. self::titleCase($command))) ) 
+            {
+                new $class(self::$command, self::$parameters);
+            }
             else
             {
                 new TerminalCommand($realCommands);
             }
         }
+    }
+
+    /**
+     * Protected title case
+     */
+    protected static function titleCase($command)
+    {
+        $words = explode('-', $command);
+
+        $words = array_map(function($data){ return mb_convert_case($data, MB_CASE_TITLE);}, $words);
+
+        return implode('', $words);
     }
 
     /**
