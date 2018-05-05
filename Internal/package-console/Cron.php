@@ -37,15 +37,17 @@ class Cron
         
         if( IS::url($command) ) # wget
         {
-            echo Crontab::wget($command);
+            $status = Crontab::wget($command);
         }
         elseif( strstr($command, '/') )
         {
-            echo Crontab::controller($command); # controller
+            $status = Crontab::controller($command); # controller
         }
         else
         {
-            echo Crontab::command($command); # command
+            $status = Crontab::command($command); # command
         }
+
+        new Result($status);
     }
 }
