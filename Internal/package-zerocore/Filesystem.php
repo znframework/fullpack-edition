@@ -9,10 +9,48 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZipArchive;
 use ZN\Exception\FolderNotFoundException;
 
 class Filesystem
 {
+    /**
+     * Extracts a zip file to the specified location.
+     * 
+     * @param string $source
+     * @param string $target
+     * 
+     * @return bool
+     */
+    public static function zipExtract(String $source, String $target = NULL) : Bool
+    {
+        $source = Base::suffix($source, '.zip');
+
+        if( ! file_exists($source) )
+        {
+            return false;
+        }
+
+        if( empty($target) )
+        {
+            $target = self::removeExtension($source);
+        }
+
+        $zip = new ZipArchive;
+
+        if( $zip->open($source) === true )
+        {
+            $zip->extractTo($target);
+            $zip->close();
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     /**
      * Performs data modification on the file.
      * 
