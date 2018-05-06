@@ -3,22 +3,62 @@
 class Butcher
 {
     /**
-     * Protected butchery json 
+     * Protected theme directory
      * 
      * @var string
      */
-    protected $butcheryJson = BUTCHERY_DIR . 'butchery.json';
+    protected $themeDirectory = 'Default';
+
+    /**
+     * Protected location
+     * 
+     * @var string
+     */
+    protected $location = THEMES_DIR;
+
+    /**
+     * Protected open function
+     * 
+     * @var string
+     */
+    protected $openFunction = 'main';
 
     /**
      * Run
      * 
-     * @return true;
+     * @param string $theme = 'Default'
+     * 
+     * @return true
      */
-    public function run()
+    public function run(String $theme = 'Default', String $location = 'project') : Bool
     {
+        $this->themeDirectory = $theme;
+        $this->openFunction   = Config::get('Routing', 'openFunction');
+
+        if( $location === 'external' )
+        {
+            $this->location = EXTERNAL_THEMES_DIR;
+        }
+
         $this->createButcheryDirectory();
         $this->generateControllers();
         $this->moveAssetsToThemeDirectory();  
+
+        return true;
+    }
+
+    /**
+     * Run Delete
+     * 
+     * @param string $theme = 'Default'
+     * 
+     * @return true
+     */
+    public function runDelete(String $theme = 'Default') : Bool
+    {
+        $this->run($theme);
+
+        Filesystem::deleteFolder(BUTCHERY_DIR);
 
         return true;
     }
@@ -37,40 +77,11 @@ class Butcher
     }
 
     /**
-     * Protected get json object
-     */
-    protected function getJsonObject()
-    {
-        return json_decode($this->readJsonFile());
-    }
-
-    /**
      * Protected get theme directory name
      */
     protected function getThemeDirectoryName()
     {
-        return $this->getJsonObject()->theme ?? 'Default';
-    }
-
-    /**
-     * Protected get assets
-     */
-    protected function getAssets()
-    {
-        return $this->getJsonObject()->assets ?? 'all';
-    }  
-
-    /**
-     * Protected read json file
-     */
-    public function readJsonFile()
-    {
-        if( file_exists($this->butcheryJson) )
-        {
-            return file_get_contents($this->butcheryJson);
-        }
-        
-        return false;
+        return $this->themeDirectory;
     }
 
     /**
@@ -86,7 +97,7 @@ class Butcher
      */
     public function getDirectories()
     {
-        return Filesystem::getFiles(BUTCHERY_DIR, 'dir');
+        return Filesystem::getFiles(BUTCHERY_DIR, ['dir', 'css', 'js']);
     }
 
     /**
@@ -124,26 +135,12 @@ class Butcher
      */
     protected function moveAssetsToThemeDirectory()
     {
-        if( is_array($getAssets = $this->getAssets()) ) 
+        $getAssets = $this->getDirectories();
+        
+        if( is_array($getAssets) ) foreach( $getAssets as $file )
         {
-            foreach( $getAssets as $file )
-            {
-                $this->moveAssets($file);
-            }
+            $this->moveAssets($file);
         }
-        elseif( $this->getAssets() === 'all' )
-        {
-            $getAssets = $this->getDirectories();
-            
-            foreach( $getAssets as $file )
-            {
-                $this->moveAssets($file);
-            }
-        }
-        else
-        {
-            $this->moveAssets($this->getAssets());
-        }  
 
         return true;
     }
@@ -164,7 +161,7 @@ class Butcher
      */
     protected function getThemePath($directory = NULL)
     {
-        return THEMES_DIR . $this->getThemeDirectoryName() . (Base::prefix($directory));
+        return $this->location . $this->getThemeDirectoryName() . (Base::prefix($directory));
     }
 
     /**
@@ -195,7 +192,7 @@ class Butcher
                 $this->generator()->controller($controller,
                 [
                     'namespace' => $this->getControllerNamespace(),
-                    'functions' => ['main']
+                    'functions' => [$this->openFunction]
                 ]);
 
                 $this->generateView($controller, $file);
@@ -224,7 +221,7 @@ class Butcher
         $head = $match[1] ?? false;
         $body = $match[2] ?? false;
 
-        $mainFile = $viewDirectory . '/main.wizard.php';
+        $mainFile = $viewDirectory . '/'.$this->openFunction.'.wizard.php';
 
         if( $body !== false )
         {

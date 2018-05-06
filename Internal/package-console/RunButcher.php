@@ -13,7 +13,7 @@ use ZN\Butcher;
 
 /**
  * @command run-butcher
- * @description run-butcher  
+ * @description run-butcher [theme-directory-name] [project|external]
  */
 class RunButcher
 {
@@ -24,8 +24,8 @@ class RunButcher
      * 
      * @return void
      */
-    public function __construct()
+    public function __construct($command, $parametre)
     {   
-        new Result((new Butcher)->run());
+        new Result((new Butcher)->run($command ?? 'Default', $parametre[0] ?? 'project'));
     }
 }

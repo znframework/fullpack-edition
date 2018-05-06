@@ -10,11 +10,10 @@
  */
 
 use ZN\Butcher;
-use ZN\Filesystem;
 
 /**
  * @command run-butcher-delete
- * @description run-butcher-delete
+ * @description run-butcher-delete [theme-directory-name] [project|external]
  */
 class RunButcherDelete
 {
@@ -25,11 +24,8 @@ class RunButcherDelete
      * 
      * @return void
      */
-    public function __construct()
+    public function __construct($command, $parametre)
     {   
-        $result = (new Butcher)->run();
-        Filesystem::deleteFolder(BUTCHERY_DIR);
-
-        new Result($result);
+        new Result((new Butcher)->runDelete($command ?? 'Default', $parametre[0] ?? 'project'));
     }
 }
