@@ -388,7 +388,7 @@ class Initialize extends Controller
         {
             foreach( $htmlFiles as $file )
             {
-                $controller = $this->cleanNumericPrefix($this->titleCase($this->convertControllerName($this->removeExtension($file))));
+                $controller = $this->convertValidControllerName($file);
 
                 $this->deletePreviousController($controller);
 
@@ -396,7 +396,8 @@ class Initialize extends Controller
                 [
                     'application' => $this->application ?? CURRENT_PROJECT,
                     'namespace'   => $this->getControllerNamespace(),
-                    'functions'   => [$this->openFunction]
+                    'functions'   => [$this->openFunction],
+                    'extends'     => 'Controller'
                 ]);
 
                 $this->generateView($controller, $file);
@@ -406,6 +407,14 @@ class Initialize extends Controller
         }
         
         return false;
+    }
+
+    /**
+     * Protected convert valid controller name
+     */
+    protected function convertValidControllerName($controller)
+    {
+        return $this->cleanNumericPrefix($this->titleCase($this->convertControllerName($this->removeExtension($controller))));
     }
 
     /**
@@ -492,7 +501,7 @@ class Initialize extends Controller
 
         if( $body !== false )
         {
-            file_put_contents($mainFile, $this->addSlashesToAt($body));
+            file_put_contents($mainFile, $this->bodyParser($body));
         }
 
         if( $head !== false && $controller === 'Home' )
@@ -503,6 +512,23 @@ class Initialize extends Controller
             
             file_put_contents($headFile, $this->addSlashesToAt($head));
         }      
+    }
+
+    /**
+     * Protected body parser
+     */
+    protected function bodyParser($body)
+    {
+        return $this->addSlashesToAt(preg_replace_callback('/href\=\"(.*?)\"/', function($link)
+        {
+            return str_replace
+            (
+                $link[1], 
+                URL::site(($this->application === DEFAULT_PROJECT ? NULL : $this->application) . '/' . 
+                $this->convertValidControllerName($link[1])
+            ), $link[0]);
+        
+        }, $body));
     }
 
     /**
