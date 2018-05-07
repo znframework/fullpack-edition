@@ -24,8 +24,8 @@ class RunButcher
      * 
      * @return void
      */
-    public function __construct($command, $parametre)
+    public function __construct($command, $parameters)
     {   
-        new Result((new Butcher)->run($command ?? 'Default', $parametre[0] ?? 'project'));
+        new Result((new Butcher)->run($command ?? 'Default', $parameters[0] ?? 'project'));
     }
 }
