@@ -60,6 +60,21 @@ class Butcher
     } 
 
     /**
+     * Selects project.
+     * 
+     * @param string $application
+     * 
+     * @return $this
+     */
+    public function application(String $application)
+    {
+        $this->application = $application;
+        $this->externalButcheryDirectory = PROJECTS_DIR . $application . '/Butchery/';
+
+        return $this;
+    }
+
+    /**
      * Extract themes.
      * 
      * @param string $which = 'all'   - options[all|{name}]
@@ -218,7 +233,7 @@ class Butcher
     {
         $return = $this->run($theme);
 
-        Filesystem::deleteFolder(BUTCHERY_DIR);
+        Filesystem::deleteFolder($this->externalButcheryDirectory ?? BUTCHERY_DIR);
 
         return $return;
     }
