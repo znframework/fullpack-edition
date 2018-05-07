@@ -253,7 +253,7 @@ class Butcher
     /**
      * Protected get HTML files
      */
-    public function getHTMLFiles()
+    protected function getHTMLFiles()
     {
         return Filesystem::getFiles($this->findBaseThemeDirectory, 'html');
     }
@@ -261,7 +261,7 @@ class Butcher
     /**
      * Protected get other theme files
      */
-    public function getOtherThemeFiles()
+    protected function getOtherThemeFiles()
     {
         return Filesystem::getFiles($this->findBaseThemeDirectory, ['dir', 'css', 'js']);
     }
@@ -282,7 +282,7 @@ class Butcher
     /**
      * Protected find HTML Files
      */
-    public function findHTMLFiles($directory = BUTCHERY_DIR)
+    protected function findHTMLFiles($directory = BUTCHERY_DIR)
     {
         $getHTMLFiles = Filesystem::getFiles($directory, 'html');
 
@@ -521,13 +521,18 @@ class Initialize extends Controller
     {
         return $this->addSlashesToAt(preg_replace_callback('/href\=\"(.*?)\"/', function($link)
         {
-            return str_replace
-            (
-                $link[1], 
-                URL::site(($this->application === DEFAULT_PROJECT ? NULL : $this->application) . '/' . 
-                $this->convertValidControllerName($link[1])
-            ), $link[0]);
-        
+            if( ! IS::url($link[1]) )
+            {
+                return str_replace
+                (
+                    $link[1], 
+                    '{{ URL::site(\''.$this->convertValidControllerName($link[1]).'\') }}',
+                    $link[0]
+                );
+            }
+            
+            return $link[0];
+
         }, $body));
     }
 
