@@ -179,6 +179,8 @@ class Butcher
             return $directory;
         }
 
+        static $suffix = 0;
+
         $directory = str_replace(' ', '-', $directory);
 
         switch( $case )
@@ -186,7 +188,9 @@ class Butcher
             case 'slug' : return strtolower($directory);
             case 'title': 
             case 'lower': return $this->mbConvertCase($directory, $case);
-            default     : return $case;
+            default     : $fix = $suffix === 0 ? NULL : $suffix;
+                          $suffix++; 
+                          return $case . $fix;
         }
     }
     
@@ -384,7 +388,7 @@ class Initialize extends Controller
         {
             foreach( $htmlFiles as $file )
             {
-                $controller = $this->titleCase($this->convertControllerName($this->removeExtension($file)));
+                $controller = $this->cleanNumericPrefix($this->titleCase($this->convertControllerName($this->removeExtension($file))));
 
                 $this->deletePreviousController($controller);
 
@@ -402,6 +406,14 @@ class Initialize extends Controller
         }
         
         return false;
+    }
+
+    /**
+     * Protected clean numeric prefix
+     */
+    protected function cleanNumericPrefix($string)
+    {
+        return preg_replace('/^[0-9]+/', '', $string);
     }
 
     /**
