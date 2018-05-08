@@ -21,11 +21,18 @@ class ExtractButcher
      * Magic constructor
      * 
      * @param string $command
+     * @param array  $parameters
      * 
      * @return void
      */
     public function __construct($command, $parameters)
     {   
-        new Result((new Butcher)->extract($command ?? 'all', $parameters[0] ?? 'title'));
+        new Result((new Butcher)->extract
+        (
+            $command       ?? 'all', 
+            $parameters[0] ?? 'title', 
+            false, 
+            $parameters[1] ?? 'project'
+        ));
     }
 }

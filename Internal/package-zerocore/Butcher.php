@@ -61,7 +61,7 @@ class Butcher
     }
 
     /**
-     * Selects project.
+     * Selects project. Only with run and runDelete methods work.
      * 
      * @param string $application
      * 
@@ -78,10 +78,12 @@ class Butcher
     /**
      * Extract themes.
      * 
-     * @param string $which = 'all'   - options[all|{name}]
-     * @param string $case  = 'title' - options[title|lower|slug|normal|{name}]
+     * @param string $which    = 'all'     - options[all|{name}]
+     * @param string $case     = 'title'   - options[title|lower|slug|normal|{name}]
+     * @param bool   $force    = false     - options[true|false]
+     * @param string $location = 'project' - options[project|external]
      */
-    public function extract(String $which = 'all', String $case = 'title', Bool $force = false)
+    public function extract(String $which = 'all', String $case = 'title', Bool $force = false, String $location = 'project')
     {
         $this->openZipFiles(EXTERNAL_BUTCHERY_DIR, true);
 
@@ -96,14 +98,14 @@ class Butcher
 
             foreach( $themes as $theme )
             {
-               $this->runProjectExtract($theme, $case, $force);
+               $this->runProjectExtract($theme, $case, $force, $location);
             }
 
             return $this->lang['butcher:extractThemeSuccess'];
         }
         else
         {
-            return $this->runProjectExtract($which, $case, $force);
+            return $this->runProjectExtract($which, $case, $force, $location);
         }  
 
         return $this->lang['butcher:cantExtractTheme'];
@@ -115,15 +117,15 @@ class Butcher
      * @param string $which = 'all'   - options[all|{name}]
      * @param string $case  = 'title' - options[title|lower|slug|normal|{name}]
      */
-    public function extractForce(String $which = 'all', String $case = 'title')
+    public function extractForce(String $which = 'all', String $case = 'title', String $location = 'project')
     {
-        return $this->extract($which, $case, true);
+        return $this->extract($which, $case, true, $location);
     }
 
     /**
      * Protected run project extract
      */
-    protected function runProjectExtract($theme, $case, $force)
+    protected function runProjectExtract($theme, $case, $force, $location)
     {
         $this->externalButcheryDirectory = EXTERNAL_BUTCHERY_DIR . $theme . '/';
 
@@ -133,7 +135,7 @@ class Butcher
         {
             $this->application = $project;
 
-            $this->run($project);
+            $this->run($project, $location);
 
             return $this->lang['butcher:extractThemeSuccess'];
         }
@@ -501,22 +503,22 @@ class Initialize extends Controller
      */
     protected function themesDirectory()
     {
-        if( $this->application !== NULL )
+        if( $this->location === 'project' )
         {
-           $return = PROJECTS_DIR . $this->application . '/Resources/Themes/'; 
-        }
-        else
-        {
-            if( $this->location === 'project' )
+            if( $this->application !== NULL )
             {
-                $return = THEMES_DIR;
+                $return = PROJECTS_DIR . $this->application . '/Resources/Themes/';
             }
             else
             {
-                return EXTERNAL_THEMES_DIR;
-            }   
+                $return = THEMES_DIR;
+            }          
         }
-
+        else
+        {
+            return EXTERNAL_THEMES_DIR;
+        }   
+        
         if( ! file_exists($return) )
         {
             Filesystem::createFolder($return);
