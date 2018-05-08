@@ -54,6 +54,7 @@ class Theme
             {
                 $orig = $selector[0];
                 $path = trim($selector[4], '\'');
+                $path = preg_replace('/(\.\.\/)+/', '//', $path);
 
                 if( ! IS::url($path) && ! is_file($path) )
                 {

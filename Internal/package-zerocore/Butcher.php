@@ -179,7 +179,7 @@ class Butcher
 
         static $suffix = 0;
 
-        $directory = str_replace(' ', '-', $directory);
+        $directory = str_replace([' ', '_'], '-', $directory);
 
         switch( $case )
         {
@@ -434,7 +434,24 @@ class Initialize extends Controller
      */
     protected function convertValidControllerName($controller)
     {
-        return $this->cleanNumericPrefix($this->titleCase($this->convertControllerName($this->removeExtension($controller))));
+        return $this->cleanNumericPrefix
+        (
+            $this->titleCase
+            (
+                $this->convertControllerName
+                (
+                    $this->removeExtension($controller)
+                )
+            )
+        );
+    }
+
+    /**
+     * Protected convert slug separator
+     */
+    protected function convertSlugSeparator($string)
+    {
+        return str_replace([' ', '_'], '-', $string);
     }
 
     /**
@@ -549,7 +566,7 @@ class Initialize extends Controller
 
         if( $body !== false )
         {
-            file_put_contents($mainFile, $this->bodyParser($body));
+            file_put_contents($mainFile, $this->globalPageParser($this->bodyParser($body)));
         }
 
         if( $head !== false && $controller === $this->routeConfig()['openController'] )
@@ -558,7 +575,7 @@ class Initialize extends Controller
 
             $headFile = $sectionsDirectory . 'head.wizard.php';
             
-            file_put_contents($headFile, $this->addSlashesToAt($head));
+            file_put_contents($headFile, $this->globalPageParser($this->addSlashesToAt($head)));
         }      
     }
 
@@ -582,6 +599,19 @@ class Initialize extends Controller
             return $link[0];
 
         }, $body));
+    }
+
+    /**
+     * Protected global parser
+     */
+    protected function globalPageParser($page)
+    {
+        return preg_replace
+        (
+            ['/(\.\.\/)+/'],
+            ['//'],
+            $page
+        );
     }
 
     /**
@@ -632,7 +662,7 @@ class Initialize extends Controller
      */
     protected function titleCase($file)
     {
-        $words = explode('-', $file);
+        $words = explode('-', $this->convertSlugSeparator($file));
 
         $words = array_map(function($data){ return mb_convert_case($data, MB_CASE_TITLE);}, $words);
 
