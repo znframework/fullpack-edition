@@ -12,16 +12,16 @@
 /**
  * Default Configuration
  * 
- * Enabled when the language file can not be accessed.
+ * Provides predefined language content for core classes.
  */
 class CoreDefaultLanguage
 {
     /*
     |--------------------------------------------------------------------------
-    | Upload
+    | Butcher
     |--------------------------------------------------------------------------
     |
-    | The language of the Upload library.
+    | The language of the Butcher class.
     |
     */
 

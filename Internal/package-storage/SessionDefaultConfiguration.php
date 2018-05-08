@@ -23,7 +23,7 @@ class SessionDefaultConfiguration
     |
     | Contains settings related to session. 
     | 
-    | encode: The cookie keys are set to which algorithm to encrypt.
+    | encode: The session keys are set to which algorithm to encrypt.
     |
     */
 
