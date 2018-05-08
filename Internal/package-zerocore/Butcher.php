@@ -123,6 +123,19 @@ class Butcher
     }
 
     /**
+     * Extract themes.
+     * 
+     * @param string $which = 'all'   - options[all|{name}]
+     * @param string $case  = 'title' - options[title|lower|slug|normal|{name}]
+     */
+    public function extractDelete(String $which = 'all', String $case = 'title', String $location = 'project')
+    {
+        $this->extractDelete = true;
+
+        return $this->extract($which, $case, true, $location);
+    }
+
+    /**
      * Protected run project extract
      */
     protected function runProjectExtract($theme, $case, $force, $location)
@@ -136,6 +149,11 @@ class Butcher
             $this->application = $project;
 
             $this->run($project, $location);
+
+            if( $this->extractDelete ?? NULL )
+            {
+                Filesystem::deleteFolder($this->externalButcheryDirectory);
+            }
 
             return $this->lang['butcher:extractThemeSuccess'];
         }
@@ -275,6 +293,11 @@ class Butcher
             $target = $directory . rtrim($zip, '.zip');
 
             Filesystem::zipExtract($directory . $zip, $target, $path); 
+
+            if( $this->extractDelete ?? NULL )
+            {
+                Filesystem::deleteFolder($directory . $zip);
+            }
         }
     }
 
