@@ -47,7 +47,7 @@ class Theme
         $data = preg_replace_callback
         (
             [
-                '/<(link|img|script|div)\s(.*?)(href|src)\=\"(.*?)\"(.*?)\>/i',
+                '/<(link|img|script|div|a)\s(.*?)(href|src)\=\"(.*?)\"(.*?)\>/i',
                 '/(background)(-image)*\s*(\:)\s*url\((.*?)\)/i'
             ], 
             function($selector) use ($themeName)
