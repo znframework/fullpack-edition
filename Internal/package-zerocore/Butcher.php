@@ -63,7 +63,7 @@ class Butcher
      */
     public function __construct()
     {
-        $this->lang = Lang::default('ZN\CoreDefaultLanguage')::select('CoreButcher');
+        $this->lang = Lang::default('ZN\CoreDefaultLanguage')::select('Core');
     }   
 
     /**
