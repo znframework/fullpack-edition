@@ -59,6 +59,13 @@ class Butcher
     protected $inc = 0;
 
     /**
+     * Protected body parser
+     * 
+     * @var array
+     */
+    protected $bodyParser = [];
+
+    /**
      * Magic constructor
      */
     public function __construct()
@@ -729,7 +736,7 @@ class Initialize extends Controller
                 return str_replace
                 (
                     $link[1], 
-                    '{{ URL::site(\''.$this->convertValidControllerName($link[1]).'\') }}',
+                    '{|{ URL::site(\''.$this->convertValidControllerName($link[1]).'\') }|}',
                     $link[0]
                 );
             }
@@ -740,14 +747,32 @@ class Initialize extends Controller
     }
 
     /**
+     * Clean comments
+     * 
+     * @return $this
+     */
+    public function cleanComments()
+    {
+        $this->bodyParser['/\<\!\-\-(.*?)\-\-\>/s'] = '';
+
+        return $this;
+    }
+
+    /**
      * Protected global parser
      */
     protected function globalPageParser($page)
     {
+        $this->bodyParser['/(\.\.\/)+/']    = '//';
+        $this->bodyParser['/\{\{/']         = '[{';
+        $this->bodyParser['/\}\}/']         = '}]';
+        $this->bodyParser['/\{\|\{/']       = '{{';
+        $this->bodyParser['/\}\|\}/']       = '}}';
+
         return preg_replace
         (
-            ['/(\.\.\/)+/'],
-            ['//'],
+            array_keys($this->bodyParser),
+            array_values($this->bodyParser),
             $page
         );
     }
