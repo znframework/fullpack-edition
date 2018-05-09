@@ -589,7 +589,7 @@ class Initialize extends Controller
      */
     protected function convertSlugSeparator($string)
     {
-        return str_replace([' ', '_'], '-', $string);
+        return str_replace([' ', '_', '.'], '-', $string);
     }
 
     /**
