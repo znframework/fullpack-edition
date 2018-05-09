@@ -618,7 +618,7 @@ class Initialize extends Controller
             $return = $dir;
         }
         
-        if( ! file_exists($return) )
+        if( ! file_exists($return) && $dir !== CONFIG_DIR )
         {
             Filesystem::createFolder($return);
         }
