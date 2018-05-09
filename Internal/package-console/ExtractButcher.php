@@ -31,7 +31,6 @@ class ExtractButcher
         (
             $command       ?? 'all', 
             $parameters[0] ?? 'title', 
-            false, 
             $parameters[1] ?? 'project'
         ));
     }

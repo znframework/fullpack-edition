@@ -75,7 +75,7 @@ class Butcher
      */
     public function defaultProjectFile(String $path)
     {
-        $this->defaultProjectFile = Base::suffix($path, 'zip');
+        $this->defaultProjectFile = Base::suffix($path, '.zip');
 
         if( ! file_exists($this->defaultProjectFile) )
         {
@@ -124,10 +124,10 @@ class Butcher
      * 
      * @param string $which    = 'all'     - options[all|{name}]
      * @param string $case     = 'title'   - options[title|lower|slug|normal|{name}]
-     * @param bool   $force    = false     - options[true|false]
      * @param string $location = 'project' - options[project|external]
+     * @param bool   $force    = false     - options[true|false] 
      */
-    public function extract(String $which = 'all', String $case = 'title', Bool $force = false, String $location = 'project')
+    public function extract(String $which = 'all', String $case = 'title', String $location = 'project', Bool $force = false)
     {
         $this->openZipFiles(EXTERNAL_BUTCHERY_DIR, true);
 
@@ -160,10 +160,11 @@ class Butcher
      * 
      * @param string $which = 'all'   - options[all|{name}]
      * @param string $case  = 'title' - options[title|lower|slug|normal|{name}]
+     * @param string $location = 'project' - options[project|external]
      */
     public function extractForce(String $which = 'all', String $case = 'title', String $location = 'project')
     {
-        return $this->extract($which, $case, true, $location);
+        return $this->extract($which, $case, $location, true);
     }
 
     /**
@@ -171,23 +172,25 @@ class Butcher
      * 
      * @param string $which = 'all'   - options[all|{name}]
      * @param string $case  = 'title' - options[title|lower|slug|normal|{name}]
+     * @param string $location = 'project' - options[project|external]
      */
     public function extractDelete(String $which = 'all', String $case = 'title', String $location = 'project')
     {
         $this->extractDelete = true;
 
-        return $this->extract($which, $case, true, $location);
+        return $this->extract($which, $case, $location, true);
     }
 
 
     /**
      * Run
      * 
-     * @param string $theme = 'Default'
+     * @param string $theme    = 'Default'
+     * @param string $location = 'project' - options[project|external]
      * 
      * @return true
      */
-    public function run(String $theme = 'Default', String $location = 'project') : Bool
+    public function run(String $theme = 'Default', String $location = 'project')
     {
         $this->themeDirectory = $theme;
 
@@ -207,12 +210,13 @@ class Butcher
      * Run Delete
      * 
      * @param string $theme = 'Default'
+     * @param string $location = 'project' - options[project|external]
      * 
      * @return true
      */
-    public function runDelete(String $theme = 'Default') : Bool
+    public function runDelete(String $theme = 'Default', String $location = 'project')
     {
-        $return = $this->run($theme);
+        $return = $this->run($theme, $location);
 
         Filesystem::deleteFolder($this->currentButcheryDirectory ?? BUTCHERY_DIR);
 
