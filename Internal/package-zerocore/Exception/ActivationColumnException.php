@@ -9,13 +9,11 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Lang;
-use Exception;
-
-class FileNotFoundException extends Exception
+class InvalidLocationException extends Exception
 {
-    public function __construct($file)
-    {
-        parent::__construct(Lang::select('Exception', 'fileNotFound', $file));
-    }
+    const lang = 
+    [
+        'tr' => 'The location can be one of [project] or [external]!', 
+        'en' => 'Konum [project] veya [external] değerlerinden biri olabilir!'
+    ];
 }
