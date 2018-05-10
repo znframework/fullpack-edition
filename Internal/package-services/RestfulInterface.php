@@ -96,6 +96,36 @@ interface RestfulInterface
     public function put(String $url = NULL, $data = NULL);
 
     /**
+     * Put Json
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function putJson(String $url = NULL, $data = NULL);
+
+    /**
+     * Patch 
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function patch(String $url = NULL, $data = NULL);
+
+    /**
+     * Patch Json
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function patchJson(String $url = NULL, $data = NULL);
+
+    /**
      * Delete 
      * 
      * @param string $url  = NULL
