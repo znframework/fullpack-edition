@@ -121,13 +121,27 @@ class Parser
      * Simple XML Element
      * 
      * @param string $data
+     * @param int    $option = 0
      * 
      * @return SimpleXMLElement
      */
-    public static function simple(String $data)
+    public static function simple(String $data, Int $option = 0)
     {
         $data = preg_replace('/<xml(.*?)>/', '', $data);
 
-        return Singleton::class('SimpleXMLElement', [$data]);
+        return Singleton::class('SimpleXMLElement', [$data, $option]);
+    }
+
+    /**
+     * Simple URL XML Element
+     * 
+     * @param string $data
+     * @param int    $option = 0
+     * 
+     * @return SimpleXMLElement
+     */
+    public static function simpleURL(String $data, Int $option = 0)
+    {
+        return Singleton::class('SimpleXMLElement', [$data, $option, true]);
     }
 }

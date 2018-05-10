@@ -17,17 +17,18 @@ class Processor extends Factory
     [
         'methods' =>
         [
-            'version'     => 'Builder::version:this',
-            'encoding'    => 'Builder::encoding:this',
-            'build'       => 'Builder::do',
-            'save'        => 'Save::do',
-            'load'        => 'Loader::do',
-            'parse'       => 'Parser::do',
-            'parsearray'  => 'Parser::array',
-            'parsejson'   => 'Parser::json',
-            'parseobject' => 'Parser::object',
-            'parsesimple' => 'Parser::simple',
-            'check'       => 'Check::check',
+            'version'        => 'Builder::version:this',
+            'encoding'       => 'Builder::encoding:this',
+            'build'          => 'Builder::do',
+            'save'           => 'Save::do',
+            'load'           => 'Loader::do',
+            'parse'          => 'Parser::do',
+            'parsearray'     => 'Parser::array',
+            'parsejson'      => 'Parser::json',
+            'parseobject'    => 'Parser::object',
+            'parsesimple'    => 'Parser::simple',
+            'parsesimpleurl' => 'Parser::simpleURL',
+            'check'          => 'Check::check',
         ]
     ];
 }

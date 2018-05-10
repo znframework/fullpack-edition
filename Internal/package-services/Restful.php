@@ -333,7 +333,7 @@ class Restful implements RestfulInterface
         }
         elseif( XML\Check::check($response) )
         {
-            return XML\Parser::object($response);
+            return XML\Parser::simple($response);
         }
         else
         {
