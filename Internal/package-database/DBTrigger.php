@@ -133,12 +133,13 @@ class DBTrigger extends Connection
      * Drop Trigger
      * 
      * @param string $name
+     * @param string $type = NULL - options[CASCADE|RESTRICT] - supports[postgres]
      * 
      * @return bool
      */
-    public function dropTrigger(String $name)
+    public function dropTrigger(String $name, String $type = NULL)
     {
-        $query = $this->trigger->dropTrigger($name);
+        $query = $this->trigger->dropTrigger($name, $type);
 
         return $this->_runQuery($query);
     }
@@ -147,12 +148,13 @@ class DBTrigger extends Connection
      * Drop Trigger
      * 
      * @param string $name
+     * @param string $type = NULL - options[CASCADE|RESTRICT] - supports[postgres]
      * 
      * @return bool
      */
-    public function drop(String $name)
+    public function drop(String $name, String $type = NULL)
     {
-        return $this->dropTrigger($name);
+        return $this->dropTrigger($name, $type);
     }
 
     /**
