@@ -11,7 +11,7 @@
 
 use ZN\Services\CDNAbstract;
 
-class CdnjsDriver extends CDNAbstract
+class CloudflareDriver extends CDNAbstract
 {  
     /**
      * Api address

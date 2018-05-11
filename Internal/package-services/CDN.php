@@ -23,7 +23,7 @@ class CDN implements CDNInterface
      */
     const driver =
     [
-        'options'   => ['cdnjs'],
+        'options'   => ['cloudflare'],
         'namespace' => 'ZN\Services\CDNDrivers',
         'default'   => 'ZN\Services\CDNDefaultConfiguration'
     ];
