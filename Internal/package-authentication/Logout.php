@@ -27,7 +27,7 @@ class Logout extends UserExtends
         {
             if( ! empty($this->activeColumn) )
             {
-                $this->setUserStatePassive($getUserData);
+                $this->setUserStatePassive($this->isUserStateActive());
             }
 
             $this->endUserProcessAndRedirect((string) $redirectUrl, $time);
