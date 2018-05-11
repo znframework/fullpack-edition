@@ -33,7 +33,7 @@ class CDN implements CDNInterface
      * 
      * @return array
      */
-    public function getLinks()
+    public function links() : Array
     {
         return $this->driver->getLinks();
     }
@@ -46,7 +46,7 @@ class CDN implements CDNInterface
      * 
      * @return string|false
      */
-    public function getLink(String $key, String $version = 'latest')
+    public function link(String $key, String $version = 'latest')
     {
         return $this->driver->getLink($key, $version);
     }
@@ -56,7 +56,7 @@ class CDN implements CDNInterface
      * 
      * @return $this
      */
-    public function refresh()
+    public function refresh() : CDN
     {
         $this->driver->refresh();
 
@@ -70,7 +70,7 @@ class CDN implements CDNInterface
      * 
      * @return $this
      */
-    public function setJsonFile(String $jsonFile)
+    public function setJsonFile(String $jsonFile) : CDN
     {
         $this->driver->setJsonFile($jsonFile);
 
