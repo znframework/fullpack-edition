@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\IS;
 use ZN\Base;
 use ZN\Config;
 use ZN\Singleton;
@@ -23,13 +24,30 @@ class CDN implements CDNInterface
     protected static $address = 'https://api.cdnjs.com/libraries';
 
     /**
+     * Sets address.
+     * 
+     * @param string $url
+     */
+    public static function address(String $url)
+    {
+        if( ! IS::url($url) )
+        {
+            throw new Exception\BadRequestURLException($url);
+        }
+
+        self::$address = $url;
+
+        return new self;
+    }
+
+    /**
      * Api
      * 
-     * @param string $uri
+     * @param string $uri = NULL
      * 
      * @return object
      */
-    public static function api(String $uri)
+    public static function api(String $uri = NULL)
     {
         $result = Singleton::class('ZN\Services\Restful')->get(self::$address . $uri);
 
@@ -57,7 +75,7 @@ class CDN implements CDNInterface
      */
     public static function searchQuery(String $query)
     {
-        return self::api(Base::prefix($query, '?'));
+        return self::api(Base::prefix($query, '?search='));
     }
 
     /**

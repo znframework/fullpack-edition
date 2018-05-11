@@ -12,13 +12,20 @@
 interface CDNInterface
 {
     /**
+     * Sets address.
+     * 
+     * @param string $url
+     */
+    public static function address(String $url);
+
+    /**
      * Api
      * 
-     * @param string $uri
+     * @param string $uri = NULL
      * 
      * @return object
      */
-    public static function api(String $uri);
+    public static function api(String $uri = NULL);
 
     /**
      * Get Library
