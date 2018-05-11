@@ -369,7 +369,7 @@ class Data implements DataInterface
             return $name;
         }
 
-        return Method::$met($name) ?: $name;
+        return Method::$met($name);
     }
 
     /**
