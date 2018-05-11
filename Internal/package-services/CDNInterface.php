@@ -12,40 +12,6 @@
 interface CDNInterface
 {
     /**
-     * Sets address.
-     * 
-     * @param string $url
-     */
-    public static function address(String $url);
-
-    /**
-     * Api
-     * 
-     * @param string $uri = NULL
-     * 
-     * @return object
-     */
-    public static function api(String $uri = NULL);
-
-    /**
-     * Get Library
-     * 
-     * @param string $library
-     * 
-     * @return object
-     */
-    public static function getLibrary(String $library);
-
-    /**
-     * Get Library
-     * 
-     * @param string $query
-     * 
-     * @return object
-     */
-    public static function searchQuery(String $query);
-
-    /**
      * Get cdn data.
      * 
      * @param string $configName

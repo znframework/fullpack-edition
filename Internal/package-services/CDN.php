@@ -9,73 +9,72 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\IS;
-use ZN\Base;
 use ZN\Config;
-use ZN\Singleton;
+use ZN\Ability\Driver;
 
 class CDN implements CDNInterface
 {  
-    /**
-     * Api address
-     * 
-     * @var string
-     */
-    protected static $address = 'https://api.cdnjs.com/libraries';
+    use Driver;
 
     /**
-     * Sets address.
+     * Driver
      * 
-     * @param string $url
+     * @param array driver
      */
-    public static function address(String $url)
+    const driver =
+    [
+        'options'   => ['cdnjs'],
+        'namespace' => 'ZN\Services\CDNDrivers',
+        'default'   => 'ZN\Services\CDNDefaultConfiguration'
+    ];
+
+    /**
+     * Get Links
+     * 
+     * @return array
+     */
+    public function getLinks()
     {
-        if( ! IS::url($url) )
-        {
-            throw new Exception\BadRequestURLException($url);
-        }
-
-        self::$address = $url;
-
-        return new self;
+        return $this->driver->getLinks();
     }
 
     /**
-     * Api
+     * Get link
      * 
-     * @param string $uri = NULL
+     * @param string $key
+     * @param string $version = 'latest'
      * 
-     * @return object
+     * @return string|false
      */
-    public static function api(String $uri = NULL)
+    public function getLink(String $key, String $version = 'latest')
     {
-        $result = Singleton::class('ZN\Services\Restful')->get(self::$address . $uri);
-
-        return $result;
+        return $this->driver->getLink($key, $version);
     }
 
     /**
-     * Get Library
+     * Refresh request api.
      * 
-     * @param string $library
-     * 
-     * @return object
+     * @return $this
      */
-    public static function getLibrary(String $library)
+    public function refresh()
     {
-        return self::api(Base::prefix($library));
+        $this->driver->refresh();
+
+        return $this;
     }
 
     /**
-     * Get Library
+     * Set json file path.
      * 
-     * @param string $query
+     * @param string $jsonFile
      * 
-     * @return object
+     * @return $this
      */
-    public static function searchQuery(String $query)
+    public function setJsonFile(String $jsonFile)
     {
-        return self::api(Base::prefix($query, '?search='));
+        $this->driver->setJsonFile($jsonFile);
+
+        return $this;
     }
 
     /**
