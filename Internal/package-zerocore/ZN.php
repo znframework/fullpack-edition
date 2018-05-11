@@ -585,7 +585,10 @@ class ZN
                     {
                         if( ! empty($file->raw_url) )
                         {
-                            $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
+                            if( strpos($file->filename, PROJECTS_DIR) !== 0 )
+                            {
+                                $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
+                            }
                         }
                     }        
                 }
