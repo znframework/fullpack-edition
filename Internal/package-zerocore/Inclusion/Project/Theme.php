@@ -47,13 +47,14 @@ class Theme
         $data = preg_replace_callback
         (
             [
-                '/<(link|img|script|div)\s(.*?)(href|src)\=\"(.*?)\"(.*?)\>/i',
-                '/(background)(-image)*\s*(\:)\s*url\((.*?)\)/i'
+                '/<(link|img|script|div|a)\s(.*?)(href|src)\=(\"|\')(.*?)(\"|\')(.*?)\>/i', # 5. element (.*?)
+                '/(background)(-image)*\s*(\:)\s*(url)\((.*?)\)/i'                          # 5. element (.*?)
             ], 
             function($selector) use ($themeName)
             {
                 $orig = $selector[0];
-                $path = trim($selector[4], '\'');
+                $path = trim($selector[5], '\'');
+                $path = preg_replace('/(\.\.\/)+/', '//', $path);
 
                 if( ! IS::url($path) && ! is_file($path) )
                 {

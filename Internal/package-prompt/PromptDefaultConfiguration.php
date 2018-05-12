@@ -18,7 +18,7 @@ class PromptDefaultConfiguration
 {
     /*
     |--------------------------------------------------------------------------
-    | Crontab
+    | Prompt
     |--------------------------------------------------------------------------
     |
     | The current PHP path. Especially necessary for crontab.

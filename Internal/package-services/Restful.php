@@ -213,6 +213,46 @@ class Restful implements RestfulInterface
     }
 
     /**
+     * Put Json
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function putJson(String $url = NULL, $data = NULL)
+    {
+        return $this->_customRequest($url, json_encode($this->data ?? $data), 'put');
+    }
+
+
+    /**
+     * Patch 
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function patch(String $url = NULL, $data = NULL)
+    {
+        return $this->_customRequest($url, URL::buildQuery($this->data ?? $data), __FUNCTION__);
+    }
+
+    /**
+     * Patch Json
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function patchJson(String $url = NULL, $data = NULL)
+    {
+        return $this->_customRequest($url, json_encode($this->data ?? $data), 'patch');
+    }
+
+    /**
      * Delete 
      * 
      * @param string $url  = NULL
@@ -293,7 +333,7 @@ class Restful implements RestfulInterface
         }
         elseif( XML\Check::check($response) )
         {
-            return XML\Parser::object($response);
+            return XML\Parser::simple($response);
         }
         else
         {

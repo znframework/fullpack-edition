@@ -13,5 +13,32 @@ use ZN\Database\DriverTrigger;
 
 class DBTrigger extends DriverTrigger
 {
-   
+   /**
+     * Body
+     * 
+     * @param string ...$args 
+     * 
+     * BEGIN $arg1; $arg2; .... $arg3; END;
+     */
+    public function body(...$args)
+    {
+        if( is_array($args[0]) )
+        {
+            $args = $args[0];
+        }
+
+        $this->body = 'EXECUTE PROCEDURE '.implode('; ', $args).';';
+    }
+
+    /**
+     * Drop Trigger
+     * 
+     * @param string $name
+     * 
+     * @return string
+     */
+    public function dropTrigger($name, $type = NULL)
+    {
+        return 'DROP TRIGGER ON'.$name. ($type ? ' ' . $table : NULL) . ';';
+    }
 }

@@ -12,31 +12,37 @@
 interface CDNInterface
 {
     /**
-     * Api
+     * Get Links
      * 
-     * @param string $uri
-     * 
-     * @return object
+     * @return array
      */
-    public static function api(String $uri);
+    public function links() : Array;
 
     /**
-     * Get Library
+     * Get link
      * 
-     * @param string $library
+     * @param string $key
+     * @param string $version = 'latest'
      * 
-     * @return object
+     * @return string|false
      */
-    public static function getLibrary(String $library);
+    public function link(String $key, String $version = 'latest');
 
     /**
-     * Get Library
+     * Refresh request api.
      * 
-     * @param string $query
-     * 
-     * @return object
+     * @return $this
      */
-    public static function searchQuery(String $query);
+    public function refresh() : CDN;
+
+    /**
+     * Set json file path.
+     * 
+     * @param string $jsonFile
+     * 
+     * @return $this
+     */
+    public function setJsonFile(String $jsonFile) : CDN;
 
     /**
      * Get cdn data.

@@ -16,6 +16,19 @@
  */
 class CDNDefaultConfiguration
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Driver
+    |--------------------------------------------------------------------------
+    |
+    | Specifies the driver to use for the API connection.
+    | 
+    | Options: cloudflare
+    |
+    */
+
+    public $driver = 'cloudflare';
+
    /*
     |--------------------------------------------------------------------------
     | Scripts

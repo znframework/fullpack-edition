@@ -18,10 +18,10 @@ class ShoppingDefaultConfiguration
 {
     /*
     |--------------------------------------------------------------------------
-    | Compression
+    | Shopping
     |--------------------------------------------------------------------------
     |
-    | It is specified in which structure the cart information will be stored.
+    | It is specified in which structure the cart data information will be stored.
     |
     */
 

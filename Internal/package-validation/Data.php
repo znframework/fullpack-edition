@@ -306,7 +306,8 @@ class Data implements DataInterface
         }
         else
         {
-            $message = Lang::select('ViewObjects', 'validation:'.$type, $check);
+            $message = Lang::default('ZN\Validation\ValidationDefaultLanguage')
+                           ::select('ViewObjects', 'validation:'.$type, $check);
         }
 
         $this->messages[$this->index] = $message.'<br>'; $this->index++;
@@ -368,7 +369,7 @@ class Data implements DataInterface
             return $name;
         }
 
-        return Method::$met($name) ?: $name;
+        return Method::$met($name);
     }
 
     /**

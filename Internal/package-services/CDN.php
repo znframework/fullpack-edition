@@ -9,55 +9,72 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Base;
 use ZN\Config;
-use ZN\Singleton;
+use ZN\Ability\Driver;
 
 class CDN implements CDNInterface
 {  
-    /**
-     * Api address
-     * 
-     * @var string
-     */
-    protected static $address = 'https://api.cdnjs.com/libraries';
+    use Driver;
 
     /**
-     * Api
+     * Driver
      * 
-     * @param string $uri
-     * 
-     * @return object
+     * @param array driver
      */
-    public static function api(String $uri)
+    const driver =
+    [
+        'options'   => ['cloudflare'],
+        'namespace' => 'ZN\Services\CDNDrivers',
+        'default'   => 'ZN\Services\CDNDefaultConfiguration'
+    ];
+
+    /**
+     * Get Links
+     * 
+     * @return array
+     */
+    public function links() : Array
     {
-        $result = Singleton::class('ZN\Services\Restful')->get(self::$address . $uri);
-
-        return $result;
+        return $this->driver->getLinks();
     }
 
     /**
-     * Get Library
+     * Get link
      * 
-     * @param string $library
+     * @param string $key
+     * @param string $version = 'latest'
      * 
-     * @return object
+     * @return string|false
      */
-    public static function getLibrary(String $library)
+    public function link(String $key, String $version = 'latest')
     {
-        return self::api(Base::prefix($library));
+        return $this->driver->getLink($key, $version);
     }
 
     /**
-     * Get Library
+     * Refresh request api.
      * 
-     * @param string $query
-     * 
-     * @return object
+     * @return $this
      */
-    public static function searchQuery(String $query)
+    public function refresh() : CDN
     {
-        return self::api(Base::prefix($query, '?'));
+        $this->driver->refresh();
+
+        return $this;
+    }
+
+    /**
+     * Set json file path.
+     * 
+     * @param string $jsonFile
+     * 
+     * @return $this
+     */
+    public function setJsonFile(String $jsonFile) : CDN
+    {
+        $this->driver->setJsonFile($jsonFile);
+
+        return $this;
     }
 
     /**
