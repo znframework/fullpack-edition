@@ -140,6 +140,12 @@ class Kernel
         $openFunction = CURRENT_COPEN_PAGE;
         $page         = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
         
+        # The request must be made to a valid controller.
+        if( ! is_file(CURRENT_CFILE) )
+        {
+            self::invalidControllerPath($page, $function);
+        }
+        
         # If an invalid parameter is entered, it will redirect to the opening method.
         if( ! is_callable([$page, $function]) )
         {
@@ -150,9 +156,7 @@ class Kernel
             # If the request is invalid, it will be redirected.
             if( ! is_callable([$page, $function]) )
             {
-                Helper::report('InvalidRequest', "Invalid request made to {$page}/{$function} page!");
-
-                Response::redirect(Config::get('Routing', 'show404'));
+                self::invalidControllerPath($page, $function);
             }
         }
         
@@ -295,6 +299,16 @@ class Kernel
         }
 
         ob_end_flush();
+    }
+
+    /**
+     * Protected invalid controller path
+     */
+    protected static function invalidControllerPath($controller, $function)
+    {
+        Helper::report('InvalidRequest', "Invalid request made to {$controller}/{$function} page!");
+
+        Response::redirect(Config::get('Routing', 'show404'));
     }
 
     /**
