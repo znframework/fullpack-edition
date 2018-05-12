@@ -1,6 +1,0 @@
-[submodule "Projects/developer-tools"]
-	path = Projects/developer-tools
-	url = https://github.com/znframework/developer-tools
-[submodule "Projects/Devtools"]
-	path = Projects/Devtools
-	url = https://github.com/znframework/developer-tools
