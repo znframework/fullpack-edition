@@ -14,9 +14,9 @@ use ZN\Support;
 use ZN\Security;
 use ZN\ErrorHandling\Errors;
 use ZN\Database\Exception\ConnectionErrorException;
-use ZN\Database\Abstracts\DriverConnectionMappingAbstract;
+use ZN\Database\DriverMappingAbstract;
 
-class DB extends DriverConnectionMappingAbstract
+class DB extends DriverMappingAbstract
 {
     /**
      * Keep Operators
