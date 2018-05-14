@@ -729,14 +729,14 @@ class Initialize extends Controller
      */
     protected function bodyParser($body)
     {
-        return $this->addSlashesToAt(preg_replace_callback('/href\=\"(.*?\.html)\"/', function($link)
+        return $this->addSlashesToAt(preg_replace_callback('/(href|action)\=(\"|\')(.*?\.html)(\"|\')/', function($link)
         {
-            if( ! IS::url($link[1]) )
+            if( ! IS::url($link[3]) )
             {
                 return str_replace
                 (
-                    $link[1], 
-                    '{|{ URL::site(\''.$this->convertValidControllerName($link[1]).'\') }|}',
+                    $link[3], 
+                    '{|{ URL::site(\''.$this->convertValidControllerName($link[3]).'\') }|}',
                     $link[0]
                 );
             }
