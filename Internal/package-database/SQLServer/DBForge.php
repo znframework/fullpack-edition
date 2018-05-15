@@ -14,6 +14,14 @@ use ZN\Database\DriverForge;
 class DBForge extends DriverForge
 {
     /**
+     * Unsupported
+     */
+    public function extras($extras)
+    {
+        return NULL;
+    }
+    
+    /**
      * Rename column
      * 
      * @param string $table

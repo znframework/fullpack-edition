@@ -13,5 +13,55 @@ use ZN\Database\DriverTool;
 
 class DBTool extends DriverTool
 {
+    /**
+     * List Databases
+     * 
+     * @return array
+     */
+    public function listDatabases($query = 'SELECT name FROM master.dbo.sysdatabases')
+    {
+        return $this->_list($query);
+    }
 
+    /**
+     * List Tables
+     * 
+     * @return array
+     */
+    public function listTables($query = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'")
+    {
+        return $this->_list($query);
+    }
+
+    /**
+     * Unsupported
+     */
+    public function statusTables($table)
+    {
+        return false;
+    }
+
+    /**
+     * Unsupported
+     */
+    public function optimizeTables($table)
+    {
+        return false;
+    }
+
+    /**
+     * Unsupported
+     */
+    public function repairTables($table, $query = '', $message = '')
+    {
+        return false;
+    }
+
+    /**
+     * Unsupported
+     */
+    public function backup($tables, $fileName, $path)
+    {
+        return false;
+    }
 }

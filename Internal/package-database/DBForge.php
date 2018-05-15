@@ -74,7 +74,7 @@ class DBForge extends Connection
      */
     public function extras($extras) : DBForge
     {
-        $this->extras = $extras;
+        $this->extras = $this->forge->extras($extras);
 
         return $this;
     }
@@ -119,7 +119,7 @@ class DBForge extends Connection
      */
     public function createTable(String $table = NULL, Array $colums = NULL, $extras = NULL)
     {
-        $query = $this->forge->createTable($this->_p($table), $this->_p($colums, 'column'), $extras);
+        $query = $this->forge->createTable($this->_p($table), $this->_p($colums, 'column'), $this->_p($extras, 'extras'));
 
         return $this->_runExecQuery($query);
     }

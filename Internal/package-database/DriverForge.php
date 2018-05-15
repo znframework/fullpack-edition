@@ -12,6 +12,18 @@
 class DriverForge
 {
     /**
+     * Create Table & Database Extras
+     * 
+     * @param mixed $extras
+     * 
+     * @return mixed
+     */
+    public function extras($extras)
+    {
+        return $extras;
+    }
+
+    /**
      * Create Database
      * 
      * @param string $dbname
