@@ -50,20 +50,20 @@ class Wizard
     {
         self::$config = $config ?: Config::get('ViewObjects', 'wizard');
 
-        self::_textControl($string); # 5.4.6[added]
+        self::textControl($string); # 5.4.6[added]
 
         $pattern = array_merge
         (
-            self::_symbolsHeader(),
-            self::_tags(),
-            self::_keywords(),
-            self::_printable(),
-            self::_functions(),
-            self::_symbolsFooter(),
-            self::_comments(),
-            self::_required(),
-            self::_jsdata(),
-            self::_html()
+            self::symbolsHeader(),
+            self::tags(),
+            self::keywords(),
+            self::printable(),
+            self::functions(),
+            self::symbolsFooter(),
+            self::comments(),
+            self::required(),
+            self::jsdata(),
+            self::html()
         );
 
         return Buffering::code(self::replace($pattern, $string), $data);
@@ -76,7 +76,7 @@ class Wizard
      * 
      * @return void
      */
-    protected static function _textControl(&$string)
+    protected static function textControl(&$string)
     {
         if( self::$config['html'] ?? true )
         {
@@ -119,7 +119,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _required()
+    protected static function required()
     {
         return
         [
@@ -135,7 +135,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _keywords()
+    protected static function keywords()
     {
         $array = [];
 
@@ -173,7 +173,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _printable()
+    protected static function printable()
     {
         $array = [];
 
@@ -210,7 +210,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _functions()
+    protected static function functions()
     {
         $array = [];
 
@@ -233,7 +233,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _comments()
+    protected static function comments()
     {
         $array = [];
 
@@ -256,7 +256,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _jsdata()
+    protected static function jsdata()
     {
         $array = [];
 
@@ -278,7 +278,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _tags()
+    protected static function tags()
     {
         $array = [];
 
@@ -306,7 +306,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _html()
+    protected static function html()
     {
         $array             = [];
         $htmlAttributesTag = '(^|\s)\#(!*\w+)\s*(\[(.*?)\])*';
@@ -336,7 +336,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _symbolsHeader()
+    protected static function symbolsHeader()
     {
         return
         [
@@ -353,7 +353,7 @@ class Wizard
      * 
      * @return array
      */
-    protected static function _symbolsFooter()
+    protected static function symbolsFooter()
     {
         return
         [

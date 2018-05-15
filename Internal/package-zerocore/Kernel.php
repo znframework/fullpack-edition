@@ -189,17 +189,26 @@ class Kernel
      */
     public static function viewPathFinder($function, &$viewPath, &$wizardPath)
     {
+        # Retrieves the automatic upload setting from the configuration file.
         $viewNameType = Config::get('Starting', 'viewNameType') ?: 'file';
-
+        
+        # The automatic load type: file
         if( $viewNameType === 'file' )
         {
+            # Setting the automatic view upload type in the file standard.
             $viewFunction = $function === CURRENT_COPEN_PAGE ? NULL : '-' . $function;
-            $viewDir      = self::viewPathCreator($viewFunction);
+
+            # Views/controller-method.php
+            $viewDir = self::viewPathCreator($viewFunction);
         }
+        # The automatic load type: directory
         else
         {
+            # Setting the automatic view upload type in the directory standard.
             $viewFunction = $function === CURRENT_COPEN_PAGE ? CURRENT_COPEN_PAGE : $function;
-            $viewDir      = self::viewPathCreator('/' . $viewFunction);
+
+            # Views/controller/method.php
+            $viewDir = self::viewPathCreator('/' . $viewFunction);
         }
 
         $viewPath   = $viewDir . '.php';
@@ -298,6 +307,7 @@ class Kernel
             Exceptions::restore(); Errors::restore();
         }
 
+        # The buffer is being turned off.
         ob_end_flush();
     }
 
@@ -383,21 +393,18 @@ class Kernel
     /**
      * Protected View Path Creator
      * 
+     * 5.7.0[updated]
+     * 
      * @param string $fix
      * 
      * @return string
      */
     protected static function viewPathCreator($fix)
     {
-        $view = CURRENT_CONTROLLER;
+        $view = CURRENT_CONTROLLER . $fix;
 
-        if( $subdir = STRUCTURE_DATA['subdir'] )
-        {
-            $view = $subdir;
-        }
-
-        $view .= $fix;
-
+        # If the Theme::active() method is in effect, 
+        # the path information is rearranged.
         if( ($active = Theme::$active) !== NULL )
         {
             if( is_dir(PAGES_DIR . $active) )

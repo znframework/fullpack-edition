@@ -64,7 +64,6 @@ class Structure
             'function'     => $function,
             'namespace'    => $namespace,
             'openFunction' => $openFunction,
-            'subdir'       => $ifTrim ?? NULL,
             'parameters'   => array_values($parameters)
         ];
     }
