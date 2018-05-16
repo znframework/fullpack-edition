@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Config;
 use ZN\Database\DriverTool;
 
 class DBTool extends DriverTool
@@ -28,8 +29,10 @@ class DBTool extends DriverTool
      * 
      * @return array
      */
-    public function listTables($query = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'")
+    public function listTables($query = "")
     {
+        $query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG='".($this->settings['database'] ?? Config::get('Database', 'database')['database'])."'";
+        
         return $this->_list($query);
     }
 

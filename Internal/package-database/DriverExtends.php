@@ -9,16 +9,19 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Lang;
 use ZN\Singleton;
 
 class DriverExtends
 {
     protected $differentConnection;
     protected $settings;
+    protected $getLang;
 
     public function __construct($settings = [])
     {
         $this->settings = $settings;
         $this->differentConnection = Singleton::class('ZN\Database\DB')->differentConnection($settings);
+        $this->getLang = Lang::default('ZN\Database\DatabaseDefaultLanguage')::select('Database');
     }
 }
