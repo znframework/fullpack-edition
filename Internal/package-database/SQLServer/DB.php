@@ -266,12 +266,13 @@ class DB extends DriverMappingAbstract
             return [];
         }
 
-        $columns   = [];
-        $numFields = $this->numFields();
+        $columns = [];
 
-        for( $i = 0; $i < $numFields; $i++ )
+        $getFieldData = sqlsrv_field_metadata($this->query);
+
+        foreach( $getFieldData as $field )
         {
-            $columns[] = sqlsrv_get_field($this->query, $i);
+            $columns[] = $field['Name'];
         }
 
         return $columns;

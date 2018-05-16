@@ -10,22 +10,11 @@
  */
 
 use stdClass;
-use ZN\Lang;
 use ZN\Base;
 use ZN\Filesystem\Exception\IOException;
 
 class DriverTool extends DriverExtends
 {
-    /**
-     * Magic Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        
-        $this->getLang = Lang::default('ZN\Database\DatabaseDefaultLanguage')::select('Database');
-    }
-
     /**
      * List Databases
      * 
