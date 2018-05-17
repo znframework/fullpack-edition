@@ -64,7 +64,16 @@ class Restoration
     public static function end(String $project, String $type = NULL)
     {
         $project = Base::prefix($project, self::$restoreFix);
-        $return  = Filesystem::copy($restoreFolder = PROJECTS_DIR . $project, PROJECTS_DIR . ltrim($project, self::$restoreFix));
+
+        $restoreFolder = PROJECTS_DIR . Base::suffix($project);
+
+        # 5.7.2.6[fixed]
+        if( file_exists($classMapFile = $restoreFolder . 'ClassMap.php') )
+        {
+            unlink($classMapFile);
+        }
+
+        $return = Filesystem::copy($restoreFolder, PROJECTS_DIR . ltrim($project, self::$restoreFix));
 
         if( $type === 'delete' )
         {
