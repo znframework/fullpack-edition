@@ -30,4 +30,4 @@ require __DIR__ . '/Internal/autoload.php';
 |
 */
 
-ZN\ZN::run('FE', '5.7.2.5', 'Vecihi Hürkuş');
+ZN\ZN::run('FE', '5.7.2.6', 'Vecihi Hürkuş');
