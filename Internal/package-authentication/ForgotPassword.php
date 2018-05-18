@@ -21,14 +21,10 @@ class ForgotPassword extends UserExtends
      * Email
      * 
      * @param string $email
-     * 
-     * @return ForgotPassword
      */
-    public function email(String $email) : ForgotPassword
+    public function email(String $email)
     {
         Properties::$parameters['email'] = $email;
-
-        return $this;
     }
 
     /**
@@ -38,11 +34,9 @@ class ForgotPassword extends UserExtends
      * 
      * @return ForgotPassword
      */
-    public function verification(String $verification) : ForgotPassword
+    public function verification(String $verification)
     {
         Properties::$parameters['verification'] = $verification;
-
-        return $this;
     }
 
     /**

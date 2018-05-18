@@ -15,42 +15,30 @@ class Login extends UserExtends
      * Username
      * 
      * @param string $username
-     * 
-     * @return Login
      */
-    public function username(String $username) : Login
+    public function username(String $username)
     {
         Properties::$parameters['username'] = $username;
-
-        return $this;
     }
 
     /**
      * Password
      * 
      * @param string $password
-     * 
-     * @return Login
      */
-    public function password(String $password) : Login
+    public function password(String $password)
     {
         Properties::$parameters['password'] = $password;
-
-        return $this;
     }
 
     /**
      * Remember
      * 
      * @param bool $remember = true
-     * 
-     * @return Login
      */
-    public function remember(Bool $remember = true) : Login
+    public function remember(Bool $remember = true)
     {
         Properties::$parameters['remember'] = $remember;
-
-        return $this;
     }
 
     /**

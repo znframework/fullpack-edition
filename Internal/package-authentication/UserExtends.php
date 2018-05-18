@@ -86,28 +86,20 @@ class UserExtends
      * 
      * @param string $column
      * @param mixed  $value
-     * 
-     * @return UserExtends
      */
-    public function column(String $column, $value) : UserExtends
+    public function column(String $column, $value)
     {
         Properties::$parameters['column'][$column] = $value;
-
-        return $this;
     }
 
     /**
      * Return link
      * 
      * @param string $returnLink
-     * 
-     * @return UserExtends
      */
-    public function returnLink(String $returnLink) : UserExtends
+    public function returnLink(String $returnLink)
     {
         Properties::$parameters['returnLink'] = $returnLink;
-
-        return $this;
     }
 
     /**

@@ -13,5 +13,9 @@ use ZN\Exception;
 
 class InvalidArgumentException extends Exception
 {
-    
+    const lang = 
+    [
+        'tr' => '[%] parametre geçersiz bilgi içeriyor!', 
+        'en' => '[%] parameter contains invalid information!'
+    ];
 }

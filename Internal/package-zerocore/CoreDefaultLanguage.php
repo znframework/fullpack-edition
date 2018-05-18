@@ -28,6 +28,7 @@ class CoreDefaultLanguage
     public $en = 
     [
         'butcher:notFoundExternalButcheryThemes' => 'The External/Butchery/ directory does not contain any theme directory!',
+        'butcher:cantMultipleExtractTheme'       => '% directory does not have the proper theme for multiple extraction!',
         'butcher:cantExtractTheme'               => 'The theme can not be extract! It may have been created before.',
         'butcher:extractThemeSuccess'            => 'Theme integration has been successfully completed.'
     ];
@@ -35,6 +36,7 @@ class CoreDefaultLanguage
     public $tr = 
     [
         'butcher:notFoundExternalButcheryThemes' => 'External/Butchery/ dizini herhangi bir tema dizini içermiyor!',
+        'butcher:cantMultipleExtractTheme'       => '% dizini çoklu çıkarma işlemine uygun tema yapısına sahip değil!',
         'butcher:cantExtractTheme'               => 'Tema çıkartılamıyor! Daha önce oluşturulmuş olabilir.',
         'butcher:extractThemeSuccess'            => 'Tema entegrasyonu başarı ile tamamlandı.'
     ];

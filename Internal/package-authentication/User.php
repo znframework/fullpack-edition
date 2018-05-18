@@ -22,6 +22,7 @@ class User extends Factory
             'autologin'             => 'Register::autoLogin:this',
             'returnlink'            => 'UserExtends::returnLink:this',
             'activationcomplete'    => 'Register::activationComplete',
+            'setactivationemail'    => 'Register::setActivationEmail:this',
             'resendactivationemail' => 'Register::resendActivationEmail',
             'update'                => 'Update::do',
             'oldpassword'           => 'Update::oldPassword:this',

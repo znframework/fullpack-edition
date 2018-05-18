@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Exception;
+
 class InvalidLocationException extends Exception
 {
     const lang = 

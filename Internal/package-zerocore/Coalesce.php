@@ -9,7 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-class Coalesce implements CoalesceInterface
+class Coalesce
 {
     /**
      * Null Coalesce
