@@ -9,9 +9,14 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\ZN;
+use ZN\Base;
 use ZN\Singleton;
 use ZN\Inclusion;
 use ZN\Comparison;
+use ZN\Filesystem;
+use ZN\Autoloader;
+use ZN\DataTypes\Arrays;
 
 class Tester
 {
@@ -63,6 +68,79 @@ class Tester
      * @var array
      */
     protected $arguments;
+
+    /**
+     * Gets core analysis.
+     * 
+     * 5.7.3[added]
+     * 
+     * @param string $path
+     * 
+     * @return array
+     */
+    public function analysis(String $path = NULL)
+    {
+        if( $path === NULL )
+        {
+            switch( ZN::$projectType )
+            {
+                case 'SE' :
+                case 'OE' :
+                case 'EIP': $path = 'vendor/znframework'; break;
+                case 'FE' : $path = 'Internal';           break;
+            }
+        }
+
+        $path = Base::suffix($path);
+
+        $files      = Filesystem::getRecursiveFiles($path, true);
+        $packages   = preg_grep('/package\-/', Filesystem::getFiles($path));
+        $facades    = array_map('ZN\Filesystem::removeExtension', Filesystem::getFiles($path . 'package-zerocore/Facades/'));
+
+        $infos            = [];
+        $totalMethods     = 0;
+        $totalTestMethods = 0;
+        $tests            = [];
+
+        foreach( $files as $file )
+        {
+            $info = Autoloader::tokenClassFileInfo($file);
+
+            $namespace = $info['namespace'] ?? NULL;
+            $class     = $info['class']     ?? NULL;
+
+            if( ! empty($namespace) && ! empty($class) )
+            {
+                $fullClassName = $namespace . '\\' . $class;
+
+                $methods = preg_grep('/^[a-z]/i', get_class_methods($fullClassName));
+                
+                $isTestClass = strstr($fullClassName, '\\Tests\\');
+                $isNotClass  = preg_match('/\w+(Interface|Exception)$/', $fullClassName);
+
+                if( ! $isNotClass && ! $isTestClass && ($methodCount = count($methods)) > 0 )
+                {
+                    $totalMethods += $methodCount;
+                    $infos['classes'][$fullClassName] = $methods;
+                } 
+                elseif( $isTestClass )
+                {
+                    $totalTestMethods += count($fullClassName::unit['methods'] ?? false);
+                    $tests[$fullClassName] = $fullClassName::unit;
+                }
+            }
+        }
+
+        $infos['tests']               = $tests;
+        $infos['facades']             = $facades;
+        $infos['packages']            = $packages;       
+        $infos['totalClasses']        = $totalFiles = count($files);
+        $infos['totalMethods']        = $totalMethods;
+        $infos['totalTestMethods']    = $totalTestMethods;
+        $infos['testProgressPercent'] = round(($totalTestMethods / $totalMethods) * 100, 2);
+   
+        return (object) $infos;
+    }
 
     /**
      * Defines class name.

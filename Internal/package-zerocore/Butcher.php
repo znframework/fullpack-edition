@@ -66,6 +66,13 @@ class Butcher
     protected $bodyParser = [];
 
     /**
+     * Protected multiple
+     * 
+     * @var string
+     */
+    protected $multiple = NULL;
+
+    /**
      * Magic constructor
      */
     public function __construct()
@@ -144,7 +151,7 @@ class Butcher
 
             if( empty($themes) )
             {
-                return $this->lang['butcher:notFoundExternalButcheryThemes'];
+                return $this->getLangValue('notFoundExternalButcheryThemes');
             }
 
             foreach( $themes as $theme )
@@ -152,14 +159,14 @@ class Butcher
                $this->runProjectExtract($theme, $case, $force, $location);
             }
 
-            return $this->lang['butcher:extractThemeSuccess'];
+            return $this->getLangValue('extractThemeSuccess');
         }
         else
         {
             return $this->runProjectExtract($which, $case, $force, $location);
         }  
 
-        return $this->lang['butcher:cantExtractTheme'];
+        return $this->getLangValue('cantExtractTheme');
     }
 
     /**
@@ -192,25 +199,72 @@ class Butcher
     /**
      * Run
      * 
-     * @param string $theme    = 'Default'
+     * @param string $theme    = 'Default' - options[{name}|multiple]
      * @param string $location = 'project' - options[project|external]
      * 
      * @return true
      */
     public function run(String $theme = 'Default', String $location = 'project')
     {
-        $this->themeDirectory = $theme;
-
         if( $location === 'external' )
         {
             $this->location = $location;
         }
-        
-        $this->findHTMLFiles($this->currentButcheryDirectory ?? BUTCHERY_DIR);
-        $this->generateControllers();
-        $this->moveAssetsToThemeDirectory();  
 
-        return $this->lang['butcher:extractThemeSuccess'];
+        if( $theme === 'multiple' )
+        {
+            $this->openZipFiles($this->getCurrentProjectButcheryDirectory());
+
+            if( $directories = Filesystem::getFiles($this->getCurrentProjectButcheryDirectory(), 'dir') )
+            {
+                foreach( $directories as $directory )
+                {
+                    $this->themeDirectory = $this->projectDirectoryCase($directory, 'title');
+
+                    $this->multiple = $directory . '/';
+    
+                    $this->singleRun();
+                }
+            }  
+            else
+            {
+                return $this->getLangValue('cantMultipleExtractTheme', $this->getCurrentProjectButcheryDirectory());
+            }    
+        }
+        else
+        {
+            $this->themeDirectory = $theme;
+        
+            $this->singleRun();
+        }
+
+        return $this->getLangValue('extractThemeSuccess');
+    }
+
+    /**
+     * Protected get lang value
+     */
+    protected function getLangValue($key, $string = NULL)
+    {
+        return str_replace('%', $string, $this->lang['butcher:' . $key]);
+    }
+
+    /**
+     * Protected get current project butchery directory
+     */
+    protected function getCurrentProjectButcheryDirectory()
+    {
+        return ($this->currentButcheryDirectory ?? BUTCHERY_DIR) . $this->multiple;
+    }
+
+    /**
+     * Protected single run.
+     */
+    protected function singleRun()
+    {
+        $this->findHTMLFiles($this->getCurrentProjectButcheryDirectory());
+        $this->generateControllers();
+        $this->moveAssetsToThemeDirectory(); 
     }
 
     /**
@@ -225,7 +279,7 @@ class Butcher
     {
         $return = $this->run($theme, $location);
 
-        Filesystem::deleteFolder($this->currentButcheryDirectory ?? BUTCHERY_DIR);
+        Filesystem::deleteFolder($this->getCurrentProjectButcheryDirectory());
 
         return $return;
     }
@@ -266,10 +320,10 @@ class Butcher
                 Filesystem::deleteFolder($this->currentButcheryDirectory);
             }
 
-            return $this->lang['butcher:extractThemeSuccess'];
+            return $this->getLangValue('extractThemeSuccess');
         }
 
-        return $this->lang['butcher:cantExtractTheme'];
+        return $this->getLangValue('cantExtractTheme');
     }
 
     /**
@@ -446,35 +500,6 @@ class Butcher
         {
             $this->findBaseThemeDirectory = $directory;
         }
-    }
-
-    /**
-     * Protected write initizalize cotroller
-     */
-    protected function writeInitializeController()
-    {
-        $initialize = '<?php namespace Project\Controllers;
-
-class Initialize extends Controller
-{
-    /**
-     * The codes to run at startup.
-     * It enters the circuit before all controllers. 
-     * You can change this setting in Config/Starting.php file.
-     */
-    public function main(String $params = NULL)
-    {
-        # The theme is activated.
-        # Location: Resources/Themes/'.$this->getThemeDirectoryName().'/
-        Theme::active(\''.$this->getThemeDirectoryName().'\');
-        
-        # The current settings are being configured.
-        Masterpage::headPage(\'Sections/head\')
-                  ->bodyPage(\'Sections/body\');
-    }
-}';
-
-        file_put_contents($this->controllersDirectory() . 'Initialize.php', $initialize);
     }
 
     /**
@@ -690,13 +715,21 @@ class Initialize extends Controller
     }
 
     /**
+     * Protected multiple theme directory
+     */
+    protected function getMultipleThemeDirectory()
+    {
+        return ($this->multiple ? $this->getThemeDirectoryName() . '/' : NULL);
+    }
+
+    /**
      * Protected generate view
      */
     protected function generateView($controller, $file)
     {
         $file = $this->findBaseThemeDirectory . $file;
         
-        $viewDirectory = $this->viewsDirectory() . $controller; 
+        $viewDirectory = ($viewThemeDirectory = $this->viewsDirectory() . $this->getMultipleThemeDirectory()) . $controller . '/'; 
 
         Filesystem::createFolder($viewDirectory);
 
@@ -707,11 +740,11 @@ class Initialize extends Controller
         $head = $match[1] ?? false;
         $body = $match[2] ?? false;
 
-        $mainFile = $viewDirectory . '/'.$this->routeConfig()['openFunction'].'.wizard.php';
-
         if( $body !== false )
         {
-            file_put_contents($mainFile, $this->globalPageParser($this->bodyParser($body)));
+            $mainFile = $viewDirectory . $this->routeConfig()['openFunction'].'.wizard.php';
+
+            $this->generateBodyViewContent($mainFile, $body);
         }
 
         if( $head !== false && $controller === $this->routeConfig()['openController'] )
@@ -719,9 +752,45 @@ class Initialize extends Controller
             $this->createSectionViews($sectionsDirectory);
 
             $headFile = $sectionsDirectory . 'head.wizard.php';
+
+            if( $this->getMultipleThemeDirectory() !== NULL )
+            { 
+                $this->generateMultipleHeadPage($headFile);
+
+                $headFile = $viewThemeDirectory . 'head.wizard.php';
+            }
             
-            file_put_contents($headFile, $this->globalPageParser($this->addSlashesToAt($head)));
-        }      
+            $this->generateHeadViewContent($headFile, $head);
+        }
+    }
+
+    /**
+     * Protected generate multiple head page
+     */
+    protected function generateMultipleHeadPage($file)
+    {
+        $content = '@view(ZN\Inclusion\Project\Theme::$active . \'/head.wizard.php\')';
+
+        if( ! file_exists($file) || file_get_contents($file) !== $content )
+        {
+            file_put_contents($file, $content);
+        } 
+    }
+
+    /**
+     * Protected generate head view content
+     */
+    protected function generateHeadViewContent($file, $content)
+    {
+        file_put_contents($file, $this->globalPageParser($this->addSlashesToAt($content)));
+    }
+
+    /**
+     * Protected generate head view content
+     */
+    protected function generateBodyViewContent($file, $content)
+    {
+        file_put_contents($file, $this->globalPageParser($this->bodyParser($content)));
     }
 
     /**
@@ -731,17 +800,19 @@ class Initialize extends Controller
     {
         return $this->addSlashesToAt(preg_replace_callback('/(href|action)\=(\"|\')(.*?\.html)(\"|\')/', function($link)
         {
-            if( ! IS::url($link[3]) )
+            $self = $link[0];
+
+            if( ! IS::url($url = $link[3]) )
             {
                 return str_replace
                 (
-                    $link[3], 
-                    '{|{ URL::site(\''.$this->convertValidControllerName($link[3]).'\') }|}',
-                    $link[0]
+                    $url, 
+                    '{|{ URL::site(\''.$this->convertValidControllerName($url).'\') }|}',
+                    $self
                 );
             }
             
-            return $link[0];
+            return $self;
 
         }, $body));
     }
@@ -846,5 +917,34 @@ class Initialize extends Controller
     protected function removeExtension($file)
     {
         return Filesystem::removeExtension($file);
+    }
+
+    /**
+     * Protected write initizalize cotroller
+     */
+    protected function writeInitializeController()
+    {
+        $initialize = '<?php namespace Project\Controllers;
+
+class Initialize extends Controller
+{
+    /**
+     * The codes to run at startup.
+     * It enters the circuit before all controllers. 
+     * You can change this setting in Config/Starting.php file.
+     */
+    public function main(String $params = NULL)
+    {
+        # The theme is activated.
+        # Location: Resources/Themes/'.$this->getThemeDirectoryName().'/
+        Theme::active(\''.$this->getThemeDirectoryName().'\');
+        
+        # The current settings are being configured.
+        Masterpage::headPage(\'Sections/head\')
+                  ->bodyPage(\'Sections/body\');
+    }
+}';
+
+        file_put_contents($this->controllersDirectory() . 'Initialize.php', $initialize);
     }
 }

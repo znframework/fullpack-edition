@@ -16,7 +16,6 @@ use ZN\Singleton;
 use ZN\Request\URL;
 use ZN\Request\URI;
 use ZN\Response\Redirect;
-use ZN\Authentication\Exception\ActivationColumnException;
 
 class Register extends UserExtends
 {
@@ -24,14 +23,22 @@ class Register extends UserExtends
      * Auto login.
      * 
      * @param mixed $autoLogin = true
-     * 
-     * @return Register
      */
-    public function autoLogin($autoLogin = true) : Register
+    public function autoLogin($autoLogin = true)
     {
         Properties::$parameters['autoLogin'] = $autoLogin;
+    }
 
-        return $this;
+    /**
+     * Sets activation email
+     * 
+     * 5.7.3[added]
+     * 
+     * @param string $message
+     */
+    public function setActivationEmail(String $message)
+    {
+        Properties::$setActivationEmail = $message;
     }
 
     /**
@@ -115,14 +122,43 @@ class Register extends UserExtends
     /**
      * Activation complete.
      * 
-     * @param void
+     * 5.7.3[changed]
+     * 
+     * @param string|int          $userUriKey = 'user
+     * @param string|int|callable $decryptor  = 'pass'
      * 
      * @return bool
      */
-    public function activationComplete() : Bool
+    public function activationComplete($userUriKey = 'user', $decryptor = 'pass') : Bool
     {
         # Return link values.
-        $user = URI::get('user'); $pass = URI::get('pass');
+        # 5.7.3[added]
+        if( is_scalar($$userUriKey) )
+        {
+            $user = URI::get($userUriKey); 
+        }
+        # invalid usage
+        else
+        {
+            throw new Exception\InvalidArgumentException(NULL, '1.');
+        }
+        
+        # 5.7.3[added]
+        # scalar
+        if( is_scalar($decryptor) )
+        {
+            $pass = URI::get($decryptor);
+        }
+        # callable
+        elseif( is_callable($decryptor) )
+        {
+            $pass = $decryptor();
+        }
+        # invalid usage
+        else
+        {
+            throw new Exception\InvalidArgumentException(NULL, '2.');
+        }
 
         if( ! empty($user) && ! empty($pass) )
         {
@@ -158,7 +194,7 @@ class Register extends UserExtends
     {
         if( empty($this->activationColumn) )
         {
-            throw new ActivationColumnException();
+            throw new Exception\ActivationColumnException;
         }
 
         $data = $this->isResendActivationEmailByValue($email ?? $username);
@@ -197,7 +233,17 @@ class Register extends UserExtends
             'pass' => $pass
         ];
 
-        $message = Inclusion\Template::use('UserEmail/Activation', $templateData, true);
+        # 5.7.3[added]
+        # Sets activation email content
+        if( ! empty(Properties::$setActivationEmail) )
+        {
+            $message = $this->replaceActivationEmailData($templateData);
+        }
+        # Default activation email template
+        else
+        {
+            $message = Inclusion\Template::use('UserEmail/Activation', $templateData, true);
+        }
 
         $user = $email ?? $user;
 
@@ -216,6 +262,28 @@ class Register extends UserExtends
         {
             return $this->setErrorMessage('emailError');
         }
+    }
+
+    /**
+     * Protected replace activation email data
+     */
+    protected function replaceActivationEmailData(Array $replace)
+    {
+        $data = Properties::$setActivationEmail;
+
+        Properties::$setActivationEmail = NULL;
+
+        $preg = 
+        [
+            '/\{user\}/' => $replace['user'],
+			'/\{pass\}/' => $replace['pass']
+        ];
+
+		return preg_replace_callback('/\[(.*?)\]/', function($match) use($replace)
+		{
+			return $replace['url'] . $match[1];
+			
+		}, preg_replace(array_keys($preg), array_values($preg), $data));
     }
 
     /**

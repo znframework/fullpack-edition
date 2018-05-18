@@ -31,4 +31,13 @@ class Properties
      * @var array
      */
     public static $success;
+
+    /**
+     * Keeps set atctivation email
+     * 
+     * 5.7.3[added]
+     * 
+     * @var string
+     */
+    public static $setActivationEmail = NULL;
 }

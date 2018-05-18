@@ -560,7 +560,7 @@ class GD implements GDInterface
      * 
      * @return int
      */
-    protected function closest(String $rgb) : Int
+    public function closest(String $rgb) : Int
     {
         return $this->_imageColor($rgb, 'imagecolorclosestalpha');
     }

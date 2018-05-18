@@ -15,42 +15,30 @@ class Update extends UserExtends
      * Controls old password
      * 
      * @param string $oldPassword
-     * 
-     * @return Update
      */
-    public function oldPassword(String $oldPassword) : Update
+    public function oldPassword(String $oldPassword)
     {
         Properties::$parameters['oldPassword'] = $oldPassword;
-
-        return $this;
     }
 
     /**
      * New Password
      * 
      * @param string $newPassword
-     * 
-     * @return Update
      */
-    public function newPassword(String $newPassword) : Update
+    public function newPassword(String $newPassword)
     {
         Properties::$parameters['newPassword'] = $newPassword;
-
-        return $this;
     }
 
     /**
      * Password Again
      * 
      * @param string $passwordAgain
-     * 
-     * @return Update
      */
-    public function passwordAgain(String $passwordAgain) : Update
+    public function passwordAgain(String $passwordAgain)
     {
         Properties::$parameters['passwordAgain'] = $passwordAgain;
-
-        return $this;
     }
 
     /**

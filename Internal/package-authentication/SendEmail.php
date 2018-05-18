@@ -35,14 +35,10 @@ class SendEmail extends UserExtends
      * @param string $disposition = NULL
      * @param string $newName     = NULL
      * @param mixed  $mime        = NULL
-     * 
-     * @return SendEmail
      */
     public function attachment(String $file, String $disposition = NULL, String $newName = NULL, $mime = NULL)
     {
         $this->emailClass->attachment($file, $disposition, $newName, $mime);
-
-        return $this;
     }
 
     /**
