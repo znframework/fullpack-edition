@@ -31,6 +31,7 @@ class Import extends Factory
             'masterpage' => 'Inclusion\Masterpage::use',
             'page'       => 'Inclusion\View::use',
             'view'       => 'Inclusion\View::use',
+            'cview'      => 'Inclusion\View::container',
             'handload'   => 'Inclusion\Handload::use',
             'template'   => 'Inclusion\Template::use',
             'font'       => 'Inclusion\Font::use',
