@@ -139,25 +139,33 @@ class Kernel
         $function     = CURRENT_CFUNCTION;
         $openFunction = CURRENT_COPEN_PAGE;
         $page         = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
-        
+       
         # The request must be made to a valid controller.
         if( ! is_file(CURRENT_CFILE) )
-        {
+        { 
             self::invalidControllerPath($page, $function);
         }
         
         # If an invalid parameter is entered, it will redirect to the opening method.
         if( ! is_callable([$page, $function]) )
-        {
+        { 
             array_unshift($parameters, $function);
             
             $function = $openFunction;
-
+      
             # If the request is invalid, it will be redirected.
-            if( ! is_callable([$page, $function]) )
+            if( get_class_methods($page) )
             {
-                self::invalidControllerPath($page, $function);
+                if( ! is_callable([$page, $function]) )
+                {
+                    throw new Exception(self::getLang('invalidOpenFunction'));  
+                }            
             }
+            # If the controller is not called when it exists, the class map is rebuilt.
+            else
+            {
+                Autoloader::restart();
+            } 
         }
         
         # The view path is being controlled so that the view can be loaded automatically.
@@ -309,6 +317,14 @@ class Kernel
 
         # The buffer is being turned off.
         ob_end_flush();
+    }
+
+    /**
+     * Protected get lang
+     */
+    protected static function getLang(String $type)
+    {
+        return Lang::default('ZN\CoreDefaultLanguage')::select('Kernel')['kernel:'.$type];
     }
 
     /**

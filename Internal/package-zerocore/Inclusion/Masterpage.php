@@ -145,7 +145,8 @@ class Masterpage
         if( ! empty(Properties::$parameters['headData']) ) $head               = Properties::$parameters['headData'];
         if( ! empty(Properties::$parameters['data'])     ) $randomDataVariable = Properties::$parameters['data'];
 
-        $bodyContent = Properties::$parameters['bodyContent'] ?? NULL;
+        $bodyContent   = Properties::$parameters['bodyContent'] ?? NULL;
+        $viewDirectory = ($head['container'] ?? NULL) === true ? CONTAINER_PROJECT_DIR . 'Views/' : VIEWS_DIR;
 
         Properties::$parameters = [];
 
@@ -172,7 +173,7 @@ class Masterpage
         $header .= $this->_browserIcon($head['browserIcon'] ?? $masterPageSet["browserIcon"]);
         $header .= $this->_theme($masterPageSet, $head);
         $header .= $this->_theme($masterPageSet, $head, 'plugin');
-        $header .= $this->_setpage($head['headPage'] ?? $masterPageSet['headPage']);
+        $header .= $this->_setpage($head['headPage'] ?? $masterPageSet['headPage'], $viewDirectory);
         $header .= '</head>'.EOL;
         $header .= '<body'.Hypertext::attributes($head['attributes']['body'] ?? $masterPageSet['attributes']['body']).
                    $this->_bgImage($head['backgroundImage'] ?? $masterPageSet["backgroundImage"]).'>'.EOL;
@@ -185,7 +186,7 @@ class Masterpage
         {
             $randomDataVariable['view'] = $bodyContent;
 
-            View::use($randomPageVariable, $randomDataVariable);
+            View::use($randomPageVariable, $randomDataVariable, false, $viewDirectory);
         }
         else
         {
@@ -375,7 +376,7 @@ class Masterpage
     /**
      * Protected Set Page
      */
-    protected function _setpage($page)
+    protected function _setpage($page, $viewDirectory)
     {
         if( ! empty($page) )
         {
@@ -384,14 +385,14 @@ class Masterpage
             # Single Masterpage
             if( ! is_array($page) )
             {
-                $return .= View::use($page, NULL, true).EOL;
+                $return .= View::use($page, NULL, true, $viewDirectory).EOL;
             }
             else
             {
                 # Multiple Masterpage
                 foreach( $page as $p )
                 {
-                    $return .= View::use($p, NULL, true).EOL;
+                    $return .= View::use($p, NULL, true, $viewDirectory).EOL;
                 }
             }
 

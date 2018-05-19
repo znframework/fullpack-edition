@@ -360,6 +360,11 @@ class ZN
         define('DEFAULT_PROJECT', PROJECTS_CONFIG['directory']['default']);
         
         self::defineCurrentProject();
+
+        $currentProjectDirectory = defined('_CURRENT_PROJECT') ? _CURRENT_PROJECT : CURRENT_PROJECT;
+
+        define('CONTAINER_PROJECT', PROJECTS_CONFIG['containers'][$currentProjectDirectory] ?? CURRENT_PROJECT);
+        define('CONTAINER_PROJECT_DIR', PROJECTS_DIR . CONTAINER_PROJECT . '/');
         
         define('VIEWS_DIR'       , PROJECT_DIR . GET_DIRS['VIEWS_DIR']);
         define('PAGES_DIR'       , VIEWS_DIR); 

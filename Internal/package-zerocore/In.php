@@ -100,17 +100,7 @@ class In
      */
     public static function defaultProjectKey(String $fix = NULL) : String
     {
-        if( defined('_CURRENT_PROJECT') )
-        {
-            $containers = PROJECTS_CONFIG['containers'];
-
-            if( ! empty($containers[_CURRENT_PROJECT]) )
-            {
-                return md5(Request::getBaseURL(strtolower($containers[_CURRENT_PROJECT])) . $fix);
-            }
-        }
-
-        return md5(Request::getBaseURL(strtolower(CURRENT_PROJECT)) . $fix);
+        return md5(Request::getBaseURL(strtolower(CONTAINER_PROJECT)) . $fix);
     }
 
     /**
