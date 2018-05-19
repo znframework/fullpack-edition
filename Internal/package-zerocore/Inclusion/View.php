@@ -26,8 +26,21 @@ class View
     protected static $templateWizardExtension = '.wizard';
 
     /**
-     * Get view
+     * Get container view
      * 
+     * @param string $page
+     * @param array  $data          = NULL
+     * @param bool   $obGetContents = false
+     * 
+     * @return mixed
+     */
+    public static function container(String $page, Array $data = NULL, Bool $obGetContents = false)
+    {
+        return self::use($page, $data, $obGetContents, CONTAINER_PROJECT_DIR . 'Views/');
+    }
+
+    /**
+     * Get view
      * @param string $page
      * @param array  $data          = NULL
      * @param bool   $obGetContents = false
