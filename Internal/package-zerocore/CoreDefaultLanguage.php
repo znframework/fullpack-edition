@@ -21,7 +21,7 @@ class CoreDefaultLanguage
     | Butcher
     |--------------------------------------------------------------------------
     |
-    | The language of the Butcher class.
+    | The language of the Core structures.
     |
     */
 
@@ -30,7 +30,8 @@ class CoreDefaultLanguage
         'butcher:notFoundExternalButcheryThemes' => 'The External/Butchery/ directory does not contain any theme directory!',
         'butcher:cantMultipleExtractTheme'       => '% directory does not have the proper theme for multiple extraction!',
         'butcher:cantExtractTheme'               => 'The theme can not be extract! It may have been created before.',
-        'butcher:extractThemeSuccess'            => 'Theme integration has been successfully completed.'
+        'butcher:extractThemeSuccess'            => 'Theme integration has been successfully completed.',
+        'kernel:invalidOpenFunction'             => 'Your controller does not have a valid boot method! Please check your [openFunction] configuration under the Config/Routing.php path.'
     ];
 
     public $tr = 
@@ -38,6 +39,7 @@ class CoreDefaultLanguage
         'butcher:notFoundExternalButcheryThemes' => 'External/Butchery/ dizini herhangi bir tema dizini içermiyor!',
         'butcher:cantMultipleExtractTheme'       => '% dizini çoklu çıkarma işlemine uygun tema yapısına sahip değil!',
         'butcher:cantExtractTheme'               => 'Tema çıkartılamıyor! Daha önce oluşturulmuş olabilir.',
-        'butcher:extractThemeSuccess'            => 'Tema entegrasyonu başarı ile tamamlandı.'
+        'butcher:extractThemeSuccess'            => 'Tema entegrasyonu başarı ile tamamlandı.',
+        'kernel:invalidOpenFunction'             => 'Kontrolcünüz geçerli bir açılış yöntemi içermiyor! Lütfen Config/Routing.php yolu altında yer alan [openFunction] yapılandırmanızı kontrol edin.'
     ];
 }
