@@ -19,7 +19,7 @@ class Coalesce
      * 
      * @return void
      */
-    public static function null( & $var, $value)
+    public static function null( & $var, $value = NULL)
     {
         $var = $var ?? $value;
     }
@@ -32,7 +32,7 @@ class Coalesce
      * 
      * @return void
      */
-    public static function false( & $var, $value)
+    public static function false( & $var, $value = NULL)
     {
         $var = $var === false ? $value : $var;
     }
@@ -45,7 +45,7 @@ class Coalesce
      * 
      * @return void
      */
-    public static function empty( & $var, $value)
+    public static function empty( & $var, $value = NULL)
     {
         $var = empty($var) ? $value : $var;
     }

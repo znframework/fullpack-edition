@@ -35,6 +35,13 @@ trait UnitTest
     protected static $parameters    = [];
 
     /**
+     * Protected fake parameters
+     * 
+     * @var array
+     */
+    protected static $fakeParameters    = [];
+
+    /**
      * Magic call
      * 
      * @param string $method
@@ -46,7 +53,7 @@ trait UnitTest
 
         self::$parameters[] = $parameters;
 
-        return $class::$method(...$parameters);
+        return (new $class)->$method(...$parameters);
     }
 
     /**
@@ -68,7 +75,7 @@ trait UnitTest
 
                 $met = self::convertMultipleMethodName($met);
 
-                self::$unitMethods[$met] = self::$parameters[$key];
+                self::$unitMethods[$met] = self::$parameters[$key] ?? self::$fakeParameters[$met] ?? [];
             }
         }
 
@@ -141,9 +148,11 @@ trait UnitTest
      */
     protected function compare($first, $second)
     {
-        $method = debug_backtrace()[1]['function'];
-
+        $debug  = debug_backtrace(); 
+        $method = $debug[1]['function'];
         $method = self::convertMultipleMethodName($method);
+
+        self::$fakeParameters[$method] = $debug[0]['args'] ?? [];
        
         self::$compares[$method] = $first === $second;
     }
