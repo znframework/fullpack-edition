@@ -1,0 +1,23 @@
+{
+    "name": "znframework/package-event-handler",
+    "description": "ZN Framework Event Handler Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "events", "event-handler"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.7.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\EventHandler\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}
