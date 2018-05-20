@@ -171,6 +171,8 @@ trait CallableTalkingQueries
     protected function callResultMethodsTalkingQuery($method, $split, $parameters)
     {
         $func = $split[1] ?? NULL;
+        
+        $result = NULL;
 
         # Row & Result
         if( $func === 'Row' || $func === 'Result' )
