@@ -10,5 +10,5 @@
             <a href="<?php echo $url.'user/'.$user.'/pass/'.$pass; ?>"> <?php echo ZN\Lang::select('Authentication', 'activation')?> </a>
         </td>
     </tr>
-</pre>
+</table>
 

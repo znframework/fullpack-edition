@@ -52,7 +52,7 @@ class Config
         {
             return self::set($method, ...$parameters);
         }
-
+        
         return self::get($method, ...$parameters);
     }
 
@@ -126,7 +126,7 @@ class Config
             {
                 if( isset(self::$config[$file][$k]) && is_array(self::$config[$file][$k]) )
                 {
-                    self::$config[$file][$k] = self::$config[$file][$k] + (array) self::$setConfigs[$file][$k];
+                    self::$config[$file][$k] = array_merge(self::$config[$file][$k] + ($mergeConfig = (array) self::$setConfigs[$file][$k]), $mergeConfig);
                 }
                 else
                 {

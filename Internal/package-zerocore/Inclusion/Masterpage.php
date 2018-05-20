@@ -45,7 +45,7 @@ class Masterpage
      */
     public function body(String $body) : Masterpage
     {
-        self::$setting['bodyPage'] = $body;
+        self::$settings['bodyPage'] = $body;
 
         return $this;
     }
@@ -59,7 +59,7 @@ class Masterpage
      */
     public function head($head) : Masterpage
     {
-        self::$setting['headPage'] = $head;
+        self::$settings['headPage'] = $head;
 
         return $this;
     }
@@ -73,7 +73,7 @@ class Masterpage
      */
     public function title(String $title) : Masterpage
     {
-        self::$setting['title'] = $title;
+        self::$settings['title'] = $title;
 
         return $this;
     }
@@ -87,7 +87,7 @@ class Masterpage
      */
     public function meta(Array $meta) : Masterpage
     {
-        self::$setting['meta'] = $meta;
+        self::$settings['meta'] = $meta;
 
         return $this;
     }
@@ -101,7 +101,7 @@ class Masterpage
      */
     public function attributes(Array $attributes) : Masterpage
     {
-        self::$setting['attributes'] = $attributes;
+        self::$settings['attributes'] = $attributes;
 
         return $this;
     }
@@ -115,7 +115,7 @@ class Masterpage
      */
     public function content(Array $content) : Masterpage
     {
-        self::$setting['content'] = $content;
+        self::$settings['content'] = $content;
 
         return $this;
     }

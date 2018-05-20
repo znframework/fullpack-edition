@@ -18,19 +18,25 @@ class Classes extends UnitTest
         'class'   => 'ZN\Classes',
         'methods' => 
         [
-            'reflection' => ['ZN\Database\DB'],
-            #'isRelation' => ['ZN\Database\DB', 'select'],
-            'isParent' => ['ZN\Database\DB', 'select'],
-            'methodExists' => ['ZN\Database\DB', 'select'],
-            'propertyExists' => ['ZN\Database\DB', 'table'],
-            'methods' => ['ZN\Database\DB'],
-            'vars' => ['ZN\Database\DB'],
-            'name' => ['ZN\Database\DB'],
-            'declared' => [],
+            'reflection'         => ['ZN\Database\DB'],
+            'isParent'           => ['ZN\Database\DB', 'select'],
+            'methodExists'       => ['ZN\Database\DB', 'select'],
+            'propertyExists'     => ['ZN\Database\DB', 'table'],
+            'methods'            => ['ZN\Database\DB'],
+            'vars'               => ['ZN\Database\DB'],
+            'name'               => ['ZN\Database\DB'],
+            'declared'           => [],
             'declaredInterfaces' => [],
-            'declaredTraits' => [],
-            'onlyName' => ['ZN\Database\DB'],
-            'class' => ['ZN\Database\DB']
+            'declaredTraits'     => [],
+            'onlyName'           => ['ZN\Database\DB'],
+            'class'              => ['ZN\Database\DB']
         ]
     ];
+
+    public function _isRelation()
+    {
+        $db = new \ZN\Database\DB;
+
+        $this->compare(true, $this->isRelation('ZN\Database\DB', $db));
+    }
 }

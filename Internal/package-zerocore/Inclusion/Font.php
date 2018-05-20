@@ -11,6 +11,7 @@
 
 
 use ZN\Base;
+use ZN\Config;
 use ZN\Request;
 use ZN\Filesystem;
 use ZN\Inclusion\Project\Theme;
@@ -43,16 +44,8 @@ class Font extends BootstrapExtends
 
             $f = self::_fontName($font);
 
-            if( ! is_dir(FONTS_DIR) )
-            {
-                $projectFontDirectory  = THEMES_DIR . Theme::$active;
-                $externalFontDirectory = EXTERNAL_THEMES_DIR . Theme::$active;
-            }
-            else
-            {
-                $projectFontDirectory  = FONTS_DIR;
-                $externalFontDirectory = EXTERNAL_FONTS_DIR;
-            }
+            $projectFontDirectory  = THEMES_DIR . Theme::$active;
+            $externalFontDirectory = EXTERNAL_THEMES_DIR . Theme::$active;
 
             $fontFile = $projectFontDirectory . $font;
 

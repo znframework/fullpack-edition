@@ -63,11 +63,25 @@ class Tester
     protected $totalFileCount;
 
     /**
+     * Total correct count
+     * 
+     * @var int
+     */
+    protected $totalCorrectCount;
+
+    /**
      * Get arguments
      * 
      * @var array
      */
     protected $arguments;
+
+    /**
+     * Get arguments
+     * 
+     * @var array
+     */
+    protected $compares;
 
     /**
      * Gets core analysis.
@@ -173,6 +187,20 @@ class Tester
     }
 
     /**
+     * Get compares.
+     * 
+     * @param array $compares
+     * 
+     * @return Tester
+     */
+    public function compares(Array $compares) : Tester
+    {
+        $this->compares = $compares;
+
+        return $this;
+    }
+
+    /**
      * Start unit test
      * 
      * @param void
@@ -187,13 +215,20 @@ class Tester
         
         foreach( $this->methods as $method => $parameters )
         {
-            $method = explode(':', $method)[0];
+            $method = explode(':', $origin = $method)[0];
 
-            Comparison\Testing::start($method);
+            Comparison\Testing::start($origin);
             $returnValue = Singleton::class($this->class)->$method(...$parameters);
-            Comparison\Testing::end($method);
+            Comparison\Testing::end($origin);
 
-            $this->_output($this->class, $method, gettype($returnValue), $returnValue);
+            $this->_output
+            (
+                $this->class, 
+                $origin, 
+                gettype($returnValue), 
+                $returnValue, 
+                $this->compares[$origin] ?? 'NULL'
+            );
 
             $index++;
         }
@@ -221,19 +256,21 @@ class Tester
      * @param string $method
      * @param string $returnType
      * @param string $returnValue
+     * @param string $compare
      * 
      * @return void
      */
-    protected function _output($class, $method, $returnType, $returnValue)
+    protected function _output($class, $method, $returnType, $returnValue, $compare = NULL)
     {
         $elapsedTime      = Comparison\ElapsedTime::calculate($method);
         $calculatedMemory = Comparison\MemoryUsage::calculate($method);
         $usedFileCount    = Comparison\FileUsage::count($method);
         $returnType       = ucfirst($returnType);
 
-        $this->totalElasedTime  += $elapsedTime;
-        $this->totalMemoryUsage += $calculatedMemory;
-        $this->totalFileCount   += $usedFileCount;
+        $this->totalElasedTime   += $elapsedTime;
+        $this->totalMemoryUsage  += $calculatedMemory;
+        $this->totalFileCount    += $usedFileCount;
+        $this->totalCorrectCount += (int) $compare;
 
         $param = $this->arguments[$method];
 
@@ -257,8 +294,9 @@ class Tester
             'method'      => $method . '(' . implode(', ', $param) . ')',
             'returnType'  => $returnType,
             'returnValue' => is_scalar($returnValue) ? $returnValue : $returnType,
+            'isResultCorrect' => $compare,
             'elapsedTime' => $elapsedTime,
-            'index'       => str_replace('\\', '-', $class) . '-' . $method
+            'index'       => str_replace('\\', '-', $class) . '-' . Converter::slug($method)
         ], true);
     }
 
@@ -273,11 +311,11 @@ class Tester
     {
         $this->result .= Inclusion\Template::use('UnitTests/TotalTable', 
         [
-
-            'elapsedTime'    => $this->totalElasedTime,
-            'memoryUsage'    => $this->totalMemoryUsage,
-            'totalFileCount' => $this->totalFileCount,
-            'index'          => $index
+            'elapsedTime'       => $this->totalElasedTime,
+            'memoryUsage'       => $this->totalMemoryUsage,
+            'totalFileCount'    => $this->totalFileCount,
+            'totalCorrectCount' => $this->totalCorrectCount,
+            'index'             => $index
         ], true);
 
         $this->_defaultVariables();
@@ -306,7 +344,8 @@ class Tester
      */
     protected function _startDefaultVariables()
     {
-        $this->class   = NULL;
-        $this->methods = [];
+        $this->class    = NULL;
+        $this->methods  = [];
+        $this->compares = [];
     }
 }
