@@ -63,25 +63,11 @@ class Tester
     protected $totalFileCount;
 
     /**
-     * Total correct count
-     * 
-     * @var int
-     */
-    protected $totalCorrectCount;
-
-    /**
      * Get arguments
      * 
      * @var array
      */
     protected $arguments;
-
-    /**
-     * Get arguments
-     * 
-     * @var array
-     */
-    protected $compares;
 
     /**
      * Gets core analysis.
@@ -127,9 +113,9 @@ class Tester
             {
                 $fullClassName = $namespace . '\\' . $class;
 
-                $methods = preg_grep('/^[a-z]/i', get_class_methods($fullClassName));
+                $methods = preg_grep('/^[a-z]/i', $getClassMethods = get_class_methods($fullClassName));
                 
-                $isTestClass = strstr($fullClassName, '\\Tests\\');
+                $isTestClass = strstr($fullClassName, $testsFix = '\\Tests\\');
                 $isNotClass  = preg_match('/\w+(Interface|Exception)$/', $fullClassName);
 
                 if( ! $isNotClass && ! $isTestClass && ($methodCount = count($methods)) > 0 )
@@ -139,8 +125,18 @@ class Tester
                 } 
                 elseif( $isTestClass )
                 {
-                    $totalTestMethods += count($fullClassName::unit['methods'] ?? false);
-                    $tests[$fullClassName] = $fullClassName::unit;
+                    $unit = [];
+
+                    if( defined("$fullClassName::unit") )
+                    {
+                        $unit = $fullClassName::unit;
+                    }
+
+                    $unit['class']   = $unit['class'] ?? str_replace($testsFix, NULL, $fullClassName); 
+                    $unit['methods'] = ($unit['methods'] ?? []) + preg_grep('/^\_\w+/', (array) $getClassMethods); 
+
+                    $totalTestMethods += count($unit['methods'] ?? false);
+                    $tests[$fullClassName] = $unit;
                 }
             }
         }
@@ -187,20 +183,6 @@ class Tester
     }
 
     /**
-     * Get compares.
-     * 
-     * @param array $compares
-     * 
-     * @return Tester
-     */
-    public function compares(Array $compares) : Tester
-    {
-        $this->compares = $compares;
-
-        return $this;
-    }
-
-    /**
      * Start unit test
      * 
      * @param void
@@ -215,20 +197,13 @@ class Tester
         
         foreach( $this->methods as $method => $parameters )
         {
-            $method = explode(':', $origin = $method)[0];
+            $method = explode(':', $method)[0];
 
-            Comparison\Testing::start($origin);
+            Comparison\Testing::start($method);
             $returnValue = Singleton::class($this->class)->$method(...$parameters);
-            Comparison\Testing::end($origin);
+            Comparison\Testing::end($method);
 
-            $this->_output
-            (
-                $this->class, 
-                $origin, 
-                gettype($returnValue), 
-                $returnValue, 
-                $this->compares[$origin] ?? 'NULL'
-            );
+            $this->_output($this->class, $method, gettype($returnValue), $returnValue);
 
             $index++;
         }
@@ -256,21 +231,19 @@ class Tester
      * @param string $method
      * @param string $returnType
      * @param string $returnValue
-     * @param string $compare
      * 
      * @return void
      */
-    protected function _output($class, $method, $returnType, $returnValue, $compare = NULL)
+    protected function _output($class, $method, $returnType, $returnValue)
     {
         $elapsedTime      = Comparison\ElapsedTime::calculate($method);
         $calculatedMemory = Comparison\MemoryUsage::calculate($method);
         $usedFileCount    = Comparison\FileUsage::count($method);
         $returnType       = ucfirst($returnType);
 
-        $this->totalElasedTime   += $elapsedTime;
-        $this->totalMemoryUsage  += $calculatedMemory;
-        $this->totalFileCount    += $usedFileCount;
-        $this->totalCorrectCount += (int) $compare;
+        $this->totalElasedTime  += $elapsedTime;
+        $this->totalMemoryUsage += $calculatedMemory;
+        $this->totalFileCount   += $usedFileCount;
 
         $param = $this->arguments[$method];
 
@@ -294,9 +267,8 @@ class Tester
             'method'      => $method . '(' . implode(', ', $param) . ')',
             'returnType'  => $returnType,
             'returnValue' => is_scalar($returnValue) ? $returnValue : $returnType,
-            'isResultCorrect' => $compare,
             'elapsedTime' => $elapsedTime,
-            'index'       => str_replace('\\', '-', $class) . '-' . Converter::slug($method)
+            'index'       => str_replace('\\', '-', $class) . '-' . $method
         ], true);
     }
 
@@ -311,11 +283,11 @@ class Tester
     {
         $this->result .= Inclusion\Template::use('UnitTests/TotalTable', 
         [
-            'elapsedTime'       => $this->totalElasedTime,
-            'memoryUsage'       => $this->totalMemoryUsage,
-            'totalFileCount'    => $this->totalFileCount,
-            'totalCorrectCount' => $this->totalCorrectCount,
-            'index'             => $index
+
+            'elapsedTime'    => $this->totalElasedTime,
+            'memoryUsage'    => $this->totalMemoryUsage,
+            'totalFileCount' => $this->totalFileCount,
+            'index'          => $index
         ], true);
 
         $this->_defaultVariables();
@@ -344,8 +316,7 @@ class Tester
      */
     protected function _startDefaultVariables()
     {
-        $this->class    = NULL;
-        $this->methods  = [];
-        $this->compares = [];
+        $this->class   = NULL;
+        $this->methods = [];
     }
 }
