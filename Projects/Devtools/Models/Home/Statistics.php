@@ -23,5 +23,7 @@ class Statistics extends Model
 
             Session::insert('return', $return);
         }
+
+        return $return;
     }
 }

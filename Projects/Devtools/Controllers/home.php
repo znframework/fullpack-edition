@@ -29,9 +29,6 @@ class Home extends Controller
             HomeModel\Project::create();
         }
         
-        # It brings some stats data from the ZN Framework via API.
-        HomeModel\Statistics::get();
-
         # .zip allows you to extract the component theme files.
         HomeModel\Themes::extract();
 
@@ -39,7 +36,8 @@ class Home extends Controller
         View::butcherThemes(HomeModel\Themes::get());
         
         # Sending data to Masterpage.
-        Masterpage::pdata(['return' => $return]);
+        # It brings some stats data from the ZN Framework via API.
+        Masterpage::pdata(['return' => HomeModel\Statistics::get()]);
 
         # The corresponding view is being loaded.
         Masterpage::page('dashboard');
