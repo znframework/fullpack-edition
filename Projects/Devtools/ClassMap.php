@@ -106,3 +106,7 @@ $classMap['classes']['home\statistics'] = 'Projects/Devtools/Models/Home/Statist
 $classMap['namespaces']['home\statistics'] = 'statistics';
 $classMap['classes']['home\docs'] = 'Projects/Devtools/Models/Home/Docs.php';
 $classMap['namespaces']['home\docs'] = 'docs';
+$classMap['classes']['api\request'] = 'Projects/Devtools/Models/Api/Request.php';
+$classMap['namespaces']['api\request'] = 'request';
+$classMap['classes']['cronjobs\job'] = 'Projects/Devtools/Models/Cronjobs/Job.php';
+$classMap['namespaces']['cronjobs\job'] = 'job';

@@ -1,10 +1,8 @@
 <?php namespace Project\Controllers;
 
 use Post;
-use Arrays;
-use Crontab;
-use Strings;
 use Redirect;
+use Cronjobs as CronjobsModel;
 
 class Cronjobs extends Controller
 {
@@ -13,9 +11,11 @@ class Cronjobs extends Controller
      */
     public function __construct()
     {   
+        # The parent constructor is being called.
         parent::__construct();
 
-        Crontab::project(SELECT_PROJECT);
+        # The scheduled task is determined for which project.
+        CronjobsModel\Job::selectProject();
     }
 
     /**
@@ -23,88 +23,22 @@ class Cronjobs extends Controller
      */
     public function main(String $params = NULL)
     {
+        # Crontab can only be used with unix operating systems.
         if( PHP_OS !== 'Linux' && PHP_OS !== 'Unix' )
         {
             return Masterpage::error(LANG['availableLinux']);
         }
 
+        # Scheduled task creation.
         if( Post::create() )
         {
-            $method = Post::type();
-            $metval = Post::typeval();
-            $status = false;
-
-            if( ($time = Post::certain()) !== 'none' )
-            {
-                $status = Crontab::$time();
-            }
-            elseif( ($time = Post::per()) !== 'none' )
-            {
-                $status = Crontab::$time(Post::perval());
-            }
-            else
-            {
-                if( ($time = Post::minute()) !== 'none' )
-                {
-                    $status = Crontab::$time(Post::minuteval());
-                }
-
-                if( ($time = Post::hour()) !== 'none' )
-                {
-                    $status = Crontab::$time(Post::hourval());
-                }
-
-                if( ($time = Post::day()) !== 'none' )
-                {
-                    $status = Crontab::$time(Post::dayval());
-                }
-
-                if( ($time = Post::month()) !== 'none' )
-                {
-                    $status = Crontab::$time(Post::monthval());
-                }
-            }
-
-            if( $status === false )
-            {
-                return Masterpage::error(LANG['crontabTimeError']);
-            }
-            else
-            {
-                Crontab::$method($metval);
-            }
+            CronjobsModel\Job::create();
         }
 
-        if( Crontab::list() )
-        {
-            $l    = Crontab::listArray();
-            $list = [];
+        # Sending data to Masterpage.
+        Masterpage::pdata(['list' => CronjobsModel\Job::list()]);
 
-            foreach( $l as $key => $val )
-            {
-                if( stristr($val, '"'.SELECT_PROJECT.'"') )
-                {
-                    $timeEx = explode(' ', Strings::divide($val, ' -r'));
-
-                    $timeEx = Arrays::removeLast($timeEx, 2);
-                    $time   = implode(' ', $timeEx);
-                    $code   = Strings::divide(rtrim($val, ';\''), ';', -1);
-                  
-                    preg_match('/\s(\/)+(.*?)*php\s/', $val, $path);
-
-                    $list[$key] = [$time, $path[0] ?? \Config::services('processor')['path'], $code];
-                }
-                elseif( stristr($val, 'wget') )
-                {
-                    $ex = explode(' wget ', $val);
-
-                    $list[$key] = [$ex[0], 'wget', $ex[1]];
-                }
-            }
-        }
-
-        Masterpage::pdata(['list' => $list ?? []]);
-
+        # The corresponding view is being loaded.
         Masterpage::page('cronjob');
     }
 
@@ -115,8 +49,10 @@ class Cronjobs extends Controller
      */
     public function delete(Int $id)
     {
-        Crontab::remove($id);
+        # Scheduled task deletion.
+        CronjobsModel\Job::delete($id);
 
+        # Backward redirect is done.
         Redirect::location('cronjobs');
     }
 }

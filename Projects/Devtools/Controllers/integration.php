@@ -24,8 +24,10 @@ class Integration extends Controller
             return false;
         }
         
+        # Theme file is uploading.
         Upload::mimes('application/zip')->start('file', SELECT_PROJECT_DIR . 'Butchery');
 
+        # If there is no error, the theme starts to integrate.
         if( ! Upload::error() )
         {
             Butcher::application(SELECT_PROJECT)->runDelete(SELECT_PROJECT);

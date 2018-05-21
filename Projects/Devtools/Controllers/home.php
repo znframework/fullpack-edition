@@ -32,7 +32,7 @@ class Home extends Controller
         # Sending data to Masterpage.
         Masterpage::pdata(['return' => $return]);
 
-        # The corresponding view is being installed.
+        # The corresponding view is being loaded.
         Masterpage::page('dashboard');
     }
 
@@ -54,7 +54,7 @@ class Home extends Controller
         # Sending data to Masterpage.
         Masterpage::pdata(['docs' => HomeModel\Docs::get()]);
         
-        # The corresponding view is being installed.
+        # The corresponding view is being loaded.
         Masterpage::page('docs');
     }
 
