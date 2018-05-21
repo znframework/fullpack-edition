@@ -9,9 +9,6 @@ class Initialize extends Controller
      */
     public function main(String $params = NULL)
     {
-        \ZN\Tests\IS::result();
-
-        exit;
         # The theme is activated.
         # Location: Resources/Themes/Default/
         Theme::active('Default');
