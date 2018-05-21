@@ -13,5 +13,5 @@ class Tester
 {
     use ZN\Ability\Facade;
 
-    const target = 'ZN\Helpers\Tester';
+    const target = 'ZN\Tester';
 }
