@@ -9,39 +9,25 @@ class Initialize extends Controller
      */
     public function main()
     {
-        /**
-         * Defines basic constants.
-         */
+        # Defines basic constants.
         InitializeModel\Constants::basic();
 
-        /**
-         * Supported minimum version is checked.
-         */
+        # Supported minimum version is checked.
         InitializeModel\VersionControl::throw();
 
-        /**
-         * Get current version info.
-         */
+        # Get current version info.
         View::znframework(InitializeModel\VersionControl::getLast());
 
-        /**
-         * Session is being checked for security.
-         */
+        # Session is being checked for security.
         InitializeModel\Login::control();
 
-        /**
-         * The necessary constants for Devtools are being called.
-         */
+        # The necessary constants for Devtools are being called.
         InitializeModel\Constants::get();
         
-        /**
-         * The database settings is configured according to the selected project.
-         */
+        # The database settings is configured according to the selected project.
         InitializeModel\Database::config();
 
-        /**
-         * A list of menus and tools is being brought.
-         */
+        # A list of menus and tools is being brought.
         InitializeModel\Menus::defines();
     }
 }

@@ -104,3 +104,5 @@ $classMap['classes']['home\statistics'] = 'Projects/Devtools/Models/Home/Statist
 $classMap['namespaces']['home\statistics'] = 'statistics';
 $classMap['classes']['home\statistics'] = 'Projects/Devtools/Models/Home/Statistics.php';
 $classMap['namespaces']['home\statistics'] = 'statistics';
+$classMap['classes']['home\docs'] = 'Projects/Devtools/Models/Home/Docs.php';
+$classMap['namespaces']['home\docs'] = 'docs';

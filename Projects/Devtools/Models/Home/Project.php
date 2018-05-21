@@ -4,11 +4,19 @@ use Validation;
 use Method;
 use Butcher;
 use File;
+use Folder;
+use Session;
 use Redirect;
+use Masterpage;
 use ZN\Model;
 
 class Project extends Model
 {
+    public function select($project)
+    {
+        Session::insert('project', $project);
+    }
+
     public static function create()
     {
         Validation::rules('project', ['alpha'], 'Project Name');
@@ -34,6 +42,27 @@ class Project extends Model
         else
         {
             Masterpage::error($error);
+        }
+    }
+
+    public static function delete($project)
+    {
+        $path = PROJECTS_DIR . $project;
+
+        if( Folder::exists($path) )
+        {
+            Session::delete('project');
+            Folder::delete($path);
+        }
+    }
+
+    public static function deleteBackup($backup)
+    {
+        $path = STORAGE_DIR . 'ProjectBackup' . DS . $backup;
+
+        if( Folder::exists($path) )
+        {
+            Folder::delete($path);
         }
     }
 }

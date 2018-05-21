@@ -1,22 +1,10 @@
 <?php namespace Project\Controllers;
 
 use Import;
-use Restful;
 use Method;
-use Validation;
-use File;
-use Folder;
-use Session;
-use Cookie;
-use Json;
-use URI;
-use Security;
-use Http;
 use Redirect;
 use Lang;
 use URL;
-use Butcher;
-use ZN\Base;
 use Home as HomeModel;
 
 class Home extends Controller
@@ -24,40 +12,28 @@ class Home extends Controller
     /**
      * Main Page
      */
-    public function main(String $params = NULL)
+    public function main()
     {
-        /**
-         * Creates a new project on request.
-         */
+        # Creates a new project on request.
         if( Method::post('create') )
         {
             HomeModel\Project::create();
         }
         
-        /**
-         * It brings some stats data from the ZN Framework via API.
-         */
+        # It brings some stats data from the ZN Framework via API.
         HomeModel\Statistics::get();
 
-        /**
-         * .zip allows you to extract the component theme files.
-         */
+        # .zip allows you to extract the component theme files.
         HomeModel\Themes::extract();
 
-        /**
-         * Gets a list of existing themes.
-         */
+        # Gets a list of existing themes.
         View::butcherThemes(HomeModel\Themes::get());
         
-        /**
-         * The corresponding view is being installed.
-         */
-        Masterpage::page('dashboard');
-
-        /**
-         * Sending data to Masterpage.
-         */
+        # Sending data to Masterpage.
         Masterpage::pdata(['return' => $return]);
+
+        # The corresponding view is being installed.
+        Masterpage::page('dashboard');
     }
 
     /**
@@ -65,36 +41,20 @@ class Home extends Controller
      */
     public function docs(String $params = NULL)
     {
-        $docs = FILES_DIR . 'docs.json';
-
-        $return = [];
-
-        if( Method::post('refresh') || ! file_exists($docs) )
-        {
-            if( $return = Restful::get('https://api.znframework.com/docs') )
-            {
-                File::write($docs, Json::encode($return));
-            }
-            else
-            {
-                Masterpage::error(LANG['docsRetrievalFailed']);
-            }
-        }
-        else
-        {
-            $return = Json::decode(File::read($docs));
-        }
-
+        # User defined functions are included.
         Import::handload('Functions');
 
+        # Custom plugins are loaded on the page.
         Masterpage::plugin(['name' => 
         [
             'Dashboard/highlight/styles/agate.css',
             'Dashboard/highlight/highlight.pack.js'
         ]]);
 
-        Masterpage::pdata(['docs' => $return]);
-      
+        # Sending data to Masterpage.
+        Masterpage::pdata(['docs' => HomeModel\Docs::get()]);
+        
+        # The corresponding view is being installed.
         Masterpage::page('docs');
     }
 
@@ -103,17 +63,13 @@ class Home extends Controller
      */
     public function delete($project = NULL)
     {
+        # The project name will be deleted if it is not empty.
         if( ! empty($project) )
         {
-            $path = PROJECTS_DIR . $project;
-
-            if( Folder::exists($path) )
-            {
-                Session::delete('project');
-                Folder::delete($path);
-            }
+            HomeModel\Project::delete($project);
         }
 
+        # Backward redirect is done.
         Redirect::location((string) URL::prev(), 0, ['success' => LANG['success']]);
     }
 
@@ -121,14 +77,14 @@ class Home extends Controller
      * Delete Backup
      */
     public function deleteBackup($backup = NULL)
-    {
-        $path = $path = STORAGE_DIR . 'ProjectBackup' . DS . $backup;
-
-        if( Folder::exists($path) )
+    {  
+        # The backup name will be deleted if it is not empty.
+        if( ! empty($backup) )
         {
-            Folder::delete($path);
+            HomeModel\Project::deleteBackup($backup);
         }
 
+        # Backward redirect is done.
         Redirect::location((string) URL::prev(), 0, ['success' => LANG['success']]);
     }
 
@@ -137,8 +93,10 @@ class Home extends Controller
      */
     public function lang($lang = NULL)
     {
+        # The selected language is changing.
         Lang::set($lang);
 
+        # Backward redirect is done.
         Redirect::location((string) URL::prev());
     }
 
@@ -147,7 +105,10 @@ class Home extends Controller
      */
     public function project($project = NULL)
     {
-        Session::insert('project', $project);
+        # Select project.
+        HomeModel\Project::select($project);
+
+        # Backward redirect is done.
         Redirect::location((string) URL::prev());
     }
 
@@ -156,7 +117,10 @@ class Home extends Controller
      */
     public function editorTheme($theme = NULL)
     {
-        Cookie::insert('editorTheme', $theme);
+        # Selects editor
+        HomeModel\Themes::selectEditor($theme);
+        
+        # Backward redirect is done.
         Redirect::location((string) URL::prev());
     }
 }

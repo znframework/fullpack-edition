@@ -2,10 +2,16 @@
 
 use Folder;
 use File;
+use Cookie;
 use ZN\Model;
 
 class Themes extends Model
 {
+    public function selectEditor($theme)
+    {
+        Cookie::insert('editorTheme', $theme);
+    }
+
     public static function extract()
     {
         $themesZip = Folder::files(EXTERNAL_BUTCHERY_DIR, 'zip');
