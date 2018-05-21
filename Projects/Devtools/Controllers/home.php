@@ -17,6 +17,7 @@ use Lang;
 use URL;
 use Butcher;
 use ZN\Base;
+use Home as HomeModel;
 
 class Home extends Controller
 {
@@ -25,67 +26,37 @@ class Home extends Controller
      */
     public function main(String $params = NULL)
     {
+        /**
+         * Creates a new project on request.
+         */
         if( Method::post('create') )
         {
-            Validation::rules('project', ['alpha'], 'Project Name');
-
-            if( ! $error = Validation::error('string') )
-            {
-                if( $selectButcherTheme = Method::post('selectButcherTheme') )
-                {
-                    $extractType = Method::post('extractType') ?: 'extract';
-
-                    Butcher::$extractType($selectButcherTheme, Method::post('project'));
-                }  
-                else
-                {
-                    $source = EXTERNAL_FILES_DIR . 'DefaultProject.zip';
-                    $target = PROJECTS_DIR . Method::post('project');
-
-                    File::zipExtract($source, $target);
-                }
-                
-                Redirect::location('', 0, ['success' => LANG['success']]);
-            }
-            else
-            {
-                Masterpage::error($error);
-            }
+            HomeModel\Project::create();
         }
         
-        if( ! $return = Session::select('return') )
-        {
-            $return = Restful::get('https://api.znframework.com/statistics');
+        /**
+         * It brings some stats data from the ZN Framework via API.
+         */
+        HomeModel\Statistics::get();
 
-            Session::insert('return', $return);
-        }
+        /**
+         * .zip allows you to extract the component theme files.
+         */
+        HomeModel\Themes::extract();
 
-        $themesZip = Folder::files(EXTERNAL_BUTCHERY_DIR, 'zip');
-
-        if( ! empty($themesZip) ) foreach( $themesZip as $zip )
-        {
-            $target = EXTERNAL_BUTCHERY_DIR . rtrim($zip, '.zip');
-
-            if( ! file_exists($target) || ! Folder::files($target) )
-            {
-                File::zipExtract(EXTERNAL_BUTCHERY_DIR . $zip, $target);
-            }
-        }
-
-        $butcheryFiles  = Folder::files(EXTERNAL_BUTCHERY_DIR, 'dir');
-        $butcheryThemes = [];
-
-        foreach( $butcheryFiles as $bf )
-        {
-            if( Folder::files(EXTERNAL_BUTCHERY_DIR . $bf, 'dir') )
-            {
-                $butcheryThemes[] = $bf;
-            }
-        }
-
-        View::butcherThemes($butcheryThemes);
+        /**
+         * Gets a list of existing themes.
+         */
+        View::butcherThemes(HomeModel\Themes::get());
         
+        /**
+         * The corresponding view is being installed.
+         */
         Masterpage::page('dashboard');
+
+        /**
+         * Sending data to Masterpage.
+         */
         Masterpage::pdata(['return' => $return]);
     }
 
