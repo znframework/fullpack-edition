@@ -1,4 +1,4 @@
-<?php namespace ZN\Helpers;
+<?php namespace ZN;
 /**
  * ZN PHP Web Framework
  * 
@@ -9,14 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\ZN;
-use ZN\Base;
-use ZN\Singleton;
-use ZN\Inclusion;
 use ZN\Comparison;
-use ZN\Filesystem;
-use ZN\Autoloader;
-use ZN\DataTypes\Arrays;
 
 class Tester
 {
@@ -33,6 +26,13 @@ class Tester
      * @var array
      */
     protected $methods;
+
+    /**
+     * Keeps compares
+     * 
+     * @var array
+     */
+    protected $compares;
 
     /**
      * Get result
@@ -61,6 +61,13 @@ class Tester
      * @var int
      */
     protected $totalFileCount;
+
+    /**
+     * Total correct count
+     * 
+     * @var int
+     */
+    protected $totalCorrectCount;
 
     /**
      * Get arguments
@@ -167,6 +174,20 @@ class Tester
     }
 
     /**
+     * Defines compares.
+     * 
+     * @param string $compares
+     * 
+     * @return Tester
+     */
+    public function compares(Array $compares) : Tester
+    {
+        $this->compares = $compares;
+
+        return $this;
+    }
+
+    /**
      * Defines class methods.
      * 
      * @param array $methods
@@ -197,13 +218,13 @@ class Tester
         
         foreach( $this->methods as $method => $parameters )
         {
-            $method = explode(':', $method)[0];
+            $method = explode(':', $origin = $method)[0];
 
-            Comparison\Testing::start($method);
+            Comparison\Testing::start($origin);
             $returnValue = Singleton::class($this->class)->$method(...$parameters);
-            Comparison\Testing::end($method);
+            Comparison\Testing::end($origin);
 
-            $this->_output($this->class, $method, gettype($returnValue), $returnValue);
+            $this->_output($this->class, $origin, gettype($returnValue), $returnValue, $this->compares[$origin] ?? 'NULL');
 
             $index++;
         }
@@ -234,16 +255,17 @@ class Tester
      * 
      * @return void
      */
-    protected function _output($class, $method, $returnType, $returnValue)
+    protected function _output($class, $method, $returnType, $returnValue, $isResultCorrect)
     {
         $elapsedTime      = Comparison\ElapsedTime::calculate($method);
         $calculatedMemory = Comparison\MemoryUsage::calculate($method);
         $usedFileCount    = Comparison\FileUsage::count($method);
         $returnType       = ucfirst($returnType);
 
-        $this->totalElasedTime  += $elapsedTime;
-        $this->totalMemoryUsage += $calculatedMemory;
-        $this->totalFileCount   += $usedFileCount;
+        $this->totalElasedTime   += $elapsedTime;
+        $this->totalMemoryUsage  += $calculatedMemory;
+        $this->totalFileCount    += $usedFileCount;
+        $this->totalCorrectCount += (int) $isResultCorrect;
 
         $param = $this->arguments[$method];
 
@@ -267,8 +289,9 @@ class Tester
             'method'      => $method . '(' . implode(', ', $param) . ')',
             'returnType'  => $returnType,
             'returnValue' => is_scalar($returnValue) ? $returnValue : $returnType,
+            'isResultCorrect' => $isResultCorrect,
             'elapsedTime' => $elapsedTime,
-            'index'       => str_replace('\\', '-', $class) . '-' . $method
+            'index'       => str_replace('\\', '-', $class) . '-' . str_replace(':', NULL, $method)
         ], true);
     }
 
@@ -284,10 +307,11 @@ class Tester
         $this->result .= Inclusion\Template::use('UnitTests/TotalTable', 
         [
 
-            'elapsedTime'    => $this->totalElasedTime,
-            'memoryUsage'    => $this->totalMemoryUsage,
-            'totalFileCount' => $this->totalFileCount,
-            'index'          => $index
+            'elapsedTime'       => $this->totalElasedTime,
+            'memoryUsage'       => $this->totalMemoryUsage,
+            'totalFileCount'    => $this->totalFileCount,
+            'totalCorrectCount' => $this->totalCorrectCount,
+            'index'             => $index
         ], true);
 
         $this->_defaultVariables();
