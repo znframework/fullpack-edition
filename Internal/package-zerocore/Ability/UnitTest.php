@@ -93,7 +93,7 @@ trait UnitTest
             }
         }
 
-        $tester = Singleton::class('ZN\Helpers\Tester');
+        $tester = Singleton::class('ZN\Tester');
         
         $tester->class($class)
                ->methods($methods)
