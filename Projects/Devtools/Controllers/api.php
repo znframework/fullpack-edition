@@ -1,8 +1,17 @@
 <?php namespace Project\Controllers;
+/**
+ * ZN PHP Web Framework
+ * 
+ * "Simplicity is the ultimate sophistication." ~ Da Vinci
+ * 
+ * @package ZN
+ * @license MIT [http://opensource.org/licenses/MIT]
+ * @author  Ozan UYKUN [ozan@znframework.com]
+ */
 
-use Json;
 use Method;
 use Restful;
+use Api as ApiModel;
 
 class Api extends Controller
 {
@@ -11,40 +20,13 @@ class Api extends Controller
      */
     public function main()
     {
+        # Depending on the request, the data is being sent.
         if( Method::post('request') )
         {
-            $type = Method::post('type');
-
-            if( $data = Method::post('data') )
-            {
-                $explode = explode(',', $data);
-                $newData = [];
-
-                foreach( $explode as $value )
-                {
-                    $valueEx = explode(':', trim(str_replace(EOL, NULL, $value)));
-
-                    if( isset($valueEx[1]) )
-                    {
-                        $newData[$valueEx[0]] = $valueEx[1];
-                    }
-                }
-
-                Restful::data($newData);
-            }
-
-            if( $ssl = Method::post('sslVerifyPeer') )
-            {
-                Restful::sslVerifyPeer((bool) $ssl);
-            }
-
-            Masterpage::pdata(['results' => Restful::$type(Method::post('url'))]);
-
-            $infos = Restful::info('all');
-
-            Masterpage::pdata(['infos' => ! empty($infos) ? $infos : Restful::info()]);
+            ApiModel\Request::send();
         }
 
+        # The corresponding view is being loaded.
         Masterpage::page('rest-api');
     }
 }
