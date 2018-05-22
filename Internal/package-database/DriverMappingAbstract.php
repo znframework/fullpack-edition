@@ -105,14 +105,34 @@ abstract class DriverMappingAbstract
     }
 
     /**
-     * Where Json
+     * References
      * 
-     * @string $column 
-     * @string $value
+     * @param string $table 
+     * @param string $column
      */
     public function references($table, $column)
     {
         return 'REFERENCES '.$table.'('.$column.')';
+    }
+
+    /**
+     * Foreign Key
+     * 
+     * @param string $column 
+     * @param string $references
+     */
+    public function foreignKey($column = NULL, $references = NULL)
+    {
+        if( $references === NULL )
+        {
+            return $this->statements('foreignkey', $column);
+        }
+        elseif( $column === NULL )
+        {
+            return $this->statements('foreignkey');
+        }
+       
+        return $this->statements('foreignkey') . ' ' . $this->references($column, $references);
     }
 
     /**

@@ -69,7 +69,7 @@ class DriverForge
 
             if( is_array($value) ) foreach( $value as $val )
             {
-                $values .= ' ' . $val;
+                $values .= ' ' . rtrim($val);
             }
             else
             {
@@ -78,10 +78,10 @@ class DriverForge
 
             $this->commonConversion($key, $values);
 
-            $column .= $key . ' ' . $values . ',';
+            $column .= $key . ' ' . rtrim($values) . ', ';
         }
 
-        return 'CREATE TABLE ' . $table . '(' .rtrim(trim($column), ',') . ')' . $this->_extras($extras);
+        return 'CREATE TABLE ' . $table . '(' .rtrim(trim($column), ', ') . ')' . $this->_extras($extras);
     }
 
     /**
@@ -196,7 +196,7 @@ class DriverForge
      */
     protected function commonConversion($key, &$value)
     {
-        $value = preg_replace('/('.$this->db()->constraint().'.*?)*('.($foreignKey = $this->db()->foreignKey()).')/', ', $1 $2 ('.$key.')', $value);
+        $value = preg_replace('/('.$this->db()->constraint().'.*?)*('.(rtrim($this->db()->foreignKey())).')/', ', $1 $2 ('.$key.')', $value);
     }
 
     /**

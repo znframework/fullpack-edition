@@ -905,6 +905,21 @@ class DB extends Connection
     }
 
     /**
+     * Foreign Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $column 
+     * @param string $references
+     * 
+     * @return string
+     */
+    public function foreignKey($column = NULL, $references = NULL) : String
+    {
+        return $this->db->foreignKey($column, $references);
+    }
+
+    /**
      * Defines SQL CHARACTER SET
      * 
      * @param string $set
