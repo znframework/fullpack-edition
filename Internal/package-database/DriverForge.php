@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Singleton;
+
 class DriverForge
 {
     /**
@@ -73,6 +75,8 @@ class DriverForge
             {
                 $values = $value;
             }
+
+            $this->commonConversion($key, $values);
 
             $column .= $key . ' ' . $values . ',';
         }
@@ -175,6 +179,24 @@ class DriverForge
     public function renameColumn($table, $columns)
     {
         return 'ALTER TABLE ' . $table . ' CHANGE COLUMN ' . $this->_extractColumn($columns) . ';';
+    }
+
+    /**
+     * Protected DB class
+     * 
+     * @return ZN\Database\DB
+     */
+    protected function db()
+    {
+        return Singleton::class('ZN\Database\DB');
+    }
+
+    /**
+     * Protected common conversion
+     */
+    protected function commonConversion($key, &$value)
+    {
+        $value = preg_replace('/('.$this->db()->constraint().'.*?)*('.($foreignKey = $this->db()->foreignKey()).')/', ', $1 $2 ('.$key.')', $value);
     }
 
     /**
