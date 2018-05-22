@@ -11,6 +11,8 @@ class Initialize extends Controller
      */
     public function main(String $params = NULL)
     {
+        output(\ZN\Lang\Commands::invalidCommand());
+        exit;
         # The theme is activated.
         # Location: Resources/Themes/Default/
         Theme::active('Default');

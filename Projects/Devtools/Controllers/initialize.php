@@ -18,6 +18,9 @@ class Initialize extends Controller
      */
     public function main()
     {
+        # Sets max execution time 0
+        InitializeModel\Ini::maxExecutionTime();
+
         # Defines basic constants.
         InitializeModel\Constants::basic();
 

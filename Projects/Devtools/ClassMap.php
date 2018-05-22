@@ -116,3 +116,5 @@ $classMap['classes']['datatables\table'] = 'Projects/Devtools/Models/Datatables/
 $classMap['namespaces']['datatables\column'] = 'column';
 $classMap['namespaces']['datatables\row'] = 'row';
 $classMap['namespaces']['datatables\table'] = 'table';
+$classMap['classes']['initialize\ini'] = 'Projects/Devtools/Models/Initialize/Ini.php';
+$classMap['namespaces']['initialize\ini'] = 'ini';
