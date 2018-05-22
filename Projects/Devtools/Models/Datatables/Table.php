@@ -22,6 +22,11 @@ use ZN\DataTypes\Arrays\RemoveElement;
 
 class Table extends Model
 {
+    public static function list()
+    {
+        return DBTool::listTables();
+    }
+
     public static function create()
     {
         $table   = Method::post('table');

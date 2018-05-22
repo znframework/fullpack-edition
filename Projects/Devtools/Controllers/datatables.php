@@ -9,19 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use DB;
-use DBTool;
-use DBForge;
-use Import;
-use Session; 
-use Config;
-use Folder;
-use File;
 use Http;
-use Method;
-use ZN\DataTypes\Arrays\RemoveElement;
-use ZN\Security\Html;
-use ZN\Base;
 use Datatables as DatatablesModel;
 
 class Datatables extends Controller
@@ -32,7 +20,7 @@ class Datatables extends Controller
     public function main(String $params = NULL)
     {
         # Sending data to Masterpage.
-        Masterpage::pdata(['tables' => DBTool::listTables()]);
+        Masterpage::pdata(['tables' => DatatablesModel\Table::list()]);
 
         # The corresponding view is being loaded.
         Masterpage::page('datatable');
