@@ -110,6 +110,17 @@ abstract class DriverMappingAbstract
      * @string $column 
      * @string $value
      */
+    public function references($table, $column)
+    {
+        return 'REFERENCES '.$table.'('.$column.')';
+    }
+
+    /**
+     * Where Json
+     * 
+     * @string $column 
+     * @string $value
+     */
     public function whereJson($column, $value, $type = 'IS NOT NULL')
     {
         return 'JSON_SEARCH('.$column.', \'one\', '.$value.') ' . $type;

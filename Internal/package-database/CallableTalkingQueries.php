@@ -57,8 +57,15 @@ trait CallableTalkingQueries
             return $this->db->variableTypes($vartypeMethod, ...$parameters);
         }
         # Statements
+        # 5.7.4[edited]
         elseif( in_array($method, $this->statementElements) )
         {
+            # 5.7.4[added]
+            if( $method === 'constraint' )
+            {
+                $parameters[1] = false;
+            }
+
             return $this->db->statements($method, ...$parameters);
         }
         # Join

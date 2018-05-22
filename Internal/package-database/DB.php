@@ -893,6 +893,18 @@ class DB extends Connection
     }
 
     /**
+     * Defines SQL REFERENCES table(column)
+     * 
+     * 5.7.4[added]
+     * 
+     * @return string
+     */
+    public function references(String $table, String $column) : String
+    {
+        return $this->db->references($table, $column);
+    }
+
+    /**
      * Defines SQL CHARACTER SET
      * 
      * @param string $set
