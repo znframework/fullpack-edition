@@ -17,6 +17,7 @@ return array(
     'ZN\\Remote\\' => array($vendorDir . '/package-remote'),
     'ZN\\Protection\\' => array($vendorDir . '/package-protection'),
     'ZN\\Prompt\\' => array($vendorDir . '/package-prompt'),
+    'ZN\\Payment\\' => array($vendorDir . '/package-payment'),
     'ZN\\Pagination\\' => array($vendorDir . '/package-pagination'),
     'ZN\\Language\\' => array($vendorDir . '/package-language'),
     'ZN\\Image\\' => array($vendorDir . '/package-image'),
