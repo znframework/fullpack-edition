@@ -50,8 +50,7 @@ class Table extends Model
         
         foreach( $newData as $data )
         {
-            $maxLength = $data['maxLength'];
-            $type      = $data['type'];
+            extract($data);
 
             if( in_array($type, ['DATE', 'DATETIME', 'TIME', 'TIMESTAMP']) )
             {
@@ -60,11 +59,11 @@ class Table extends Model
 
             $newColumns[$data['columnName']] =
             [
-                ( $type ?: '' ).( ! empty($maxLength ) ? '('.$maxLength .')' : '' ),
-                ! empty($data['primaryKey'])      ? DB::primaryKey()    : NULL,
-                ! empty($data['autoIncrement'])   ? DB::autoIncrement() : NULL,
-                $data['isNull'] === DB::notNull() ? DB::notNull()       : '',
-                ! empty($default)                 ? 'DEFAULT '.$default : ''
+                self::columnType($type, $maxLength),
+                self::columnPrimaryKey($primaryKey),
+                self::columnAutoIncrement($autoIncrement),
+                self::columnIsNull($isNull),
+                self::columnDefault($default)
             ];
         }
 
@@ -126,5 +125,45 @@ class Table extends Model
             'result' => $result,
             'error'  => DBForge::error()
         ]);
+    }
+
+    /**
+     * Protected column type
+     */
+    protected static function columnType($type, $maxLength)
+    {
+        return ( $type ?: '' ).( ! empty($maxLength ) ? '('.$maxLength .')' : '' );
+    }
+
+    /**
+     * Protected column primary key
+     */
+    protected static function columnPrimaryKey($primaryKey)
+    {
+        return ! empty($primaryKey) ? DB::primaryKey() : NULL;
+    }
+
+    /**
+     * Protected column auto increment
+     */
+    protected static function columnAutoIncrement($autoIncrement)
+    {
+        return ! empty($autoIncrement) ? DB::autoIncrement() : NULL;
+    }
+
+    /**
+     * Protected column is null
+     */
+    protected static function columnIsNull($isNull)
+    {
+        return $isNull === DB::notNull() ? DB::notNull() : '';
+    }
+
+    /**
+     * Protected column default
+     */
+    protected static function columnDefault($default)
+    {
+        return ! empty($default) ? 'DEFAULT '.$default : '';
     }
 }
