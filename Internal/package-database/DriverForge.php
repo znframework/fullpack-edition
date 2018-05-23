@@ -156,6 +156,164 @@ class DriverForge
     }
 
     /**
+     * Start Auto Increment
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param int    $start = 0
+     * 
+     * @return string
+     */
+    public function startAutoIncrement($table, $start = 0)
+    {
+        return 'ALTER TABLE ' . $table . ' ' . $this->db()->autoIncrement() . '=' . $start . ';';
+    }
+
+    /**
+     * Add Primary Key
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $columns
+     * @param string $constraint = NULL
+     * 
+     * @return string
+     */
+    public function addPrimaryKey($table, $columns, $constraint = NULL)
+    {
+        return 'ALTER TABLE ' . $table . ' ADD ' . $this->addedConstraint($constraint) . $this->db()->primaryKey() . '(' . $columns . ');';
+    }
+
+    /**
+     * Add Foreign Key
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $columns
+     * @param string $reftable
+     * @param string $refcolumn
+     * @param string $constraint = NULL
+     * 
+     * @return string
+     */
+    public function addForeignKey($table, $columns, $reftable, $refcolumn, $constraint = NULL)
+    {
+        return 'ALTER TABLE ' . $table . ' ADD ' . $this->addedConstraint($constraint) . $this->db()->foreignKey() . '(' . $columns . ') REFERENCES '.$reftable.'('.$refcolumn.');';
+    }
+
+    /**
+     * Create index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return string
+     */
+    public function createIndex($indexName, $table, $columns, $uniq = NULL)
+    {
+        return 'CREATE ' . $uniq . ' INDEX ' . $indexName . ' ON ' . $table . ' (' . $columns . ');';
+    }
+
+    /**
+     * Create Unique index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return string
+     */
+    public function createUniqueIndex($indexName, $table, $columns)
+    {
+        return $this->createIndex($indexName, $table, $columns, 'UNIQUE');
+    }
+
+    /**
+     * Create Fulltext index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return string
+     */
+    public function createFulltextIndex($indexName, $table, $columns)
+    {
+        return $this->createIndex($indexName, $table, $columns, 'FULLTEXT');
+    }
+
+    /**
+     * Create Spatial index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return string
+     */
+    public function createSpatialIndex($indexName, $table, $columns)
+    {
+        return $this->createIndex($indexName, $table, $columns, 'SPATIAL');
+    }
+
+    /**
+     * Drop index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * 
+     * @return string
+     */
+    public function dropIndex($indexName, $table)
+    {
+        return 'ALTER TABLE ' . $table . ' DROP INDEX ' . $indexName . ';';
+    }
+
+    /**
+     * Drop Primary Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $constraint = NULL
+     * 
+     * @return string
+     */
+    public function dropPrimaryKey($table, $constraint = NULL)
+    {
+        return 'ALTER TABLE ' . $table . ' DROP ' . ($this->addedConstraint($constraint) ?? $this->db()->primaryKey()) . ';';
+    }
+
+    /**
+     * Drop Foreign Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $constraint = NULL
+     * 
+     * @return string
+     */
+    public function dropForeignKey($table, $constraint = NULL)
+    {
+        return 'ALTER TABLE ' . $table . ' DROP ' . $this->db()->constraint() . $constraint . ';';
+    }
+
+    /**
      * MOdify Column
      * 
      * @param string $table
@@ -179,6 +337,19 @@ class DriverForge
     public function renameColumn($table, $columns)
     {
         return 'ALTER TABLE ' . $table . ' CHANGE COLUMN ' . $this->_extractColumn($columns) . ';';
+    }
+
+    /**
+     * Protected added constraint
+     */
+    protected function addedConstraint($string = NULL)
+    {
+        if( $string !== NULL )
+        {
+            return $this->db()->constraint() . ' ' . $string . ' ';
+        }
+
+        return NULL;
     }
 
     /**

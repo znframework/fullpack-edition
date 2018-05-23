@@ -136,6 +136,33 @@ abstract class DriverMappingAbstract
     }
 
     /**
+     * Full Text
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $column
+     * @param string $value
+     * @param string $type = NULL
+     * 
+     * @return string
+     */
+    public function fullText($column, $value, $type = NULL)
+    {
+        $against = NULL;
+
+        switch( $type )
+        {
+            case 'boolean'          : $against = ' IN BOOLEAN MODE'                              ; break;
+            case 'booleanExpansion' : $against = ' IN BOOLEAN MODE WITH QUERY EXPANSION'         ; break;
+            case 'language'         : $against = ' IN NATURAL LANGUAGE MODE'                     ; break;
+            case 'expansion'        : $against = ' WITH QUERY EXPANSION'                         ; break;
+            case 'languageExpansion': $against = ' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION'; break;
+        }
+
+        return 'MATCH('.$column.') AGAINST('.$value.$against.')';
+    }
+
+    /**
      * Where Json
      * 
      * @string $column 

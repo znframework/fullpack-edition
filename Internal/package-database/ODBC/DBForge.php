@@ -37,4 +37,19 @@ class DBForge extends DriverForge
     { 
         return 'ALTER TABLE '.$table.' RENAME COLUMN  '.rtrim($column, ',').';';
     }
+
+    /**
+     * Drop index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * 
+     * @return string
+     */
+    public function dropIndex($indexName, $table)
+    {
+        return 'DROP INDEX ' . $indexName . ' ON ' . $table . ';';
+    }
 }
