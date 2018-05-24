@@ -238,6 +238,9 @@ class Kernel
         {
             return;
         }
+
+        # Loading can not be performed because the appropriate view page is not found.
+        $usableView = '';
         
         # It is checked whether the file to be automatically loaded has been included before.
         if( ! IS::import($viewPath) && ! IS::import($wizardPath) )
@@ -251,11 +254,6 @@ class Kernel
             elseif( is_file($viewPath) )
             {
                 $usableView = self::viewLoader($viewPath);
-            }
-            # Loading can not be performed because the appropriate view page is not found.
-            else
-            {
-                $usableView = '';
             }
         }
 
@@ -272,7 +270,7 @@ class Kernel
 
         # Merge sent data.
         $data = array_merge($inData, Masterpage::$data);
-        
+
         # if sent data via Masterpage. Enables MasterPage.
         if( ($data['masterpage'] ?? NULL) === true || ! empty($data) )
         {
