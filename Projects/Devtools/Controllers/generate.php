@@ -21,13 +21,16 @@ class Generate extends Controller
      */
     public function controller(String $params = NULL)
     {
+        # Generating controller.
         if( Method::post('generate') )
         {
             GenerateModel\Controller::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Controller::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -36,13 +39,16 @@ class Generate extends Controller
      */
     public function library(String $params = NULL)
     {
+        # Generating library.
         if( Method::post('generate') )
         {
             GenerateModel\Library::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Library::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -54,15 +60,18 @@ class Generate extends Controller
         if( IS_CONTAINER )
         {
             Redirect::location();
-        }
+        }   
 
+        # Generating command.
         if( Method::post('generate') )
         {
             GenerateModel\Command::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Command::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -76,13 +85,16 @@ class Generate extends Controller
             Redirect::location();
         }
 
+        # Generating route.
         if( Method::post('generate') )
         {
             GenerateModel\Route::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Route::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');  
     }
 
@@ -96,13 +108,16 @@ class Generate extends Controller
             Redirect::location();
         }
 
+        # Generating config.
         if( Method::post('generate') )
         {
             GenerateModel\Config::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Config::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -116,13 +131,16 @@ class Generate extends Controller
             Redirect::location();
         }
 
+        # Generating model.
         if( Method::post('generate') )
         {
             GenerateModel\Model::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Model::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -133,13 +151,16 @@ class Generate extends Controller
     {
         GenerateModel\View::defineTemplates();
 
+        # Generating view.
         if( Method::post('generate') )
         {
             GenerateModel\View::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\View::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -147,14 +168,17 @@ class Generate extends Controller
      * Generate Starting File
      */
     public function starting(String $params = NULL)
-    {
+    {   
+        # Generating starting file.
         if( Method::post('generate') )
         {
             GenerateModel\Starting::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Starting::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -168,13 +192,16 @@ class Generate extends Controller
             Redirect::location();
         }
 
+        # Generating migration.
         if( Method::post('generate') )
         {
             GenerateModel\Migration::run();
         }
 
+        # The required data is being sent for the masterpage.
         GenerateModel\Migration::sendMasterpageData();
 
+        # The corresponding view is being loaded.
         Masterpage::page('generate');
     }
 
@@ -183,6 +210,7 @@ class Generate extends Controller
      */
     public function deleteFile()
     {
+        # Deleting file.
         GenerateModel\File::delete();
     }
 
@@ -196,6 +224,7 @@ class Generate extends Controller
             return false;
         }
 
+        # The file is being renamed.
         GenerateModel\File::rename();
     }
 
@@ -209,6 +238,7 @@ class Generate extends Controller
             return false;
         }
 
+        # The changes are being saved.
         GenerateModel\File::save();
     }
 }

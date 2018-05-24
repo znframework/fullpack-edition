@@ -103,7 +103,7 @@ class System extends Controller
             return Masterpage::error(Lang::select('DevtoolsErrors', 'gridError'));
         }
 
-        $joinCollapse       = Session::select('joinCollapse');
+        $joinCollapse = Session::select('joinCollapse');
 
         $pdata['tables'] = Arrays::combine($tables, $tables);
 
