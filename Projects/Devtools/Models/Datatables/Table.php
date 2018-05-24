@@ -130,7 +130,7 @@ class Table extends Model
     /**
      * Protected column type
      */
-    protected static function columnType($type, $maxLength)
+    public static function columnType($type, $maxLength)
     {
         return ( $type ?: '' ).( ! empty($maxLength ) ? '('.$maxLength .')' : '' );
     }
@@ -138,7 +138,7 @@ class Table extends Model
     /**
      * Protected column primary key
      */
-    protected static function columnPrimaryKey($primaryKey)
+    public static function columnPrimaryKey($primaryKey)
     {
         return ! empty($primaryKey) ? DB::primaryKey() : NULL;
     }
@@ -146,7 +146,7 @@ class Table extends Model
     /**
      * Protected column auto increment
      */
-    protected static function columnAutoIncrement($autoIncrement)
+    public static function columnAutoIncrement($autoIncrement)
     {
         return ! empty($autoIncrement) ? DB::autoIncrement() : NULL;
     }
@@ -154,7 +154,7 @@ class Table extends Model
     /**
      * Protected column is null
      */
-    protected static function columnIsNull($isNull)
+    public static function columnIsNull($isNull)
     {
         return $isNull === DB::notNull() ? DB::notNull() : '';
     }
@@ -162,7 +162,7 @@ class Table extends Model
     /**
      * Protected column default
      */
-    protected static function columnDefault($default)
+    public static function columnDefault($default)
     {
         return ! empty($default) ? 'DEFAULT '.$default : '';
     }
