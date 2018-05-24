@@ -295,7 +295,7 @@ class DriverForge
      */
     public function dropPrimaryKey($table, $constraint = NULL)
     {
-        return 'ALTER TABLE ' . $table . ' DROP ' . ($this->addedConstraint($constraint) ?? $this->db()->primaryKey()) . ';';
+        return 'ALTER TABLE ' . $table . ' DROP ' . $this->db()->constraint() . ' ' . $constraint . ';';
     }
 
     /**
