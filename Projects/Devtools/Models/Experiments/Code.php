@@ -27,11 +27,16 @@ class Code extends Model
         }
         else
         {
-            $query = DB::query($content);
+            $query  = DB::query($content);
 
-            $result = Import::view('experiments-table', ['columns' => $query->columns(), 'result' => $query->resultArray()], true);
+            $result = NULL;
+
+            if( preg_match('/^SELECT/i', $content) )
+            {
+                $result = Import::view('experiments-table', ['columns' => $query->columns(), 'result' => $query->resultArray()], true);
+            }  
         }
 
-        echo $result ?: LANG['noOutput'];
+        echo $query->error() ?: $result ?: LANG['success'];
     }
 }
