@@ -459,7 +459,7 @@ class System extends Controller
 
             Folder::copy(rtrim(SELECT_PROJECT_DIR, DS), $fullPath);
 
-            Redirect::location(URI::current(), 0, ['success' => LANG['success']]);
+            Redirect::location(URI::active(), 0, ['success' => LANG['success']]);
         }
 
         $files = Folder::files($path, 'dir');

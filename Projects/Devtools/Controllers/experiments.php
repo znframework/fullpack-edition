@@ -9,10 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use DB;
 use Http;
-use Post;
-use Import;
+use Experiments as ExperimentsModel;
 
 class Experiments extends Controller
 {
@@ -25,29 +23,16 @@ class Experiments extends Controller
     }
 
     /**
-     * Ajax Alter Table
+     * Ajax Run Code
      */
-    public function alterTable()
+    public function runCode()
     {
         if( ! Http::isAjax() )
         {
             return false;
         }
 
-        $content = Post::content();
-        $type    = Post::type();
-
-        if( $type === 'php' )
-        {
-            eval('?>' . html_entity_decode($content, ENT_QUOTES)); exit;
-        }
-        else
-        {
-            $query = DB::query($content);
-
-            $result = Import::view('experiments-table', ['columns' => $query->columns(), 'result' => $query->resultArray()], true);
-        }
-
-        echo $result ?: LANG['noOutput'];
+        # Run experiments code - options[php|sql]
+        ExperimentsModel\Code::run();
     }
 }
