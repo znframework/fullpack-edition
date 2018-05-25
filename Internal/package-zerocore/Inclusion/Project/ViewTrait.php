@@ -27,7 +27,7 @@ trait ViewTrait
      */
     public static $usableMethods =
     [
-        'view', 'script', 'style', 'font', 'template', 'page', 'something', 'theme', 'resource', 'plugin'
+        'view', 'script', 'style', 'font', 'template', 'page', 'something', 'theme', 'plugin'
     ];
 
     /**
@@ -92,12 +92,12 @@ trait ViewTrait
                                                                  ->addLast(true)
                                                                  ->get();
 
-                if( strstr('page|view|something', $met) && ! is_array($pr[0]) )
+                if( strstr('page|view|something|template', $met) && ! is_array($pr[0]) )
                 {
                     array_unshift($pr, NULL);
                 }
-
-                self::$data[$method] = $value = Singleton::class('ZN\Inclusion\Import')->$met($ex[1] ?? NULL, ...$pr);
+   
+                self::$data[$method] = $value = Singleton::class('ZN\Import')->$met($ex[1] ?? NULL, ...$pr);
             }
         }
 
