@@ -126,7 +126,7 @@ class Config
             {
                 if( isset(self::$config[$file][$k]) && is_array(self::$config[$file][$k]) )
                 {
-                    self::$config[$file][$k] = array_merge(self::$config[$file][$k] + ($mergeConfig = (array) self::$setConfigs[$file][$k]), $mergeConfig);
+                    self::$config[$file][$k] = (array) self::$setConfigs[$file][$k] + self::$config[$file][$k];
                 }
                 else
                 {
@@ -137,12 +137,19 @@ class Config
 
         if( empty($configs) )
         {
-            return (self::$config[$file] ?? NULL) ?: self::getDefault();
+            $return = self::$config[$file] ?? NULL;
         }
         else
         {
-            return self::$config[$file][$configs] ?? self::getDefault();
+            $return = self::$config[$file][$configs] ?? NULL;
         }
+
+        if( $default = self::getDefault() )
+        {
+            $return  = (array) $return + (array) $default;
+        }
+
+        return $return;
     }
 
     /**
