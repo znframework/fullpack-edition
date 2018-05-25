@@ -578,14 +578,14 @@ class Autoloader
     /**
      * spl autoload register
      * 
-     * @param void
+     * @param string $type = 'run' - options[run|standart]
      * 
      * @return void
      */
-    public static function register()
+    public static function register($type = 'run')
     {
         # Autoload register.
-        spl_autoload_register('Autoloader::run');
+        spl_autoload_register('Autoloader::' . $type);
 
         # If the use of alias is obvious, it will activate this operation.
         self::aliases();
