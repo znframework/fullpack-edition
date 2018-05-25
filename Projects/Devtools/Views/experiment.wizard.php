@@ -28,8 +28,8 @@
 
                         </tr>
                         <tr>
-                            <th>{{Form::onclick('alterTable(\'php\', \'RunPHPCode\')')->class('form-control btn btn-info')->button('update', LANG['runPHPButton'])}}</th>
-                            <th>{{Form::onclick('alterTable(\'sql\', \'RunSQLCode\')')->class('form-control btn btn-info')->button('update', LANG['runSQLButton'])}}</th>
+                            <th>{{Form::onclick('runCode(\'php\', \'RunPHPCode\')')->class('form-control btn btn-info')->button('update', LANG['runPHPButton'])}}</th>
+                            <th>{{Form::onclick('runCode(\'sql\', \'RunSQLCode\')')->class('form-control btn btn-info')->button('update', LANG['runSQLButton'])}}</th>
 
                         </tr>
                     </thead>
@@ -91,7 +91,7 @@ var RunSQLCode = ace.edit("RunSQLCode");
 RunSQLCode.setTheme("ace/theme/{{SELECT_EDITOR_THEME}}");
 RunSQLCode.getSession().setMode("ace/mode/sql");
 
-function alterTable(type, id)
+function runCode(type, id)
 {
     if( id === 'RunPHPCode' )
     {
@@ -104,7 +104,7 @@ function alterTable(type, id)
     
     $.ajax
     ({
-        url:"{{URL::site('experiments/alterTable')}}",
+        url:"{{URL::site('experiments/runCode')}}",
     	data:'content=' + encodeURIComponent(content) + '&type=' + type,
     	method:"post",
     	success:function(data)

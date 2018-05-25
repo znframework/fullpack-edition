@@ -11,6 +11,7 @@
 
 use ZN\Support;
 use ZN\Datatype;
+use ZN\Singleton;
 
 class DBForge extends Connection
 {   
@@ -194,6 +195,204 @@ class DBForge extends Connection
     public function addColumn(String $table = NULL, Array $columns = NULL)
     {
         $query = $this->forge->addColumn($this->_p($table), $this->_p($columns, 'column'));
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Start Auto Increment
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param int    $start = 0
+     * 
+     * @return bool
+     */
+    public function startAutoIncrement(String $table, Int $start = 0)
+    {
+        $query = $this->forge->startAutoIncrement($this->_p($table), $start);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Start Auto Increment
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param int    $start = 0
+     * 
+     * @return bool
+     */
+    public function addAutoIncrement(String $table, String $column = 'id', Int $start = NULL)
+    {
+        if( $start !== NULL )
+        {
+            $this->startAutoIncrement($table, $start);
+        }
+
+        return $this->modifyColumn($table, [$column  => [($db = Singleton::class('ZN\Database\DB'))->int(), $db->autoIncrement()]]);
+    }
+
+    /**
+     * Add Primary Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $columns
+     * @param string $constraint = NULL
+     * 
+     * @return bool
+     */
+    public function addPrimaryKey(String $table = NULL, String $columns, String $constraint = NULL)
+    {
+        $query = $this->forge->addPrimaryKey($this->_p($table), $columns, $constraint);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Add Foreign Key
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $columns
+     * @param string $reftable
+     * @param string $refcolumn
+     * @param string $constraint = NULL
+     * 
+     * @return bool
+     */
+    public function addForeignKey(String $table = NULL, String $columns, String $reftable, String $refcolumn, String $constraint = NULL)
+    {
+        $query = $this->forge->addForeignKey($this->_p($table), $columns, $reftable, $refcolumn, $constraint);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Drop Primary Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $table 
+     * @param string $constraint = NULL
+     * 
+     * @return bool
+     */
+    public function dropPrimaryKey(String $table = NULL, String $constraint = NULL)
+    {
+        $query = $this->forge->dropPrimaryKey($this->_p($table), $constraint);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Drop Foreign Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $table 
+     * @param string $constraint = NULL
+     * 
+     * @return bool
+     */
+    public function dropForeignKey(String $table = NULL, String $constraint = NULL)
+    {
+        $query = $this->forge->dropForeignKey($this->_p($table), $constraint);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Create index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return bool
+     */
+    public function createIndex(String $indexName, String $table, String $columns)
+    {
+        $query = $this->forge->createIndex($indexName, $this->_p($table), $columns);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Create Unique index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return bool
+     */
+    public function createUniqueIndex(String $indexName, String $table, String $columns)
+    {
+        $query = $this->forge->createUniqueIndex($indexName, $this->_p($table), $columns);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Create Fulltext index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return bool
+     */
+    public function createFulltextIndex(String $indexName, String $table, String $columns)
+    {
+        $query = $this->forge->createFulltextIndex($indexName, $this->_p($table), $columns);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Create Spatial index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return bool
+     */
+    public function createSpatialIndex(String $indexName, String $table, String $columns)
+    {
+        $query = $this->forge->createSpatialIndex($indexName, $this->_p($table), $columns);
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Drop index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * 
+     * @return string
+     */
+    public function dropIndex(String $indexName, String $table = NULL)
+    {
+        $query = $this->forge->dropIndex($indexName, $this->_p($table));
 
         return $this->_runExecQuery($query);
     }

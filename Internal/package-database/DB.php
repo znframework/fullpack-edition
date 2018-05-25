@@ -227,6 +227,24 @@ class DB extends Connection
     }
 
     /**
+     * Full Text
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $column
+     * @param string $value
+     * @param string $type = NULL
+     * 
+     * @return string
+     */
+    public function whereFullText($column, String $value = '', String $type = NULL, String $logical = NULL) : DB
+    {
+        $this->where('exp:' . $this->db->fullText($column, $this->_escapeStringAddNail($value), $type), '', $logical);
+
+        return $this;
+    }
+
+    /**
      * Defines SQL WHERE BETWEEN value1 and value2
      * 
      * @param mixed  $column
@@ -902,6 +920,21 @@ class DB extends Connection
     public function references(String $table, String $column) : String
     {
         return $this->db->references($table, $column);
+    }
+
+    /**
+     * Foreign Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $column 
+     * @param string $references
+     * 
+     * @return string
+     */
+    public function foreignKey($column = NULL, $references = NULL) : String
+    {
+        return $this->db->foreignKey($column, $references);
     }
 
     /**

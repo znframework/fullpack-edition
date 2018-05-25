@@ -22,6 +22,7 @@ class ComposerStaticInit18a22f10e44b8b77ed023b6677d08bad
             'ZN\\Remote\\' => 10,
             'ZN\\Protection\\' => 14,
             'ZN\\Prompt\\' => 10,
+            'ZN\\Payment\\' => 11,
             'ZN\\Pagination\\' => 14,
             'ZN\\Language\\' => 12,
             'ZN\\Image\\' => 9,
@@ -92,6 +93,10 @@ class ComposerStaticInit18a22f10e44b8b77ed023b6677d08bad
         'ZN\\Prompt\\' => 
         array (
             0 => __DIR__ . '/..' . '/package-prompt',
+        ),
+        'ZN\\Payment\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/package-payment',
         ),
         'ZN\\Pagination\\' => 
         array (

@@ -1,0 +1,26 @@
+{
+    "name": "znframework/package-payment",
+    "description": "ZN Framework Payment Gateway Package",
+    "license": "MIT",
+    "homepage": "https://znframework.com",
+    "keywords": ["znframework", "payment gateway", "gateway"],
+    "authors": [
+        {
+            "name": "Ozan Uykun",
+            "email": "ozan@znframework.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "znframework/package-zerocore": "5.7.*",
+        "znframework/package-request": "5.7.*",
+        "znframework/package-datatypes": "5.7.*",
+        "znframework/package-services": "5.7.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "ZN\\Payment\\": ""
+        }
+    },
+	"minimum-stability": "dev"
+}

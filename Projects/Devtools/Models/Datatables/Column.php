@@ -20,13 +20,11 @@ class Column extends Model
 {
     public static function modify()
     {
-        $table      = Method::post('table');
-        $column     = Method::post('column');
-        $columnName = Method::post('columnName');
-        $type       = trim(Method::post('type'));
-        $maxLength  = Method::post('maxLength');
-        $isNull     = Method::post('isNull');
-        $default    = Method::post('defaul');
+        $data = Method::post();
+
+        extract($data);
+        
+        $type = trim($type);
 
         if( in_array($type, ['DATE', 'DATETIME', 'TIME', 'TIMESTAMP']) )
         {
@@ -35,9 +33,9 @@ class Column extends Model
 
         $columns =
         [
-            $type.( ! empty($maxLength) ? '('.$maxLength.')' : '' ),
-            $isNull === DB::notNull() ? DB::notNull()  : '',
-            ! empty($default) ? 'DEFAULT '.$default    : ''
+            Table::columnType($type, $maxLength),
+            Table::columnIsNull($isNull),
+            Table::columnDefault($default)
         ];
 
         if( $column !== 'add-column')

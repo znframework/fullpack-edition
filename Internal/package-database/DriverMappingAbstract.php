@@ -105,14 +105,61 @@ abstract class DriverMappingAbstract
     }
 
     /**
-     * Where Json
+     * References
      * 
-     * @string $column 
-     * @string $value
+     * @param string $table 
+     * @param string $column
      */
     public function references($table, $column)
     {
         return 'REFERENCES '.$table.'('.$column.')';
+    }
+
+    /**
+     * Foreign Key
+     * 
+     * @param string $column 
+     * @param string $references
+     */
+    public function foreignKey($column = NULL, $references = NULL)
+    {
+        if( $references === NULL )
+        {
+            return $this->statements('foreignkey', $column);
+        }
+        elseif( $column === NULL )
+        {
+            return $this->statements('foreignkey');
+        }
+       
+        return $this->statements('foreignkey') . ' ' . $this->references($column, $references);
+    }
+
+    /**
+     * Full Text
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $column
+     * @param string $value
+     * @param string $type = NULL
+     * 
+     * @return string
+     */
+    public function fullText($column, $value, $type = NULL)
+    {
+        $against = NULL;
+
+        switch( $type )
+        {
+            case 'boolean'          : $against = ' IN BOOLEAN MODE'                              ; break;
+            case 'booleanExpansion' : $against = ' IN BOOLEAN MODE WITH QUERY EXPANSION'         ; break;
+            case 'language'         : $against = ' IN NATURAL LANGUAGE MODE'                     ; break;
+            case 'expansion'        : $against = ' WITH QUERY EXPANSION'                         ; break;
+            case 'languageExpansion': $against = ' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION'; break;
+        }
+
+        return 'MATCH('.$column.') AGAINST('.$value.$against.')';
     }
 
     /**
