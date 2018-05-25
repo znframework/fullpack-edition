@@ -56,7 +56,7 @@ class DatabaseDefaultConfiguration
     public $host        = 'localhost';
     public $database    = 'test';
     public $user        = 'root';
-    public $password    = '6340hayal';
+    public $password    = '';
     public $dsn         = '';
     public $server      = '';
     public $port        = '';
