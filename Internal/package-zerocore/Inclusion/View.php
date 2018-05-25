@@ -50,6 +50,14 @@ class View
      */
     public static function use(String $page, Array $data = NULL, Bool $obGetContents = false, String $randomPageDir = VIEWS_DIR)
     {
+        # If the view starts with / symbol, it refers to pulling a file from 
+        # the view directory linked to the corresponding controller.
+        # 5.7.4[added]
+        if( $page[0] === '/' )
+        {
+            $page = CURRENT_CONTROLLER . $page;
+        }
+        
         if( ! empty(Properties::$parameters['usable']) )
         {
             $obGetContents = Properties::$parameters['usable'];
