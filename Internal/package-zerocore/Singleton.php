@@ -24,13 +24,14 @@ class Singleton
     /**
      * singleton
      * 
-     * @param void
+     * @param string $class
+     * @param array  $parameters = []
      * 
      * @return self
      */
-    public static function class(String $class)
+    public static function class(String $class, Array $parameters = [])
     {
-        $lower = strtolower($class);
+        $lower = strtolower($class) . ( ! empty($parameters) ? print_r($parameters, true) : NULL );
 
         if( ! isset(self::$singleton[$lower]) ) 
         {
@@ -41,7 +42,7 @@ class Singleton
                 $class = $classInfo['namespace'];
             }
             
-            self::$singleton[$lower] = new $class;
+            self::$singleton[$lower] = new $class(...$parameters);
         }
 
         return self::$singleton[$lower];
