@@ -196,7 +196,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             'trace'   => $trace
         ];
         
-        if( stristr($exceptionData['file'] ?? $file, '/Buffering.php') )
+        if( stristr($exceptionData['file'] ?? $file, DS . 'Buffering.php') )
         {
             $templateWizardData    = self::_templateWizard();
             $exceptionData['file'] = $templateWizardData->file;
@@ -356,15 +356,15 @@ class Exceptions extends \Exception implements ExceptionsInterface
     public static function display($file, $line, $key)
     {
         ?>
-        <a href="#openExceptionMessage<?php echo $key?>" class="list-group-item panel-header" data-toggle="collapse">
+        <a href="#openExceptionMessage<?php echo $key?>" class="list-group-item panel-header" style="color:#999;" data-toggle="collapse">
             <span><i class="fa fa-angle-down fa-fw panel-text"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             <?php echo $file ?? NULL; ?></span>
         </a>
         <div id="openExceptionMessage<?php echo $key?>" class="collapse<?php echo $key !== NULL ? '' : ' in'?>">
-        <pre style="background:#222; margin-top:-20px; border:0px">
+        <pre style="color:#ccc; background:#222; margin-top:-20px; border:0px">
         <?php
         $content = file($file);
-        $newdata = '<?php' . EOL;
+        $newdata = '<?PHP' . EOL;
         $intline = $line;
         $errorBlock = '<div class="error-block col-lg-12"></div>';
 
@@ -392,8 +392,8 @@ class Exceptions extends \Exception implements ExceptionsInterface
             str_repeat(' ', strlen($intcount) - strlen($i + 1)) . 
             $line;
         }
-
-        echo preg_replace('/(<br\s\/>)/', EOL, str_replace(['<div style="">&#60;&#63;php<br />', '{!!!!}'], [NULL, $errorBlock], Helper::highlight($newdata, 
+        
+        echo preg_replace('/(<br\s\/>|'.CR.'|'.CRLF.')+/', EOL, str_replace(['&#60;&#63;PHP', '{!!!!}'], [NULL, $errorBlock], Helper::highlight($newdata, 
         [
             'default:color' => '#ccc',
             'keyword:color' => '#00BFFF',

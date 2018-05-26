@@ -1,7 +1,5 @@
 <?php namespace Project\Controllers;
 
-use DBTool, DB, DBForge;
-
 class Initialize extends Controller
 {
     /**

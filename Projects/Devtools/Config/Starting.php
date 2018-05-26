@@ -43,6 +43,22 @@
 
     /*
     |--------------------------------------------------------------------------
+    | View Name Type
+    |--------------------------------------------------------------------------
+    |
+    | If the views are created in a certain standard, they are automatically 
+    | loaded by the controllers. There are 2 options for this;
+    |
+    | directory: Views/controllerName/methodName.php
+    |
+    | file: Views/controllerName-methodName.php
+    |
+    */
+
+    'viewNameType' => 'file',
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoload
     |--------------------------------------------------------------------------
     |
