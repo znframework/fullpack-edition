@@ -199,8 +199,23 @@ class Autoloader
                 $classMapPage .= '$classMap[\'namespaces\'][\''.$k.'\'] = \''.$v.'\';'.$eol;
             }
         }
-        
-        file_put_contents(self::$path, $classMapPage, FILE_APPEND);
+
+        # It is checked whether the content to be newly added is empty.
+        # 5.7.4.4[added|changed]
+        self::addToClassMap($classMapPage);
+    }
+
+    /**
+     * Protected add to class map
+     * 
+     * 5.7.4.4[added]
+     */
+    protected static function addToClassMap($content)
+    {
+        if( ! is_file(self::$path) || (! empty($content) && ! strstr(file_get_contents(self::$path), $content)) )
+        {
+            file_put_contents(self::$path, $content, FILE_APPEND);
+        }
     }
 
     /**

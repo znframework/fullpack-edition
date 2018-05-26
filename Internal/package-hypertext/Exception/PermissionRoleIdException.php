@@ -11,7 +11,7 @@
 
 use ZN\Exception;
 
-class PermissionRoleIdException extends \Exception
+class PermissionRoleIdException extends Exception
 {
     const lang = 
     [

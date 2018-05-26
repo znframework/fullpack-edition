@@ -9,7 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-class InvalidArgumentException extends \Exception
+use ZN\Exception;
+
+class InvalidArgumentException extends Exception
 {
     const lang = 
     [

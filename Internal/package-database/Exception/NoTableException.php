@@ -11,7 +11,7 @@
 
 use ZN\Exception;
 
-class NoTableException extends \Exception
+class NoTableException extends Exception
 {
 
 }

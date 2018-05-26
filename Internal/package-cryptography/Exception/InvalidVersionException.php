@@ -9,7 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-class InvalidVersionException extends \Exception
+use ZN\Exception;
+
+class InvalidVersionException extends Exception
 {
     const lang = 
     [
