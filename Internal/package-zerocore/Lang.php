@@ -180,7 +180,7 @@ class Lang
         $systemLanguageData        = In::defaultProjectKey('SystemLanguageData');
         $defaultSystemLanguageData = In::defaultProjectKey('DefaultSystemLanguageData');
 
-        $default = Config::get('Project', 'language');
+        $default = Config::get('Project', 'language') ?: 'en';
         
         if( empty($_SESSION[$defaultSystemLanguageData]) )
         {

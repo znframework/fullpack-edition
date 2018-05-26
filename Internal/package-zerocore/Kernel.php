@@ -198,7 +198,7 @@ class Kernel
     public static function viewPathFinder($function, &$viewPath, &$wizardPath)
     {
         # Retrieves the automatic upload setting from the configuration file.
-        $viewNameType = Config::get('Starting', 'viewNameType') ?: 'file';
+        $viewNameType = Config::get('Starting', 'viewNameType') ?: 'directory';
         
         # The automatic load type: file
         if( $viewNameType === 'file' )
