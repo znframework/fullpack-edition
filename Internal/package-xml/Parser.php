@@ -10,7 +10,7 @@
  */
 
 use stdClass;
-use ZN\Singleton;
+use SimpleXMLElement;
 
 class Parser
 {
@@ -130,7 +130,7 @@ class Parser
     {
         $data = preg_replace('/<xml(.*?)>/', '', $data);
 
-        return Singleton::class('SimpleXMLElement', [$data, $option]);
+        return new SimpleXMLElement($data, $option);
     }
 
     /**
@@ -143,6 +143,6 @@ class Parser
      */
     public static function simpleURL(String $data, Int $option = 0)
     {
-        return Singleton::class('SimpleXMLElement', [$data, $option, true]);
+        return new SimpleXMLElement($data, $option, true);
     }
 }

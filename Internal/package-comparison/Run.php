@@ -30,6 +30,27 @@ class Run
     }
 
     /**
+     * Run cycle 
+     * 
+     * @param callable $test
+     * 
+     * @return Run
+     */
+    public function cycle($count = 1, Callable $test) : Run
+    {
+        Testing::start('run');
+        
+        for( $i = 0; $i < $count; $i++ )
+        {
+            $test();
+        }
+
+        Testing::end('run');
+
+        return $this;
+    }
+
+    /**
      * Result test 
      * 
      * @param void
