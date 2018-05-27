@@ -1,5 +1,4 @@
 <?php namespace ZN;
-
 /**
  * ZN PHP Web Framework
  * 
@@ -24,27 +23,20 @@ class Singleton
     /**
      * singleton
      * 
+     * 5.7.4.4[changed]
+     * 5.7.4.5[changed]
+     * 
      * @param string $class
-     * @param array  $parameters = []
      * 
      * @return self
      */
-    public static function class(String $class, Array $parameters = [])
+    public static function class(String $class)
     {
-        $lower = strtolower($class) . ( ! empty($parameters) ? print_r($parameters, true) : NULL );
-
-        if( ! isset(self::$singleton[$lower]) ) 
+        if( ! isset(self::$singleton[$class]) ) 
         {
-            if( ! class_exists($class) )
-            {
-                $classInfo = Autoloader::getClassFileInfo($class);
-
-                $class = $classInfo['namespace'];
-            }
-            
-            self::$singleton[$lower] = new $class(...$parameters);
+            self::$singleton[$class] = new $class;
         }
 
-        return self::$singleton[$lower];
+        return self::$singleton[$class];
     }
 }

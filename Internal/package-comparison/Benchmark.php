@@ -18,6 +18,7 @@ class Benchmark extends Factory
         'methods' =>
         [
             'run'              => 'Run::test',
+            'cycle'            => 'Run::cycle',
             'result'           => 'Run::result',
             'start'            => 'Testing::start',
             'end'              => 'Testing::end',
