@@ -393,7 +393,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             $line;
         }
         
-        echo preg_replace('/(<br\s\/>|'.CR.'|'.CRLF.')+/', EOL, str_replace(['&#60;&#63;PHP', '{!!!!}'], [NULL, $errorBlock], Helper::highlight($newdata, 
+        echo preg_replace('/(<br\s\/>|'.CRLF.'|'.CR.'|'.LF.')+/', EOL, str_replace(['&#60;&#63;PHP', '{!!!!}'], [NULL, $errorBlock], Helper::highlight($newdata, 
         [
             'default:color' => '#ccc',
             'keyword:color' => '#00BFFF',
