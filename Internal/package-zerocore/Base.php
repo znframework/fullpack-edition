@@ -12,6 +12,19 @@
 class Base
 {   
     /**
+     * Get default project or host name.
+     *
+     * @param string $default = 'Frontend'
+     * 
+     * @return string
+     */
+    public static function project($default = 'Frontend')
+    {
+        return is_dir(PROJECTS_DIR . ($host = self::host())) ? $host : $default;
+    }
+
+
+    /**
      * Get path info
      * 
      * @return string|false
