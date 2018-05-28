@@ -239,92 +239,9 @@ class ZN
         # All project types
         define('PROJECT_TYPE_DIRS', 
         [
-            'SE' => 
-            [
-                'INTERNAL_DIR'    => 'Libraries/',
-                'EXTERNAL_DIR'    => NULL,
-                'BUTCHERY_DIR'    => 'Butchery/',
-                'SETTINGS_DIR'    => 'Config/',
-                'DIRECTORY_INDEX' => 'zeroneed.php',
-                'CONTROLLERS_DIR' => 'Controllers/',
-                'VIEWS_DIR'       => 'Views/',
-                'ROUTES_DIR'      => 'Routes/',
-                'CONFIG_DIR'      => 'Config/',
-                'DATABASES_DIR'   => 'Databases/',
-                'STORAGE_DIR'     => 'Storage/',
-                'COMMANDS_DIR'    => 'Commands/',
-                'LANGUAGES_DIR'   => 'Languages/',
-                'LIBRARIES_DIR'   => 'Libraries/',
-                'MODELS_DIR'      => 'Models',
-                'STARTING_DIR'    => 'Starting/',
-                'AUTOLOAD_DIR'    => 'Starting/Autoload/',
-                'HANDLOAD_DIR'    => 'Starting/Handload/',
-                'LAYERS_DIR'      => 'Starting/Layers/',
-                'RESOURCES_DIR'   => 'Resources/',
-                'FILES_DIR'       => 'Resources/Files/',
-                'TEMPLATES_DIR'   => 'Resources/Templates/',
-                'THEMES_DIR'      => 'Resources/Themes/',
-                'PLUGINS_DIR'     => 'Resources/Plugins/',
-                'UPLOADS_DIR'     => 'Resources/Uploads/'
-            ],
-
-            'EIP' => 
-            [
-                'INTERNAL_DIR'    => 'Internal/',
-                'EXTERNAL_DIR'    => 'External/',
-                'SETTINGS_DIR'    => 'Settings/',
-                'DIRECTORY_INDEX' => 'zeroneed.php',
-                'BUTCHERY_DIR'    => 'Butchery/',
-                'CONTROLLERS_DIR' => 'Controllers/',
-                'VIEWS_DIR'       => 'Views/',
-                'ROUTES_DIR'      => 'Routes/',
-                'CONFIG_DIR'      => 'Config/',
-                'DATABASES_DIR'   => 'Databases/',
-                'STORAGE_DIR'     => 'Storage/',
-                'COMMANDS_DIR'    => 'Commands/',
-                'LANGUAGES_DIR'   => 'Languages/',
-                'LIBRARIES_DIR'   => 'Libraries/',
-                'MODELS_DIR'      => 'Models/',
-                'STARTING_DIR'    => 'Starting/',
-                'AUTOLOAD_DIR'    => 'Starting/Autoload/',
-                'HANDLOAD_DIR'    => 'Starting/Handload/',
-                'LAYERS_DIR'      => 'Starting/Layers/',
-                'RESOURCES_DIR'   => 'Resources/',
-                'FILES_DIR'       => 'Resources/Files/',
-                'TEMPLATES_DIR'   => 'Resources/Templates/',
-                'THEMES_DIR'      => 'Resources/Themes/',
-                'PLUGINS_DIR'     => 'Resources/Plugins/',
-                'UPLOADS_DIR'     => 'Resources/Uploads/'
-            ],
-
-            'CE' => 
-            [
-                'INTERNAL_DIR'    => self::$defines['INTERNAL_DIR']    ?? NULL,
-                'EXTERNAL_DIR'    => NULL,
-                'SETTINGS_DIR'    => self::$defines['SETTINGS_DIR']    ?? NULL,
-                'DIRECTORY_INDEX' => self::$defines['DIRECTORY_INDEX'] ?? 'index.php',
-                'BUTCHERY_DIR'    => self::$defines['BUTCHERY_DIR']    ?? NULL,
-                'CONTROLLERS_DIR' => self::$defines['CONTROLLERS_DIR'] ?? NULL,
-                'VIEWS_DIR'       => self::$defines['VIEWS_DIR']       ?? NULL,
-                'ROUTES_DIR'      => self::$defines['ROUTES_DIR']      ?? NULL,
-                'CONFIG_DIR'      => self::$defines['CONFIG_DIR']      ?? NULL,
-                'DATABASES_DIR'   => self::$defines['DATABASES_DIR']   ?? NULL,
-                'STORAGE_DIR'     => self::$defines['STORAGE_DIR']     ?? NULL,
-                'COMMANDS_DIR'    => self::$defines['COMMANDS_DIR']    ?? NULL,
-                'LANGUAGES_DIR'   => self::$defines['LANGUAGES_DIR']   ?? NULL,
-                'LIBRARIES_DIR'   => self::$defines['LIBRARIES_DIR']   ?? NULL,
-                'MODELS_DIR'      => self::$defines['MODELS_DIR']      ?? NULL,
-                'STARTING_DIR'    => self::$defines['STARTING_DIR']    ?? NULL,
-                'AUTOLOAD_DIR'    => self::$defines['AUTOLOAD_DIR']    ?? NULL,
-                'HANDLOAD_DIR'    => self::$defines['HANDLOAD_DIR']    ?? NULL,
-                'LAYERS_DIR'      => self::$defines['LAYERS_DIR']      ?? NULL,
-                'RESOURCES_DIR'   => self::$defines['RESOURCES_DIR']   ?? NULL,
-                'FILES_DIR'       => self::$defines['FILES_DIR']       ?? NULL,
-                'TEMPLATES_DIR'   => self::$defines['TEMPLATES_DIR']   ?? NULL,
-                'THEMES_DIR'      => self::$defines['THEMES_DIR']      ?? NULL,
-                'PLUGINS_DIR'     => self::$defines['PLUGINS_DIR']     ?? NULL,
-                'UPLOADS_DIR'     => self::$defines['UPLOADS_DIR']     ?? NULL,
-            ]
+            'SE'  => self::SE_STRUCTURE_PATHS,
+            'EIP' => self::EIP_STRUCTURE_PATHS,
+            'CE'  => self::CE_STRUCTURE_PATHS()
         ]);
 
         # Get project dirs
@@ -368,33 +285,35 @@ class ZN
         
         define('VIEWS_DIR'       , PROJECT_DIR . GET_DIRS['VIEWS_DIR']);
         define('PAGES_DIR'       , VIEWS_DIR); 
-        define('CONTAINER_DIRS', 
-        [
-            'ROUTES_DIR'    => GET_DIRS['ROUTES_DIR']   , 'DATABASES_DIR'   => GET_DIRS['DATABASES_DIR']  ,
-            'CONFIG_DIR'    => GET_DIRS['CONFIG_DIR']   , 'STORAGE_DIR'     => GET_DIRS['STORAGE_DIR']    ,
-            'COMMANDS_DIR'  => GET_DIRS['COMMANDS_DIR'] , 'LANGUAGES_DIR'   => GET_DIRS['LANGUAGES_DIR']  ,
-            'LIBRARIES_DIR' => GET_DIRS['LIBRARIES_DIR'], 'MODELS_DIR'      => GET_DIRS['MODELS_DIR']     ,
-            'STARTING_DIR'  => GET_DIRS['STARTING_DIR'] , 'AUTOLOAD_DIR'    => GET_DIRS['AUTOLOAD_DIR']   ,
-                                                          'HANDLOAD_DIR'    => GET_DIRS['HANDLOAD_DIR']   ,
-                                                          'LAYERS_DIR'      => GET_DIRS['LAYERS_DIR']     ,
-                                                          'CONTROLLERS_DIR' => GET_DIRS['CONTROLLERS_DIR'],
-                                                          'BUTCHERY_DIR'    => GET_DIRS['BUTCHERY_DIR'],
-            'RESOURCES_DIR' => GET_DIRS['RESOURCES_DIR'], 'FILES_DIR'       => GET_DIRS['FILES_DIR']      ,
-                                                          'TEMPLATES_DIR'   => GET_DIRS['TEMPLATES_DIR']  ,
-                                                          'THEMES_DIR'      => GET_DIRS['THEMES_DIR']     ,
-                                                          'PLUGINS_DIR'     => GET_DIRS['PLUGINS_DIR']    ,
-                                                          'UPLOADS_DIR'     => GET_DIRS['UPLOADS_DIR']    ,
-        ]);
 
-        foreach( CONTAINER_DIRS as $key => $value )
+        $externalDirectories = array_diff(array_keys(self::SE_STRUCTURE_PATHS), 
+        [
+            'INTERNAL_DIR',
+            'EXTERNAL_DIR',
+            'SETTINGS_DIR',
+            'DIRECTORY_INDEX',
+            'VIEWS_DIR',
+        ]);
+        
+        # Constants for both project and external directories are being created.
+        foreach( $externalDirectories as $value )
         {
+            # EXAMPLE_DIR
+            $key = $value;
+
+            # GET_DIRS[EXAMPLE_DIR]
+            $value = GET_DIRS[$value];
+
+            # Define EXTERNAL_EXAMPLE_DIR
             define('EXTERNAL_' . $key, EXTERNAL_DIR . $value);
 
-            if( PROJECT_TYPE === 'EIP' ) # For EIP edition
+            # For EIP edition
+            if( PROJECT_TYPE === 'EIP' ) 
             {
                 define($key, self::getProjectContainerDir($value));
             }
-            else # For SE edition
+            # For SE edition
+            else 
             {
                 define($key, $value);
             }
@@ -632,4 +551,65 @@ class ZN
             );
         }
     }
+
+    /**
+     * Constant SE structure paths
+     */
+    const SE_STRUCTURE_PATHS =
+    [
+        'INTERNAL_DIR'    => 'Libraries/',
+        'EXTERNAL_DIR'    => NULL,
+        'BUTCHERY_DIR'    => 'Butchery/',
+        'SETTINGS_DIR'    => 'Config/',
+        'DIRECTORY_INDEX' => 'zeroneed.php',
+        'CONTROLLERS_DIR' => 'Controllers/',
+        'VIEWS_DIR'       => 'Views/',
+        'ROUTES_DIR'      => 'Routes/',
+        'CONFIG_DIR'      => 'Config/',
+        'DATABASES_DIR'   => 'Databases/',
+        'STORAGE_DIR'     => 'Storage/',
+        'COMMANDS_DIR'    => 'Commands/',
+        'LANGUAGES_DIR'   => 'Languages/',
+        'LIBRARIES_DIR'   => 'Libraries/',
+        'MODELS_DIR'      => 'Models',
+        'STARTING_DIR'    => 'Starting/',
+        'AUTOLOAD_DIR'    => 'Starting/Autoload/',
+        'HANDLOAD_DIR'    => 'Starting/Handload/',
+        'LAYERS_DIR'      => 'Starting/Layers/',
+        'RESOURCES_DIR'   => 'Resources/',
+        'FILES_DIR'       => 'Resources/Files/',
+        'TEMPLATES_DIR'   => 'Resources/Templates/',
+        'THEMES_DIR'      => 'Resources/Themes/',
+        'PLUGINS_DIR'     => 'Resources/Plugins/',
+        'UPLOADS_DIR'     => 'Resources/Uploads/'
+    ];
+
+    /**
+     * Private CE structure paths
+     */
+    private static function CE_STRUCTURE_PATHS()
+    {
+        $differents = 
+        [
+            'DIRECTORY_INDEX' => self::$defines['DIRECTORY_INDEX'] ?? 'index.php',
+            'EXTERNAL_DIR'    => NULL,
+        ];
+
+        foreach( self::SE_STRUCTURE_PATHS as $key => $val )
+        {
+            $paths[$key] = self::$defines[$key] ?? NULL;
+        }
+
+        return $differents + $paths;
+    }
+
+    /**
+     * Constant EIP structure paths
+     */
+    const EIP_STRUCTURE_PATHS =
+    [
+        'INTERNAL_DIR'    => 'Internal/',
+        'EXTERNAL_DIR'    => 'External/',
+        'SETTINGS_DIR'    => 'Settings/'
+    ] + self::SE_STRUCTURE_PATHS;
 }
