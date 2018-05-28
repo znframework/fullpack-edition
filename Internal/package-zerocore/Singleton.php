@@ -18,13 +18,12 @@ class Singleton
      * 
      * @return self
      */
-    protected static $singleton = NULL;
+    private static $singleton = NULL;
     
     /**
      * singleton
      * 
-     * 5.7.4.4[changed]
-     * 5.7.4.5[changed]
+     * 5.7.4.4|5.7.4.5|5.7.4.6[changed]
      * 
      * @param string $class
      * 
@@ -34,9 +33,24 @@ class Singleton
     {
         if( ! isset(self::$singleton[$class]) ) 
         {
-            self::$singleton[$class] = new $class;
+            self::$singleton[$class] = self::createNewInstance($class);
         }
 
         return self::$singleton[$class];
+    }
+
+    /**
+     * Protected craete new instance
+     */
+    private static function createNewInstance($class)
+    {
+        if( ! class_exists($class) )
+        {
+            $classInfo = Autoloader::getClassFileInfo($class);
+
+            $class = $classInfo['namespace'];
+        }
+
+        return new $class;
     }
 }
