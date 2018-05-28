@@ -24,7 +24,7 @@ class Parser
      */
     public static function do(String $xml, String $result = 'object')
     {
-        $xml    = preg_replace('/<xml(.*?)>/', '', $xml);
+        $xml    = self::cleanXMLElement($xml);
         $parser = xml_parser_create();
 
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
@@ -128,7 +128,7 @@ class Parser
      */
     public static function simple(String $data, Int $option = 0)
     {
-        $data = preg_replace('/<xml(.*?)>/', '', $data);
+        $data = self::cleanXMLElement($data);
 
         return new SimpleXMLElement($data, $option);
     }
@@ -144,5 +144,13 @@ class Parser
     public static function simpleURL(String $data, Int $option = 0)
     {
         return new SimpleXMLElement($data, $option, true);
+    }
+
+    /**
+     * Private clean XML element
+     */
+    private static function cleanXMLElement($xml)
+    {
+        return preg_replace('/<xml(.*?)>/', '', $xml);
     }
 }
