@@ -216,6 +216,22 @@ class ZN
     }
 
     /**
+     * Private select structure paths
+     */
+    private static function selectStructurePaths()
+    {
+        switch( PROJECT_TYPE )
+        {
+            case 'SE' : $dirs = self::SE_STRUCTURE_PATHS;   break;
+            case 'EIP': $dirs = self::EIP_STRUCTURE_PATHS;  break;
+            default   : $dirs = self::CE_STRUCTURE_PATHS();
+        }
+
+        # Get project dirs
+        define('GET_DIRS', $dirs);
+    }
+
+    /**
      * Protected Predefined Constants
      */
     protected static function predefinedConstants()
@@ -235,17 +251,9 @@ class ZN
         define('TAB', "\t");
         define('FF', "\f");
         define('DS', DIRECTORY_SEPARATOR);
-
-        # All project types
-        define('PROJECT_TYPE_DIRS', 
-        [
-            'SE'  => self::SE_STRUCTURE_PATHS,
-            'EIP' => self::EIP_STRUCTURE_PATHS,
-            'CE'  => self::CE_STRUCTURE_PATHS()
-        ]);
-
-        # Get project dirs
-        define('GET_DIRS', PROJECT_TYPE_DIRS[PROJECT_TYPE]);
+        
+        # Select structure paths - options[EIP|SE|CE]
+        self::selectStructurePaths();
 
         # The system directory is determined according to ZN project type.
         define('INTERNAL_DIR', GET_DIRS['INTERNAL_DIR']);
@@ -286,24 +294,19 @@ class ZN
         define('VIEWS_DIR'       , PROJECT_DIR . GET_DIRS['VIEWS_DIR']);
         define('PAGES_DIR'       , VIEWS_DIR); 
 
-        $externalDirectories = array_diff(array_keys(self::SE_STRUCTURE_PATHS), 
-        [
+        # Get Common Paths
+        $externalDirectories = array_diff_key(GET_DIRS, array_flip
+        ([
             'INTERNAL_DIR',
             'EXTERNAL_DIR',
             'SETTINGS_DIR',
             'DIRECTORY_INDEX',
             'VIEWS_DIR',
-        ]);
+        ]));
         
         # Constants for both project and external directories are being created.
-        foreach( $externalDirectories as $value )
+        foreach( $externalDirectories as $key => $value )
         {
-            # EXAMPLE_DIR
-            $key = $value;
-
-            # GET_DIRS[EXAMPLE_DIR]
-            $value = GET_DIRS[$value];
-
             # Define EXTERNAL_EXAMPLE_DIR
             define('EXTERNAL_' . $key, EXTERNAL_DIR . $value);
 
