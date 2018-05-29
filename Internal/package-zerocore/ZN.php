@@ -128,13 +128,13 @@ class ZN
     /**
      * Run ZN
      * 
-     * @param string $type     = 'EIP' - options[EIP|SE]
+     * @param string $type     = NULL - options[EIP|SE|CE]
      * @param string $version  = NULL
      * @param string $dedicate = NULL
      * 
      * @return void|false
      */
-    public static function run(String $type = 'EIP', String $version = NULL, String $dedicate = NULL)
+    public static function run(String $type = NULL, String $version = NULL, String $dedicate = NULL)
     {
         # PHP shows code errors.
         ini_set('display_errors', true);
@@ -168,7 +168,7 @@ class ZN
         Structure::defines();
 
         # If the operation is executed via console, the code flow is not continue.  
-        if( defined('CONSOLE_ENABLED') )
+        if( defined('CONSOLE_ENABLED') || $type === NULL )
         {
             return false;
         }
@@ -322,7 +322,7 @@ class ZN
             }
         }
 
-        if( ! is_dir(CONTROLLERS_DIR) )
+        if( ! is_dir(CONTROLLERS_DIR) && self::$projectType !== NULL )
         {
             Base::trace
             (
