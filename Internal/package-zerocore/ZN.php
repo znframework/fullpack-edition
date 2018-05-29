@@ -408,8 +408,11 @@ class ZN
      */
     protected static function defineCurrentProject()
     {
+        # The .htaccess file is checked for writability. 
+        # This check only applies to the apache software.
         self::isWritable('.htaccess');
 
+        # This function is only available for EIP editions.
         if( PROJECT_TYPE !== 'EIP' )
         {
             define('CURRENT_PROJECT', NULL);
@@ -418,15 +421,18 @@ class ZN
             return false;
         }
 
-        $projectConfig = PROJECTS_CONFIG['directory']['others'];
-        $projectDir    = $projectConfig;
+        # It gets other defined subprojects.
+        $getOtherDirectories = PROJECTS_CONFIG['directory']['others'];
 
         if( defined('CONSOLE_PROJECT_NAME') )
         {
-            $internalDir = CONSOLE_PROJECT_NAME;
+            # Project name information from the console is kept.
+            $getProjectNameFromURI = CONSOLE_PROJECT_NAME;
         }
         else
         {
+            # Active URI information is being retrieved. 
+            # This process is done to capture the project name.
             $currentPath = $_SERVER['PATH_INFO'] ?? $_SERVER['QUERY_STRING'] ?? false;
 
             # 5.0.3[edited]
@@ -436,30 +442,80 @@ class ZN
                 $currentPath = $requestUri;
             }
             
-            $internalDir = ( ! empty($currentPath) ? explode('/', ltrim($currentPath, BASE_DIR ?: '/'))[0] : '' );
+            # Only the project name is obtained from the data.
+            $getProjectNameFromURI = ( ! empty($currentPath) ? explode('/', ltrim($currentPath, BASE_DIR ?: '/'))[0] : '' );
         }
 
-        if( is_array($projectDir) )
+        # The host information of the page is being retrieved.
+        # 5.7.5[added]
+        $baseHost = Base::host();
+       
+        # Sub project information is being retrieved. If no alias is used, its name is used.
+        # If the URI does not contain directory information, it will not get value.
+        # 5.7.5[changed]
+        $getProjectNameFromURI = $getOtherDirectories[$getProjectNameFromURI] ?? $getProjectNameFromURI;
+
+        # If no subproject definition is made, the default project is activated.
+        $getProjectNameFromOthers = $getOtherDirectories[$baseHost] ?? DEFAULT_PROJECT;
+
+        # The key and value information of the other project array are flipped.
+        # It is for checking the project aliases.
+        $flipOthersArray = array_flip($getOtherDirectories);
+
+        if( ! empty($getProjectNameFromURI) && is_dir(PROJECTS_DIR . $getProjectNameFromURI) )
         {
-            $internalDir = $projectDir[$internalDir] ?? $internalDir;
-            $projectDir  = $projectDir[Base::host()] ?? DEFAULT_PROJECT;
+            # This keeps the project name coming from the constant URL.
+            define('_CURRENT_PROJECT', $getProjectNameFromURI);
+
+            $getProjectNameFromOthers = _CURRENT_PROJECT;
+
+            # Project alias is checked.
+            # The name of the project that comes with the URL has a valid alias name.
+            $currentProjectDirectory = $flipOthersArray[$getProjectNameFromOthers] ?? $getProjectNameFromOthers;
         }
 
-        if( ! empty($internalDir) && is_dir(PROJECTS_DIR . $internalDir) )
+        # The active project name is transferred to this constant.
+        define('CURRENT_PROJECT', $currentProjectDirectory ?? $getProjectNameFromOthers);
+
+        # The path information of the active project is being defined.
+        define('PROJECT_DIR', Base::suffix(PROJECTS_DIR . $getProjectNameFromOthers));
+
+        # Subdomains or different domains are prevented from opening each other.
+        # 5.7.5[added]
+        $getOtherDirectory = $getOtherDirectories[$baseHost] ?? NULL;
+
+        # Gets container directory name.
+        $getContainerDirectory = PROJECTS_CONFIG['containers'][$getProjectNameFromOthers] ?? NULL;
+        
+        # Subdomains or domains must be defined in the Settings/Projects.php 
+        # configuration file in order for this control to work.
+        if
+        ( 
+            # Only the sub projects should be opened.
+            (
+                $getOtherDirectory !== NULL        &&
+                $getOtherDirectory !== $getProjectNameFromOthers &&
+                $getOtherDirectory !== $getContainerDirectory
+            )
+            ||
+            # The subdomain request is rejected.
+            $getOtherDirectory === $getProjectNameFromURI
+            ||
+            # The subdomain will reject its own directory.
+            DEFAULT_PROJECT === $getProjectNameFromURI
+            ||
+            # The subdomain can not be run outside of itself.
+            ($isHost = ($flipOthersArray[$getProjectNameFromURI] ?? NULL)) && preg_match('/\w+\.\w+\.\w+/', $isHost)
+        )
         {
-            define('_CURRENT_PROJECT', $internalDir);
-
-            $flip              = array_flip($projectConfig);
-            $projectDir        = _CURRENT_PROJECT;
-            $currentProjectDir = $flip[$projectDir] ?? $projectDir;
+            # All requests are directed to the home.
+            Response::redirect();
         }
 
-        define('CURRENT_PROJECT', $currentProjectDir ?? $projectDir);
-        define('PROJECT_DIR', Base::suffix(PROJECTS_DIR . $projectDir));
-
+        # If there is no valid Projects/ directory, it returns an error.
         if( ! is_dir(PROJECT_DIR) )
         {
-            Base::trace('["'.$projectDir.'"] Project Directory Not Found!');
+            Base::trace('["'.$getProjectNameFromOthers.'"] Project Directory Not Found!');
         }
     }
 
