@@ -12,6 +12,15 @@
 interface RenderInterface
 {
     /**
+     * The image specifies the path to save.
+     * 
+     * @param string $path
+     * 
+     * @return Captcha
+     */
+    public function path(String $path) : Render;
+
+    /**
      * Adjust the size of the captcha.
      * 
      * @param int $width
