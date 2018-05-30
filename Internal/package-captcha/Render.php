@@ -32,7 +32,7 @@ class Render implements RenderInterface
      * 
      * @var string
      */
-    protected $path = FILES_DIR;
+    protected $path = FILES_DIR ?? 'captcha/';
 
     /**
      * Magic constructor
@@ -43,10 +43,22 @@ class Render implements RenderInterface
      */
     public function __construct()
     {
-        $this->clean();
-
         $this->session = Singleton::class('ZN\Storage\Session');
         $this->key     = md5('SystemCaptchaCodeData');
+    }
+
+    /**
+     * The image specifies the path to save.
+     * 
+     * @param string $path
+     * 
+     * @return Captcha
+     */
+    public function path(String $path) : Render
+    {
+        $this->path = Base::suffix($path);
+
+        return $this;
     }
 
     /**
@@ -252,8 +264,11 @@ class Render implements RenderInterface
         # Create Session
         $this->session();
 
-        if( $this->sessionCaptchaCode = $this->session->select($this->key) )
+        if( $this->getCode() )
         {
+            # Clean Captcha Images
+            $this->clean();
+
             # Create Directory
             $this->directory();
 
@@ -455,13 +470,13 @@ class Render implements RenderInterface
                     $textYC + $textSizeC, 
                     $fontColor, 
                     $textTTFC, 
-                    $this->sessionCaptchaCode
+                    $this->getCode()
                 );
             }
         }
         else
         {
-            imagestring($file, $textSizeC, $textXC, $textYC, $this->sessionCaptchaCode, $fontColor);
+            imagestring($file, $textSizeC, $textXC, $textYC, $this->getCode(), $fontColor);
         }
     }
 
@@ -514,14 +529,22 @@ class Render implements RenderInterface
      */
     protected function clean()
     {
-        $files   = Filesystem::getFiles($this->path, 'png');
-        $match   = Arrays\GetElement::first(preg_grep('/captcha\-([a-z]|[0-9])+\.png/i', $files));
-        $captcha = $this->path . $match;
+        $captcha = $this->path . $this->name();
 
-        if( is_file($captcha) )
+        $getCaptchaImages = preg_grep('/captcha\-\w+\.png/', Filesystem::getFiles($this->path, 'png'));
+
+        foreach( $getCaptchaImages as $image)
         {
-            unlink($captcha);
-        }
+            if( $this->name() !== $image )
+            {
+                $captcha = $this->path . $image;
+
+                if( is_file($captcha) )
+                {
+                    unlink($captcha);
+                }
+            }      
+        } 
     }
 
     /**
@@ -533,7 +556,7 @@ class Render implements RenderInterface
      */
     protected function name()
     {
-        return 'captcha-' . Encode\RandomPassword::create(16) . '.png';
+        return 'captcha-' . $this->getCode() . '.png';
     }
 
     /**

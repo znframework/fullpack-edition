@@ -11,6 +11,7 @@
 
 use ZN\Hypertext\Exception\InvalidArgumentException;
 use ZN\DataTypes\Arrays;
+use ZN\Request\Method;
 use ZN\Singleton;
 use ZN\Base;
 
@@ -413,7 +414,7 @@ class Form
     {
         if( $process = ($this->settings['process'] ?? NULL) )
         {
-            if( $method::FormProcessValue() )
+            if( Method::$method('FormProcessValue') )
             {
                 if( Singleton::class('ZN\Validation\Data')->check() )
                 {

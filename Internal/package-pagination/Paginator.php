@@ -130,7 +130,7 @@ class Paginator implements PaginatorInterface
      */
     public function __construct()
     {
-        $this->config = Config::viewObjects('pagination');
+        $this->config = Config::default('ZN\Pagination\PaginationDefaultConfiguration')::viewObjects('pagination');
     }
 
     /**

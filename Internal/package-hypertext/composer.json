@@ -19,6 +19,7 @@
         "znframework/package-authorization": "5.7.*",
         "znframework/package-database": "5.7.*",
         "znframework/package-validation": "5.7.*",
+        "znframework/package-request": "5.7.*",
         "znframework/package-storage": "5.7.*"
 	},
     "autoload": {
