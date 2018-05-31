@@ -17,6 +17,38 @@ use ZN\ErrorHandling\Exceptions;
 class ZN
 {
     /**
+     * Constant SE structure paths
+     */
+    const STRUCTURE_PATHS =
+    [
+        'INTERNAL_DIR'    => 'Internal/',
+        'EXTERNAL_DIR'    => 'External/',
+        'BUTCHERY_DIR'    => 'Butchery/',
+        'SETTINGS_DIR'    => 'Settings/',
+        'DIRECTORY_INDEX' => 'zeroneed.php',
+        'CONTROLLERS_DIR' => 'Controllers/',
+        'VIEWS_DIR'       => 'Views/',
+        'ROUTES_DIR'      => 'Routes/',
+        'CONFIG_DIR'      => 'Config/',
+        'DATABASES_DIR'   => 'Databases/',
+        'STORAGE_DIR'     => 'Storage/',
+        'COMMANDS_DIR'    => 'Commands/',
+        'LANGUAGES_DIR'   => 'Languages/',
+        'LIBRARIES_DIR'   => 'Libraries/',
+        'MODELS_DIR'      => 'Models',
+        'STARTING_DIR'    => 'Starting/',
+        'AUTOLOAD_DIR'    => 'Starting/Autoload/',
+        'HANDLOAD_DIR'    => 'Starting/Handload/',
+        'LAYERS_DIR'      => 'Starting/Layers/',
+        'RESOURCES_DIR'   => 'Resources/',
+        'FILES_DIR'       => 'Resources/Files/',
+        'TEMPLATES_DIR'   => 'Resources/Templates/',
+        'THEMES_DIR'      => 'Resources/Themes/',
+        'PLUGINS_DIR'     => 'Resources/Plugins/',
+        'UPLOADS_DIR'     => 'Resources/Uploads/'
+    ];
+
+    /**
      * Keeps custom defines
      * 
      * @var array
@@ -220,15 +252,17 @@ class ZN
      */
     private static function selectStructurePaths()
     {
-        switch( PROJECT_TYPE )
+        # Project type can be specified as CE, SE, FE, EIP or NULL
+        if( ! in_array(PROJECT_TYPE, ['CE', 'SE', 'EIP', NULL]) )
         {
-            case 'SE' : $dirs = self::SE_STRUCTURE_PATHS;   break;
-            case 'EIP': $dirs = self::EIP_STRUCTURE_PATHS;  break;
-            default   : $dirs = self::CE_STRUCTURE_PATHS();
+            Base::trace('The project type can be specified as [CE], [SE], [FE], [EIP] or [NULL]. ' . PROJECT_TYPE . ' is invalid type.');
         }
+        
+        # Get file definitions according to the project type.
+        $method = (PROJECT_TYPE ?? 'CE') . '_STRUCTURE_PATHS';
 
         # Get project dirs
-        define('GET_DIRS', $dirs);
+        define('GET_DIRS', self::$method());
     }
 
     /**
@@ -303,7 +337,7 @@ class ZN
             'DIRECTORY_INDEX',
             'VIEWS_DIR',
         ]));
-        
+
         # Constants for both project and external directories are being created.
         foreach( $externalDirectories as $key => $value )
         {
@@ -609,66 +643,45 @@ class ZN
                 to see how to configure file permissions.'
             );
         }
-    }
-
-    /**
-     * Constant SE structure paths
-     */
-    const SE_STRUCTURE_PATHS =
-    [
-        'INTERNAL_DIR'    => 'Libraries/',
-        'EXTERNAL_DIR'    => NULL,
-        'BUTCHERY_DIR'    => 'Butchery/',
-        'SETTINGS_DIR'    => 'Config/',
-        'DIRECTORY_INDEX' => 'zeroneed.php',
-        'CONTROLLERS_DIR' => 'Controllers/',
-        'VIEWS_DIR'       => 'Views/',
-        'ROUTES_DIR'      => 'Routes/',
-        'CONFIG_DIR'      => 'Config/',
-        'DATABASES_DIR'   => 'Databases/',
-        'STORAGE_DIR'     => 'Storage/',
-        'COMMANDS_DIR'    => 'Commands/',
-        'LANGUAGES_DIR'   => 'Languages/',
-        'LIBRARIES_DIR'   => 'Libraries/',
-        'MODELS_DIR'      => 'Models',
-        'STARTING_DIR'    => 'Starting/',
-        'AUTOLOAD_DIR'    => 'Starting/Autoload/',
-        'HANDLOAD_DIR'    => 'Starting/Handload/',
-        'LAYERS_DIR'      => 'Starting/Layers/',
-        'RESOURCES_DIR'   => 'Resources/',
-        'FILES_DIR'       => 'Resources/Files/',
-        'TEMPLATES_DIR'   => 'Resources/Templates/',
-        'THEMES_DIR'      => 'Resources/Themes/',
-        'PLUGINS_DIR'     => 'Resources/Plugins/',
-        'UPLOADS_DIR'     => 'Resources/Uploads/'
-    ];
+    }  
 
     /**
      * Private CE structure paths
      */
     private static function CE_STRUCTURE_PATHS()
     {
-        $differents = 
-        [
-            'DIRECTORY_INDEX' => self::$defines['DIRECTORY_INDEX'] ?? 'index.php',
-            'EXTERNAL_DIR'    => NULL,
-        ];
+        self::$defines['DIRECTORY_INDEX'] = self::$defines['DIRECTORY_INDEX'] ?? 'index.php';
+        
+        $paths = [];
 
-        foreach( self::SE_STRUCTURE_PATHS as $key => $val )
+        foreach( self::STRUCTURE_PATHS as $const => $path )
         {
-            $paths[$key] = self::$defines[$key] ?? NULL;
+            $paths[$const] = NULL;
         }
 
-        return $differents + $paths;
+        return self::$defines + $paths;
     }
 
     /**
-     * Constant EIP structure paths
+     * Private SE structure paths
      */
-    const EIP_STRUCTURE_PATHS =
-    [
-        'INTERNAL_DIR'    => 'Internal/',
-        'EXTERNAL_DIR'    => 'External/',
-        'SETTINGS_DIR'    => 'Settings/'
-    ] + self::SE_STRUCTURE_PATHS;
+    private static function SE_STRUCTURE_PATHS()
+    {
+        $differents = 
+        [
+            'INTERNAL_DIR' => 'Libraries/',
+            'EXTERNAL_DIR' => NULL,
+            'SETTINGS_DIR' => 'Config/'
+        ];
+
+        return self::$defines + $differents + self::STRUCTURE_PATHS;
+    }
+
+    /**
+     * Private CE structure paths
+     */
+    private static function EIP_STRUCTURE_PATHS()
+    {
+        return self::$defines + self::STRUCTURE_PATHS;
+    }
 }

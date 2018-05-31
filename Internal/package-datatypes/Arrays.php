@@ -33,6 +33,7 @@ class Arrays extends Factory
             'titlevalues'           => 'Arrays\Casing::titleValues',
             'getfirst'              => 'Arrays\GetElement::first',
             'getlast'               => 'Arrays\GetElement::last',
+            'pick'                  => 'Arrays\GetElement::pick',
             'addfirst'              => 'Arrays\AddElement::first',
             'addlast'               => 'Arrays\AddElement::last',
             'removekey'             => 'Arrays\RemoveElement::key',
