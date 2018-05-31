@@ -1,17 +1,8 @@
 <?php
+$lang = ZN\Lang::select('IndividualStructures'); 
 
-$lang  = ZN\Lang::select('IndividualStructures'); 
-
-ZN\Inclusion\Style::use('bootstrap', 'awesome', 'external-template-style'); 
-ZN\Inclusion\Script::use('jquery', 'bootstrap');
-ZN\Inclusion\Template::use('ExternalTemplateStyles');
+require __DIR__ . '/Styles.php';
 ?>
-<style>
-.table-bordered>tbody>tr>td 
-{
-    border: 1px solid #222; color : #ccc; font-size:14px;
-}
-</style>
 
 <div class="col-lg-12" style="z-index:1000000; margin-top:15px">
     <div class="panel panel-default panel-top-header">

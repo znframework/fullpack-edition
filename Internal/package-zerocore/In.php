@@ -299,7 +299,7 @@ class In
                 'maxMemoryUsage' => $maxMemoryUsage
             ];
 
-            $benchResult = Inclusion\Template::use('BenchmarkTable', $benchmarkData, true);
+            $benchResult = Inclusion\View::use('BenchmarkTable', $benchmarkData, true, __DIR__ . '/Resources/');
             
             # Echo benchmark performance result table
             echo $benchResult;

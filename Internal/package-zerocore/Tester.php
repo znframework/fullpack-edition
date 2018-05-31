@@ -14,6 +14,13 @@ use ZN\Comparison;
 class Tester
 {
     /**
+     * Keeps result paths.
+     * 
+     * @var string
+     */
+    protected $resource = __DIR__ . '/Resources/UnitTests/';
+
+    /**
      * Keeps class name
      * 
      * @var string
@@ -235,14 +242,10 @@ class Tester
 
     /**
      * Show result
-     * 
-     * @param void
-     * 
-     * @return string
      */
     public function result()
     {
-        return Inclusion\Template::use('UnitTests/Output', ['input' => $this->result]);
+        Inclusion\View::use('Output', ['input' => $this->result], false, $this->resource);
     }
 
     /**
@@ -283,7 +286,7 @@ class Tester
             return $data;
         }, $param);
 
-        $this->result .= Inclusion\Template::use('UnitTests/ResultTable', 
+        $this->result .= Inclusion\View::use('ResultTable', 
         [
             'class'       => $class,
             'method'      => $method . '(' . implode(', ', $param) . ')',
@@ -292,7 +295,7 @@ class Tester
             'isResultCorrect' => $isResultCorrect,
             'elapsedTime' => $elapsedTime,
             'index'       => str_replace('\\', '-', $class) . '-' . str_replace(':', NULL, $method)
-        ], true);
+        ], true, $this->resource);
     }
 
     /**
@@ -304,7 +307,7 @@ class Tester
      */
     protected function _outputBottom($index)
     {
-        $this->result .= Inclusion\Template::use('UnitTests/TotalTable', 
+        $this->result .= Inclusion\View::use('TotalTable', 
         [
 
             'elapsedTime'       => $this->totalElasedTime,
@@ -312,7 +315,7 @@ class Tester
             'totalFileCount'    => $this->totalFileCount,
             'totalCorrectCount' => $this->totalCorrectCount,
             'index'             => $index
-        ], true);
+        ], true, $this->resource);
 
         $this->_defaultVariables();
     }

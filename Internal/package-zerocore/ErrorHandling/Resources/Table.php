@@ -1,7 +1,5 @@
 <?php
-ZN\Inclusion\Style::use('bootstrap', 'awesome', 'external-template-style'); 
-ZN\Inclusion\Script::use('jquery', 'bootstrap');
-ZN\Inclusion\Template::use('ExternalTemplateStyles');
+require __DIR__ . '/Styles.php';
 
 unset($trace['params']);
 ?>

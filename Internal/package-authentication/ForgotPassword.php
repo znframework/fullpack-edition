@@ -127,7 +127,7 @@ class ForgotPassword extends UserExtends
      */
     protected function setForgotPasswordEmailBodyTemplate($data)
     {
-        return Inclusion\Template::use('UserEmail/ForgotPassword', $data, true);
+        return Inclusion\View::use('ForgotPassword', $data, true, __DIR__ . '/Resources/');
     }
 
     /**

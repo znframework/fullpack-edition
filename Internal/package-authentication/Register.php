@@ -242,7 +242,7 @@ class Register extends UserExtends
         # Default activation email template
         else
         {
-            $message = Inclusion\Template::use('UserEmail/Activation', $templateData, true);
+            $message = Inclusion\View::use('Activation', $templateData, true, __DIR__ . '/Resources/');
         }
 
         $user = $email ?? $user;
