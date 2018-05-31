@@ -209,7 +209,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         ob_end_clean();
 
-        return Inclusion\Template::use('ExceptionTable', $exceptionData, true);
+        return Inclusion\View::use('Table', $exceptionData, true, __DIR__ . '/Resources/');
     }
 
     /**
