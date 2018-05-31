@@ -56,4 +56,29 @@ class GetElement
 
         return $array;
     }
+
+    /**
+     * Get values by key
+     * 
+     * 5.7.6[added]
+     * 
+     * @param array  $arrays
+     * @param string $pick
+     * 
+     * @return array
+     */
+    public static function pick(Array $arrays, String $pick) : Array
+    {
+        $values = [];
+    
+        foreach( $arrays as $array ) 
+        {
+            if( is_array($array) && isset($array[$pick]) ) 
+            {
+                $values[] = $array[$pick];
+            }
+        }
+    
+        return $values;
+    }
 }

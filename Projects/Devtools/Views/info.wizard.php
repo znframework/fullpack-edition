@@ -28,7 +28,7 @@
                 <div class="list-group">
 
                     @foreach( $upgrades as $upgrade )
-                    <a href="/#" class="list-group-item">
+                    <a href="#" class="list-group-item">
                         <i class="fa fa-fw fa-file"></i> @$upgrade:
                     </a>
                     @endforeach
