@@ -45,7 +45,7 @@ class BootstrapExtends
         [
             'arguments' => $arguments,
             'lastParam' => $lastParam,
-            'cdnLinks'  => array_change_key_case(Config::get('CDNLinks', $cdn))
+            'cdnLinks'  => array_change_key_case(Config::get('CDNLinks', $cdn) ?: [])
         ];
     }
 

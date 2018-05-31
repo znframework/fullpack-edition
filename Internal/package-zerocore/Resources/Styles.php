@@ -45,4 +45,8 @@ code{
     background:white; 
     opacity:.1
 }
+.table-bordered>tbody>tr>td 
+{
+    border: 1px solid #222; color : #ccc; font-size:14px;
+}
 </style>
