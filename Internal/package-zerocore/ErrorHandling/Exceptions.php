@@ -105,7 +105,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         $table = self::_template($msg, $file, $line, $no, $trace);
 
-        $projectError = Config::get('Project');
+        $projectError = Config::default('ZN\ErrorHandling\ErrorHandlingDefaultConfiguration')::get('Project');
 
         if
         ( 
@@ -170,7 +170,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     private static function _template($msg, $file, $line, $no, $trace)
     {
-        $projects = Config::get('Project');
+        $projects = Config::default('ZN\ErrorHandling\ErrorHandlingDefaultConfiguration')::get('Project');
 
         if( ! $projects['errorReporting'] )
         {
