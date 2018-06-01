@@ -12,6 +12,18 @@
 class Time extends DateTimeCommon implements DateTimeCommonInterface
 {
     /**
+     * Is past
+     * 
+     * @string $time
+     * 
+     * @return bool
+     */
+    public function isPast(String $time) : Bool
+    {
+        return $this->compare($time, '<', $this->set('{hour}:{minute}:{second}'));
+    }
+
+    /**
      * Gives the active time information.
      * 
      * @param string $clock = '%H:%M:%S'
@@ -87,6 +99,49 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
+     * Add hour.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function addHour(String $time, String $next = '1') : String
+    {
+        return $this->add($time, $next, 'hour');
+    }
+
+    /**
+     * Remove hour.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function removeHour(String $time, String $next = '1') : String
+    {
+        return $this->remove($time, $next, 'hour');
+    }
+
+    /**
+     * Different hour.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $time1
+     * @param string $time2
+     * 
+     * @return string
+     */
+    public function diffHour(String $time1, String $time2) : String
+    {
+        return $this->different($time1, $time2, 'hour');
+    }
+
+    /**
      * Get next minute.
      * 
      * 5.7.6[added]
@@ -127,6 +182,49 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
+     * Add minute.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function addMinute(String $time, String $next = '1') : String
+    {
+        return $this->add($time, $next, 'minute');
+    }
+
+    /**
+     * Remove minute.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function removeMinute(String $time, String $next = '1') : String
+    {
+        return $this->remove($time, $next, 'minute');
+    }
+
+    /**
+     * Different minute.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $time1
+     * @param string $time2
+     * 
+     * @return string
+     */
+    public function diffMinute(String $time1, String $time2) : String
+    {
+        return $this->different($time1, $time2, 'minute');
+    }
+
+    /**
      * Get next second.
      * 
      * 5.7.6[added]
@@ -164,6 +262,49 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     public function currentSecond() : String
     {
         return $this->set('{second}');
+    }
+
+    /**
+     * Add second.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function addSecond(String $time, String $next = '1') : String
+    {
+        return $this->add($time, $next, 'second');
+    }
+
+    /**
+     * Remove second.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function removeSecond(String $time, String $next = '1') : String
+    {
+        return $this->remove($time, $next, 'second');
+    }
+
+    /**
+     * Different second.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $time1
+     * @param string $time2
+     * 
+     * @return string
+     */
+    public function diffSecond(String $time1, String $time2) : String
+    {
+        return $this->different($time1, $time2, 'second');
     }
 
     /**

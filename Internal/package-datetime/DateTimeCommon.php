@@ -12,6 +12,7 @@
 use ZN\IS;
 use ZN\Config;
 use ZN\Datatype;
+use ZN\Helpers\Converter;
 
 class DateTimeCommon
 {
@@ -212,5 +213,29 @@ class DateTimeCommon
         $className = $this->_classname();
 
         return $className === $this->className ? 'setDateFormatChars' : 'setTimeFormatChars';
+    }
+
+    /**
+     * Protected add day
+     */
+    protected function add(String $datetime, String $next = '1', $type = 'day', $signal = '+') : String
+    {
+        return $this->calculate($datetime, $signal . $next . $type);
+    }
+
+    /**
+     * Protected remove day
+     */
+    protected function remove(String $datetime, String $next = '1', $type = 'day') : String
+    {
+        return $this->add($datetime, $next, $type, '-');
+    }
+
+    /**
+     * Protected different
+     */
+    protected function different($date1, $date2, $output) : Float
+    {
+        return Converter::time($this->toNumeric($date2) - $this->toNumeric($date1), 'second', $output);
     }
 }

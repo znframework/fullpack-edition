@@ -34,6 +34,15 @@ interface DateTimeCommonInterface
     public function locale(...$parameters);
 
     /**
+     * Is past
+     * 
+     * @string $datetime
+     * 
+     * @return bool
+     */
+    public function isPast(String $datetime) : Bool;
+
+    /**
      * Compare dates
      * 
      * @param string $value1

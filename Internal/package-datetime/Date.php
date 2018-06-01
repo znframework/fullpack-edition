@@ -106,6 +106,18 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
+     * Is past
+     * 
+     * @string $date
+     * 
+     * @return bool
+     */
+    public function isPast(String $date) : Bool
+    {
+        return $this->compare($date, '<', $this->set('Y/m/d'));
+    }
+
+    /**
      * Checks whether the date is the weekend.
      * 
      * 5.7.6[added]
@@ -191,6 +203,49 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
+     * Add day.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function addDay(String $date, String $next = '1') : String
+    {
+        return $this->add($date, $next, 'day');
+    }
+
+    /**
+     * Remove day.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function removeDay(String $date, String $next = '1') : String
+    {
+        return $this->remove($date, $next, 'day');
+    }
+
+    /**
+     * Different day.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $date1
+     * @param string $date2
+     * 
+     * @return string
+     */
+    public function diffDay(String $date1, String $date2) : String
+    {
+        return $this->different($date1, $date2, 'day');
+    }
+
+    /**
      * Get next month name.
      * 
      * 5.7.6[added]
@@ -228,6 +283,49 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     public function prevMonth(String $next = '1') : String
     {
         return $this->prev($next, 'month', 'month');
+    }
+
+    /**
+     * Add month.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function addMonth(String $date, String $next = '1') : String
+    {
+        return $this->add($date, $next, 'month');
+    }
+
+    /**
+     * Different month.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $date1
+     * @param string $date2
+     * 
+     * @return string
+     */
+    public function diffMonth(String $date1, String $date2) : String
+    {
+        return $this->different($date1, $date2, 'month');
+    }
+
+    /**
+     * Remove month.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function removeMonth(String $date, String $next = '1') : String
+    {
+        return $this->remove($date, $next, 'month');
     }
 
     /**
@@ -296,6 +394,77 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     public function prevYear(String $next = '1') : String
     {
         return $this->prev($next, 'year', 'year');
+    }
+    
+    /**
+     * Add year.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function addYear(String $date, String $next = '1') : String
+    {
+        return $this->add($date, $next, 'year');
+    }
+
+    /**
+     * Remove year.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function removeYear(String $date, String $next = '1') : String
+    {
+        return $this->remove($date, $next, 'year');
+    }
+
+    /**
+     * Different year.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $date1
+     * @param string $date2
+     * 
+     * @return string
+     */
+    public function diffYear(String $date1, String $date2) : String
+    {
+        return $this->different($date1, $date2, 'year');
+    }
+
+    /**
+     * Add year.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function addWeek(String $date, String $next = '1') : String
+    {
+        return $this->add($date, $next, 'week');
+    }
+
+    /**
+     * Remove year.
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $next = 1
+     * 
+     * @return string
+     */
+    public function removeWeek(String $date, String $next = '1') : String
+    {
+        return $this->remove($date, $next, 'week');
     }
 
     /**
