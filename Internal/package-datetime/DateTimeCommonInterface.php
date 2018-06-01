@@ -12,6 +12,28 @@
 interface DateTimeCommonInterface
 {
     /**
+     * Sets timezone
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $timezone
+     * 
+     * @return this
+     */
+    public function timezone(String $timezone);
+
+    /**
+     * Sets locale
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $parameters
+     * 
+     * @return this
+     */
+    public function locale(...$parameters);
+
+    /**
      * Compare dates
      * 
      * @param string $value1

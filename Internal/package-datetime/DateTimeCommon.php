@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\IS;
 use ZN\Config;
 use ZN\Datatype;
 
@@ -37,6 +38,44 @@ class DateTimeCommon
                               ::get('Project');
 
         setlocale(LC_ALL, $this->config['locale']['charset'], $this->config['locale']['language']);
+    }
+
+    /**
+     * Sets locale
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $parameters
+     * 
+     * @return this
+     */
+    public function locale(...$parameters)
+    {
+        setlocale(LC_ALL, ...$parameters);
+
+        return $this;
+    }
+
+    /**
+     * Sets timezone
+     * 
+     * 5.7.6[added]
+     * 
+     * @param string $timezone
+     * 
+     * @return this
+     */
+    public function timezone(String $timezone)
+    {
+        # Sets the timezone.
+        if( IS::timeZone($timezone) )
+        {
+            date_default_timezone_set($timezone);
+
+            return $this;
+        }
+
+        throw new Exception\InvalidTimezoneException(NULL, $timezone);
     }
 
     /**
