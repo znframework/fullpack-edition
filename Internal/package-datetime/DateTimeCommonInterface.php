@@ -20,7 +20,7 @@ interface DateTimeCommonInterface
      * 
      * @return this
      */
-    public function timezone(String $timezone);
+    public function zone(String $timezone);
 
     /**
      * Sets locale

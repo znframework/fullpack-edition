@@ -67,7 +67,7 @@ class DateTimeCommon
 
         if( $methodType === 'diff' )
         {
-            return $this->different($parameters[0], $parameters[1], $expression, $parameters[2] ?? NULL);
+            return $this->different($parameters[0], $parameters[1], $expression, strtolower($parameters[2] ?? $parts[2] ?? NULL));
         }
         elseif( in_array($methodType, ['add', 'remove']) )
         {
@@ -96,7 +96,7 @@ class DateTimeCommon
     }
 
     /**
-     * Sets timezone
+     * Sets zone
      * 
      * 5.7.6[added]
      * 
@@ -104,7 +104,7 @@ class DateTimeCommon
      * 
      * @return this
      */
-    public function timezone(String $timezone)
+    public function zone(String $timezone)
     {
         # Sets the timezone.
         if( IS::timeZone($timezone) )

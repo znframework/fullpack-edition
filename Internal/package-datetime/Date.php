@@ -168,9 +168,9 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function today(String $date = NULL) : String
+    public function today(String $date = NULL, $type = 'dayName') : String
     {
-        $type = '{dayName}';
+        $type = '{'.$type.'}';
 
         if( $date === NULL )
         {
@@ -185,9 +185,9 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function todayNumber() : String
+    public function todayNumber(String $date = NULL) : String
     {
-        return $this->set('{dayNumber}');
+        return $this->today($date, 'dayNumber');
     }
 
     /**
