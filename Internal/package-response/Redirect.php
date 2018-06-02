@@ -134,6 +134,8 @@ class Redirect implements RedirectInterface
     /**
      * Redirect delete data
      * 
+     * 5.7.5.2[fixed]
+     * 
      * @param mixed $data
      * 
      * @return true
@@ -142,7 +144,7 @@ class Redirect implements RedirectInterface
     {
         if( is_array($data) ) foreach( $data as $v )
         {
-            unset($_SESSION[$this->fix . $k]);
+            unset($_SESSION[$this->fix . $v]);
         }
         else
         {
