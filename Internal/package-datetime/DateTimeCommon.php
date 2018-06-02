@@ -12,6 +12,7 @@
 use ZN\IS;
 use ZN\Config;
 use ZN\Datatype;
+use ZN\Helpers\Rounder;
 use ZN\Helpers\Converter;
 
 class DateTimeCommon
@@ -39,6 +40,43 @@ class DateTimeCommon
                               ::get('Project');
 
         setlocale(LC_ALL, $this->config['locale']['charset'], $this->config['locale']['language']);
+    }
+
+    /**
+     * Protected split upper case
+     */
+    protected function splitUpperCase($method)
+    {
+        return  Datatype::splitUpperCase($method);
+    }
+
+    /**
+     * Magic call
+     * 
+     * @param string $method
+     * @param array  $parameters
+     * 
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        $parts = $this->splitUpperCase($method);
+
+        $methodType = $parts[0] ?? NULL;
+        $expression = strtolower($parts[1]) ?? NULL;
+
+        if( $methodType === 'diff' )
+        {
+            return $this->different($parameters[0], $parameters[1], $expression, $parameters[2] ?? NULL);
+        }
+        elseif( in_array($methodType, ['add', 'remove']) )
+        {
+            return $this->$methodType($parameters[0] ?? NULL, $parameters[1] ?? 1, $expression);
+        }
+        elseif( $methodType === 'current' )
+        {
+            return $this->set('{'.ltrim($method, $methodType).'}');
+        }
     }
 
     /**
@@ -218,24 +256,50 @@ class DateTimeCommon
     /**
      * Protected add day
      */
-    protected function add(String $datetime, String $next = '1', $type = 'day', $signal = '+') : String
+    protected function add(String $datetime = NULL, Int $count = 1, $type = 'day', $signal = '+') : String
     {
-        return $this->calculate($datetime, $signal . $next . $type);
+        if( ! $this->check($datetime) && is_numeric($datetime) && $count = 1 )
+        {
+            $count    = $datetime;
+            $datetime = $this->current();
+        }
+
+        return $this->calculate($datetime ?? $this->current(), $signal . $count . $type);
     }
 
     /**
      * Protected remove day
      */
-    protected function remove(String $datetime, String $next = '1', $type = 'day') : String
+    protected function remove(String $datetime = NULL, Int $count = 1, $type = 'day') : String
     {
-        return $this->add($datetime, $next, $type, '-');
+        return $this->add($datetime, $count, $type, '-');
     }
 
     /**
      * Protected different
      */
-    protected function different($date1, $date2, $output) : Float
+    protected function different($date1, $date2, $output, $round = NULL) : Float
     {
-        return Converter::time($this->toNumeric($date2) - $this->toNumeric($date1), 'second', $output);
+        $return = Converter::time($this->toNumeric($date2) - $this->toNumeric($date1), 'second', $output);
+
+        if( ! empty($round) )
+        {
+            return $this->round($round, $return);
+        }
+
+        return $return;
+    }
+
+    /**
+     * Protected round
+     */
+    protected function round($round, $return)
+    {
+        if( in_array($round, ['up', 'down', 'average']) )
+        {
+            return Rounder::$round($return);
+        }
+        
+        return Rounder::average($return);
     }
 }

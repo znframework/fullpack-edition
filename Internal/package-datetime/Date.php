@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Datatype;
-
 class Date extends DateTimeCommon implements DateTimeCommonInterface
 {
     /**
@@ -60,6 +58,10 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function __call($method, $parameters)
     {
+        $parts = $this->splitUpperCase($method);
+        
+        $methodType = $parts[0] ?? NULL;
+
         if( in_array($method, $this->isDays) )
         {
             return $this->isDay($method, $parameters[0] ?? NULL);
@@ -68,6 +70,34 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
         {
             return $this->isMonth($method, $parameters[0] ?? NULL);
         }
+        elseif( in_array($methodType, ['next', 'prev']) )
+        {
+            return $this->$methodType($parameters[0] ?? NULL, ($type = strtolower($parts[1])) . ($parts[2] ?? NULL), $type);
+        }
+
+        return parent::__call($method, $parameters);
+    }
+
+    /**
+     * Date check
+     * 
+     * @param string $date
+     * 
+     * @return bool
+     */
+    public function check(String $date) : Bool
+    {
+        $dateEx    = explode('/', $this->convert($date, '{year}/{monthNumber}/{dayNumber}'));
+        $validDate = implode('/', $dateEx);
+
+        if( $date !== $validDate && $validDate === '1970/1/1' )
+        {
+            return false;
+        }
+
+        return checkdate($dateEx[1] ?? NULL, $dateEx[2] ?? NULL, $dateEx[0] ?? NULL);
+
+       
     }
 
     /**
@@ -126,9 +156,9 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function isWeekend(String $date) : Bool
+    public function isWeekend(String $date = NULL) : Bool
     {
-        $weekDayNumber = $this->convert($date, '{weekDayNumber}');
+        $weekDayNumber = $this->convert($date ?? $this->current(), '{weekDayNumber}');
 
         return in_array($weekDayNumber, [6, 7]);
     }
@@ -161,313 +191,6 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
-     * Checks whether the today is the weekend.
-     * 
-     * 5.7.6[added]
-     * 
-     * @return bool
-     */
-    public function todayIsWeekend() : Bool
-    {
-        $weekDayNumber = $this->set('{weekDayNumber}');
-
-        return in_array($weekDayNumber, [6, 7]);
-    }
-
-    /**
-     * Get next day name.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function nextDay(String $next = '1') : String
-    {
-        return $this->next($next, 'day');
-    }
-
-    /**
-     * Get prev day name.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function prevDay(String $next = '1') : String
-    {
-        return $this->prev($next, 'day');
-    }
-
-    /**
-     * Add day.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function addDay(String $date, String $next = '1') : String
-    {
-        return $this->add($date, $next, 'day');
-    }
-
-    /**
-     * Remove day.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function removeDay(String $date, String $next = '1') : String
-    {
-        return $this->remove($date, $next, 'day');
-    }
-
-    /**
-     * Different day.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $date1
-     * @param string $date2
-     * 
-     * @return string
-     */
-    public function diffDay(String $date1, String $date2) : String
-    {
-        return $this->different($date1, $date2, 'day');
-    }
-
-    /**
-     * Get next month name.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function nextMonth(String $next = '1') : String
-    {
-        return $this->next($next, 'month', 'month');
-    }
-
-    /**
-     * Get current month name.
-     * 
-     * 5.7.6[added]
-     * 
-     * @return string
-     */
-    public function currentMonth() : String
-    {
-        return $this->convert($this->current(), '{month}');
-    }
-
-    /**
-     * Get prev month name.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function prevMonth(String $next = '1') : String
-    {
-        return $this->prev($next, 'month', 'month');
-    }
-
-    /**
-     * Add month.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function addMonth(String $date, String $next = '1') : String
-    {
-        return $this->add($date, $next, 'month');
-    }
-
-    /**
-     * Different month.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $date1
-     * @param string $date2
-     * 
-     * @return string
-     */
-    public function diffMonth(String $date1, String $date2) : String
-    {
-        return $this->different($date1, $date2, 'month');
-    }
-
-    /**
-     * Remove month.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function removeMonth(String $date, String $next = '1') : String
-    {
-        return $this->remove($date, $next, 'month');
-    }
-
-    /**
-     * Get next month number.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function nextMonthNumber(String $next = '1') : String
-    {
-        return $this->next($next, 'monthNumber', 'month');
-    }
-
-    /**
-     * Get current month number.
-     * 
-     * 5.7.6[added]
-     * 
-     * @return string
-     */
-    public function currentMonthNumber() : String
-    {
-        return $this->convert($this->current(), '{monthNumber}');
-    }
-
-    /**
-     * Get prev month number.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function prevMonthNumber(String $next = '1') : String
-    {
-        return $this->prev($next, 'monthNumber', 'month');
-    }
-
-    /**
-     * Get next year.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function nextYear(String $next = '1') : String
-    {
-        return $this->next($next, 'year', 'year');
-    }
-
-    /**
-     * Get prev year.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function prevYear(String $next = '1') : String
-    {
-        return $this->prev($next, 'year', 'year');
-    }
-    
-    /**
-     * Add year.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function addYear(String $date, String $next = '1') : String
-    {
-        return $this->add($date, $next, 'year');
-    }
-
-    /**
-     * Remove year.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function removeYear(String $date, String $next = '1') : String
-    {
-        return $this->remove($date, $next, 'year');
-    }
-
-    /**
-     * Different year.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $date1
-     * @param string $date2
-     * 
-     * @return string
-     */
-    public function diffYear(String $date1, String $date2) : String
-    {
-        return $this->different($date1, $date2, 'year');
-    }
-
-    /**
-     * Add year.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function addWeek(String $date, String $next = '1') : String
-    {
-        return $this->add($date, $next, 'week');
-    }
-
-    /**
-     * Remove year.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function removeWeek(String $date, String $next = '1') : String
-    {
-        return $this->remove($date, $next, 'week');
-    }
-
-    /**
      * Get yesterday.
      * 
      * 5.7.6[added]
@@ -492,39 +215,11 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
-     * Get next day number.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function nextDayNumber(String $next = '1', $type = 'dayNumber') : String
-    {
-        return $this->next($next, 'dayNumber');
-    }
-
-    /**
-     * Get prev day number.
-     * 
-     * 5.7.6[added]
-     * 
-     * @param string $next = 1
-     * 
-     * @return string
-     */
-    public function prevDayNumber(String $next = '1') : String
-    {
-        return $this->prev($next, 'dayNumber');
-    }
-
-    /**
      * Protected next
      */
-    protected function next(String $next = '1', $type = 'day', $unit = 'day', $signal = '+') : String
+    protected function next(String $date = NULL, $type = 'day', $unit = 'day', $signal = '+') : String
     {
-        $calculate = $this->calculate($this->current(), $signal . $next . $unit, 'Y/m/d');
+        $calculate = $this->calculate($date ?? $this->current(), $signal . '1' . $unit, 'Y/m/d');
 
         return $this->convert($calculate, '{'.$type.'}');
     }
@@ -532,9 +227,9 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected prev
      */
-    protected function prev(String $next = '1', $type = 'day' , $unit = 'day') : String
+    protected function prev(String $date = NULL, $type = 'day' , $unit = 'day') : String
     {
-        return $this->next($next, $type, $unit, '-');
+        return $this->next($date, $type, $unit, '-');
     }
 
     /**
