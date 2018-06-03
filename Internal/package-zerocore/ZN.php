@@ -70,6 +70,13 @@ class ZN
     public static $projectType;
 
     /**
+     * Protected Lastest Version
+     * 
+     * @var string
+     */
+    protected static $lastestVersion;
+
+    /**
      * Magic call static
      * 
      * @param string $class
@@ -101,7 +108,7 @@ class ZN
 
             foreach( $return as $file => $content )
             {
-                $file = $upgradeFolder . $file;
+                $file = $upgradeFolder . ($origin = $file);
 
                 $dirname = pathinfo($file, PATHINFO_DIRNAME);
 
@@ -109,7 +116,14 @@ class ZN
                 
                 if( ! empty($content) )
                 {
-                    file_put_contents($file, $content);
+                    if( $origin === DIRECTORY_INDEX )
+                    {
+                        Filesystem::replaceData(DIRECTORY_INDEX, ZN_VERSION, self::$lastestVersion);
+                    }
+                    else
+                    {
+                        file_put_contents($file, $content);
+                    }
                 } 
             }
 
@@ -599,8 +613,10 @@ class ZN
         rsort($return);
 
         $lastest = $return[0];
+
+        self::$lastestVersion = $lastest->name;
  
-        if( ZN_VERSION < $lastest->name ) foreach( $return as $version )
+        if( ZN_VERSION < self::$lastestVersion ) foreach( $return as $version )
         {
             if( ZN_VERSION < $version->name )
             {
