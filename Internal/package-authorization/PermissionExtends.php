@@ -283,12 +283,12 @@ class PermissionExtends
      */
     protected static function getJsonDataToDatabaseAfterConvertArray(&$subconfig, $roleId)
     {
-        if( preg_match('/(\w+)\[(\w+)\]\:(\w+)/', $subconfig, $match) )
+        if( preg_match('/(?<table>\w+)\[(?<column>\w+)\]\:(?<select>\w+)/', $subconfig, $match) )
         {
             $json = Singleton::class('ZN\Database\DB')
-                             ->where($match[2], $roleId)
-                             ->select($match[3])
-                             ->get($match[1])
+                             ->where($match['column'], $roleId)
+                             ->select($match['select'])
+                             ->get($match['table'])
                              ->value();
            
             if( Json::check($json) )
