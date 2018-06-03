@@ -475,11 +475,21 @@ class ZN
             {
                 $currentPath = $requestUri;
             }
+
+            # 5.7.5.4[fixed]
+            if( ! empty(BASE_DIR) && strpos($currentPath, BASE_DIR) === 0 )
+            {
+                $trimPrefix = BASE_DIR;
+            }
+            else
+            {
+                $trimPrefix = '/';
+            }
             
             # Only the project name is obtained from the data.
-            $getProjectNameFromURI = ( ! empty($currentPath) ? explode('/', ltrim($currentPath, BASE_DIR ?: '/'))[0] : '' );
+            $getProjectNameFromURI = ( ! empty($currentPath) ? explode('/', ltrim($currentPath, $trimPrefix))[0] : '' );
         }
-
+    
         # The host information of the page is being retrieved.
         # 5.7.5[added]
         $baseHost = Base::host();
@@ -507,7 +517,7 @@ class ZN
             # The name of the project that comes with the URL has a valid alias name.
             $currentProjectDirectory = $flipOthersArray[$getProjectNameFromOthers] ?? $getProjectNameFromOthers;
         }
-
+        
         # The active project name is transferred to this constant.
         define('CURRENT_PROJECT', $currentProjectDirectory ?? $getProjectNameFromOthers);
 
