@@ -120,9 +120,9 @@ class DB extends Connection
 
         $condition = rtrim(implode(',', array_map(function($value)
         { 
-            return preg_replace_callback('/(\w+\.)*(\w+\.\w+)/', function($data)
+            return preg_replace_callback('/(?<database>\w+\.)*(?<table>\w+\.\w+)/', function($data)
             {
-                return $data[1] . $this->prefix . $data[2];
+                return $data['database'] . $this->prefix . $data['table'];
             }, $value);
             
         }, $condition)), ',');
@@ -1754,8 +1754,8 @@ class DB extends Connection
     {
         $pagcon   = Config::get('ViewObjects', 'pagination');
         $getLimit = $this->_getLimitValues($this->stringQuery());
-        $start    = $getLimit[3] ?? NULL;
-        $limit    = $getLimit[1] ?? NULL;
+        $start    = $getLimit['start'] ?? NULL;
+        $limit    = $getLimit['limit'] ?? NULL;
 
         $settings['totalRows'] = $this->totalRows(true);
         $settings['limit']     = ! empty($limit) ? $limit : $pagcon['limit'];
@@ -2287,7 +2287,7 @@ class DB extends Connection
      */
     protected function _cleanLimit($data)
     {
-        return preg_replace('/limit\s+[0-9]+(\s*\OFFSET\s*[0-9]+)*/xi', '', $data);
+        return preg_replace('/limit\s+[0-9]+(\s*OFFSET\s*[0-9]+)*/xi', '', $data);
     }
 
     /**
@@ -2299,7 +2299,7 @@ class DB extends Connection
      */
     protected function _getLimitValues($data)
     {
-        preg_match('/limit\s+([0-9]+)(\s*\OFFSET\s*([0-9]+))*/xi', $data, $match);
+        preg_match('/limit\s+(?<limit>[0-9]+)(\s*OFFSET\s*(?<start>[0-9]+))*/xi', $data, $match);
 
         return $match;
     }

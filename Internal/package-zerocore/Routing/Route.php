@@ -193,28 +193,28 @@ class Route extends FilterProperties implements RouteInterface
         // Database Routing
         $route = preg_replace_callback
         (
-            '/\[(\w+|\.)\:(\w+|\.)(\s*\,\s*((json|serial|separator))(\:(.*?))*)*\]/i', 
+            '/\[(?<table>\w+|\.)\:(?<column>\w+|\.)(\s*\,\s*(?<separator>json|serial|separator)(\:(?<key>.*?))*)*\]/i', 
             function($match) use (&$count, &$return, $routeSegment)
             {
                 $count   = array_search($match[0], $routeSegment);
-                $decoder = $match[4] ?? NULL;
+                $decoder = $match['separator'] ?? NULL;
                 $value   = $val = URI::segment($count + 1);
-                $column  = $match[2];
+                $column  = $match['column'];
                 $dbClass = Singleton::class('ZN\Database\DB');
 
                 // Json, Serial or Separator
                 if( $decoder !== NULL )
                 {
-                    $column = $match[2] . ' like';
-                    $value  = $dbClass->like($value, 'inside');
+                    $column .= ' like';
+                    $value   = $dbClass->like($value, 'inside');
                 }
 
-                $return = $dbClass->select($match[2])->where($column, $value)->get($match[1])->value();
+                $return = $dbClass->select($column)->where($column, $value)->get($match['table'])->value();
 
                 // Json, Serial or Separator
                 if( $decoder !== NULL )
                 {
-                    $row       = $match[6] ?? Lang::get();
+                    $row       = $match['key'] ?? Lang::get();
                     $rows      = $decoder::decode($return);
                     $rowsArray = $decoder::decodeArray($return);
                     $return    = $rows->$row ?? NULL;

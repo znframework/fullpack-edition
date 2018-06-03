@@ -391,11 +391,11 @@ class Butcher
      */
     protected function setIncrementCase($case, $type)
     {
-        if( preg_match('/inc\[([0-9]+)\]/', $type, $match) )
+        if( preg_match('/inc\[(?<increment>[0-9]+)\]/', $type, $match) )
         {
             if( $this->inc === 0 )
             {
-                $this->inc = $match[1] ?? 0;
+                $this->inc = $match['increment'] ?? 0;
             }
     
             return $case . $this->inc++;
@@ -409,12 +409,9 @@ class Butcher
      */
     protected function randCase($case, $type)
     {
-        if( preg_match('/rand\[([0-9]+)\s*\,\s*([0-9]+)\]/', $type, $match) )
+        if( preg_match('/rand\[(?<min>[0-9]+)\s*\,\s*(?<max>[0-9]+)\]/', $type, $match) )
         {
-            $min = $match[1] ?? 0;
-            $max = $match[2] ?? 0;
-    
-            return $case . rand($min, $max);
+            return $case . rand($match['min'] ?? 0, $match['max'] ?? 0);
         }
 
         return $this->incrementCase($case); 
@@ -735,10 +732,10 @@ class Butcher
 
         $content = file_get_contents($file);
 
-        preg_match('/<head.*?>(.*?)<\/head>.*?<body.*?>(.*?)<\/body>/is', $content, $match);
+        preg_match('/<head.*?>(?<head>.*?)<\/head>.*?<body.*?>(?<body>.*?)<\/body>/is', $content, $match);
 
-        $head = $match[1] ?? false;
-        $body = $match[2] ?? false;
+        $head = $match['head'] ?? false;
+        $body = $match['body'] ?? false;
 
         if( $body !== false )
         {
@@ -798,11 +795,11 @@ class Butcher
      */
     protected function bodyParser($body)
     {
-        return $this->addSlashesToAt(preg_replace_callback('/(href|action)\=(\"|\')(.*?\.html)(\"|\')/', function($link)
+        return $this->addSlashesToAt(preg_replace_callback('/(?<attribute>(href|action))\=(\"|\')(?<filename>.*?\.html)(\"|\')/', function($link)
         {
-            $self = $link[0];
+            $self = $link['attribute'];
 
-            if( ! IS::url($url = $link[3]) )
+            if( ! IS::url($url = $link['filename']) )
             {
                 return str_replace
                 (

@@ -73,33 +73,30 @@ class Wizard
      * protected text control.
      * 
      * 5.7.5.1[changed]
+     * 5.7.5.5[fixed]
      * 
      * @param string &$string
      * 
      * @return void
      */
     protected static function textControl(&$string)
-    {
+    {   
         # If the use of custom html is obvious or if the page uses an internal style or code
         preg_match_all('/\<(style|script)(.*?)*\>(.*?)\<\/(style|script)\>/si', $string, $standart);
-        
-        if( (self::$config['html'] ?? true) || ! empty($standart[3]) )
-        {
-            preg_match_all('/\#(style|script)(.*?)*\s(.*?)\s\##(style|script)/si', $string, $wizard);
+        preg_match_all('/\#(style|script)(.*?)*\s(.*?)\s\##(style|script)/si', $string, $wizard);
 
-            $patterns = array_merge((array) $standart[3], (array) $wizard[3]);
-            
-            if( ! empty($patterns) ) 
+        $patterns = array_merge((array) $standart[3], (array) $wizard[3]);
+        
+        if( ! empty($patterns) ) 
+        {
+            $changes = [];
+
+            foreach( $patterns as $pattern )
             {
-                $changes = [];
-    
-                foreach( $patterns as $pattern )
-                {
-                    $changes[] = str_replace(['#', '@', ':'], ['/#', '/@', '/:'], $pattern);
-                }
-    
-                $string = str_replace($patterns, $changes, $string);
+                $changes[] = str_replace(['#', '@', ':'], ['/#', '/@', '/:'], $pattern);
             }
+
+            $string = str_replace($patterns, $changes, $string);
         } 
     }
 
@@ -342,11 +339,18 @@ class Wizard
      */
     protected static function symbolsHeader()
     {
-        return
+        $symbolHeader = [];
+
+        if(self::$config['html'] === false )
+        {
+            $symbolHeader['/\/#/'] = '+[symbol??dies]+';
+        }
+        
+        return $symbolHeader + 
         [
             '/\/@/' => '+[symbol??at]+',
             '/::/'  => '+[symbol??static]+',
-            '/\/:/' => '+[symbol??colon]+',
+            '/\/:/' => '+[symbol??colon]+'
         ];
     }
 
@@ -359,11 +363,18 @@ class Wizard
      */
     protected static function symbolsFooter()
     {
-        return
+        $symbolFooter = [];
+
+        if(self::$config['html'] === false )
+        {
+            $symbolFooter['/\+\[symbol\?\?dies\]\+/'] = '#';
+        }
+
+        return $symbolFooter +
         [
             '/\+\[symbol\?\?at\]\+/'     => '@',
             '/\+\[symbol\?\?static\]\+/' => '::',
-            '/\+\[symbol\?\?colon\]\+/'  => ':',
-        ];
+            '/\+\[symbol\?\?colon\]\+/'  => ':'
+        ]; 
     }
 }

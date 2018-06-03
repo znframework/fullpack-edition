@@ -162,9 +162,9 @@ trait UnitTest
      */
     protected static function convertMultipleMethodName($name)
     {
-        if( preg_match('/(\w+)([0-9]+)/', $name, $match) )
+        if( preg_match('/(?<method>\w+)(?<count>[0-9]+)/', $name, $match) )
         {
-            $name = $match[1] . ':' . $match[2] ;
+            $name = $match['method'] . ':' . $match['count'] ;
         }
 
         return ltrim($name, '_');
