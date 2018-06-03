@@ -73,18 +73,18 @@ class Wizard
      * protected text control.
      * 
      * 5.7.5.1[changed]
+     * 5.7.5.5[fixed]
      * 
      * @param string &$string
      * 
      * @return void
      */
     protected static function textControl(&$string)
-    {
-        # If the use of custom html is obvious or if the page uses an internal style or code
-        preg_match_all('/\<(style|script)(.*?)*\>(.*?)\<\/(style|script)\>/si', $string, $standart);
-        
-        if( (self::$config['html'] ?? true) || ! empty($standart[3]) )
+    {   
+        if( (self::$config['html'] ?? true) )
         {
+            # If the use of custom html is obvious or if the page uses an internal style or code
+            preg_match_all('/\<(style|script)(.*?)*\>(.*?)\<\/(style|script)\>/si', $string, $standart);
             preg_match_all('/\#(style|script)(.*?)*\s(.*?)\s\##(style|script)/si', $string, $wizard);
 
             $patterns = array_merge((array) $standart[3], (array) $wizard[3]);

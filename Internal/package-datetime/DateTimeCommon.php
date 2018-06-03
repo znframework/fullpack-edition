@@ -258,7 +258,7 @@ class DateTimeCommon
      */
     protected function add(String $datetime = NULL, Int $count = 1, $type = 'day', $signal = '+') : String
     {
-        if( ! $this->check($datetime) && is_numeric($datetime) && $count = 1 )
+        if( ! $this->check((string) $datetime) && is_numeric($datetime) && $count = 1 )
         {
             $count    = $datetime;
             $datetime = $this->current();
