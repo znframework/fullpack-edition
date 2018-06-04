@@ -67,7 +67,7 @@ class DateTimeCommon
 
         if( $methodType === 'diff' )
         {
-            return $this->different($parameters[0], $parameters[1], $expression, strtolower($parameters[2] ?? $parts[2] ?? NULL));
+            return $this->different($parameters[0], $parameters[1] ?? NULL, $expression, strtolower($parameters[2] ?? $parts[2] ?? NULL));
         }
         elseif( in_array($methodType, ['add', 'remove']) )
         {
@@ -261,10 +261,10 @@ class DateTimeCommon
         if( ! $this->check((string) $datetime) && is_numeric($datetime) && $count = 1 )
         {
             $count    = $datetime;
-            $datetime = $this->current();
+            $datetime = $this->default();
         }
 
-        return $this->calculate($datetime ?? $this->current(), $signal . $count . $type);
+        return $this->calculate($datetime ?? $this->default(), $signal . $count . $type);
     }
 
     /**
@@ -280,6 +280,12 @@ class DateTimeCommon
      */
     protected function different($date1, $date2, $output, $round = NULL) : Float
     {
+        if( $date2 === NULL )
+        {
+            $date2 = $date1;
+            $date1 = $this->default();
+        }
+
         $return = Converter::time($this->toNumeric($date2) - $this->toNumeric($date1), 'second', $output);
 
         if( ! empty($round) )

@@ -78,6 +78,18 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
+     * Gives the active date information.
+     * 
+     * @param string $clock = '%H:%M:%S'
+     * 
+     * @return string
+     */
+    public function default(String $time = '{hour}:{minute}:{second}') : String
+    {
+        return $this->_datetime($time);
+    }
+
+    /**
      * Converts date information.
      * 
      * @param string $date
@@ -105,7 +117,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      */
     protected function next(String $time = NULL, $type = 'hour', $signal = '+') : String
     {
-        $calculate = $this->calculate($time ?? $this->current(), $signal . '1' . $type);
+        $calculate = $this->calculate($time ?? $this->default(), $signal . '1' . $type);
 
         return $this->convert($calculate, '{'.$type.'}');
     }

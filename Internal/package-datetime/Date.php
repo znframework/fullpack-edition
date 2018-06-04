@@ -107,9 +107,21 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function current(String $clock = 'd.m.o') : String
+    public function current(String $date = 'd.m.o') : String
     {
-        return $this->_datetime($clock);
+        return $this->_datetime($date);
+    }
+
+    /**
+     * Gives the active date information.
+     * 
+     * @param string $clock = '%H:%M:%S'
+     * 
+     * @return string
+     */
+    public function default(String $date = '{year}/{monthNumber0}/{dayNumber0}') : String
+    {
+        return $this->_datetime($date);
     }
 
     /**
@@ -158,7 +170,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function isWeekend(String $date = NULL) : Bool
     {
-        $weekDayNumber = $this->convert($date ?? $this->current(), '{weekDayNumber}');
+        $weekDayNumber = $this->convert($date ?? $this->default(), '{weekDayNumber}');
 
         return in_array($weekDayNumber, [6, 7]);
     }
@@ -195,11 +207,13 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * 5.7.6[added]
      * 
+     * @param string $date = NULL
+     * 
      * @return string
      */
-    public function yesterday() : String
+    public function yesterday(String $date = NULL) : String
     {
-        return $this->prev(1, 'day');
+        return $this->prev($date, 'day');
     }
 
     /**
@@ -207,11 +221,13 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * 5.7.6[added]
      * 
+     * @param string $date = NULL
+     * 
      * @return string
      */
-    public function tomorrow() : String
+    public function tomorrow(String $date = NULL) : String
     {
-        return $this->next(1, 'day');
+        return $this->next($date, 'day');
     }
 
     /**
@@ -219,7 +235,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     protected function next(String $date = NULL, $type = 'day', $unit = 'day', $signal = '+') : String
     {
-        $calculate = $this->calculate($date ?? $this->current(), $signal . '1' . $unit, 'Y/m/d');
+        $calculate = $this->calculate($date ?? $this->default(), $signal . '1' . $unit, 'Y/m/d');
 
         return $this->convert($calculate, '{'.$type.'}');
     }
@@ -245,6 +261,6 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     protected function isMonth($method, $date)
     {
-        return $this->convert($date ?? $this->current(), '{month}') === ltrim($method, 'is');
+        return $this->convert($date ?? $this->default(), '{month}') === ltrim($method, 'is');
     }
 }
