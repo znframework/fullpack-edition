@@ -25,6 +25,7 @@ class ZN
         'INTERNAL_DIR'    => 'Internal/',
         'EXTERNAL_DIR'    => 'External/',
         'SETTINGS_DIR'    => 'Settings/',
+        'PROJECTS_DIR'    => 'Projects/',
         'BUTCHERY_DIR'    => 'Butchery/',
         'CONTROLLERS_DIR' => 'Controllers/',
         'VIEWS_DIR'       => 'Views/',
@@ -309,7 +310,7 @@ class ZN
         define('INTERNAL_DIR', GET_DIRS['INTERNAL_DIR']);
         define('EXTERNAL_DIR', GET_DIRS['EXTERNAL_DIR']);
         define('SETTINGS_DIR', GET_DIRS['SETTINGS_DIR']);
-        define('PROJECTS_DIR', 'Projects/');
+        define('PROJECTS_DIR', GET_DIRS['PROJECTS_DIR']);
 
         # Directory Index
         define('DIRECTORY_INDEX', GET_DIRS['DIRECTORY_INDEX']);
@@ -347,10 +348,11 @@ class ZN
         # Get Common Paths
         $externalDirectories = array_diff_key(GET_DIRS, array_flip
         ([
+            'DIRECTORY_INDEX',
             'INTERNAL_DIR',
             'EXTERNAL_DIR',
             'SETTINGS_DIR',
-            'DIRECTORY_INDEX',
+            'PROJECTS_DIR',
             'VIEWS_DIR',
         ]));
 

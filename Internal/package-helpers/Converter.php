@@ -412,13 +412,15 @@ class Converter
     /**
      * Converter Accent Char
      * 
+     * [fixed]5.7.6
+     * 
      * @param string $str
      * 
      * @return string
      */
     public static function accent(String $str) : String
     {
-        $accent = array_merge(Config::get('Expressions', 'accentChars'), self::$accentChars);
+        $accent = array_merge(Config::get('Expressions', 'accentChars') ?: [], self::$accentChars);
 
         $accent = Datatype::multikey($accent);
 
