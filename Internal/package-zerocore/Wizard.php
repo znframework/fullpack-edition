@@ -72,8 +72,8 @@ class Wizard
     /**
      * protected text control.
      * 
-     * 5.7.5.1[changed]
-     * 5.7.5.5[fixed]
+     * [changed]5.7.5.1
+     * [fixed  ]5.7.5.6|5.7.5.7
      * 
      * @param string &$string
      * 
@@ -81,19 +81,32 @@ class Wizard
      */
     protected static function textControl(&$string)
     {   
+        self::internalTextControl('style' , ['#' => '/#', '@' => '/@', ':' => '/:'], $string);
+        self::internalTextControl('script', ['#' => '/#'], $string);
+    }
+    
+    /**
+     * Protected internal text control
+     * 
+     * [added]5.7.5.7
+     */
+    protected static function internalTextControl($type, $controls, &$string)
+    {
         # If the use of custom html is obvious or if the page uses an internal style or code
-        preg_match_all('/\<(style|script)(.*?)*\>(.*?)\<\/(style|script)\>/si', $string, $standart);
-        preg_match_all('/\#(style|script)(.*?)*\s(.*?)\s\##(style|script)/si', $string, $wizard);
+        preg_match_all('/(\<|\#)'.$type.'(?<data>.*?)(\<\/|\#\#)'.$type.'/si', $string, $standart);
 
-        $patterns = array_merge((array) $standart[3], (array) $wizard[3]);
-        
+        $patterns = $standart['data'];
+
         if( ! empty($patterns) ) 
         {
             $changes = [];
 
+            $keys   = array_keys($controls);
+            $values = array_values($controls);
+
             foreach( $patterns as $pattern )
             {
-                $changes[] = str_replace(['#', '@', ':'], ['/#', '/@', '/:'], $pattern);
+                $changes[] = str_replace($keys, $values, $pattern);
             }
 
             $string = str_replace($patterns, $changes, $string);
