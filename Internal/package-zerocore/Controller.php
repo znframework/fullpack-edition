@@ -10,6 +10,7 @@
  */
 
 use stdClass;
+use ZN\Inclusion\Project\View;
 
 class Controller
 {

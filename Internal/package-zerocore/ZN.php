@@ -21,11 +21,11 @@ class ZN
      */
     const STRUCTURE_PATHS =
     [
+        'DIRECTORY_INDEX' => 'zeroneed.php',
         'INTERNAL_DIR'    => 'Internal/',
         'EXTERNAL_DIR'    => 'External/',
-        'BUTCHERY_DIR'    => 'Butchery/',
         'SETTINGS_DIR'    => 'Settings/',
-        'DIRECTORY_INDEX' => 'zeroneed.php',
+        'BUTCHERY_DIR'    => 'Butchery/',
         'CONTROLLERS_DIR' => 'Controllers/',
         'VIEWS_DIR'       => 'Views/',
         'ROUTES_DIR'      => 'Routes/',
@@ -87,6 +87,90 @@ class ZN
     public static function __callStatic($class, $parameters)
     {
         return Singleton::class($class, $parameters);
+    }
+
+    /**
+     * Run ZN
+     * 
+     * @param string $type     = NULL - options[EIP|SE|CE]
+     * @param string $version  = NULL
+     * @param string $dedicate = NULL
+     * 
+     * @return void|false
+     */
+    public static function run(String $type = NULL, String $version = NULL, String $dedicate = NULL)
+    {
+        # PHP shows code errors.
+        ini_set('display_errors', true);
+        
+        # The system starts the load time.
+        define('START_BENCHMARK', microtime(true));
+
+        # ZN Version
+        define('ZN_VERSION', $version);
+
+        # Dedicated
+        define('ZN_DEDICATE', $dedicate);
+
+        # It shows you which framework you are using. SE for single edition, EIP for multi edition.
+        define('PROJECT_TYPE', $type === 'FE' ? 'EIP' : $type);
+
+        # Keeps origin type.
+        self::$projectType = $type;
+
+        # Define standart constants
+        self::predefinedConstants();
+
+        # Predefined Functions
+        self::predefinedFunctions();
+
+        # Defines constants required for system and user.
+        self::defineDirectoryConstants();
+
+        # Enables class loading by automatically activating the object call.
+        Autoloader::register();
+        
+        # Provides data about the current working url.
+        Structure::defines();
+
+        # If the operation is executed via console, the code flow is not continue.  
+        if( defined('CONSOLE_ENABLED') || $type === NULL )
+        {
+            return false;
+        }
+
+        # The code to be written to this layer runs before the system files are 
+        # loaded. For this reason, you can not use ZN libraries.
+        Base::layer('Top');
+
+        # Enables route filters.
+        Singleton::class('ZN\Routing\Route')->filter();
+
+        # You can use system constants and libraries in this layer since the code 
+        # to write to this layer is used immediately after the auto loader. 
+        # All Config files can be configured on this layer since this layer runs 
+        # immediately after the auto installer.
+        Base::layer('TopBottom');
+
+        # Run Kernel
+        try 
+        { 
+            Kernel::run();  
+        }
+        catch( Throwable $e )
+        {
+            if( PROJECT_MODE !== 'publication' ) 
+            {
+                Exceptions::table($e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+            }   
+        }
+
+        # The system finishes the load time.
+        define('FINISH_BENCHMARK', microtime(true));
+
+        # Creates a table that calculates the operating performance of the system. 
+        # To open this table, follow the steps below.
+        In::benchmarkReport();
     }
 
     /**
@@ -169,88 +253,6 @@ class ZN
         self::$defines = $defines;
 
         return new self;
-    }
-
-    /**
-     * Run ZN
-     * 
-     * @param string $type     = NULL - options[EIP|SE|CE]
-     * @param string $version  = NULL
-     * @param string $dedicate = NULL
-     * 
-     * @return void|false
-     */
-    public static function run(String $type = NULL, String $version = NULL, String $dedicate = NULL)
-    {
-        # PHP shows code errors.
-        ini_set('display_errors', true);
-        
-        # The system starts the load time.
-        define('START_BENCHMARK', microtime(true));
-
-        # ZN Version
-        define('ZN_VERSION', $version);
-
-        # Dedicated
-        define('ZN_DEDICATE', $dedicate);
-
-        # It shows you which framework you are using. SE for single edition, EIP for multi edition.
-        define('PROJECT_TYPE', $type === 'FE' ? 'EIP' : $type);
-        self::$projectType = $type;
-
-        # Define standart constants
-        self::predefinedConstants();
-
-        # Predefined Functions
-        self::predefinedFunctions();
-
-        # Defines constants required for system and user.
-        self::defineDirectoryConstants();
-
-        # Enables class loading by automatically activating the object call.
-        Autoloader::register();
-        
-        # Provides data about the current working url.
-        Structure::defines();
-
-        # If the operation is executed via console, the code flow is not continue.  
-        if( defined('CONSOLE_ENABLED') || $type === NULL )
-        {
-            return false;
-        }
-
-        # The code to be written to this layer runs before the system files are 
-        # loaded. For this reason, you can not use ZN libraries.
-        Base::layer('Top');
-
-        # Enables route filters.
-        Singleton::class('ZN\Routing\Route')->filter();
-
-        # You can use system constants and libraries in this layer since the code 
-        # to write to this layer is used immediately after the auto loader. 
-        # All Config files can be configured on this layer since this layer runs 
-        # immediately after the auto installer.
-        Base::layer('TopBottom');
-
-        # Run Kernel
-        try 
-        { 
-            Kernel::run();  
-        }
-        catch( Throwable $e )
-        {
-            if( PROJECT_MODE !== 'publication' ) 
-            {
-                Exceptions::table($e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
-            }   
-        }
-
-        # The system finishes the load time.
-        define('FINISH_BENCHMARK', microtime(true));
-
-        # Creates a table that calculates the operating performance of the system. 
-        # To open this table, follow the steps below.
-        In::benchmarkReport();
     }
 
     /**
