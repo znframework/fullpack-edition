@@ -78,6 +78,13 @@ class Upload implements UploadInterface
     protected $path;
 
     /**
+     * Keeps upload directory
+     * 
+     * @var string
+     */
+    protected $uploadDirectory = UPLOADS_DIR ?: 'upload/';
+
+    /**
      * Magic Constructor
      */
     public function __construct()
@@ -245,7 +252,7 @@ class Upload implements UploadInterface
     public  function start(String $fileName = 'upload', String $rootDir = NULL) : Bool
     {
         $fileName = $this->settings['source'] ?? $fileName;
-        $rootDir  = $this->settings['target'] ?? $rootDir ?? UPLOADS_DIR;
+        $rootDir  = $this->settings['target'] ?? $rootDir ?? $this->uploadDirectory;
 
         if( ! is_dir($rootDir) ) 
         {
