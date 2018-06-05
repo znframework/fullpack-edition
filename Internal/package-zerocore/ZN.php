@@ -406,47 +406,64 @@ class ZN
      */
     protected static function getProjectContainerDir($path = NULL) : String
     {
-        $containers          = PROJECTS_CONFIG['containers'];
-        $containerProjectDir = PROJECT_DIR . $path;
+        # Container projects are being called.
+        $containers = PROJECTS_CONFIG['containers'];
 
+        # Gets internal directories according to the active project.
+        $getProjectContainerDirectory = PROJECT_DIR . $path;
+
+        # If the requested project is a sub-project, the project containing this project is called.
         if( ! empty($containers) && defined('_CURRENT_PROJECT') )
         {
+            # If a project is being repaired, the project will be used with the 'Restore' prefix.
             $restoreFix = 'Restore';
 
             # 5.3.8[added]
-            if( strpos(_CURRENT_PROJECT, $restoreFix) === 0 && is_dir(PROJECTS_DIR . ($restoredir = ltrim(_CURRENT_PROJECT, $restoreFix))) )
+            # If there is a restore operation related to the desired project, 
+            # the project request is reshaped according to the restore directory.
+            if( strpos(_CURRENT_PROJECT, $restoreFix) === 0 && is_dir(PROJECTS_DIR . ($restoreDirectory = ltrim(_CURRENT_PROJECT, $restoreFix))) )
             {
-                $condir = $restoredir;
-
-                if( $containers[$condir] ?? NULL )
+                # If the project being repaired is within the scope of another upstream project, 
+                # then the project directory is enabled.
+                if( $containers[$restoreDirectory] ?? NULL )
                 {
-                    $condir = $containers[$condir];
+                    $activeContainerDirectory = $containers[$restoreDirectory];
+                }
+                # Otherwise, the repaired project is enabled.
+                else
+                {
+                    $activeContainerDirectory = $restoreDirectory;
                 }
             }
             else
             {
-                $condir = $containers[_CURRENT_PROJECT] ?? NULL;
+                # If the requested project is covered by another project, that project is called.
+                $activeContainerDirectory = $containers[_CURRENT_PROJECT] ?? NULL;
             }  
             
-            return ! empty($condir) && ! file_exists($containerProjectDir)
-                    ? PROJECTS_DIR . Base::suffix($condir) . $path
-                    : $containerProjectDir;
+            # It allows common directory usage for multiple projects.
+            # If the requested directory is not in the subproject, 
+            # the top project directory covering this project is used in common.
+            return ! empty($activeContainerDirectory) && ! is_dir($getProjectContainerDirectory)
+                   ? PROJECTS_DIR . $activeContainerDirectory . '/' . $path
+                   : $getProjectContainerDirectory;
         }
 
         # 5.3.33[edited]
-        if( is_dir($containerProjectDir) )
+        if( is_dir($getProjectContainerDirectory) )
         {
-            return $containerProjectDir;
+            return $getProjectContainerDirectory;
         }
 
         # 5.1.5[added]
         # The enclosures can be the opening controller
         if( $container = ($containers[CURRENT_PROJECT] ?? NULL) )
         {
-            $containerProjectDir = str_replace(CURRENT_PROJECT, $container, $containerProjectDir);
+            $getProjectContainerDirectory = str_replace(CURRENT_PROJECT, $container, $getProjectContainerDirectory);
         }
 
-        return $containerProjectDir;
+        # Return active project directory.
+        return $getProjectContainerDirectory;
     }
 
     /**
