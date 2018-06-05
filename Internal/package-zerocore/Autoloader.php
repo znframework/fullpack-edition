@@ -41,23 +41,32 @@ class Autoloader
      */
     public static function run(String $class)
     {
-        if( self::standart($class) !== false )
+        # Automatically loads internal facade class.
+        if( self::facade($class) !== false )
         {
             return;
         }
         
+        # If a valid ClassMap file can not be found, this file is recreated.
+        # Immediately before this build, the auto-installer performs a class 
+        # lookup in the directories that are defined.
         if( ! is_file(self::$path) )
         {
             self::createClassMap();
         }
 
+        # Getting information from the class map of the class being called according to ZN's autoloader.
         $classInfo = self::getClassFileInfo($class);
-        $file      = $classInfo['path'];
+
+        # Retrieves the path information of the class to be loaded from the classmap file.
+        $file = $classInfo['path'];
         
+        # If the class file exists, it is included.
         if( is_file($file) )
         {
-           require_once $file;
+            require $file;
 
+            # If the class file can not be loaded, the class map is rebuilt.
             if
             (
                 ! class_exists($classInfo['namespace']) &&
@@ -68,6 +77,7 @@ class Autoloader
                 self::tryAgainCreateClassMap($class);
             }
         }
+        # If the file of the invoked class does not contain a valid path, the class map is rebuilt.
         else
         {
             self::tryAgainCreateClassMap($class);
@@ -75,34 +85,23 @@ class Autoloader
     }
 
     /**
-     * Implementations of PSR-4
+     * Autoload Facade
      * 
      * @param string $class
      * 
      * @return bool
      */
-    public static function standart(String $class)
+    public static function facade(String $class)
     {
+        # The namespace of the invoked class is converted to path information.
         $path = str_replace('\\', '/', $class) . '.php';
         
-        if( strstr($class, 'ZN\\') === false && is_file($file = (__DIR__ . '/Facades/' . $path)) )
+        # If a facade class is called, this part goes into effect.
+        if( strpos($class, 'ZN\\') !== 0 && is_file($file = (__DIR__ . '/Facades/' . $path)) )
         {   
-            return require_once $file;
+            require $file; return;
         }
-        else 
-        {
-            $path = ltrim($path, 'ZN');
-
-            if( is_file($file = (__DIR__ . $path)) ) 
-            {
-                return require_once $file;
-            }
-            elseif( is_file($file = (__DIR__ . '/..' . $path)) ) 
-            {
-                return require_once $file;
-            }
-        }
-        
+       
         return false;   
     }
 
@@ -132,77 +131,94 @@ class Autoloader
      */
     public static function createClassMap()
     {
+        # Clears file status cache.
         clearstatcache();
 
+        # Getting predefined autoload settings.
         $configAutoloader = Config::get('Autoloader') ?: 
+        # Default class map directory.
+        # Applies to custom edition and individual package usage.
         [
             'directoryScanning' => true,
             'classMap'          => [REAL_BASE_DIR]
         ];
 
-        $configClassMap   = self::_config();
-
+        # If the 'directoryScanning' value in the Settings/Autoloader.php 
+        # setting file is set to false, it will not scan the directory
+        # Setting this value to true is not recommended.
         if( $configAutoloader['directoryScanning'] === false )
         {
             return false;
         }
 
+        # Directory information for class scanning is being retrieved.
+        # Settings/Autoloader.php -> classMap key.
         $classMap = $configAutoloader['classMap'];
-       
+        
+        # The classes are scanned in the specified directories.
         if( ! empty($classMap) ) foreach( $classMap as $directory )
         {
             $classMaps = self::searchClassMap($directory, $directory);
         }
 
-        $classArray = array_diff_key
-        (
-            $classMaps['classes']      ?? [],
-            $configClassMap['classes'] ?? []
-        );
+        # The top output of the class map is being generated.
+        self::createClassMapTopOutput($classMapPage);
 
-        $eol  = EOL;
+        # Gets classes content.
+        self::getClassesAndNamespacesOutput('classes', $classMaps, $classMapPage);
 
+        # Gets namespaces content.
+        self::getClassesAndNamespacesOutput('namespaces', $classMaps, $classMapPage);
+
+        # It is checked whether the content to be newly added is empty.
+        # 5.7.4.4[added|changed]
+        self::addToClassMap($classMapPage);
+    }
+
+    /**
+     * Protected create class map top output.
+     */
+    protected static function createClassMapTopOutput(&$classMapPage)
+    {
         if( ! is_file(self::$path) )
         {
-            $classMapPage  = '<?php'.$eol;
-            $classMapPage .= '#----------------------------------------------------------------------'.$eol;
-            $classMapPage .= '# This file automatically created and updated'.$eol;
-            $classMapPage .= '#----------------------------------------------------------------------'.$eol;
+            $classMapPage  = '<?php'.EOL;
+            $classMapPage .= '#----------------------------------------------------------------------'.EOL;
+            $classMapPage .= '# This file automatically created and updated'.EOL;
+            $classMapPage .= '#----------------------------------------------------------------------'.EOL;
         }
         else
         {
             $classMapPage = '';
         }
+    }
+
+    /**
+     * Protected get classes & namespaces output
+     */
+    protected static function getClassesAndNamespacesOutput($type = '', $classMaps, &$classMapPage)
+    {
+         # Get the class and namespace array information from the Project/Any/ClassMap.php file
+         $configClassMap = self::getClassMapContent();
+
+        # Getting class paths to print on the class map.
+        # For the concurrent correct class list, information is obtained from 
+        # both the configuration file and the  $classes variable of this class.
+        $classArray = array_diff_key
+        (
+            $classMaps[$type]      ?? [],
+            $configClassMap[$type] ?? []
+        );
 
         if( ! empty($classArray) )
         {
-            self::$classes = $classMaps['classes'];
+            self::${$type} = $classMaps[$type];
 
             foreach( $classArray as $k => $v )
             {
-                $classMapPage .= '$classMap[\'classes\'][\''.$k.'\'] = \''.$v.'\';'.$eol;
+                $classMapPage .= '$classMap[\''.$type.'\'][\''.$k.'\'] = \''.$v.'\';'.EOL;
             }
         }
-
-        $namespaceArray = array_diff_key
-        (
-            $classMaps['namespaces']      ?? [],
-            $configClassMap['namespaces'] ?? []
-        );
-
-        if( ! empty($namespaceArray) )
-        {
-            self::$namespaces = $classMaps['namespaces'];
-
-            foreach( $namespaceArray as $k => $v )
-            {
-                $classMapPage .= '$classMap[\'namespaces\'][\''.$k.'\'] = \''.$v.'\';'.$eol;
-            }
-        }
-
-        # It is checked whether the content to be newly added is empty.
-        # 5.7.4.4[added|changed]
-        self::addToClassMap($classMapPage);
     }
 
     /**
@@ -228,7 +244,7 @@ class Autoloader
     public static function getClassFileInfo(String $class) : Array
     {
         $classCaseLower = strtolower($class);
-        $classMap       = self::_config();
+        $classMap       = self::getClassMapContent();
         $classes        = array_merge($classMap['classes']    ?? [], (array) self::$classes);
         $namespaces     = array_merge($classMap['namespaces'] ?? [], (array) self::$namespaces);
         $path           = '';
@@ -383,7 +399,7 @@ class Autoloader
 
         $directory           = Base::suffix($directory);
         $baseDirectory       = Base::suffix($baseDirectory);
-        $configClassMap      = self::_config();
+        $configClassMap      = self::getClassMapContent();
         $configAutoloader    = Config::get('Autoloader');
         $directoryPermission = $configAutoloader['directoryPermission'] ?? 0755;
 
@@ -414,14 +430,14 @@ class Autoloader
                     {
                         $className = strtolower($classInfo['namespace']).'\\'.$class;
 
-                        $classes['namespaces'][self::_cleanNail($className)] = self::_cleanNail($class);
+                        $classes['namespaces'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($class);
                     }
                     else
                     {
                         $className = $class;
                     }
 
-                    $classes['classes'][self::_cleanNail($className)] = self::_cleanNail($v);
+                    $classes['classes'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($v);
 
                     $useStaticAccess = strtolower(INTERNAL_ACCESS);
 
@@ -450,8 +466,8 @@ class Autoloader
 
                         $rpath = $path     = Base::suffix($newDir).$classInfo['class'].'.php';
                     
-                        $constants         = self::_findConstants($val);
-                        $classContent      = self::_classFileContent($newClassName, $constants);
+                        $constants         = self::findConstantsClassContent($val);
+                        $classContent      = self::createClassFileContent($newClassName, $constants);
                         $fileContentLength = is_file($rpath) ? strlen(file_get_contents($rpath)) : 0;
 
                         if( strlen($classContent) !== $fileContentLength )
@@ -479,7 +495,7 @@ class Autoloader
      * 
      * @return string
      */
-    protected static function _findConstants($v)
+    protected static function findConstantsClassContent($v)
     {
         $getFileContent = file_get_contents($v);
 
@@ -509,7 +525,7 @@ class Autoloader
      * 
      * @return string
      */
-    protected static function _classFileContent($newClassName, $constants)
+    protected static function createClassFileContent($newClassName, $constants)
     {
         $classContent  = '<?php'.EOL;
         $classContent .= '#-------------------------------------------------------------------------'.EOL;
@@ -535,13 +551,13 @@ class Autoloader
      * 
      * @return mixed
      */
-    private static function _config()
+    private static function getClassMapContent()
     {
         if( is_file(self::$path) )
         {
             global $classMap;
             
-            // 5.4.61[added]
+            # 5.4.61[added]
             try
             {
                 require_once self::$path;
@@ -585,7 +601,7 @@ class Autoloader
      * 
      * @return string
      */
-    protected static function _cleanNail($string)
+    protected static function cleanNailClassMapContent($string)
     {
         return str_replace(["'", '"'], NULL, $string);
     }
@@ -600,7 +616,7 @@ class Autoloader
     public static function register($type = 'run')
     {
         # Autoload register.
-        spl_autoload_register('Autoloader::' . $type);
+        spl_autoload_register('ZN\Autoloader::' . $type);
 
         # If the use of alias is obvious, it will activate this operation.
         self::aliases();
