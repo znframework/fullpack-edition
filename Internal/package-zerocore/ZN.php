@@ -188,6 +188,7 @@ class ZN
         if( ! empty($return) )
         {
             $upgradeFolder = 'Upgrade'.md5('upgrade').'/';
+            $backupFolder  = 'UpgradeBackups/' . ZN_VERSION . '/';
 
             Filesystem::createFolder($upgradeFolder);
 
@@ -208,6 +209,13 @@ class ZN
                     else
                     {
                         file_put_contents($file, $content);
+
+                        # [5.7.6]added
+                        # Backup upgrade files.
+                        if( file_exists($file) )
+                        {
+                            Filesystem::copy($file, $backupFolder);
+                        }
                     }
                 } 
             }

@@ -499,6 +499,8 @@ class Autoloader
     {
         $getFileContent = file_get_contents($v);
 
+        # If the classes in which the static view will be created contain constants, 
+        # these constants are built into the static view.
         preg_match_all('/const\s+(\w+)\s+\=\s+(.*?);/i', $getFileContent, $match);
 
         $const = $match[1] ?? [];
@@ -527,6 +529,8 @@ class Autoloader
      */
     protected static function createClassFileContent($newClassName, $constants)
     {
+        # Static view of classes with prefix 'Internal'.
+        # Static views are built into the Resources/Statics/ directory.
         $classContent  = '<?php'.EOL;
         $classContent .= '#-------------------------------------------------------------------------'.EOL;
         $classContent .= '# This file automatically created and updated'.EOL;
@@ -553,6 +557,9 @@ class Autoloader
      */
     private static function getClassMapContent()
     {
+        # Some server configuration bugs may lead to erroneous writing to the class map. 
+        # If a code error is detected in the possible class map, the class map is rebuilt. 
+        # Thus, system operation is never interrupted.
         if( is_file(self::$path) )
         {
             global $classMap;
@@ -582,12 +589,16 @@ class Autoloader
      */
     protected static function tryAgainCreateClassMap($class)
     {
+        # The class map is being rebuilt.
         self::createClassMap();
 
+        # Getting class information.
         $classInfo = self::getClassFileInfo($class);
 
+        # The file location of the class is being obtained.
         $file = $classInfo['path'];
 
+        # If the file location is correct, the class is included.
         if( is_file($file) )
         {
             require $file;
@@ -603,6 +614,7 @@ class Autoloader
      */
     protected static function cleanNailClassMapContent($string)
     {
+        # If the class or namespace information contains quotes, these quotes are cleared.
         return str_replace(["'", '"'], NULL, $string);
     }
 
