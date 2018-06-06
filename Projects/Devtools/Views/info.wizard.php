@@ -1,15 +1,18 @@
 <!-- Page Heading -->
 {{Form::open()}}
 <div class="row">
-    <div class="col-lg-11">
+    <div class="col-lg-10">
         <h1 class="page-header">
             {{LANG['systemInfo']}} <small> {{LANG['overview']}}</small>
         </h1>
 
     </div>
 
-    <div class="col-lg-1">
-        <h1 class="page-header">
+    <div class="col-lg-2">
+        <h1 class="page-header pull-right">
+            @if( ZN::$projectType === 'FE' && ($isUndoUpgrade ?? NULL) ) 
+            {{Form::class('btn btn-danger')->submit('undoUpgrade', LANG['undoUpgrade'])}}
+            @endif
             {{Form::class('btn btn-info')->submit('upgrade', LANG['upgradeButton'])}}
         </h1>
     </div>
@@ -26,19 +29,15 @@
             </div>
             <div class="panel-body">
                 <div class="list-group">
-
                     @foreach( $upgrades as $upgrade )
                     <a href="#" class="list-group-item">
                         <i class="fa fa-fw fa-file"></i> @$upgrade:
                     </a>
                     @endforeach
-
                 </div>
-
             </div>
         </div>
     </div>
-
 </div>
 
  @endif

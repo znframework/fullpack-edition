@@ -175,6 +175,55 @@ class ZN
     }
 
     /**
+     * Undo upgrade
+     * 
+     * @param string $version = 'last'
+     * 
+     * @return string|bool
+     */
+    public static function undoUpgrade($version = 'last')
+    {
+        $getUpgradeDirectories = Filesystem::getFiles('UpgradeBackups/', 'dir');
+
+        $getContainerDirectory = NULL;
+
+        if( ! empty($getUpgradeDirectories) )
+        {
+            if( $version === 'last' )
+            {
+                rsort($getUpgradeDirectories);
+    
+                $getContainerDirectory = $getUpgradeDirectories[0] ?? NULL;
+            }
+            else
+            {
+                $getContainerDirectory = $version;
+            }
+        }   
+
+        $lastUpgradeDirectory = 'UpgradeBackups/' . $getContainerDirectory . '/';
+
+        if( is_dir($lastUpgradeDirectory) )
+        {
+            Filesystem::copy($lastUpgradeDirectory, REAL_BASE_DIR); Filesystem::deleteFolder($lastUpgradeDirectory);
+
+            return true;
+        }
+        else
+        {
+            return self::getValueLang('upgradeBackupNotFound');
+        }
+    }
+
+    /**
+     * Protected get value lang
+     */
+    protected static function getValueLang($value)
+    {
+        return Lang::default('ZN\CoreDefaultLanguage')::select('ZN', 'zn:' . $value);
+    }
+
+    /**
      * Upgrade system
      * 
      * @param void
@@ -187,9 +236,8 @@ class ZN
 
         if( ! empty($return) )
         {
-            $upgradeFolder = 'Upgrade'.md5('upgrade').'/';
-
-            Filesystem::createFolder($upgradeFolder);
+            Filesystem::createFolder($upgradeFolder = 'Upgrade'.md5('upgrade').'/');
+            Filesystem::createFolder($backupFolder  = 'UpgradeBackups/' . ZN_VERSION . '/');
 
             foreach( $return as $file => $content )
             {
@@ -208,6 +256,13 @@ class ZN
                     else
                     {
                         file_put_contents($file, $content);
+                    }
+
+                    # [5.7.6]added
+                    # Backup upgrade files.
+                    if( file_exists($origin) && ($originContent = file_get_contents($origin)) !== $content )
+                    { 
+                        file_put_contents($backupFolder . $origin, $originContent);
                     }
                 } 
             }
