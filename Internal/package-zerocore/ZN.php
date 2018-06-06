@@ -262,7 +262,11 @@ class ZN
                     # Backup upgrade files.
                     if( file_exists($origin) && ($originContent = file_get_contents($origin)) !== $content )
                     { 
-                        file_put_contents($backupFolder . $origin, $originContent);
+                        $backupFile = $backupFolder . $origin;
+
+                        Filesystem::createFolder(pathinfo($backupFile, PATHINFO_DIRNAME));
+
+                        file_put_contents($backupFile, $originContent);
                     }
                 } 
             }
