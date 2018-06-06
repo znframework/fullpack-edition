@@ -212,9 +212,9 @@ class ZN
 
                         # [5.7.6]added
                         # Backup upgrade files.
-                        if( file_exists($file) )
+                        if( file_exists($origin) )
                         {
-                            Filesystem::copy($file, $backupFolder);
+                            Filesystem::copy($origin, REAL_BASE_DIR . $backupFolder);
                         }
                     }
                 } 
