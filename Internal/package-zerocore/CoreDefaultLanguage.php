@@ -31,7 +31,8 @@ class CoreDefaultLanguage
         'butcher:cantMultipleExtractTheme'       => '% directory does not have the proper theme for multiple extraction!',
         'butcher:cantExtractTheme'               => 'The theme can not be extract! It may have been created before.',
         'butcher:extractThemeSuccess'            => 'Theme integration has been successfully completed.',
-        'kernel:invalidOpenFunction'             => 'Your controller does not have a valid boot method! Please check your [openFunction] configuration under the Config/Routing.php path.'
+        'kernel:invalidOpenFunction'             => 'Your controller does not have a valid boot method! Please check your [openFunction] configuration under the Config/Routing.php path.',
+        'zn:upgradeBackupNotFound'               => 'A valid upgrade backup was not found!'
     ];
 
     public $tr = 
@@ -40,6 +41,7 @@ class CoreDefaultLanguage
         'butcher:cantMultipleExtractTheme'       => '% dizini çoklu çıkarma işlemine uygun tema yapısına sahip değil!',
         'butcher:cantExtractTheme'               => 'Tema çıkartılamıyor! Daha önce oluşturulmuş olabilir.',
         'butcher:extractThemeSuccess'            => 'Tema entegrasyonu başarı ile tamamlandı.',
-        'kernel:invalidOpenFunction'             => 'Kontrolcünüz geçerli bir açılış yöntemi içermiyor! Lütfen Config/Routing.php yolu altında yer alan [openFunction] yapılandırmanızı kontrol edin.'
+        'kernel:invalidOpenFunction'             => 'Kontrolcünüz geçerli bir açılış yöntemi içermiyor! Lütfen Config/Routing.php yolu altında yer alan [openFunction] yapılandırmanızı kontrol edin.',
+        'zn:upgradeBackupNotFound'               => 'Geçerli bir yükseltme yedeği bulunamadı!'
     ];
 }

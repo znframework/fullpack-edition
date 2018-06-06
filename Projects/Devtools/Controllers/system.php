@@ -335,8 +335,27 @@ class System extends Controller
                 }
             }
 
+            if( Method::post('undoUpgrade') )
+            {
+                $result = ZN::undoUpgrade('last');
+
+                if( is_string($result) )
+                {
+                    Masterpage::error($result);
+                }
+                else
+                {
+                    Redirect::location(URL::current(), 0, ['success' => LANG['successUpgrade']]);
+                }
+            }
+
             View::upgrades(ZN::upgradeFiles());
         } 
+
+        if( is_dir($upgradeBackupsDirectory = 'UpgradeBackups/') )
+        {
+            View::isUndoUpgrade(Folder::files($upgradeBackupsDirectory, 'dir'));
+        }
 
         Masterpage::page('info');
     }
