@@ -171,8 +171,9 @@ class Kernel
         # The view path is being controlled so that the view can be loaded automatically.
         self::viewPathFinder($function, $viewPath, $wizardPath);
 
+        # Resolving dependency injections.
         # The controller is being called.
-        Singleton::class($page)->$function(...$parameters);
+        self::callController($page, $function, $parameters);
         
         # The view is automatically loading.
         self::viewAutoload($wizardPath, $viewPath);          
@@ -184,6 +185,44 @@ class Kernel
         
         # The operation of the system core is completes.
         self::end();
+    }
+
+    /**
+     * Protected call controller
+     * 
+     * [added]5.7.7
+     */
+    protected static function callController($page, $function, $parameters)
+    {
+        (new $page(...self::resolvingDependencyInjections($page, '__construct')))
+        ->$function(...(self::resolvingDependencyInjections($page, $function) ?: $parameters));
+    }
+
+    /**
+     * Protected resolving dependency injections
+     * 
+     * [5.7.7]added
+     */
+    protected static function resolvingDependencyInjections($page, $function)
+    {
+        $reflector = new \ReflectionClass($page);
+
+        $getReflectionParameters = $reflector->getMethod($function)->getParameters();
+
+        $getExportParameters = [];
+
+        foreach( $getReflectionParameters as $parameter )
+        {
+            preg_match('/<required>\s(?<vartype>\w.*?)\s/', \ReflectionParameter::export([$page, $function], $parameter->name, true), $match);
+
+            if( isset($match['vartype']) && ! ctype_lower($match['vartype']) )
+            {
+                $class = '\\' . trim($match['vartype']);
+                $getExportParameters[] = new $class;
+            }
+        }
+
+        return $getExportParameters;
     }
 
     /**
