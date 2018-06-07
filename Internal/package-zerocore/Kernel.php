@@ -13,6 +13,7 @@ use ZN\ErrorHandling\Errors;
 use ZN\Inclusion\Project\Theme;
 use ZN\ErrorHandling\Exceptions;
 use ZN\Inclusion\Project\Masterpage;
+use ZN\Inclusion\Project\View;
 
 class Kernel
 {
@@ -213,12 +214,22 @@ class Kernel
 
         foreach( $getReflectionParameters as $parameter )
         {
-            preg_match('/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s/', \ReflectionParameter::export([$page, $function], $parameter->name, true), $match);
+            preg_match
+            (
+                '/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s\$(?<varname>\w+)/', 
+                \ReflectionParameter::export([$page, $function], $parameter->name, true), 
+                $match
+            );
 
             if( isset($match['vartype']) )
             {
-                $class = '\\' . trim($match['vartype']);
-                $getExportParameters[] = new $class;
+                $class   = '\\' . trim($match['vartype']);  
+                $class   = new $class;
+                $varname = $match['varname'];
+
+                View::$varname($class);
+
+                $getExportParameters[] = $class;
             }
         }
 
