@@ -9,11 +9,11 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ReflectionClass;
 use ZN\ErrorHandling\Errors;
-use ZN\Inclusion\Project\Theme;
 use ZN\ErrorHandling\Exceptions;
+use ZN\Inclusion\Project\Theme;
 use ZN\Inclusion\Project\Masterpage;
-use ZN\Inclusion\Project\View;
 
 class Kernel
 {
@@ -195,63 +195,14 @@ class Kernel
      */
     protected static function callController($page, $function, $parameters)
     {
+        # The reflection of the active controller is being taken.
+        $reflector = new ReflectionClass($page);
+
         # The active controller's construct method is being resolved.
-        $controller = new $page(...self::resolvingDependencyInjections($page, '__construct'));
+        $controller = new $page(...In::resolvingDependencyInjections($reflector, $page, '__construct'));
 
         # The parameters of the active controller method are being resolved.
-        $controller->$function(...(self::resolvingDependencyInjections($page, $function) ?: $parameters));
-    }
-
-    /**
-     * Protected resolving dependency injections
-     * 
-     * [5.7.7]added
-     */
-    protected static function resolvingDependencyInjections($page, $function)
-    {
-        # The reflection of the active controller is being taken.
-        $reflector = new \ReflectionClass($page);
-
-        # The parameter reflection of the active controller method is being taken.
-        $getReflectionParameters = $reflector->getMethod($function)->getParameters();
-
-        $getExportParameters = [];
-
-        # Resolving is started in case of the current match.
-        foreach( $getReflectionParameters as $parameter )
-        {   
-            # Class and variable names are obtained.
-            # [varname] for variable name.
-            # [vartype] for variable type.
-            preg_match
-            (
-                '/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s\$(?<varname>\w+)/', 
-                \ReflectionParameter::export([$page, $function], $parameter->name, true), 
-                $match
-            );
-
-            # If a valid class is found, the resolving continues.
-            if( isset($match['vartype']) )
-            {
-                # The class name is being created.
-                $class = '\\' . $match['vartype'];
-                
-                # The class instance is being created.
-                $class = new $class;
-
-                # The name of the class instance is obtained.
-                $varname = $match['varname'];
-
-                # Generated instances are being sent for use in views.
-                View::$varname($class);
-
-                # The controller is creating injections of the corresponding method.
-                $getExportParameters[] = $class;
-            }
-        }
-
-        # Parameters are being sent.
-        return $getExportParameters;
+        $controller->$function(...(In::resolvingDependencyInjections($reflector, $page, $function) ?: $parameters));
     }
 
     /**

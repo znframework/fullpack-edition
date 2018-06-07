@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ReflectionClass;
+use ReflectionParameter;
 use ZN\ErrorHandling\Errors;
 use ZN\ErrorHandling\Exceptions;
 use ZN\Inclusion\Project\View;
@@ -357,8 +359,8 @@ class In
     {
         $controllerEx = explode(':', $startController);
 
-        $controllerPath  = ! empty($controllerEx[0]) ? $controllerEx[0] : '';
-        $controllerFunc  = ! empty($controllerEx[1]) ? $controllerEx[1] : 'main';
+        $controllerPath  = $controllerEx[0] ?? '';
+        $controllerFunc  = $controllerEx[1] ?? Config::get('Routing', 'openFunction') ?: 'main';
         $controllerFile  = CONTROLLERS_DIR . ($suffixExtension = Base::suffix($controllerPath, '.php'));
         $controllerClass = Datatype::divide($controllerPath, '/', -1);
 
@@ -405,9 +407,12 @@ class In
                 }
             }
 
+            # The reflection of the active controller is being taken.
+            $reflector = new ReflectionClass($controllerClass);
+
             $startingControllerClass = Singleton::class($controllerClass);
 
-            $return = $startingControllerClass->$controllerFunc(...$param);
+            $return = $startingControllerClass->$controllerFunc(...(self::resolvingDependencyInjections($reflector, $controllerClass, $controllerFunc) ?: $param));
 
             self::$view[]       = View::$data;
             self::$masterpage[] = Masterpage::$data;
@@ -416,6 +421,59 @@ class In
         {
             return false;
         }
+    }
+
+    /**
+     * Resolving dependency injections
+     * 
+     * @param ReflectionClass $reflector
+     * @param string          $page
+     * @param string          $function
+     * 
+     * [5.7.7]added
+     */
+    public static function resolvingDependencyInjections($reflector, $page, $function)
+    {
+        # The parameter reflection of the active controller method is being taken.
+        $getReflectionParameters = $reflector->getMethod($function)->getParameters();
+
+        $getExportParameters = [];
+
+        # Resolving is started in case of the current match.
+        foreach( $getReflectionParameters as $parameter )
+        {   
+            # Class and variable names are obtained.
+            # [varname] for variable name.
+            # [vartype] for variable type.
+            preg_match
+            (
+                '/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s\$(?<varname>\w+)/', 
+                ReflectionParameter::export([$page, $function], $parameter->name, true), 
+                $match
+            );
+
+            # If a valid class is found, the resolving continues.
+            if( isset($match['vartype']) )
+            {
+                # The class name is being created.
+                $class = '\\' . $match['vartype'];
+                
+                # The class instance is being created.
+                $class = new $class;
+
+                # The name of the class instance is obtained.
+                $varname = $match['varname'];
+
+                # Generated instances are being sent for use in views.
+                View::$varname($class);
+
+                # The controller is creating injections of the corresponding method.
+                $getExportParameters[] = $class;
+            }
+        }
+
+        # Parameters are being sent.
+        return $getExportParameters;
     }
 
     /**
