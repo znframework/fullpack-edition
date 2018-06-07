@@ -213,17 +213,17 @@ class In
         {
             $internalDir = NULL;
 
-            if( defined('_CURRENT_PROJECT') )
+            if( REQUESTED_CURRENT_PROJECT !== NULL )
             {
                 $configAppdir = PROJECTS_CONFIG['directory']['others'];
 
                 if( is_array($configAppdir) )
                 {
-                    $internalDir = ! empty($configAppdir[$requestUri]) ? $requestUri : _CURRENT_PROJECT;
+                    $internalDir = ! empty($configAppdir[$requestUri]) ? $requestUri : REQUESTED_CURRENT_PROJECT;
                 }
                 else
                 {
-                    $internalDir = _CURRENT_PROJECT;
+                    $internalDir = REQUESTED_CURRENT_PROJECT;
                 }
             }
 

@@ -83,9 +83,9 @@ class Kernel
         # Sets the system's language.
         if( Lang::current() )
         {
-            $langFix = str_ireplace([Base::suffix((string) Base::illustrate('_CURRENT_PROJECT'))], '', Base::currentPath());
+            $langFix = str_ireplace([Base::suffix((string) REQUESTED_CURRENT_PROJECT)], '', Base::currentPath());
             $langFix = explode('/', $langFix)[1] ?? NULL;
-
+            
             if( strlen($langFix) === 2 )
             {
                 Lang::set($langFix);

@@ -104,9 +104,7 @@ class Job implements JobInterface, CrontabIntervalInterface
         if( PROJECT_TYPE === 'EIP' )
         {
             $this->crontabCommands = EXTERNAL_DIR . $this->fileName;
-            $this->user            = defined('_CURRENT_PROJECT') 
-                                   ? _CURRENT_PROJECT
-                                   : CURRENT_PROJECT;
+            $this->user            = DEFINED_CURRENT_PROJECT;
             
             $this->_project($this->dzerocore = $this->zeroneed);
         }
@@ -211,7 +209,7 @@ class Job implements JobInterface, CrontabIntervalInterface
     {
         $this->user = $name;
 
-        $this->crontabDir = str_replace(_CURRENT_PROJECT, $this->user, $this->crontabDir);
+        $this->crontabDir = str_replace(REQUESTED_CURRENT_PROJECT, $this->user, $this->crontabDir);
 
         $this->_project($this->dzerocore);
 
