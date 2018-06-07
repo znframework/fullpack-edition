@@ -33,6 +33,13 @@ class Autoloader
     protected static $path = PROJECT_DIR . 'ClassMap.php';
 
     /**
+     * Keep static access directory
+     * 
+     * @var string
+     */
+    protected static $staticAccessDirectory = RESOURCES_DIR . 'Statics/';
+
+    /**
      * Starts the class load process.
      * 
      * @param string $class
@@ -158,7 +165,7 @@ class Autoloader
         # The classes are scanned in the specified directories.
         if( ! empty($classMap) ) foreach( $classMap as $directory )
         {
-            $classMaps = self::searchClassMap($directory, $directory);
+            $classMaps = self::searchClassMap($directory);
         }
 
         # The top output of the class map is being generated.
@@ -389,47 +396,60 @@ class Autoloader
      * Search the invoked class in the classmap.
      * 
      * @param string $directory
-     * @param string $baseDirectory = NULL
      * 
      * @return mixed
      */
-    protected static function searchClassMap($directory, $baseDirectory = NULL)
+    protected static function searchClassMap($directory)
     {
+        # Keeps a list of classes to be written to the class map.
         static $classes;
 
-        $directory           = Base::suffix($directory);
-        $baseDirectory       = Base::suffix($baseDirectory);
-        $configClassMap      = self::getClassMapContent();
-        $configAutoloader    = Config::get('Autoloader');
-        $directoryPermission = $configAutoloader['directoryPermission'] ?? 0755;
+        # Directory path information to start scanning.
+        $directory = Base::suffix($directory);
 
+        # Gets the contents of the class map.
+        $configClassMap = self::getClassMapContent();
+
+        # Gets up the contents of the Settings/Autoloader.php 
+        # file which holds the settings for this library.
+        $configAutoloader = Config::get('Autoloader');
+
+        # The list of files contained within the directory is retrieved.
         $files = glob($directory.'*');
+
+        # The previously recorded class information on the list is eliminated.
         $files = array_diff
         (
             $files,
             $configClassMap['classes'] ?? []
         );
 
-        $staticAccessDirectory = RESOURCES_DIR . 'Statics/';
-
-        $eol = EOL;
-
-        if( ! empty($files) ) foreach( $files as $val )
+        # If the class is found in the scanned list, the class finder is started.
+        if( ! empty($files) ) foreach( $files as $file )
         {
-            $v = $val;
+            $originFile = $file;
 
-            if( is_file($val) )
+            # Continue scanning if the value is a file.
+            if( is_file($file) )
             {
-                $classInfo = self::tokenClassFileInfo($val);
+                # Class information about the file is retrieved.
+                $classInfo = self::tokenClassFileInfo($file);
 
+                # If the file contains valid class information, scanning continues.
                 if( isset($classInfo['class']) )
                 {
+                    # In the class map, array keys are kept in lower case.
                     $class = strtolower($classInfo['class']);
-
+                    
+                    # It is checked whether the scanned class a namespace. 
+                    # According to this information class name is obtained.
                     if( isset($classInfo['namespace']) )
                     {
                         $className = strtolower($classInfo['namespace']).'\\'.$class;
 
+                        # If the class contains a namespace, it is kept in the namespace array in the class map.
+                        # This data is stored in the direct controller of a class that contains a namespace to 
+                        # provide access to the $this object using only the class name.
                         $classes['namespaces'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($class);
                     }
                     else
@@ -437,51 +457,75 @@ class Autoloader
                         $className = $class;
                     }
 
-                    $classes['classes'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($v);
+                    # The name and path information of the scanned class is added to the class map.
+                    $classes['classes'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($originFile);
+
+                    # The predefined authorization number for directories to which static views are written.
+                    $directoryPermission = $configAutoloader['directoryPermission'] ?? 0755;
 
                     $useStaticAccess = strtolower(INTERNAL_ACCESS);
 
-                    if( strpos($class, $useStaticAccess) === 0  && ! preg_match('/(Interface|Trait)$/i', $class) )
+                    # If the scanned class has the prefix [Internal], 
+                    # the static view of this class is created.
+                    if( strpos($class, $useStaticAccess) === 0 && ! preg_match('/(Interface|Trait)$/i', $class) )
                     {
-                        $newClassName = str_ireplace(INTERNAL_ACCESS, '', $classInfo['class']);
-
-                        $pathEx = explode('/', $v);
-
-                        array_pop($pathEx);
-
-                        $newDir = implode('/', $pathEx);
-                        $dir    = $staticAccessDirectory;
-                        $newDir = $dir.$newDir;
-                     
-                        if( ! is_dir($dir) )
+                        # [Internal] prefix is cleared from class name.
+                        $originClassName = str_ireplace(INTERNAL_ACCESS, '', $classInfo['class']);
+                        
+                        # Static view is getting position information.
+                        $staticClassDirectory = pathinfo($originFile, PATHINFO_DIRNAME);
+                        
+                        # Static views are built into the Resources/Statics/ directory.
+                        $staticClassDirectory = self::$staticAccessDirectory . $staticClassDirectory;
+                        
+                        # If the directory in which static views are to be created does not exist, 
+                        # it will be rebuilt.
+                        if( ! is_dir(self::$staticAccessDirectory) )
                         {
-                            mkdir($dir, $directoryPermission, true);
-                            file_put_contents($dir . '.htaccess', 'Deny from all');
+                            # Created Resources/Statics/ directory.
+                            mkdir(self::$staticAccessDirectory, $directoryPermission, true);
+
+                            # Access to this directory via URL is blocked.
+                            # It is assumed that the system is running on apache.
+                            file_put_contents(self::$staticAccessDirectory . '.htaccess', 'Deny from all');
                         }
 
-                        if( ! is_dir($newDir) )
+                        # The static view creates a new directory with the same name into 
+                        # the Resources Statics/ directory according to the location of the original class.
+                        if( ! is_dir($staticClassDirectory) )
                         {
-                            mkdir($newDir, $directoryPermission, true);
+                            mkdir($staticClassDirectory, $directoryPermission, true);
                         }
 
-                        $rpath = $path     = Base::suffix($newDir).$classInfo['class'].'.php';
-                    
-                        $constants         = self::findConstantsClassContent($val);
-                        $classContent      = self::createClassFileContent($newClassName, $constants);
-                        $fileContentLength = is_file($rpath) ? strlen(file_get_contents($rpath)) : 0;
+                        # Static view file path information.
+                        $staticClassPath = Base::suffix($staticClassDirectory) . $classInfo['class'] . '.php';
+                        
+                        # If constants are used in the scanned class, these constants are taken.
+                        $constants = self::findConstantsClassContent($file);
+
+                        # The static view of the scanned class is being created.
+                        $classContent = self::createClassFileContent($originClassName, $constants);
+
+                        # If a previously rendered static view of the scanned class has been created,
+                        # it is checked for changes in appearance before this static view is reconstructed.
+                        $fileContentLength = is_file($staticClassPath) ? strlen(file_get_contents($staticClassPath)) : 0;
 
                         if( strlen($classContent) !== $fileContentLength )
                         {
-                            file_put_contents($rpath, $classContent);
+                            # If the data do not match, recreate it.
+                            file_put_contents($staticClassPath, $classContent);
                         }
 
-                        $classes['classes'][strtolower($newClassName)] = $path;
+                        $classes['classes'][strtolower($originClassName)] = $staticClassPath;
                     }
+                    
                 }
             }
-            elseif( is_dir($val) )
+            # If the value is an index, resume the scan from that index.
+            # Performs a nested directory scan until the file is found.
+            elseif( is_dir($file) )
             {
-                self::searchClassMap($val, $baseDirectory);
+                self::searchClassMap($file);
             }
         }
 
