@@ -213,9 +213,9 @@ class Kernel
 
         foreach( $getReflectionParameters as $parameter )
         {
-            preg_match('/<required>\s(?<vartype>\w.*?)\s/', \ReflectionParameter::export([$page, $function], $parameter->name, true), $match);
+            preg_match('/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s/', \ReflectionParameter::export([$page, $function], $parameter->name, true), $match);
 
-            if( isset($match['vartype']) && ! ctype_lower($match['vartype']) )
+            if( isset($match['vartype']) )
             {
                 $class = '\\' . trim($match['vartype']);
                 $getExportParameters[] = new $class;
