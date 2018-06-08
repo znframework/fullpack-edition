@@ -78,7 +78,7 @@ class Kernel
         # Enables processing of changes to the robots.txt file if it is open.
         if( Config::robots('createFile') === true )
         {
-            Robots::createRobotsFile();
+            Robots::create();
         }   
         
         # Sets the system's language.

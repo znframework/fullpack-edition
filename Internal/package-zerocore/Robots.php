@@ -21,7 +21,7 @@ class Robots
     /**
      * Creates robots.txt
      */
-    public static function createRobotsFile()
+    public static function create()
     {
         $rules  = Config::get('Robots', 'rules');
         $robots = '';
@@ -31,26 +31,26 @@ class Robots
             # Single usage
             if( ! is_numeric($key) )
             {
-                self::createRobotsFileContent($key, $val, $robots);
+                self::createFileContent($key, $val, $robots);
             }
             # Multi usage
             else
             {
                 if( IS::array($val) ) foreach( $val as $r => $v ) 
                 {
-                    self::createRobotsFileContent($r, $v, $robots);
+                    self::createFileContent($r, $v, $robots);
                 }
             }
         }
 
         # If the content to be written is the same, rewriting is not performed.
-        if( trim($robots) === self::getRobotsContent() )
+        if( trim($robots) === self::getContent() )
         {
             return false;
         }
 
         # The contents of the robot file are created.
-        if( ! self::putRobotsContent($robots) )
+        if( ! self::putContent($robots) )
         {
             throw new Exception('Error', 'fileNotWrite', self::$file);
         }
@@ -59,7 +59,7 @@ class Robots
     /**
      * Protected put robots content
      */
-    protected static function putRobotsContent($robots)
+    protected static function putContent($robots)
     {
         return file_put_contents(self::$file, trim($robots));
     }
@@ -67,7 +67,7 @@ class Robots
     /**
      * Protected get robots content
      */
-    protected static function getRobotsContent()
+    protected static function getContent()
     {
         if( is_file(self::$file) )
         {
@@ -80,7 +80,7 @@ class Robots
     /**
      * Protected create robots file content
      */
-    protected static function createRobotsFileContent($key, $val, &$robots)
+    protected static function createFileContent($key, $val, &$robots)
     {
         switch( $key )
         {
