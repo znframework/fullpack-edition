@@ -96,7 +96,7 @@ class Kernel
         # Configures the use of Composer autoloader.
         if( $composer = Config::get('Autoloader', 'composer') ) 
         {
-            self::composerLoader($composer);
+            Composer::loader($composer);
         }
         
         # If the setting is active, it loads the startup files.
@@ -384,42 +384,6 @@ class Kernel
                     require $file;
                 }
             }
-        }
-    }
-
-    /**
-     * Protected Composer Loader
-     * 
-     * @param mixed $composer
-     * 
-     * @return void
-     */
-    protected static function composerLoader($composer)
-    {
-        $path = 'vendor/autoload.php';
-
-        if( $composer === true )
-        {
-            if( is_file($path) )
-            {
-                require $path;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        elseif( is_file($composer) )
-        {
-            require $composer;
-        }
-        else
-        {
-            $path = Base::suffix($composer) . $path;
-
-            Helper::report('Error', Lang::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
-
-            throw new Exception('Error', 'fileNotFound', $path);
         }
     }
 
