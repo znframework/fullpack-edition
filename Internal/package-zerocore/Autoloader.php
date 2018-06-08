@@ -427,8 +427,6 @@ class Autoloader
         # If the class is found in the scanned list, the class finder is started.
         if( ! empty($files) ) foreach( $files as $file )
         {
-            $originFile = $file;
-
             # Continue scanning if the value is a file.
             if( is_file($file) )
             {
@@ -458,67 +456,11 @@ class Autoloader
                     }
 
                     # The name and path information of the scanned class is added to the class map.
-                    $classes['classes'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($originFile);
-
-                    # The predefined authorization number for directories to which static views are written.
-                    $directoryPermission = $configAutoloader['directoryPermission'] ?? 0755;
-
-                    $useStaticAccess = strtolower(INTERNAL_ACCESS);
+                    $classes['classes'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($file);
 
                     # If the scanned class has the prefix [Internal], 
                     # the static view of this class is created.
-                    if( strpos($class, $useStaticAccess) === 0 && ! preg_match('/(Interface|Trait)$/i', $class) )
-                    {
-                        # [Internal] prefix is cleared from class name.
-                        $originClassName = str_ireplace(INTERNAL_ACCESS, '', $classInfo['class']);
-                        
-                        # Static view is getting position information.
-                        $staticClassDirectory = pathinfo($originFile, PATHINFO_DIRNAME);
-                        
-                        # Static views are built into the Resources/Statics/ directory.
-                        $staticClassDirectory = self::$staticAccessDirectory . $staticClassDirectory;
-                        
-                        # If the directory in which static views are to be created does not exist, 
-                        # it will be rebuilt.
-                        if( ! is_dir(self::$staticAccessDirectory) )
-                        {
-                            # Created Resources/Statics/ directory.
-                            mkdir(self::$staticAccessDirectory, $directoryPermission, true);
-
-                            # Access to this directory via URL is blocked.
-                            # It is assumed that the system is running on apache.
-                            file_put_contents(self::$staticAccessDirectory . '.htaccess', 'Deny from all');
-                        }
-
-                        # The static view creates a new directory with the same name into 
-                        # the Resources Statics/ directory according to the location of the original class.
-                        if( ! is_dir($staticClassDirectory) )
-                        {
-                            mkdir($staticClassDirectory, $directoryPermission, true);
-                        }
-
-                        # Static view file path information.
-                        $staticClassPath = Base::suffix($staticClassDirectory) . $classInfo['class'] . '.php';
-                        
-                        # If constants are used in the scanned class, these constants are taken.
-                        $constants = self::findConstantsClassContent($file);
-
-                        # The static view of the scanned class is being created.
-                        $classContent = self::createClassFileContent($originClassName, $constants);
-
-                        # If a previously rendered static view of the scanned class has been created,
-                        # it is checked for changes in appearance before this static view is reconstructed.
-                        $fileContentLength = is_file($staticClassPath) ? strlen(file_get_contents($staticClassPath)) : 0;
-
-                        if( strlen($classContent) !== $fileContentLength )
-                        {
-                            # If the data do not match, recreate it.
-                            file_put_contents($staticClassPath, $classContent);
-                        }
-
-                        $classes['classes'][strtolower($originClassName)] = $staticClassPath;
-                    }
-                    
+                    self::createStaticAccessClass($classInfo['class'], $file, $configAutoloader['directoryPermission'], $classes);
                 }
             }
             # If the value is an index, resume the scan from that index.
@@ -530,6 +472,67 @@ class Autoloader
         }
 
         return $classes;
+    }
+
+    /**
+     * Protected create static access class
+     */
+    protected static function createStaticAccessClass($className, $file, $permission, &$classes)
+    {
+        if( stripos($className, INTERNAL_ACCESS) === 0 && ! preg_match('/(Interface|Trait)$/i', $className) )
+        {
+            # [Internal] prefix is cleared from class name.
+            $originClassName = str_ireplace(INTERNAL_ACCESS, '', $className);
+            
+            # Static view is getting position information.
+            $staticClassDirectory = pathinfo($file, PATHINFO_DIRNAME);
+            
+            # Static views are built into the Resources/Statics/ directory.
+            $staticClassDirectory = self::$staticAccessDirectory . $staticClassDirectory;
+
+            # The predefined authorization number for directories to which static views are written.
+            $directoryPermission = $permission ?? 0755;
+            
+            # If the directory in which static views are to be created does not exist, 
+            # it will be rebuilt.
+            if( ! is_dir(self::$staticAccessDirectory) )
+            {
+                # Created Resources/Statics/ directory.
+                mkdir(self::$staticAccessDirectory, $directoryPermission, true);
+
+                # Access to this directory via URL is blocked.
+                # It is assumed that the system is running on apache.
+                file_put_contents(self::$staticAccessDirectory . '.htaccess', 'Deny from all');
+            }
+
+            # The static view creates a new directory with the same name into 
+            # the Resources Statics/ directory according to the location of the original class.
+            if( ! is_dir($staticClassDirectory) )
+            {
+                mkdir($staticClassDirectory, $directoryPermission, true);
+            }
+
+            # Static view file path information.
+            $staticClassPath = Base::suffix($staticClassDirectory) . $className . '.php';
+            
+            # If constants are used in the scanned class, these constants are taken.
+            $constants = self::findConstantsClassContent($file);
+
+            # The static view of the scanned class is being created.
+            $classContent = self::createClassFileContent($originClassName, $constants);
+
+            # If a previously rendered static view of the scanned class has been created,
+            # it is checked for changes in appearance before this static view is reconstructed.
+            $fileContentLength = is_file($staticClassPath) ? strlen(file_get_contents($staticClassPath)) : 0;
+
+            if( strlen($classContent) !== $fileContentLength )
+            {
+                # If the data do not match, recreate it.
+                file_put_contents($staticClassPath, $classContent);
+            }
+            
+            $classes['classes'][strtolower($originClassName)] = $staticClassPath;
+        }
     }
 
     /**
