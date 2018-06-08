@@ -24,39 +24,42 @@ trait Exclusion
      * @return void
      */
     public function __construct($file = NULL, $message = NULL, $changed = NULL)
-    {
+    {   
+        # If the 1. parameter is set to NULL, 
+        # the language contents defined in the exception class are used.
         if( defined('static::lang') && $file === NULL )
         {
-            $file    = static::lang[Lang::get()] ?? 'No Exception Lang';
-            $message = static::lang['placement'] ?? $message;
+            # Language content is being obtained.
+            $content = static::lang[Lang::get()] ?? 'No Exception Lang';
 
-            if( is_array($message) )
-            {
-                $file = str_replace(array_keys($message), array_values($message), $file);
-            }
-            else
-            {
-                $file = str_replace('%', $message, $file);
-            }
-            
-            $message = $file;
+            # The 2.($message) parameter is assumed to be the parameter that will contain the statements to be placed.
+            $placement = static::lang['placement'] ?? $message;
+
+            # If there is an phrase insertion, the message is rearranged.
+            $message = $this->phrasePlacement($content, $placement);
         }
         else
         {
+            # If the parameters are set as Lang::select(), 
+            # this method is enabled.
             if( $data = Lang::select($file, $message, $changed) )
             {
                 $message = $data;
             }
+            # If 1. parameter is an exception object, 
+            # the contents of the object's message are retrieved.
             elseif( is_object($file) )
             {
                 $message = $file->getMessage();
             }
+            # The 1. parameter can be used directly as message content.
             else
             {
                 $message = $file;
             }    
         }
-       
+        
+        # The constructor method of the exception class goes into effect.
         parent::__construct($message);
     }
 
@@ -70,5 +73,18 @@ trait Exclusion
     public function continue()
     {
         echo Exceptions::continue($this->getMessage(), $this->getFile(), $this->getLine());
+    }
+
+    /**
+     * Protected phrase placement
+     */
+    protected function phrasePlacement($content, $placement)
+    {
+        if( is_array($placement) )
+        {
+            return str_replace(array_keys($placement), array_values($placement), $content);
+        }
+
+        return str_replace('%', $placement, $content);
     }
 }
