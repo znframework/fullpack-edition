@@ -249,15 +249,6 @@ class ZN
                 
                 if( ! empty($content) )
                 {
-                    if( $origin === DIRECTORY_INDEX )
-                    {
-                        Filesystem::replaceData(DIRECTORY_INDEX, ZN_VERSION, self::$lastestVersion);
-                    }
-                    else
-                    {
-                        file_put_contents($file, $content);
-                    }
-
                     # [5.7.6]added
                     # Backup upgrade files.
                     if( file_exists($origin) && ($originContent = file_get_contents($origin)) !== $content )
@@ -267,6 +258,15 @@ class ZN
                         Filesystem::createFolder(pathinfo($backupFile, PATHINFO_DIRNAME));
 
                         file_put_contents($backupFile, $originContent);
+                    }
+
+                    if( $origin === DIRECTORY_INDEX )
+                    {
+                        Filesystem::replaceData(DIRECTORY_INDEX, ZN_VERSION, self::$lastestVersion);
+                    }
+                    else
+                    {
+                        file_put_contents($file, $content);
                     }
                 } 
             }
