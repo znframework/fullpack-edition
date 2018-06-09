@@ -78,6 +78,17 @@ class Lang
     }
 
     /**
+     * Set current lang by uri
+     */
+    public static function setByURI()
+    {  
+        if( preg_match('/\/('.REQUESTED_CURRENT_PROJECT.'\/)*(?<lang>[a-z][a-z])($|\/)/', Base::currentPath(), $match) )
+        {
+            Lang::set($match['lang']);
+        }
+    }
+
+    /**
      * Get language content
      * 
      * @param string $file    = NULL

@@ -36,14 +36,7 @@ class Kernel
         define('HTACCESS_CONFIG', Config::get('Htaccess'));
         
         # OB process is starting.
-        if( (HTACCESS_CONFIG['cache']['obGzhandler'] ?? true) === true && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'] ?? NULL, 'gzip') )
-        {
-            ob_start('ob_gzhandler');
-        }
-        else
-        {
-            ob_start();
-        }
+        Buffering::start();
 
         # Session process is starting.
         Storage::start();
@@ -82,15 +75,11 @@ class Kernel
         }   
         
         # Sets the system's language.
+        # The lang configuration must be set to true 
+        # in Config/Services.php file to enable this condition.
         if( Lang::current() )
         {
-            $langFix = str_ireplace([Base::suffix((string) REQUESTED_CURRENT_PROJECT)], '', Base::currentPath());
-            $langFix = explode('/', $langFix)[1] ?? NULL;
-            
-            if( strlen($langFix) === 2 )
-            {
-                Lang::set($langFix);
-            }
+            Lang::setByURI();
         }
 
         # Configures the use of Composer autoloader.
@@ -333,7 +322,7 @@ class Kernel
         }
 
         # The buffer is being turned off.
-        ob_end_flush();
+        Buffering::end();
     }
 
     /**
