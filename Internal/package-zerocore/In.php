@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ReflectionClass;
+use ReflectionParameter;
 use ZN\ErrorHandling\Errors;
 use ZN\ErrorHandling\Exceptions;
 use ZN\Inclusion\Project\View;
@@ -21,7 +23,7 @@ class In
      * 
      * @var array
      */
-    public static $view       = [];
+    public static $view = [];
     
     /**
      * Keep masterpage data
@@ -68,22 +70,27 @@ class In
     /**
      * Invalid user requests are diverted to different pages.
      * 
-     * @param string $type
-     * @param bool   $bool
+     * @param string $authorizationType
+     * @param bool   $comparisonType
      * 
      * @return void
      */
-    public static function invalidRequest(String $type, Bool $bool)
+    public static function invalidRequest(String $authorizationType, Bool $comparisonType)
     {
-        $invalidRequest = Config::get('Routing', 'requestMethods');
+        # Gets the data from Config/Routing.php file.
+        $routingRequestMethods = Config::get('Routing', 'requestMethods');
 
-        if( $requestMethods = $invalidRequest[$type] )
+        # It decides which request methods are allowed or not.
+        if( $requestMethodsByType = $routingRequestMethods[$authorizationType] )
         {
-            $requestMethods = array_change_key_case($requestMethods);
+            # Method names are converted to lowercase for correct comparison.
+            $requestMethodsByTypeWithLowerCase = array_change_key_case($requestMethodsByType);
 
-            if( ! empty($requestMethod = $requestMethods[CURRENT_CFURI] ?? NULL) )
+            # It is applied if there is a restriction on the requesting uri.
+            if( ! empty($requestMethodsByCurrentURI = ($requestMethodsByTypeWithLowerCase[CURRENT_CFURI] ?? NULL)) )
             {
-                if( Request::isMethod(...(array) $requestMethod) === $bool )
+                # According to the comparison, it is decided whether or not the request flow will continue.
+                if( Request::isMethod(...(array) $requestMethodsByCurrentURI) === $comparisonType )
                 {
                     Singleton::class('ZN\Routing\Route')->redirectInvalidRequest();
                 }
@@ -101,18 +108,6 @@ class In
     public static function defaultProjectKey(String $fix = NULL) : String
     {
         return md5(Request::getBaseURL(strtolower(CONTAINER_PROJECT)) . $fix);
-    }
-
-    /**
-     * protected is subdomain
-     * 
-     * @param void
-     * 
-     * @return bool
-     */
-    protected static function isSubdomain()
-    {
-        return (bool) (PROJECTS_CONFIG['directory']['others'][Base::host()] ?? false);
     }
 
     /**
@@ -141,10 +136,7 @@ class In
      */
     public static function requestURI() : String
     {
-        $requestUri = Request::getActiveURL();
-        $requestUri = self::cleanInjection(self::routeURI(rtrim($requestUri, '/')));
-
-        return (string) $requestUri;
+        return (string) self::cleanInjection(self::applyRouteOnURI(rtrim(Request::getActiveURI(), '/')));
     }
 
     /**
@@ -165,96 +157,6 @@ class In
         }
 
         return $uri;
-    }
-
-    /**
-     * All of the routes are processed.
-     * 
-     * @param void
-     * 
-     * @return void
-     */
-    protected static function routeAll()
-    {
-        if( ROUTES_DIR === NULL )
-        {
-            return false;
-        }
-
-        $externalRouteFiles = (array) glob(EXTERNAL_ROUTES_DIR . ($fix = '*.php'));
-        $routeFiles         = (array) glob(ROUTES_DIR . $fix);
-        $files              = array_merge($externalRouteFiles, $routeFiles);
-
-        if( ! empty($files)  )
-        {
-            foreach( $files as $file )
-            {
-                require $file;
-            }
-
-            Singleton::class('ZN\Routing\Route')->all();
-        }
-    }
-
-    /**
-     * Set the new uri route.
-     * 
-     * @param string $requestUri = NULL
-     * 
-     * @return string
-     */
-    public static function routeURI(String $requestUri = NULL) : String
-    {
-        self::routeAll();
-
-        $config = Config::get('Routing');
-
-        if( ! empty($config['openController']) )
-        {
-            $internalDir = NULL;
-
-            if( defined('_CURRENT_PROJECT') )
-            {
-                $configAppdir = PROJECTS_CONFIG['directory']['others'];
-
-                if( is_array($configAppdir) )
-                {
-                    $internalDir = ! empty($configAppdir[$requestUri]) ? $requestUri : _CURRENT_PROJECT;
-                }
-                else
-                {
-                    $internalDir = _CURRENT_PROJECT;
-                }
-            }
-
-            if
-            (
-                $requestUri === DIRECTORY_INDEX ||
-                $requestUri === Lang::get()     ||
-                $requestUri === $internalDir    ||
-                empty($requestUri)
-            )
-            {
-                $requestUri = $config['openController'];
-            }
-        }
-
-        $uriChange   = $config['changeUri'];
-        $patternType = $config['patternType'];
-
-        if( ! empty($uriChange) ) foreach( $uriChange as $key => $val )
-        {
-            if( $patternType === 'classic' )
-            {
-                $requestUri = preg_replace(Base::presuffix($key).'xi', $val, $requestUri);
-            }
-            else
-            {
-                $requestUri = Singleton::class('ZN\Regex')->replace($key, $val, $requestUri, 'xi');
-            }
-        }
-
-        return $requestUri;
     }
 
     /**
@@ -357,8 +259,8 @@ class In
     {
         $controllerEx = explode(':', $startController);
 
-        $controllerPath  = ! empty($controllerEx[0]) ? $controllerEx[0] : '';
-        $controllerFunc  = ! empty($controllerEx[1]) ? $controllerEx[1] : 'main';
+        $controllerPath  = $controllerEx[0] ?? '';
+        $controllerFunc  = $controllerEx[1] ?? Config::get('Routing', 'openFunction') ?: 'main';
         $controllerFile  = CONTROLLERS_DIR . ($suffixExtension = Base::suffix($controllerPath, '.php'));
         $controllerClass = Datatype::divide($controllerPath, '/', -1);
 
@@ -405,9 +307,12 @@ class In
                 }
             }
 
+            # The reflection of the active controller is being taken.
+            $reflector = new ReflectionClass($controllerClass);
+
             $startingControllerClass = Singleton::class($controllerClass);
 
-            $return = $startingControllerClass->$controllerFunc(...$param);
+            $return = $startingControllerClass->$controllerFunc(...(self::resolvingDependencyInjections($reflector, $controllerClass, $controllerFunc) ?: $param));
 
             self::$view[]       = View::$data;
             self::$masterpage[] = Masterpage::$data;
@@ -419,77 +324,119 @@ class In
     }
 
     /**
-     * Creates robots.txt
+     * Resolving dependency injections
+     * 
+     * @param ReflectionClass $reflector
+     * @param string          $page
+     * @param string          $function
+     * 
+     * [5.7.7]added
+     */
+    public static function resolvingDependencyInjections($reflector, $page, $function)
+    {
+        # The parameter reflection of the active controller method is being taken.
+        $getReflectionParameters = $reflector->getMethod($function)->getParameters();
+
+        $getExportParameters = [];
+
+        # Resolving is started in case of the current match.
+        foreach( $getReflectionParameters as $parameter )
+        {   
+            # Class and variable names are obtained.
+            # [varname] for variable name.
+            # [vartype] for variable type.
+            preg_match
+            (
+                '/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s\$(?<varname>\w+)/', 
+                ReflectionParameter::export([$page, $function], $parameter->name, true), 
+                $match
+            );
+
+            # If a valid class is found, the resolving continues.
+            if( isset($match['vartype']) )
+            {
+                # The class name is being created.
+                $class = '\\' . $match['vartype'];
+                
+                # The class instance is being created.
+                $class = new $class;
+
+                # The name of the class instance is obtained.
+                $varname = $match['varname'];
+
+                # Generated instances are being sent for use in views.
+                View::$varname($class);
+
+                # The controller is creating injections of the corresponding method.
+                $getExportParameters[] = $class;
+            }
+        }
+
+        # Parameters are being sent.
+        return $getExportParameters;
+    }
+
+    /**
+     * Protected is subdomain
+     */
+    protected static function isSubdomain()
+    {
+        return (bool) (PROJECTS_CONFIG['directory']['others'][Base::host()] ?? false);
+    }
+
+    /**
+     * All of the routes are processed.
      * 
      * @param void
      * 
      * @return void
      */
-    public static function createRobotsFile()
+    protected static function applyRouteAll()
     {
-        $rules  = Config::get('Robots', 'rules');
-        $robots = '';
-
-        if( IS::array($rules) ) foreach( $rules as $key => $val )
-        {
-            if( ! is_numeric($key) ) # Single usage
-            {
-                switch( $key )
-                {
-                    case 'userAgent':
-                        $robots .= ! empty( $val ) ? 'User-agent: '.$val.EOL : '';
-                    break;
-
-                    case 'allow'    :
-                    case 'disallow' :
-                        if( ! empty($val) ) foreach( $val as $v )
-                        {
-                            $robots .= ucfirst($key).': '.$v.EOL;
-                        }
-                    break;
-                }
-            }
-            else
-            {
-                if( IS::array($val) ) foreach( $val as $r => $v ) # Multi usage
-                {
-                    switch( $r )
-                    {
-                        case 'userAgent':
-                            $robots .= ! empty( $v ) ? 'User-agent: '.$v.EOL : '';
-                        break;
-
-                        case 'allow'    :
-                        case 'disallow' :
-                            if( ! empty($v) ) foreach( $v as $vr )
-                            {
-                                $robots .= ucfirst($r).': '.$vr.EOL;
-                            }
-                        break;
-                    }
-                }
-            }
-        }
-
-        $robotTxt = 'robots.txt';
-
-        if( is_file($robotTxt) )
-        {
-            $getContents = file_get_contents($robotTxt);
-        }
-        else
-        {
-            $getContents = '';
-        }
-
-        if( trim($robots) === trim($getContents) )
+        if( ROUTES_DIR === NULL )
         {
             return false;
         }
 
-        if( ! file_put_contents($robotTxt, trim($robots)) )
+        $externalRouteFiles = (array) glob(EXTERNAL_ROUTES_DIR . ($fix = '*.php'));
+        $routeFiles         = (array) glob(ROUTES_DIR . $fix);
+        $files              = array_merge($externalRouteFiles, $routeFiles);
+
+        if( ! empty($files)  )
         {
-            throw new Exception('Error', 'fileNotWrite', $robotTxt);
+            foreach( $files as $file )
+            {
+                require $file;
+            }
+
+            Singleton::class('ZN\Routing\Route')->all();
         }
+    }
+
+    /**
+     * Protected apply route on uri.
+     */
+    protected static function applyRouteOnURI(String $requestUri = NULL) : String
+    {
+        self::applyRouteAll();
+
+        $config = Config::get('Routing');
+
+        $uriChange   = $config['changeUri'];
+        $patternType = $config['patternType'];
+
+        if( ! empty($uriChange) ) foreach( $uriChange as $key => $val )
+        {
+            if( $patternType === 'classic' )
+            {
+                $requestUri = preg_replace(Base::presuffix($key).'xi', $val, $requestUri);
+            }
+            else
+            {
+                $requestUri = Singleton::class('ZN\Regex')->replace($key, $val, $requestUri, 'xi');
+            }
+        }
+
+        return $requestUri;
     }
 }

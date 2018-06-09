@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Config;
 use ZN\Filesystem;
 
@@ -145,13 +146,15 @@ class GrandVision extends DatabaseDefinitions
      */
     protected function stringArray(Array $data)
     {
-        $str = EOL.HT.'['.EOL;
+        $str = EOL . HT . '[' . EOL;
+
         foreach( $data as $key => $val )
         {
-            $str .= HT.HT."'".$key."' => '".$val."',".EOL;
+            $str .= HT . HT . "'" . $key . "' => '" . $val . "'," . EOL;
         }
-        $str = rtrim($str, ','.EOL);
-        $str .= EOL.HT.']';
+
+        $str  = Base::removeSuffix($str, ',' . EOL);
+        $str .= EOL . HT . ']';
 
         return $str;
     }

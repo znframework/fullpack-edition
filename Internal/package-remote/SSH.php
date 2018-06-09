@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Config;
 use ZN\Support;
 use ZN\Remote\Exception\FileNotFoundException;
@@ -106,7 +107,7 @@ class SSH implements SSHInterface, RemoteInterface
         {
             if( ! empty($this->command) )
             {
-                $command = rtrim($this->command);
+                $command = Base::removeSuffix($this->command);
             }
 
             $this->_defaultVariables();

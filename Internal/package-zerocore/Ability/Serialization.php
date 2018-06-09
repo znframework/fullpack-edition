@@ -21,18 +21,28 @@ trait Serialization
      */
     public function __call($method, $parameters)
     {
-        $lower   = strtolower($method);
-        $class   = self::serialization['class'];
+        # Gets lower method name.
+        $lowerMethodName = strtolower($method);
+
+        # Gets serialization class name.
+        $class = self::serialization['class'];
+
+        # Gets process type.
+        # If operation type data is selected, operation is continued on the value sent as parameter.
+        # Otherwise, the operation continues on the last value returned from the parameter being processed.
         $process = (self::serialization['process'] ?? 'serial') === 'serial' ? 'data' : 'return'; 
 
-        if( $lower === self::serialization['start'] )
+        # The name of the first method that holds the data to be processed.
+        if( $lowerMethodName === self::serialization['start'] )
         {
             $this->data = $parameters[0];
         }
-        elseif( $lower === self::serialization['end'] )
+        # The name of the final method to complete the process flow.
+        elseif( $lowerMethodName === self::serialization['end'] )
         {
             return $this->$process;
         }
+        # Otherwise, the invoked other class methods are executed.
         else
         {
             $this->$process = $class::$method($this->data, ...$parameters);

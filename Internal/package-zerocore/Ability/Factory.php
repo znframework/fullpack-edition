@@ -55,55 +55,82 @@ trait Factory
             return false;
         }
 
-        $originMethodName = $method;
-        $method           = strtolower($method);
-        $calledClass      = get_called_class();
+        $method = strtolower($originMethodName = $method);
 
         if( ! isset(static::factory['methods'][$method]) )
         {
-            Support::classMethod($calledClass, $originMethodName);
+            Support::classMethod(get_called_class(), $originMethodName);
         }
 
-        $class   = static::factory['methods'][$method];
+        # The subclass and method that the method will execute is taken.
+        $class = static::factory['methods'][$method];
+
+        # The class to be used as factory for the library used is defined.
+        # However, this usage is not necessary.
         $factory = static::factory['class'] ?? NULL;
 
         if( $factory !== NULL )
         {
             return $factory::class($class)->$method(...$parameters);
         }
+        # It can call the desired method of another class.
+        # That is, it opens the way to a mixed class design 
+        # that consists of methods of various classes.
         else
         {
-            $classEx = explode('::', $class);
-            $class   = $classEx[0] ?? NULL;
-            $method  = $classEx[1] ?? NULL;
-            $isThis  = NULL;
-
-            if( stristr($method, ':this') )
+            # Solving starts when a valid class and method information is sent.
+            if( ! $this->isValidClassAndMethodName($class, $resolve) )
             {
-                $method = str_replace(':this', NULL, $method);
-                $isThis = 'this';
+                throw new Exception\InvalidFactoryMethod(NULL, $class);
             }
 
-            $separator = '\\';
-            $namespace = NULL;
+            # A new singleton inheritance class instance is created.
+            $return = $this->createSingletonInstance($resolve['class'], $resolve['method'], $parameters);
 
-            if( strstr($calledClass, $separator) )
-            {
-                $namespace = explode($separator, $calledClass);
-                
-                array_pop($namespace);
-    
-                $namespace = implode($separator, $namespace) . $separator;
-            }
-            
-            $return = Singleton::class($namespace . $class)->$method(...$parameters);
-
-            if( $isThis === 'this' )
+            # The return value $this can be sent to ensure object continuity.
+            if( isset($resolve['this']) )
             {
                 return $this;
             }
 
+            # Return new instance.
             return $return;
         }
+    }
+
+    /**
+     * Protected create singleton instance
+     */
+    protected function createSingletonInstance($class, $method, $parameters)
+    {
+        return Singleton::class($this->getCalledClassNamespace() . $class)->$method(...$parameters);
+    }
+
+    /**
+     * Protected get called class namespace
+     */
+    protected function getCalledClassNamespace()
+    {
+        $namespace = NULL;
+
+        # The namespace is being rebuilt.
+        if( strstr($calledClass = get_called_class(), $separator = '\\') )
+        {
+            $namespace = explode($separator, $calledClass);
+            
+            array_pop($namespace);
+
+            $namespace = implode($separator, $namespace) . $separator;
+        }
+
+        return $namespace;
+    }
+
+    /**
+     * Protected is valid class & method name.
+     */
+    protected function isValidClassAndMethodName($class, &$resolve)
+    {
+        return preg_match('/(?<class>([a-zA-Z]\w+(\\\\)*){1,})\:\:(?<method>\w+)(?<this>\:this)*/', $class, $resolve);
     }
 }

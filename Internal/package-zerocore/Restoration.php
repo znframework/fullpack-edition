@@ -73,7 +73,7 @@ class Restoration
             unlink($classMapFile);
         }
 
-        $return = Filesystem::copy($restoreFolder, PROJECTS_DIR . ltrim($project, self::$restoreFix));
+        $return = Filesystem::copy($restoreFolder, PROJECTS_DIR . Base::removePrefix($project, self::$restoreFix));
 
         if( $type === 'delete' )
         {
@@ -173,7 +173,7 @@ class Restoration
 
         error_reporting(0);
 
-        $currentPath          = $restorable === true ? strtolower(CURRENT_CFUNCTION) : strtolower(Request::getActiveURL());
+        $currentPath          = $restorable === true ? strtolower(CURRENT_CFUNCTION) : strtolower(rtrim(Request::getActiveURI(), '/'));
         $projects             = Config::get('Project');
         $restoration          = $projects['restoration'];
         $restorationPages     = $restorable === true && ! isset($settings['functions'])

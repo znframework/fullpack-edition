@@ -90,13 +90,13 @@ class Request
     }
 
     /**
-     * Get active URL
+     * Get active URI
      * 
      * @param bool $fullPath = false
      * 
      * @return string
      */
-    public static function getActiveURL(Bool $fullPath = false) : String
+    public static function getActiveURI(Bool $fullPath = false) : String
     {
         # 5.3.22[edited]
         $requestUri = Base::suffix($_SERVER['REQUEST_URI'] ?? false);
@@ -104,7 +104,7 @@ class Request
         $currentUri = ! empty(BASE_DIR)
                       ? str_replace(Base::prefix(BASE_DIR, '/'), '', $requestUri)
                       : substr($requestUri, 1);
-        
+
         if( $fullPath === false )
         {
             $currentUri = In::cleanURIPrefix($currentUri, In::getCurrentProject());
@@ -118,11 +118,11 @@ class Request
                     $currentLang = $isLang;
                 }
 
-                $currentUri  = In::cleanURIPrefix($currentUri, $currentLang);
+                $currentUri = In::cleanURIPrefix($currentUri, $currentLang);
             }
         }
 
-        return ! empty($currentUri) ? $currentUri : (Config::get('Routing', 'openController') ?: 'home');
+        return $currentUri ?: ((Config::get('Routing', 'openController') ?: 'Home') . '/');
     }
 
     /**

@@ -86,7 +86,7 @@ class View
             return self::_page($page, $data, $obGetContents, $randomPageDir);
         }
 
-        return self::_templateWizard(Base::suffix(rtrim($page, '.php'), self::$templateWizardExtension), $data, $obGetContents, $randomPageDir);
+        return self::_templateWizard(Base::suffix(Base::removeSuffix($page, '.php'), self::$templateWizardExtension), $data, $obGetContents, $randomPageDir);
     }
 
     /**

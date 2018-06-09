@@ -347,19 +347,36 @@ class ZN
     protected static function predefinedConstants()
     {
         # Defined Standart Constants
+        # The version required for ZN Framework should be minimum 7.0.0.
         define('REQUIRED_PHP_VERSION', '7.0.0');
+
+        # The use of SSL are automatically checked for correct operation of the system.
+        # In particular, it allows the URL library to automatically detect the http prefix.
         define('SSL_STATUS', ((($_SERVER['HTTPS'] ?? NULL) === 'on' && $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http') . '://');
+
+        # The ZN Framework contains a constant namespace for the controllers.
         define('PROJECT_CONTROLLER_NAMESPACE', 'Project\Controllers\\');
-        define('PROJECT_COMMANDS_NAMESPACE' , 'Project\Commands\\');
+
+        # The ZN Framework contains a constant namespace for the project commands.
+        define('PROJECT_COMMANDS_NAMESPACE', 'Project\Commands\\');
+
+        # The ZN Framework contains a constant namespace for the external commands.
         define('EXTERNAL_COMMANDS_NAMESPACE', 'External\Commands\\');
+
+        # If the class names  contain the 'Internal' prefix, 
+        # then those classes automatically create one static class.
         define('INTERNAL_ACCESS', 'Internal');
-        define('EOL', PHP_EOL);
-        define('CRLF', "\r\n" );
-        define('CR', "\r");
-        define('LF', "\n");
-        define('HT', "\t");
-        define('TAB', "\t");
-        define('FF', "\f");
+
+        # Predefined constants for space characters.
+        define('EOL' , PHP_EOL);
+        define('CRLF', "\r\n");
+        define('CR'  , "\r");
+        define('LF'  , "\n");
+        define('HT'  , "\t");
+        define('TAB' , "\t");
+        define('FF'  , "\f");
+
+        # Abbreviation for DIRECTORY_SEPARATOR.
         define('DS', DIRECTORY_SEPARATOR);
         
         # Select structure paths - options[EIP|SE|CE]
@@ -391,18 +408,30 @@ class ZN
      */
     public static function defineDirectoryConstants()
     {
+        # It keeps the settings related to the structure of the projects.
         define('PROJECTS_CONFIG', Base::import(SETTINGS_DIR . 'Projects.php'));
+
+        # Preserves project information to be run as predefined.
+        # This value is set to Frontend by default.
         define('DEFAULT_PROJECT', PROJECTS_CONFIG['directory']['default']);
         
+        # Defines constants to hide active project information.
+        # If a request is made to a project, it will alert the screen.
         self::defineCurrentProject();
 
-        $currentProjectDirectory = defined('_CURRENT_PROJECT') ? _CURRENT_PROJECT : CURRENT_PROJECT;
+        # If there is another project covering the active project, 
+        # the name of this project is obtained.
+        # Otherwise the name of the project is used.
+        define('CONTAINER_PROJECT', PROJECTS_CONFIG['containers'][DEFINED_CURRENT_PROJECT] ?? CURRENT_PROJECT);
 
-        define('CONTAINER_PROJECT', PROJECTS_CONFIG['containers'][$currentProjectDirectory] ?? CURRENT_PROJECT);
+        # The path information of the container project directory is stored.
         define('CONTAINER_PROJECT_DIR', PROJECTS_DIR . CONTAINER_PROJECT . '/');
         
-        define('VIEWS_DIR'       , PROJECT_DIR . GET_DIRS['VIEWS_DIR']);
-        define('PAGES_DIR'       , VIEWS_DIR); 
+        # The directory where the views will be created.
+        define('VIEWS_DIR', PROJECT_DIR . GET_DIRS['VIEWS_DIR']);
+
+        # The PAGES_DIR constant can be used instead of VIEWS_DIR.
+        define('PAGES_DIR', VIEWS_DIR); 
 
         # Get Common Paths
         $externalDirectories = array_diff_key(GET_DIRS, array_flip
@@ -472,7 +501,7 @@ class ZN
         $getProjectContainerDirectory = PROJECT_DIR . $path;
 
         # If the requested project is a sub-project, the project containing this project is called.
-        if( ! empty($containers) && defined('_CURRENT_PROJECT') )
+        if( ! empty($containers) && REQUESTED_CURRENT_PROJECT !== NULL )
         {
             # If a project is being repaired, the project will be used with the 'Restore' prefix.
             $restoreFix = 'Restore';
@@ -480,7 +509,7 @@ class ZN
             # 5.3.8[added]
             # If there is a restore operation related to the desired project, 
             # the project request is reshaped according to the restore directory.
-            if( strpos(_CURRENT_PROJECT, $restoreFix) === 0 && is_dir(PROJECTS_DIR . ($restoreDirectory = ltrim(_CURRENT_PROJECT, $restoreFix))) )
+            if( strpos(REQUESTED_CURRENT_PROJECT, $restoreFix) === 0 && is_dir(PROJECTS_DIR . ($restoreDirectory = ltrim(REQUESTED_CURRENT_PROJECT, $restoreFix))) )
             {
                 # If the project being repaired is within the scope of another upstream project, 
                 # then the project directory is enabled.
@@ -497,7 +526,7 @@ class ZN
             else
             {
                 # If the requested project is covered by another project, that project is called.
-                $activeContainerDirectory = $containers[_CURRENT_PROJECT] ?? NULL;
+                $activeContainerDirectory = $containers[REQUESTED_CURRENT_PROJECT] ?? NULL;
             }  
             
             # It allows common directory usage for multiple projects.
@@ -544,7 +573,9 @@ class ZN
         if( PROJECT_TYPE !== 'EIP' )
         {
             define('CURRENT_PROJECT', NULL);
-            define('PROJECT_DIR'    , NULL);
+            define('PROJECT_DIR', NULL);
+            define('REQUESTED_CURRENT_PROJECT', NULL);
+            define('DEFINED_CURRENT_PROJECT', NULL);
 
             return false;
         }
@@ -603,17 +634,25 @@ class ZN
         if( ! empty($getProjectNameFromURI) && is_dir(PROJECTS_DIR . $getProjectNameFromURI) )
         {
             # This keeps the project name coming from the constant URL.
-            define('_CURRENT_PROJECT', $getProjectNameFromURI);
+            define('REQUESTED_CURRENT_PROJECT', $getProjectNameFromURI);
 
-            $getProjectNameFromOthers = _CURRENT_PROJECT;
+            $getProjectNameFromOthers = REQUESTED_CURRENT_PROJECT;
 
             # Project alias is checked.
             # The name of the project that comes with the URL has a valid alias name.
             $currentProjectDirectory = $flipOthersArray[$getProjectNameFromOthers] ?? $getProjectNameFromOthers;
         }
+        else
+        {
+            # Predefined requested current project name is null.
+            define('REQUESTED_CURRENT_PROJECT', NULL);
+        }
         
         # The active project name is transferred to this constant.
         define('CURRENT_PROJECT', $currentProjectDirectory ?? $getProjectNameFromOthers);
+
+        # Defines the active project directory information.
+        define('DEFINED_CURRENT_PROJECT', REQUESTED_CURRENT_PROJECT ?? CURRENT_PROJECT);
 
         # The path information of the active project is being defined.
         define('PROJECT_DIR', Base::suffix(PROJECTS_DIR . $getProjectNameFromOthers));

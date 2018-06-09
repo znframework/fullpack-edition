@@ -14,6 +14,29 @@ use ZN\Exception\InvalidArgumentException;
 class Buffering
 {
     /**
+     * OB start.
+     */
+    public static function start()
+    {
+        if( (HTACCESS_CONFIG['cache']['obGzhandler'] ?? true) === true && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'] ?? NULL, 'gzip') )
+        {
+            ob_start('ob_gzhandler');
+        }
+        else
+        {
+            ob_start();
+        }
+    }
+
+    /**
+     * OB end flush;
+     */
+    public static function end()
+    {
+        ob_end_flush();
+    }
+
+    /**
      * Buffer code
      * 
      * @param string $randomBufferClassCallbackCode

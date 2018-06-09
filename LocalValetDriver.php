@@ -3,6 +3,13 @@
 class LocalValetDriver extends BasicValetDriver
 {
     /**
+     * Directory index
+     * 
+     * @var string
+     */
+    protected $directoryIndex = 'zeroneed.php';
+
+    /**
      * Determine if the driver serves the request.
      *
      * @param string $sitePath
@@ -13,7 +20,7 @@ class LocalValetDriver extends BasicValetDriver
      */
     public function serves($sitePath, $siteName, $uri)
     {
-        return file_exists($sitePath.'/zeroneed.php');
+        return file_exists($this->sitePath($sitePath));
     }
 
     /**
@@ -27,7 +34,8 @@ class LocalValetDriver extends BasicValetDriver
      */
     public function isStaticFile($sitePath, $siteName, $uri)
     {
-        if ($this->isActualFile($staticFilePath = $sitePath . $uri)) {
+        if( $this->isActualFile($staticFilePath = $sitePath . $uri) ) 
+        {
             return $staticFilePath;
         }
 
@@ -45,9 +53,25 @@ class LocalValetDriver extends BasicValetDriver
      */
     public function frontControllerPath($sitePath, $siteName, $uri)
     {
-        $_SERVER['SCRIPT_FILENAME'] = $sitePath.'/zeroneed.php';
-        $_SERVER['SCRIPT_NAME'] = '/zeroneed.php';
+        $_SERVER['SCRIPT_FILENAME'] = $this->sitePath($sitePath);
+        $_SERVER['SCRIPT_NAME']     = $this->directoryIndex();
 
-        return $sitePath.'/zeroneed.php';
+        return $_SERVER['SCRIPT_FILENAME'];
+    }
+
+    /**
+     * Protected directory index
+     */
+    protected function directoryIndex()
+    {
+        return '/' . $this->directoryIndex;
+    }
+
+    /**
+     * Protected site path
+     */
+    protected function sitePath($sitePath)
+    {
+        return $sitePath . $this->directoryIndex();
     }
 }

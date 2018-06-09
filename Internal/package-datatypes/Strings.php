@@ -23,6 +23,12 @@ class Strings extends Factory
         [
             'mtrim'            => 'Strings\Trim::middle',
             'trimslashes'      => 'Strings\Trim::slashes',
+            'addprefix'        => 'Strings\Trim::prefix',
+            'removeprefix'     => 'Strings\Trim::removePrefix',
+            'addsuffix'        => 'Strings\Trim::suffix',
+            'removesuffix'     => 'Strings\Trim::removeSuffix',
+            'addbothfix'       => 'Strings\Trim::presuffix',
+            'removebothfix'    => 'Strings\Trim::removePresuffix',
             'casing'           => 'Strings\Casing::use',
             'lowercase'        => 'Strings\Casing::lower',
             'uppercase'        => 'Strings\Casing::upper',

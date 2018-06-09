@@ -28,19 +28,19 @@ trait Information
     protected $success;
 
     /**
-     * Get error
+     * Classes that incorporate this feature include a structure that can hold error messages.
      * 
-     * @param void
+     * @param string $endOfLine = '<br>'
      * 
      * @return mixed
      */
-    public function error()
+    public function error(String $endOfLine = '<br>')
     {
         if( ! empty($this->error) )
         {
             if( is_array($this->error) )
             {
-                return implode('<br>', $this->error);
+                return implode($endOfLine, $this->error);
             }
 
             return $this->error;
@@ -52,13 +52,13 @@ trait Information
     }
 
     /**
-     * Get success
+     * Classes that incorporate this feature include a structure that can hold success messages.
      * 
-     * @param void
+     * @param string $endOfLine = '<br>'
      * 
      * @return mixed
      */
-    public function success()
+    public function success(String $endOfLine = '<br>')
     {
         if( empty($this->error) )
         {
@@ -66,7 +66,7 @@ trait Information
             {
                 if( is_array($this->success) )
                 {
-                    return implode('<br>', $this->success);
+                    return implode($endOfLine, $this->success);
                 }
 
                 return $this->success;
@@ -83,9 +83,7 @@ trait Information
     }
 
     /**
-     * Get status
-     * 
-     * @param void
+     * Classes that incorporate this feature include a structure that can hold error or success messages.
      * 
      * @return mixed
      */

@@ -440,7 +440,7 @@ class URI implements URIInterface
     }
 
     /**
-     * Get active URL
+     * Get active URI
      * 
      * @param bool $fullPath = false
      * 
@@ -448,7 +448,7 @@ class URI implements URIInterface
      */
     public static function active(Bool $fullPath = false) : String
     {
-        return Request::getActiveURL($fullPath);
+        return Request::getActiveURI($fullPath);
     }
 
     /**

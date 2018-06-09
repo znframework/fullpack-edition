@@ -21,13 +21,13 @@ trait Functionalization
      */
     public function __call($method, $parameters)
     {   
-        $lower = strtolower($method);
-               
-        if( $standart = (static::functionalization[$lower] ?? NULL) )
+        # It allows a library to cluster the desired functions within it.
+        if( $standart = (static::functionalization[strtolower($method)] ?? NULL) )
         {
             return $standart(...$parameters);
         }
 
+        # The __call method of the parent class does not lose its functionality.
         if( method_exists(get_parent_class(), '__call'))
         {
             return parent::__call($method, $parameters);

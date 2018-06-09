@@ -9,9 +9,10 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ReflectionClass;
 use ZN\ErrorHandling\Errors;
-use ZN\Inclusion\Project\Theme;
 use ZN\ErrorHandling\Exceptions;
+use ZN\Inclusion\Project\Theme;
 use ZN\Inclusion\Project\Masterpage;
 
 class Kernel
@@ -35,14 +36,7 @@ class Kernel
         define('HTACCESS_CONFIG', Config::get('Htaccess'));
         
         # OB process is starting.
-        if( (HTACCESS_CONFIG['cache']['obGzhandler'] ?? true) === true && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'] ?? NULL, 'gzip') )
-        {
-            ob_start('ob_gzhandler');
-        }
-        else
-        {
-            ob_start();
-        }
+        Buffering::start();
 
         # Session process is starting.
         Storage::start();
@@ -77,25 +71,21 @@ class Kernel
         # Enables processing of changes to the robots.txt file if it is open.
         if( Config::robots('createFile') === true )
         {
-            In::createRobotsFile();
+            Robots::create();
         }   
         
         # Sets the system's language.
+        # The lang configuration must be set to true 
+        # in Config/Services.php file to enable this condition.
         if( Lang::current() )
         {
-            $langFix = str_ireplace([Base::suffix((string) Base::illustrate('_CURRENT_PROJECT'))], '', Base::currentPath());
-            $langFix = explode('/', $langFix)[1] ?? NULL;
-
-            if( strlen($langFix) === 2 )
-            {
-                Lang::set($langFix);
-            }
+            Lang::setByURI();
         }
 
         # Configures the use of Composer autoloader.
         if( $composer = Config::get('Autoloader', 'composer') ) 
         {
-            self::composerLoader($composer);
+            Composer::loader($composer);
         }
         
         # If the setting is active, it loads the startup files.
@@ -171,8 +161,9 @@ class Kernel
         # The view path is being controlled so that the view can be loaded automatically.
         self::viewPathFinder($function, $viewPath, $wizardPath);
 
+        # Resolving dependency injections.
         # The controller is being called.
-        Singleton::class($page)->$function(...$parameters);
+        self::callController($page, $function, $parameters);
         
         # The view is automatically loading.
         self::viewAutoload($wizardPath, $viewPath);          
@@ -184,6 +175,23 @@ class Kernel
         
         # The operation of the system core is completes.
         self::end();
+    }
+
+    /**
+     * Protected call controller
+     * 
+     * [added]5.7.7
+     */
+    protected static function callController($page, $function, $parameters)
+    {
+        # The reflection of the active controller is being taken.
+        $reflector = new ReflectionClass($page);
+
+        # The active controller's construct method is being resolved.
+        $controller = new $page(...In::resolvingDependencyInjections($reflector, $page, '__construct'));
+
+        # The parameters of the active controller method are being resolved.
+        $controller->$function(...(In::resolvingDependencyInjections($reflector, $page, $function) ?: $parameters));
     }
 
     /**
@@ -314,7 +322,7 @@ class Kernel
         }
 
         # The buffer is being turned off.
-        ob_end_flush();
+        Buffering::end();
     }
 
     /**
@@ -365,42 +373,6 @@ class Kernel
                     require $file;
                 }
             }
-        }
-    }
-
-    /**
-     * Protected Composer Loader
-     * 
-     * @param mixed $composer
-     * 
-     * @return void
-     */
-    protected static function composerLoader($composer)
-    {
-        $path = 'vendor/autoload.php';
-
-        if( $composer === true )
-        {
-            if( is_file($path) )
-            {
-                require $path;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        elseif( is_file($composer) )
-        {
-            require $composer;
-        }
-        else
-        {
-            $path = Base::suffix($composer) . $path;
-
-            Helper::report('Error', Lang::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
-
-            throw new Exception('Error', 'fileNotFound', $path);
         }
     }
 

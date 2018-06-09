@@ -143,6 +143,55 @@ class Base
     }
 
     /**
+     * Removes an expression in begin of a string.,
+     * 
+     * @param string $data 
+     * @param string $fix = '/'
+     * 
+     * @return string
+     */
+    public static function removePrefix(String $data = NULL, String $fix = '/') : String
+    {
+        if( strpos($data, $fix) === 0 ) 
+        {
+            $data = substr($data, strlen($fix));
+        } 
+
+        return $data;
+    }
+
+    /**
+     * Removes an expression in begin of a string.,
+     * 
+     * @param string $data 
+     * @param string $fix = '/'
+     * 
+     * @return string
+     */
+    public static function removeSuffix(String $data = NULL, String $fix = '/') : String
+    {
+        if( strpos($data, $fix) === ($start = strlen($data) - strlen($fix)) ) 
+        {
+            $data = substr($data, 0, $start);
+        } 
+
+        return $data;
+    }
+
+    /**
+     * It removes an expression from both sides of a string.
+     * 
+     * @param string $data 
+     * @param string $fix = '/'
+     * 
+     * @return string
+     */
+    public static function removePresuffix(String $data = NULL, String $fix = '/') : String
+    {
+        return self::removeSuffix(self::removePrefix($data, $fix), $fix);
+    }
+
+    /**
      * suffix 
      * 
      * It is used to append a suffix to any string.
