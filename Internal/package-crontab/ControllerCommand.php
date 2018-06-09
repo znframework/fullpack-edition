@@ -23,7 +23,7 @@ class ControllerCommand
     {
         $datas      = Structure::data($path);
         $controller = $datas['page'];
-        $function   = $datas['function'] ?? 'main';
+        $function   = $datas['function'];
         $namespace  = $datas['namespace'];
         $parameters = $datas['parameters'];
         $class      = $namespace . $controller;

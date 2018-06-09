@@ -162,7 +162,7 @@ class Listener
     protected static function controllerCallback($callback)
     {
         $datas      = Structure::data($callback);
-        $function   = $datas['function'] ?? 'main';
+        $function   = $datas['function'];
         $parameters = $datas['parameters'];
         $class      = $datas['namespace'] . $datas['page'];
 
