@@ -177,7 +177,7 @@ class Restoration
         $projects             = Config::get('Project');
         $restoration          = $projects['restoration'];
         $restorationPages     = $restorable === true && ! isset($settings['functions'])
-                              ? ['main']
+                              ? [Config::get('Routing', 'openFunction') ?: 'main']
                               : (array) ($settings['functions'] ?? $restoration['pages']);
         $restorationRoutePage = $settings['routePage'] ?? $restoration['routePage'];
         $routePage            = strtolower($restorationRoutePage);

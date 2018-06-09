@@ -30,7 +30,7 @@ class Controller
     {   
         $datas      = Structure::data($command);
         $page       = $datas['page'];
-        $function   = $datas['function'] ?? 'main';
+        $function   = $datas['function'];
         $namespace  = $datas['namespace'];
         $parameters = $datas['parameters'];
         $file       = $datas['file'];

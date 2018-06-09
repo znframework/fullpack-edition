@@ -356,7 +356,7 @@ class Job implements JobInterface, CrontabIntervalInterface
         $path     = $this->_convertFileName($file);
         $pathEx   = explode('-', $path);
         $command  = $pathEx[0];
-        $method   = $pathEx[1] ?? 'main';
+        $method   = $pathEx[1] ?? Config::get('Routing', 'openFunction') ?: 'main';
 
         $code = ' -r \'' . $this->zeroneed . '(new \\'.$type.'\Commands\\'.$command.')->'.$method.'();\'';
 

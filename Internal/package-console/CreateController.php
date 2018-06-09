@@ -10,6 +10,7 @@
  */
 
 use Generate;
+use ZN\Config;
 
 /**
  * @command create-controller
@@ -30,7 +31,7 @@ class CreateController
         [
             'extends'   => 'Controller',
             'namespace' => 'Project\Controllers',
-            'functions' => ['main']
+            'functions' => [Config::get('Routing', 'openFunction') ?: 'main']
         ]));
     }
 }
