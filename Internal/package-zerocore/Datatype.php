@@ -118,7 +118,7 @@ class Datatype
                 $return .= $arrayEx[$ind + $i] . $separator;
             }
 
-            return rtrim($return, $separator);
+            return Base::removeSuffix($return, $separator);
         }
     }
 

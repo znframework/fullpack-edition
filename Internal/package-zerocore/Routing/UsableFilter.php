@@ -9,13 +9,14 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Request;
 
 class UsableFilter
 {
     public function __construct($filters, $get, $config, $class)
     {
-        if( strpos(strtolower(Request::getActiveURI()), rtrim(CURRENT_CFURI, '/main')) === 0 && $get === false )
+        if( strpos(strtolower(Request::getActiveURI()), Base::removeSuffix(CURRENT_CFURI, '/main')) === 0 && $get === false )
         {
             $class->redirectRequest();
         }

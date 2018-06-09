@@ -73,7 +73,7 @@ class Restoration
             unlink($classMapFile);
         }
 
-        $return = Filesystem::copy($restoreFolder, PROJECTS_DIR . ltrim($project, self::$restoreFix));
+        $return = Filesystem::copy($restoreFolder, PROJECTS_DIR . Base::removePrefix($project, self::$restoreFix));
 
         if( $type === 'delete' )
         {

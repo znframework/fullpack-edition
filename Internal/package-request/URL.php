@@ -76,7 +76,9 @@ class URL implements URLInterface
 
         if( ! empty($fix) )
         {
-            return Base::suffix(rtrim($currentUrl, $fix)) . $fix;
+            # It allows the parametric value to be inserted after the / symbol.
+            # If the parametric value is present, it is not appended to the end of the URI.
+            return Base::suffix(Base::removeSuffix($currentUrl, $fix)) . $fix;
         }
 
         return $currentUrl;
