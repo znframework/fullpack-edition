@@ -341,13 +341,175 @@ class Paginator implements PaginatorInterface
      */
     public function create($start = NULL, Array $settings = []) : String
     {
+        # The configuration arrays are merge.
         $settings = array_merge($this->config, $this->settings, $settings);
 
+        # If the configuration is present, it is rearranged.
         if( ! empty($settings) )
         {
             $this->settings($settings);
         }
 
+        # Gets information about which recording to start the paging process.
+        $startRowNumber = $this->getStartRowNumber($start);
+
+        # If the limit is set to 0, 1 is accepted.
+        $this->limit = $this->limit === 0 ? 1 : $this->limit;
+
+        if( $this->isBasicPaginationBar() )
+        {
+            # Add prev link.
+            if( $this->isPrevLink($startRowNumber) )
+            {
+                $this->addPrevLink($startRowNumber, $prevLink);
+            }
+            # Remove prev link.
+            else
+            {
+                $this->removeLinkFromPagingationBar($prevLink);
+            }
+
+            # Add next link.
+            if( $this->isNextLink($this->getPerPage(), $startRowNumber) )
+            {
+                $this->addNextLink($startRowNumber, $nextLink);
+            }
+            # Remove next link.
+            else
+            {
+                $this->removeLinkFromPagingationBar($nextLink);
+            }
+
+            # Generate pagination bar.
+            if( $this->isPaginationBar() )
+            {
+                return $this->generatePaginationBar($prevLink, $this->getNumberLinks($this->getPerPage(), $startRowNumber), $nextLink);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            # Add prev link.
+            if( $this->isAdvancedPrevLink($startRowNumber) )
+            {
+                $this->addPrevLink($startRowNumber, $prevLink);
+            }
+            # Remove prev link.
+            else
+            {
+                $this->removeLinkFromPagingationBar($prevLink);
+            }
+
+            # Add first, next, last links.
+            if( $this->isAdvancedNextLink($startRowNumber) )
+            {
+                $this->addNextLink($startRowNumber, $nextLink);
+                $this->addLastLink($lastLink);
+                
+                $pageIndex = $this->getPageIndex($startRowNumber);
+            }
+            # Remove next, last links.
+            else
+            {
+                $this->removeLinkFromPagingationBar($nextLink);
+                $this->removeLinkFromPagingationBar($lastLink);
+
+                $pageIndex = $this->getPageIndexWithoutNextLinks();
+            }
+            
+            # On the first page, remove the first link.
+            if( $this->isFirstLink($startRowNumber, $pageIndex) )
+            {
+                $this->removeLinkFromPagingationBar($firstLink);
+            }
+            else
+            {
+                $this->addFirstLink($firstLink);
+            }
+
+            $advancedPerPage = $this->getAdvancedPerPage($pageIndex, $nextLink, $lastLink);
+            
+             # Generate pagination bar.
+            if( $this->isPaginationBar() )
+            {
+                return $this->generatePaginationBar($firstLink, $prevLink, $this->getNumberLinks($advancedPerPage, $startRowNumber, $pageIndex), $nextLink, $lastLink);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Protected implode links
+     */
+    protected function implodeLinks(...$links)
+    {
+        return implode(' ', $links);
+    }
+
+    /**
+     * Protected get page index without next linkx
+     */
+    protected function getPageIndexWithoutNextLinks()
+    {
+        return $this->getPerPage() - $this->countLinks + 1;
+    }
+
+    /**
+     * Protected get page index
+     */
+    protected function getPageIndex($startRowNumber)
+    {
+        if( ($startRowNumber / $this->limit) == 0 )
+        {
+            return 1;
+        }
+        
+        return floor( $startRowNumber / $this->limit + 1);
+    }
+
+    /**
+     * Protected get first link
+     */
+    protected function addFirstLink(&$firstLink)
+    {
+        $firstLink = $this->getLink(0, $this->getStyleClassAttributes('first'), $this->firstName);
+    }
+
+    /**
+     * Protected get last link
+     */
+    protected function addLastLink(&$lastLink)
+    {
+        $lastLink = $this->getLink($this->calculatePageRowNumberForLastLink(), $this->getStyleClassAttributes('last'), $this->lastName);
+    }
+
+    /**
+     * Protected get prev link
+     */
+    protected function addPrevLink($startRowNumber, &$prevLink)
+    {
+        $prevLink = $this->getLink($this->decrementPageRowNumber($startRowNumber), $this->getStyleClassAttributes('prev'), $this->prevName);
+    }
+
+    /**
+     * Protected get advanced next link
+     */
+    protected function addNextLink($startRowNumber, &$nextLink)
+    {
+        $nextLink = $this->getLink($this->incrementPageRowNumber($startRowNumber), $this->getStyleClassAttributes('next'), $this->nextName);
+    }
+
+    /**
+     * Protected get start row number
+     */
+    protected function getStartRowNumber($start)
+    {
         if( $this->start !== NULL )
         {
             $start = (int) $this->start;
@@ -355,110 +517,44 @@ class Paginator implements PaginatorInterface
 
         if( empty($start) && ! is_numeric($start) )
         {
-            $startPage = ! is_numeric($segment = URI::segment(-1)) ? 0 : $segment;
+            return ! is_numeric($segment = URI::segment(-1)) ? 0 : $segment;
         }
-        else
+        
+        return ! is_numeric($start) ? 0 : $start;
+    }
+
+    /**
+     * Protected is basic pagination bar
+     */
+    protected function isBasicPaginationBar()
+    {
+        return $this->countLinks > $this->getPerPage();
+    }
+
+    /**
+     * Protected is pagination bar
+     */
+    protected function isPaginationBar()
+    {
+        return $this->totalRows > $this->limit;
+    }
+
+    /**
+     * Protected advanced per page.
+     */
+    protected function getAdvancedPerPage($pageIndex, &$nextLink, &$lastLink)
+    {
+        $perPage = $this->countLinks + $pageIndex - 1;
+
+        if( $perPage >= ($getPerPage = $this->getPerPage()) )
         {
-            $startPage = ! is_numeric($start) ? 0 : $start;
+            $this->removeLinkFromPagingationBar($nextLink);
+            $this->removeLinkFromPagingationBar($lastLink);
+
+            $perPage = $getPerPage;
         }
 
-        # If the limit is set to 0, 1 is accepted.
-        $this->limit = $this->limit === 0 ? 1 : $this->limit;
-
-        # The amount of recording per page is calculated.
-        $perPage = $this->getPerPage();
-
-        if( $this->countLinks > $perPage )
-        {
-            # Prev tag
-            if( $this->isPrevLink($startPage) )
-            {
-                $prevLink = $this->getLink($this->decrementPageRowNumber($startPage), $this->getStyleClassAttributes('prev'), $this->prevName);
-            }
-            else
-            {
-                $this->removeLinkFromPagingBar($prevLink);
-            }
-
-            # Next tag
-            if( $this->isNextLink($perPage, $startPage) )
-            {
-                $nextLink = $this->getLink($this->incrementPageRowNumber($startPage), $this->getStyleClassAttributes('next'), $this->nextName);
-            }
-            else
-            {
-                $this->removeLinkFromPagingBar($nextLink);
-            }
-
-            if( $this->totalRows > $this->limit )
-            {
-                return $this->getHtmlUlElement($prevLink.' '.$this->getNumberLinks($perPage, $startPage).' '.$nextLink);
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            $lastLink = $this->getLink($this->calculatePageRowNumberForLastLink(), $this->getStyleClassAttributes('last'), $this->lastName);
-
-            $firstLink = $this->getLink(0, $this->getStyleClassAttributes('first'), $this->firstName);
-
-            if( $startPage > 0 )
-            {
-                $prevLink = $this->getLink($this->decrementPageRowNumber($startPage), $this->getStyleClassAttributes('prev'), $this->prevName);
-            }
-            else
-            {
-                $this->removeLinkFromPagingBar($prevLink);
-            }
-
-            if( ($startPage / $this->limit) == 0 )
-            {
-                $pagIndex = 1;
-            }
-            else
-            {
-                $pagIndex = floor( $startPage / $this->limit + 1);
-            }
-
-            if( $startPage < $this->totalRows - $this->limit )
-            {
-                $nextLink = $this->getLink($this->incrementPageRowNumber($startPage), $this->getStyleClassAttributes('next'), $this->nextName);
-            }
-            else
-            {
-                $this->removeLinkFromPagingBar($nextLink);
-                $this->removeLinkFromPagingBar($lastLink);
-
-                $pagIndex = ceil($this->totalRows / $this->limit) - $this->countLinks + 1;
-            }
-
-            if( $pagIndex < 1 || $startPage == 0 )
-            {
-                $this->removeLinkFromPagingBar($firstLink);
-            }
-
-            $nPerPage = $this->countLinks + $pagIndex - 1;
-
-            if( $nPerPage >= ceil($this->totalRows / $this->limit) )
-            {
-                $this->removeLinkFromPagingBar($nextLink);
-                $this->removeLinkFromPagingBar($lastLink);
-
-                $nPerPage = ceil($this->totalRows / $this->limit);
-            }
-
-            if( $this->totalRows > $this->limit )
-            {
-                return $this->getHtmlUlElement($firstLink.' '.$prevLink.' '.$this->getNumberLinks($nPerPage, $startPage, $pagIndex).' '.$nextLink.' '.$lastLink);
-            }
-            else
-            {
-                return false;
-            }
-        }
+        return $perPage;
     }
 
     /**
@@ -470,25 +566,49 @@ class Paginator implements PaginatorInterface
     }
 
     /**
+     * Protected is first link
+     */
+    protected function isFirstLink($startRowNumber, $pageIndex)
+    {
+        return $pageIndex < 1 || $startRowNumber == 0;
+    }
+
+    /**
+     * Protected is advanced prev link
+     */
+    protected function isAdvancedPrevLink($startRowNumber)
+    {
+        return $startRowNumber > 0;
+    }
+
+    /**
      * Protected is prev link
      */
-    protected function isPrevLink($startPage)
+    protected function isPrevLink($startRowNumber)
     {
-        return $startPage != 0;
+        return $startRowNumber != 0;
+    }
+
+    /**
+     * Protected is advanced next link
+     */
+    protected function isAdvancedNextLink($startRowNumber)
+    {
+        return $startRowNumber < $this->totalRows - $this->limit;
     }
 
     /**
      * Protected is next link
      */
-    protected function isNextLink($perPage, $startPage)
+    protected function isNextLink($perPage, $startRowNumber)
     {
-        return $startPage < (($perPage - 1) * $this->limit);
+        return $startRowNumber < (($perPage - 1) * $this->limit);
     }
 
     /**
      * Protected get number links
      */
-    protected function getNumberLinks($perPage, $startPage, $startIndexNumber = 1)
+    protected function getNumberLinks($perPage, $startRowNumber, $startIndexNumber = 1)
     {
         $numberLinks = NULL;
 
@@ -496,7 +616,7 @@ class Paginator implements PaginatorInterface
         {
             $page = ($i - 1) * $this->limit;
 
-            if( $i - 1 == floor((int) $startPage / $this->limit) )
+            if( $i - 1 == floor((int) $startRowNumber / $this->limit) )
             {
                 $currentLink = $this->getStyleClassAttributes('current');
             }
@@ -514,17 +634,17 @@ class Paginator implements PaginatorInterface
     /**
      * Protected increment page row number
      */
-    protected function incrementPageRowNumber($startPage)
+    protected function incrementPageRowNumber($startRowNumber)
     {
-        return $startPage + $this->limit;
+        return $startRowNumber + $this->limit;
     }
 
     /**
      * Protected decrement page row number
      */
-    protected function decrementPageRowNumber($startPage)
+    protected function decrementPageRowNumber($startRowNumber)
     {
-        return $startPage - $this->limit;
+        return $startRowNumber - $this->limit;
     }
 
     /**
@@ -540,7 +660,7 @@ class Paginator implements PaginatorInterface
     /**
      * Protected remove link from paging bar
      */
-    protected function removeLinkFromPagingBar(&$data)
+    protected function removeLinkFromPagingationBar(&$data)
     {
         $data = NULL;
     }
@@ -625,11 +745,11 @@ class Paginator implements PaginatorInterface
     /**
      * Protected get html ul element
      */
-    protected function getHtmlUlElement($numberLinks)
+    protected function generatePaginationBar(...$numberLinks)
     {
         if( $this->output === 'bootstrap' )
         {
-            return '<ul class="pagination">' . $numberLinks . '</ul>';
+            return '<ul class="pagination">' . $this->implodeLinks(...$numberLinks) . '</ul>';
         }
 
         return $numberLinks;
@@ -640,11 +760,18 @@ class Paginator implements PaginatorInterface
      */
     protected function getStyleLinkAttribute($var, $type = 'style')
     {
-        $l = ( ! empty($this->{$type}[$var]) ) ? $this->{$type}[$var].' ' : '';
+        $getAttribute = ( ! empty($this->{$type}[$var]) ) ? $this->{$type}[$var] . ' ' : '';
 
-        if( $type === 'class' ) $this->classAttribute = $l; else $this->styleAttribute = $l;
+        if( $type === 'class' ) 
+        {
+            $this->classAttribute = $getAttribute; 
+        }
+        else 
+        {
+            $this->styleAttribute = $getAttribute;
+        }
    
-        return ! empty($l) ? ' '.$type.'="'.trim($l).'"' : '';
+        return $this->createAttribute($getAttribute, $type);
     }
 
     /**
@@ -660,9 +787,17 @@ class Paginator implements PaginatorInterface
      */
     protected function getClassAttribute($var, $type = 'class')
     {
-        return ( $status = trim(( $type === 'class' ? $this->classAttribute : $this->styleAttribute) . $this->{$type}[$var]) ) 
-               ? ' '.$type.'="'.$status.'" ' 
-               : '';
+        $status = trim(( $type === 'class' ? $this->classAttribute : $this->styleAttribute) . $this->{$type}[$var]);
+
+        return $this->createAttribute($status, $type);
+    }
+
+    /**
+     * Protcted create attribute
+     */
+    protected function createAttribute($condition, $key, $value = NULL)
+    {
+        return ! empty($condition) ? ' ' . $key . '="' . trim($value ?? $condition) . '"' : '';
     }
 
    /**
@@ -680,7 +815,7 @@ class Paginator implements PaginatorInterface
     {
         if( $this->type === 'ajax' )
         {
-            return ' prow="'.$value.'" ptype="ajax"';
+            return ' prow="' . $value . '" ptype="ajax"';
         }
     }
 }
