@@ -53,14 +53,14 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @var string
      */
-    protected $zeroneed;
+    protected $directoryIndexCommand;
 
     /**
      * Define
      * 
      * @var string
      */
-    protected $dzerocore = NULL;
+    protected $projectCommand = NULL;
 
     /**
      * Crontab Commands
@@ -92,13 +92,18 @@ class Job implements JobInterface, CrontabIntervalInterface
     protected $command;
 
     /**
+     * @var string
+     */
+    protected $limitFile = 'Limit.json';
+
+    /**
      * Magic Constructor
      */
     public function __construct()
     {
         $this->getConfig = Config::default('ZN\Prompt\PromptDefaultConfiguration')
                                  ::get('Services', 'processor');
-        $this->zeroneed  = $this->_zeroneed();
+        $this->directoryIndexCommand  = $this->getDirectoryIndexCommand();
         $this->processor = Singleton::class('ZN\Prompt\Processor');
 
         if( PROJECT_TYPE === 'EIP' )
@@ -106,15 +111,25 @@ class Job implements JobInterface, CrontabIntervalInterface
             $this->crontabCommands = EXTERNAL_DIR . $this->fileName;
             $this->user            = DEFINED_CURRENT_PROJECT;
             
-            $this->_project($this->dzerocore = $this->zeroneed);
+            $this->getProjectCommand($this->projectCommand = $this->directoryIndexCommand);
         }
         else
         {
             $this->crontabCommands = FILES_DIR . $this->fileName;
         }
 
+        $this->createCrontabDirectoryIfNotExists();
+
         $this->path       = $this->getConfig['path'];
         $this->crontabDir = Filesystem\Info::originpath(STORAGE_DIR.'Crontab'.DS);
+    }
+
+    /**
+     * Get crontab commands.
+     */
+    public function getCrontabCommands()
+    {
+        return $this->crontabCommands;
     }
 
     /**
@@ -126,76 +141,18 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     public function queue(Int $id, Callable $callable, Int $decrement = 1)
     {
-        $queueFile = $this->crontabCommands . 'Queue.json';
-        
-        $fileLimitValue = 0;
-
-        $key = 'ID' . $id;
-
-        if( ! is_file($queueFile) )
-        {
-            file_put_contents($queueFile, json_encode([$key => $fileLimitValue]) . EOL);
-        }
-        
-        $fileData = json_decode(file_get_contents($queueFile), true);
-
-        $fileLimitValue = (int) ($fileData[$key] ?? NULL);
-
-        if( $callable($fileLimitValue, $decrement) === false )
-        {
-            $this->remove((int) ltrim($key, 'ID'));
-
-            if( isset($fileData[$key]) )
-            {
-                unset($fileData[$key]);
-            }
-        }
-        else
-        {
-            $fileData[$key] = $fileLimitValue += $decrement;
-        }
-           
-        file_put_contents($queueFile, json_encode($fileData) . EOL);
+        new Queue($id, $callable, $decrement, $this);
     }
 
     /**
-     * Crontab Run Limit
+     * Crontab limit
      * 
      * @param int $id
-     * @param int $limit = 1
+     * @param int $getLimit = 1
      */
-    public function limit(Int $id, Int $limit = 1)
+    public function limit(Int $id, Int $getLimit = 1)
     {
-        $limitFile = $this->crontabCommands . 'Limit.json';
-        
-        $fileLimitValue = $default = 1;
-
-        $key = 'ID' . $id;
-
-        if( ! is_file($limitFile) )
-        {
-            file_put_contents($limitFile, json_encode([$key => $default]) . EOL);
-        }
-        
-        $fileData = json_decode(file_get_contents($limitFile), true);
-
-        $fileLimitValue = (int) ($fileData[$key] ?? NULL);
-
-        if( $fileLimitValue === $limit )
-        {
-            $this->remove((int) ltrim($key, 'ID'));
-
-            if( isset($fileData[$key]) )
-            {
-                unset($fileData[$key]);
-            }
-        }
-        else
-        {
-            $fileData[$key] = $fileLimitValue++;   
-        }
-
-        file_put_contents($limitFile, json_encode($fileData) . EOL);
+        new Limit($id, $getLimit, $this);
     }
 
     /**
@@ -211,7 +168,7 @@ class Job implements JobInterface, CrontabIntervalInterface
 
         $this->crontabDir = str_replace(REQUESTED_CURRENT_PROJECT, $this->user, $this->crontabDir);
 
-        $this->_project($this->dzerocore);
+        $this->getProjectCommand($this->projectCommand);
 
         return $this;
     }
@@ -288,7 +245,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     public function remove($key = NULL)
     {
-        $this->processor->exec('crontab -r');
+        $this->executeRemoveCommand();
 
         if( $key === NULL )
         {
@@ -296,13 +253,9 @@ class Job implements JobInterface, CrontabIntervalInterface
         }
         else
         {
-            $jobs = $this->listArray();
+            $this->removeJobFromExecFile($key);
 
-            unset($jobs[$key]);
-
-            file_put_contents($this->crontabCommands, implode(EOL, $jobs) . EOL);
-
-            $this->processor->exec('crontab ' . $this->crontabCommands);
+            $this->executeCommand();
         }
     }
 
@@ -328,8 +281,7 @@ class Job implements JobInterface, CrontabIntervalInterface
     {
         new ControllerCommand($file, $command);
         
-        $path = $this->_convertFileName($file);
-        $code = Base::prefix(Base::suffix($command, ';\''), ' -r \'' . $this->zeroneed);
+        $code = Base::prefix(Base::suffix($command, ';\''), ' -r \'' . $this->directoryIndexCommand);
 
         $this->run($code);
     }
@@ -353,12 +305,12 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     public function command(String $file, $type = 'Project')
     {
-        $path     = $this->_convertFileName($file);
+        $path     = $this->convertFileName($file);
         $pathEx   = explode('-', $path);
         $command  = $pathEx[0];
         $method   = $pathEx[1] ?? Config::get('Routing', 'openFunction') ?: 'main';
 
-        $code = ' -r \'' . $this->zeroneed . '(new \\'.$type.'\Commands\\'.$command.')->'.$method.'();\'';
+        $code = ' -r \'' . $this->directoryIndexCommand . '(new \\'.$type.'\Commands\\'.$command.')->'.$method.'();\'';
 
         $this->run($code);
     }
@@ -386,53 +338,108 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     public function run(String $cmd = NULL)
     {
-        $execFile = $this->crontabCommands;
+        $this->createExecFileIfNotExists();
 
-        if( ! is_file($execFile) )
+        $this->addJobToExecFile($cmd);
+        
+        return $this->executeCommand();
+    }
+
+    /**
+     * Protected create crontab directory if not exists
+     */
+    protected function createCrontabDirectoryIfNotExists()
+    {
+        if( ! is_dir($crontabDirectory = pathinfo($this->crontabCommands, PATHINFO_DIRNAME)) )
         {
-            Filesystem\Forge::create($execFile);
-            $this->processor->exec('chmod 0777 ' . $execFile);
+            Filesystem::createFolder($crontabDirectory);
         }
+    }
 
-        $content = file_get_contents($execFile);
+    /**
+     * Protected execute command
+     */
+    protected function executeCommand()
+    {
+        return $this->processor->exec('crontab ' . $this->crontabCommands);
+    }
+
+    /**
+     * Protected execute remove command
+     */
+    protected function executeRemoveCommand()
+    {
+        $this->processor->exec('crontab -r');
+    }
+
+    /**
+     * Protected create exec file if not exists
+     */
+    protected function createExecFileIfNotExists()
+    {
+        if( ! is_file($this->crontabCommands) )
+        {
+            Filesystem\Forge::create($this->crontabCommands);
+
+            $this->processor->exec('chmod 0777 ' . $this->crontabCommands);
+        }
+    }
+
+    /**
+     * Protected add job to exec file
+     */
+    protected function addJobToExecFile($cmd)
+    {
+        $content = file_get_contents($this->crontabCommands);
 
         if( ! stristr($content, $cmd))
         {
-            $content = $content . $this->_command() . $cmd . EOL;
-            file_put_contents($execFile, $content);
+            $content = $content . $this->getValidCommand() . $cmd . EOL;
+
+            file_put_contents($this->crontabCommands, $content);
         }
-        
-        return $this->processor->exec('crontab ' . $execFile);
+    }   
+
+    /**
+     * Protected remove job from exec file
+     */
+    protected function removeJobFromExecFile($cmd)
+    {
+        $jobs = $this->listArray();
+
+        unset($jobs[$cmd]);
+
+        file_put_contents($this->crontabCommands, implode(EOL, $jobs) . EOL);
     }
 
     /**
      * Protected Zerocore
      */
-    protected function _zeroneed()
+    protected function getDirectoryIndexCommand()
     {
         return 'define("CONSOLE_ENABLED", true); require "'.DIRECTORY_INDEX.'"; ';
     }
 
     /**
-     * Protected Project
+     * Protected get project command
      */
-    protected function _project($value)
+    protected function getProjectCommand($value)
     {
-        $this->zeroneed = 'chdir("'.REAL_BASE_DIR.'"); define("CONSOLE_PROJECT_NAME", "'.$this->user.'"); ' . $value;
+        $this->directoryIndexCommand = 'chdir("'.REAL_BASE_DIR.'"); define("CONSOLE_PROJECT_NAME", "'.$this->user.'"); ' . $value;
     }
 
     /**
-     * Protected Convert File Name
+     * Protected convert file name
      */
-    protected function _convertFileName($file)
+    protected function convertFileName($file)
     {
         return str_replace(['/', ':'], '-', $file);
     }
 
     /**
-     * Protected Date Time
+     * Protected datet time format
      */
-    protected function _datetime()
+    protected function getDatetimeFormat()
     {
         if( $this->interval !== '* * * * *' )
         {
@@ -447,7 +454,7 @@ class Job implements JobInterface, CrontabIntervalInterface
                         ( $this->day       ?? '*' ) . ' ';
         }
 
-        $this->_intervalDefaultVariables();
+        $this->defaultIntervalVariables();
 
         return $interval;
     }
@@ -455,9 +462,9 @@ class Job implements JobInterface, CrontabIntervalInterface
     /**
      * Protected Command
      */
-    protected function _command()
+    protected function getValidCommand()
     {
-        $datetimeFormat = $this->_datetime();
+        $datetimeFormat = $this->getDatetimeFormat();
         $type           = $this->type;
         $path           = $this->path;
         $command        = $this->command;
@@ -480,9 +487,9 @@ class Job implements JobInterface, CrontabIntervalInterface
     }
 
     /**
-     * Protected Default Variables
+     * Protected defaul command variables
      */
-    protected function _defaultVariables()
+    protected function defaultCommandVariables()
     {
         $this->type     = NULL;
         $this->path     = NULL;
@@ -491,9 +498,9 @@ class Job implements JobInterface, CrontabIntervalInterface
     }
 
     /**
-     * Protected Interval Default Variables
+     * Protected default interval variables
      */
-    protected function _intervalDefaultVariables()
+    protected function defaultIntervalVariables()
     {
         $this->interval  = '* * * * *';
         $this->minute    = '*';

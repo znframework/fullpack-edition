@@ -21,12 +21,12 @@ interface JobInterface
     public function queue(Int $id, Callable $callable, Int $decrement = 1);
 
     /**
-     * Crontab Run Limit
+     * Crontab limit
      * 
      * @param int $id
-     * @param int $limit = 1
+     * @param int $getLimit = 1
      */
-    public function limit(Int $id, Int $limit = 1);
+    public function limit(Int $id, Int $getLimit = 1);
 
     /**
      * Selects project
