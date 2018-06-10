@@ -24,11 +24,18 @@ class Paginator implements PaginatorInterface
     protected $settings = [];
 
     /**
-     * Keep style & css.
+     * Keeps class attibute
      * 
      * @var string
      */
-    protected $lc, $ls;
+    protected $classAttribute; 
+    
+    /**
+     * Keeps style attibute
+     * 
+     * @var string
+     */
+    protected $styleAttribute;
 
     /**
      * Default total rows
@@ -84,28 +91,28 @@ class Paginator implements PaginatorInterface
      * 
      * @var string
      */
-    protected $prevTag = '[prev]';
+    protected $prevName = '[prev]';
 
      /**
      * Default next tag name
      * 
      * @var string
      */
-    protected $nextTag = '[next]';
+    protected $nextName = '[next]';
 
      /**
      * Default first tag name
      * 
      * @var string
      */
-    protected $firstTag = '[first]';
+    protected $firstName = '[first]';
 
      /**
      * Default last tag name
      * 
      * @var string
      */
-    protected $lastTag = '[last]';
+    protected $lastName = '[last]';
 
      /**
      * Default url
@@ -138,7 +145,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param string $url
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function url(String $url) : Paginator
     {
@@ -152,7 +159,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param mixed $start
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function start($start) : Paginator
     {
@@ -166,7 +173,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param int $limit
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function limit(Int $limit) : Paginator
     {
@@ -194,7 +201,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param int $totalRows
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function totalRows(Int $totalRows) : Paginator
     {
@@ -208,7 +215,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param int $countLinks
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function countLinks(Int $countLinks) : Paginator
     {
@@ -225,7 +232,7 @@ class Paginator implements PaginatorInterface
      * @param string $first
      * @param string $last
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function linkNames(String $prev, String $next, String $first, String $last) : Paginator
     {
@@ -242,7 +249,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param array $css
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function css(Array $css) : Paginator
     {
@@ -256,7 +263,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param array $style
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function style(Array $style) : Paginator
     {
@@ -270,44 +277,13 @@ class Paginator implements PaginatorInterface
      * 
      * @param string $type - options[bootstrap|classic]
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function output(String $type) : Paginator
     {
         $this->settings['output'] = $type;
 
         return $this;
-    }
-
-    /**
-     * protected explode request get value
-     */
-    protected function _explodeRequestGetValue()
-    {
-        return ( $string = explode('?', $_SERVER['REQUEST_URI'])[1] ?? NULL)
-               ? '?' . $string
-               : '';
-    }
-
-    /**
-     * protected uri get control
-     * 
-     * @param string $page
-     * 
-     * @return string
-     */
-    protected function _uriGetControl($page)
-    {
-        $this->url .= $this->_explodeRequestGetValue();
-
-        if( strstr($this->url, '?') )
-        {
-            $urlEx = explode('?', $this->url);
-
-            return Base::suffix($urlEx[0]) . $page . '?' . rtrim($urlEx[1], '/');
-        }
-
-        return $this->type === 'ajax' ? $this->url : Base::suffix($this->url) . $page;
     }
 
     /**
@@ -319,7 +295,7 @@ class Paginator implements PaginatorInterface
      */
     public function getURI(String $page = NULL) : String
     {
-        return $this->_uriGetControl($page);
+        return $this->checkGetRequest($page);
     }
 
     /**
@@ -327,25 +303,17 @@ class Paginator implements PaginatorInterface
      * 
      * @param array $cofig = []
      * 
-     * @return Pagination
+     * @return Paginator
      */
     public function settings(Array $config = []) : Paginator
     {
-        $configs = $this->config;
+        foreach( $config as $key => $value )
+        {
+            $this->$key = $value;
+        }        
 
-        if( isset($config['totalRows']) )   $this->totalRows    = $config['totalRows'];
-        if( isset($config['start']) )       $this->start        = $config['start'];
-        if( isset($config['limit']) )       $this->limit        = $config['limit'];
-        if( isset($config['countLinks']) )  $this->countLinks   = $config['countLinks'];
-        if( isset($config['prevName']) )    $this->prevTag      = $config['prevName'];
-        if( isset($config['nextName']) )    $this->nextTag      = $config['nextName'];
-        if( isset($config['firstName']) )   $this->firstTag     = $config['firstName'];
-        if( isset($config['lastName']) )    $this->lastTag      = $config['lastName'];
-        if( isset($config['type']) )        $this->type         = $config['type'];
-        if( isset($config['output']) )      $this->output       = $config['output'];
-
-        $this->class = array_merge($configs['class'], ( $config['class'] ?? []) );
-        $this->style = array_merge($configs['style'], ( $config['style'] ?? []) );
+        $this->class = array_merge($this->config['class'], $this->class ?? []);
+        $this->style = array_merge($this->config['style'], $this->style ?? []);
 
         if( isset($config['url']) && $this->type !== 'ajax' )
         {
@@ -385,7 +353,7 @@ class Paginator implements PaginatorInterface
             $start = (int) $this->start;
         }
 
-        $page = ''; $links = '';
+        $page = ''; $numberLinks = '';
 
          if( empty($start) && ! is_numeric($start) )
         {
@@ -399,11 +367,6 @@ class Paginator implements PaginatorInterface
         $this->limit     = $this->limit === 0 ? 1 : $this->limit;
         $perPage         = ceil($this->totalRows / $this->limit);
 
-        $linksClass      = $this->_classLink('links');
-        $linksStyle      = $this->_styleLink('links');
-
-        $linksStyleClass = $linksClass . $linksStyle;
-
         if( $this->countLinks > $perPage )
         {
             # Links 
@@ -413,54 +376,42 @@ class Paginator implements PaginatorInterface
 
                 if( $i - 1 == floor($startPage / $this->limit) )
                 {
-                    $currentLinkClass = $this->_class('current');
-                    $currentLinkStyle = $this->_style('current');
-                    $currentLink      = $currentLinkClass . $currentLinkStyle;
+                    $currentLink = $this->getStyleClassAttributes('current');
                 }
                 else
                 {
-                    $currentLink = $linksStyleClass;
+                    $currentLink = $this->getStyleClassLinkAttributes('links');;
                 }
 
-                $links .= $this->_link($page, $currentLink, $i);
+                $numberLinks .= $this->getLink($page, $currentLink, $i);
             }
             # Links
 
             # Prev tag
             if( $startPage != 0 )
             {
-                $classPrev  = $this->_class('prev');
-                $stylePrev  = $this->_style('prev');
-
-                $pageRowNumber = $startPage - $this->limit;
-                $firstStcl     = $classPrev . $stylePrev;
-                $first         = $this->_link($pageRowNumber, $firstStcl, $this->prevTag);
+                $prevLink = $this->getLink($this->decrementPageRowNumber($startPage), $this->getStyleClassAttributes('prev'), $this->prevName);
             }
             else
             {
-                $first = '';
+                $this->removeLinkFromPagingBar($prevLink);
             }
             # Prev tag
 
             # Next tag
             if( $startPage != $page )
             {
-                $classNext = $this->_class('next');
-                $styleNext = $this->_style('next');
-
-                $pageRowNumber = $startPage + $this->limit;
-                $lastStcl      = $classNext . $styleNext;
-                $last          = $this->_link($pageRowNumber, $lastStcl, $this->nextTag);
+                $nextLink = $this->getLink($this->incrementPageRowNumber($startPage), $this->getStyleClassAttributes('next'), $this->nextName);
             }
             else
             {
-                $last = '';
+                $this->removeLinkFromPagingBar($nextLink);
             }
             # Next tag
 
             if( $this->totalRows > $this->limit )
             {
-                return $this->_ul($first.' '.$links.' '.$last);
+                return $this->getHtmlUlElement($prevLink.' '.$numberLinks.' '.$nextLink);
             }
             else
             {
@@ -469,45 +420,17 @@ class Paginator implements PaginatorInterface
         }
         else
         {
-            $perPage = $this->countLinks;
+            $lastLink = $this->getLink($this->calculatePageRowNumberForLastLink(), $this->getStyleClassAttributes('last'), $this->lastName);
 
-            $lastTagClass     = $this->_class('last');
-            $firstTagClass    = $this->_class('first');
-            $nextTagClass     = $this->_class('next');
-            $currentLinkClass = $this->_class('current');
-            $prevTagClass     = $this->_class('prev');
-
-            $lastTagStyle     = $this->_style('last');
-            $firstTagStyle    = $this->_style('first');
-            $nextTagStyle     = $this->_style('next');
-            $currentLinkStyle = $this->_style('current');
-            $prevTagStyle     = $this->_style('prev');
-        
-            # Last tag
-            $mod       = ( $this->totalRows % $this->limit );
-            $outNumber = ( $mod == 0 ? $this->limit : 0 );
-
-            $pageRowNumber     = ($this->totalRows - ($this->totalRows % $this->limit) ) - $outNumber;
-            $lastTagStyleClass = $lastTagClass . $lastTagStyle;
-            $lastTag           = $this->_link($pageRowNumber, $lastTagStyleClass, $this->lastTag);
-            # Last tag
-
-            # First tag
-            $firstTagStyleClass = $firstTagClass.$firstTagStyle;
-            $firstTag = $this->_link(0, $firstTagStyleClass, $this->firstTag);
-            # First tag
+            $firstLink = $this->getLink(0, $this->getStyleClassAttributes('first'), $this->firstName);
 
             if( $startPage > 0 )
             {
-                # Prev tag
-                $pageRowNumber     = $startPage    - $this->limit;
-                $prevTagStyleClass = $prevTagClass . $prevTagStyle;
-                $first             = $this->_link($pageRowNumber, $prevTagStyleClass, $this->prevTag);
-                # Prev tag
+                $prevLink = $this->getLink($this->decrementPageRowNumber($startPage), $this->getStyleClassAttributes('prev'), $this->prevName);
             }
             else
             {
-                $first = '';
+                $this->removeLinkFromPagingBar($prevLink);
             }
 
             if( ($startPage / $this->limit) == 0 )
@@ -521,34 +444,32 @@ class Paginator implements PaginatorInterface
 
             if( $startPage < $this->totalRows - $this->limit )
             {
-                # Next tag
-                $pageRowNumber     = $startPage    + $this->limit;
-                $nextTagStyleClass = $nextTagClass . $nextTagStyle;
-                $last              = $this->_link($pageRowNumber, $nextTagStyleClass, $this->nextTag);
-                # Next tag
+                $nextLink = $this->getLink($this->incrementPageRowNumber($startPage), $this->getStyleClassAttributes('next'), $this->nextName);
             }
             else
             {
-                $last       = '';
-                $lastTag    = '';
-                $pagIndex   = ceil($this->totalRows / $this->limit) - $this->countLinks + 1;
+                $this->removeLinkFromPagingBar($nextLink);
+                $this->removeLinkFromPagingBar($lastLink);
+
+                $pagIndex = ceil($this->totalRows / $this->limit) - $this->countLinks + 1;
             }
 
             if( $pagIndex < 1 || $startPage == 0 )
             {
-                $firstTag = '';
+                $this->removeLinkFromPagingBar($firstLink);
             }
 
-            $nPerPage = $perPage + $pagIndex - 1;
+            $nPerPage = $this->countLinks + $pagIndex - 1;
 
             if( $nPerPage >= ceil($this->totalRows / $this->limit) )
             {
-                $nPerPage  = ceil($this->totalRows / $this->limit);
-                $lastTag   = '';
-                $last      = '';
+                $this->removeLinkFromPagingBar($nextLink);
+                $this->removeLinkFromPagingBar($lastLink);
+
+                $nPerPage = ceil($this->totalRows / $this->limit);
             }
 
-            $links = '';
+            $numberLinks = NULL;
 
             for( $i = $pagIndex; $i <= $nPerPage; $i++ )
             {
@@ -556,19 +477,19 @@ class Paginator implements PaginatorInterface
 
                 if( $i - 1 == floor((int)$startPage / $this->limit) )
                 {
-                    $currentLink = $currentLinkClass.$currentLinkStyle;
+                    $currentLink = $this->getStyleClassAttributes('current');
                 }
                 else
                 {
-                    $currentLink = $linksStyleClass;
+                    $currentLink = $this->getStyleClassLinkAttributes('links');;
                 }
 
-                $links .= $this->_link($page, $currentLink, $i);
+                $numberLinks .= $this->getLink($page, $currentLink, $i);
             }
 
             if( $this->totalRows > $this->limit )
             {
-                return $this->_ul($firstTag.' '.$first.' '.$links.' '.$last.' '.$lastTag);
+                return $this->getHtmlUlElement($firstLink.' '.$prevLink.' '.$numberLinks.' '.$nextLink.' '.$lastLink);
             }
             else
             {
@@ -578,46 +499,107 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * protected link
-     * 
-     * @param string $var
-     * @param string $fix
-     * @param string $val
-     * 
-     * @return string
+     * Protected increment page row number
      */
-    protected function _link($var, $fix, $val)
+    protected function incrementPageRowNumber($startPage)
     {
-        return $this->_li($this->_a($var, $fix, $val), $fix);
+        return $startPage + $this->limit;
     }
 
     /**
-     * protected a
-     * 
-     * @param string $var
-     * @param string $fix
-     * @param string $val
-     * 
-     * @return string
+     * Protected decrement page row number
      */
-    protected function _a($var, $attr, $val)
+    protected function decrementPageRowNumber($startPage)
+    {
+        return $startPage - $this->limit;
+    }
+
+    /**
+     * Protected page row number for last link
+     */
+    protected function calculatePageRowNumberForLastLink()
+    {
+        $mod = $this->totalRows % $this->limit;
+
+        return ($this->totalRows - $mod ) - ($mod == 0 ? $this->limit : 0);
+    }
+
+    /**
+     * Protected remove link from paging bar
+     */
+    protected function removeLinkFromPagingBar(&$data)
+    {
+        $data = NULL;
+    }
+
+    /**
+     * protected get style & class link attibutes
+     */
+    protected function getStyleClassLinkAttributes($type)
+    {
+        return $this->getClassLinkAttribute($type) . $this->getStyleLinkAttribute($type);
+    }
+
+    /**
+     * Protected get style class attibutes
+     */
+    protected function getStyleClassAttributes($type)
+    {
+        return $this->getClassAttribute($type) . $this->getStyleAttribute($type);
+    }
+
+    /**
+     * Protected explode request get value
+     */
+    protected function explodeRequestGetValue()
+    {
+        return ( $string = explode('?', $_SERVER['REQUEST_URI'])[1] ?? NULL)
+               ? '?' . $string
+               : '';
+    }
+
+    /**
+     * Protected check get request
+     */
+    protected function checkGetRequest($page)
+    {
+        $this->url .= $this->explodeRequestGetValue();
+
+        if( strstr($this->url, '?') )
+        {
+            $urlEx = explode('?', $this->url);
+
+            return Base::suffix($urlEx[0]) . $page . '?' . rtrim($urlEx[1], '/');
+        }
+
+        return $this->type === 'ajax' ? $this->url : Base::suffix($this->url) . $page;
+    }
+
+    /**
+     * Protected get link
+     */
+    protected function getLink($var, $fix, $val)
+    {
+        return $this->getHtmlLiElement($this->getHtmlAnchorElement($var, $fix, $val), $fix);
+    }
+
+    /**
+     * Protected get html anchor element
+     */
+    protected function getHtmlAnchorElement($var, $attr, $val)
     {
         if( $this->output === 'bootstrap' )
         {
             $attr = NULL;
         }
 
-        return '<a href="'.$this->_uriGetControl($var).'"'.$this->_ajax($var).$attr.'>'.$val.'</a>';
+        return '<a href="'.$this->checkGetRequest($var).'"'.$this->getAttributesForAjaxProcess($var).$attr.'>'.$val.'</a>';
     }
 
     /**
-     * protected li
-     * 
-     * @param bool $type
-     * 
-     * @return string
+     * Protected get html li element
      */
-    protected function _li($link, $fix)
+    protected function getHtmlLiElement($link, $fix)
     {
         if( $this->output === 'bootstrap' )
         {
@@ -628,86 +610,60 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Protected li
-     * 
-     * @param bool $type
-     * 
-     * @return string
+     * Protected get html ul element
      */
-    protected function _ul($links)
+    protected function getHtmlUlElement($numberLinks)
     {
         if( $this->output === 'bootstrap' )
         {
-            return '<ul class="pagination">' . $links . '</ul>';
+            return '<ul class="pagination">' . $numberLinks . '</ul>';
         }
 
-        return $links;
+        return $numberLinks;
     }
 
     /**
-     * protected style link
-     * 
-     * @param string $var
-     * @param string $type = 'style'
-     * 
-     * @return string
+     * Protected get style link attribute
      */
-    protected function _styleLink($var, $type = 'style')
+    protected function getStyleLinkAttribute($var, $type = 'style')
     {
         $l = ( ! empty($this->{$type}[$var]) ) ? $this->{$type}[$var].' ' : '';
 
-        if( $type === 'class' ) $this->lc = $l; else $this->ls = $l;
+        if( $type === 'class' ) $this->classAttribute = $l; else $this->styleAttribute = $l;
    
         return ! empty($l) ? ' '.$type.'="'.trim($l).'"' : '';
     }
 
     /**
-     * protected class  link
-     * 
-     * @param string $var
-     * 
-     * @return string
+     * Protected get class link attribute
      */
-    protected function _classLink($var)
+    protected function getClassLinkAttribute($var)
     {
-        return $this->_styleLink($var, 'class');
+        return $this->getStyleLinkAttribute($var, 'class');
     }
 
     /**
-     * protected class
-     * 
-     * @param string $var
-     * @param string $type = 'class'
-     * 
-     * @return string
+     * Protected get class attribute
      */
-    protected function _class($var, $type = 'class')
+    protected function getClassAttribute($var, $type = 'class')
     {
-        return ( $status = trim(( $type === 'class' ? $this->lc : $this->ls) . $this->{$type}[$var]) ) 
+        return ( $status = trim(( $type === 'class' ? $this->classAttribute : $this->styleAttribute) . $this->{$type}[$var]) ) 
                ? ' '.$type.'="'.$status.'" ' 
                : '';
     }
 
    /**
-     * protected style
-     * 
-     * @param string $var
-     * 
-     * @return string
+     * Protected get style attribute
      */
-    protected function _style($var)
+    protected function getStyleAttribute($var)
     {
-        return $this->_class($var, 'style');
+        return $this->getClassAttribute($var, 'style');
     }
 
     /**
-     * protected ajax
-     * 
-     * @param string $value
-     * 
-     * @return mixed
+     * Protected get attibutes for ajax process
      */
-    protected function _ajax($value)
+    protected function getAttributesForAjaxProcess($value)
     {
         if( $this->type === 'ajax' )
         {
