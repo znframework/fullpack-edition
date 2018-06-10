@@ -25,5 +25,6 @@ class PromptDefaultConfiguration
     |
     */
 
-    public $path = '/usr/bin/php';
+    public $path   = '/usr/bin/php';
+    public $driver = 'exec';
 }
