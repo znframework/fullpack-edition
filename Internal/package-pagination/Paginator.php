@@ -353,9 +353,7 @@ class Paginator implements PaginatorInterface
             $start = (int) $this->start;
         }
 
-        $page = ''; $numberLinks = '';
-
-         if( empty($start) && ! is_numeric($start) )
+        if( empty($start) && ! is_numeric($start) )
         {
             $startPage = ! is_numeric($segment = URI::segment(-1)) ? 0 : $segment;
         }
@@ -364,31 +362,16 @@ class Paginator implements PaginatorInterface
             $startPage = ! is_numeric($start) ? 0 : $start;
         }
 
-        $this->limit     = $this->limit === 0 ? 1 : $this->limit;
-        $perPage         = ceil($this->totalRows / $this->limit);
+        # If the limit is set to 0, 1 is accepted.
+        $this->limit = $this->limit === 0 ? 1 : $this->limit;
+
+        # The amount of recording per page is calculated.
+        $perPage = $this->getPerPage();
 
         if( $this->countLinks > $perPage )
         {
-            # Links 
-            for( $i = 1; $i <= $perPage; $i++ )
-            {
-                $page = ($i - 1) * $this->limit;
-
-                if( $i - 1 == floor($startPage / $this->limit) )
-                {
-                    $currentLink = $this->getStyleClassAttributes('current');
-                }
-                else
-                {
-                    $currentLink = $this->getStyleClassLinkAttributes('links');;
-                }
-
-                $numberLinks .= $this->getLink($page, $currentLink, $i);
-            }
-            # Links
-
             # Prev tag
-            if( $startPage != 0 )
+            if( $this->isPrevLink($startPage) )
             {
                 $prevLink = $this->getLink($this->decrementPageRowNumber($startPage), $this->getStyleClassAttributes('prev'), $this->prevName);
             }
@@ -396,10 +379,9 @@ class Paginator implements PaginatorInterface
             {
                 $this->removeLinkFromPagingBar($prevLink);
             }
-            # Prev tag
 
             # Next tag
-            if( $startPage != $page )
+            if( $this->isNextLink($perPage, $startPage) )
             {
                 $nextLink = $this->getLink($this->incrementPageRowNumber($startPage), $this->getStyleClassAttributes('next'), $this->nextName);
             }
@@ -407,11 +389,10 @@ class Paginator implements PaginatorInterface
             {
                 $this->removeLinkFromPagingBar($nextLink);
             }
-            # Next tag
 
             if( $this->totalRows > $this->limit )
             {
-                return $this->getHtmlUlElement($prevLink.' '.$numberLinks.' '.$nextLink);
+                return $this->getHtmlUlElement($prevLink.' '.$this->getNumberLinks($perPage, $startPage).' '.$nextLink);
             }
             else
             {
@@ -469,33 +450,65 @@ class Paginator implements PaginatorInterface
                 $nPerPage = ceil($this->totalRows / $this->limit);
             }
 
-            $numberLinks = NULL;
-
-            for( $i = $pagIndex; $i <= $nPerPage; $i++ )
-            {
-                $page = ($i - 1) * $this->limit;
-
-                if( $i - 1 == floor((int)$startPage / $this->limit) )
-                {
-                    $currentLink = $this->getStyleClassAttributes('current');
-                }
-                else
-                {
-                    $currentLink = $this->getStyleClassLinkAttributes('links');;
-                }
-
-                $numberLinks .= $this->getLink($page, $currentLink, $i);
-            }
-
             if( $this->totalRows > $this->limit )
             {
-                return $this->getHtmlUlElement($firstLink.' '.$prevLink.' '.$numberLinks.' '.$nextLink.' '.$lastLink);
+                return $this->getHtmlUlElement($firstLink.' '.$prevLink.' '.$this->getNumberLinks($nPerPage, $startPage, $pagIndex).' '.$nextLink.' '.$lastLink);
             }
             else
             {
                 return false;
             }
         }
+    }
+
+    /**
+     * Protected get per page
+     */
+    protected function getPerPage()
+    {
+        return ceil($this->totalRows / $this->limit);
+    }
+
+    /**
+     * Protected is prev link
+     */
+    protected function isPrevLink($startPage)
+    {
+        return $startPage != 0;
+    }
+
+    /**
+     * Protected is next link
+     */
+    protected function isNextLink($perPage, $startPage)
+    {
+        return $startPage < (($perPage - 1) * $this->limit);
+    }
+
+    /**
+     * Protected get number links
+     */
+    protected function getNumberLinks($perPage, $startPage, $startIndexNumber = 1)
+    {
+        $numberLinks = NULL;
+
+        for( $i = $startIndexNumber; $i <= $perPage; $i++ )
+        {
+            $page = ($i - 1) * $this->limit;
+
+            if( $i - 1 == floor((int) $startPage / $this->limit) )
+            {
+                $currentLink = $this->getStyleClassAttributes('current');
+            }
+            else
+            {
+                $currentLink = $this->getStyleClassLinkAttributes('links');;
+            }
+
+            $numberLinks .= $this->getLink($page, $currentLink, $i);
+        }
+
+        return $numberLinks;
     }
 
     /**
