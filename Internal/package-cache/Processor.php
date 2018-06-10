@@ -102,7 +102,7 @@ class Processor implements ProcessorInterface
             $this->key = NULL;
         }
 
-        $this->_refresh($name);
+        $this->refreshCacheData($name);
 
         if( ! $select = $this->select($name, $compress) )
         {
@@ -145,7 +145,7 @@ class Processor implements ProcessorInterface
     {
         $name = Converter::slug($file);
 
-        $this->_refresh($name);
+        $this->refreshCacheData($name);
 
         if( ! $select = $this->select($name, $compress) )
         {
@@ -283,7 +283,7 @@ class Processor implements ProcessorInterface
      * 
      * @return void
      */
-    protected function _refresh($data)
+    protected function refreshCacheData($data)
     {
         if( $this->refresh === true )
         {

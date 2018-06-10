@@ -120,21 +120,10 @@ class GrandModel
      */
     public function __call($method, $parameters)
     {
-        if( ($return = $this->callColumnProcess($method, $parameters, 'row')) !== NULL )
+        # If it is a valid transaction type.
+        if( $this->isCallColumnTransaction($method, $transaction) )
         {
-            return $return;
-        }
-        elseif( ($return = $this->callColumnProcess($method, $parameters, 'result')) !== NULL )
-        {
-            return $return;
-        }
-        elseif( ($return = $this->callColumnProcess($method, $parameters, 'update')) !== NULL )
-        {
-            return $return;
-        }
-        elseif( ($return = $this->callColumnProcess($method, $parameters, 'delete')) !== NULL )
-        {
-            return $return;
+            return $this->callColumnProcess($method, $parameters, $transaction);
         }
         else
         {
@@ -143,6 +132,26 @@ class GrandModel
         }
 
         Support::classMethod(get_called_class(), $method);
+    }
+
+    /**
+     * Protected is call column process
+     */
+    protected function isCallColumnTransaction($method, &$selectTransaction)
+    {
+        $transactions = ['row', 'result', 'update', 'delete'];
+
+        foreach( $transactions as $transaction )
+        {
+            if( stripos($method, $transaction) === 0 )
+            {
+                $selectTransaction = $transaction;
+
+                break;
+            }
+        }
+
+        return $selectTransaction ?? NULL;
     }
 
     /**
@@ -838,7 +847,7 @@ class GrandModel
     }
 
     /**
-     * protected call column process - 5.6.2[update]
+     * protected call column process - 5.6.2|5.7.6.6[update]
      * 
      * @param string $method
      * @param array  $params
@@ -848,35 +857,30 @@ class GrandModel
      */
     protected function callColumnProcess($method, $params, $type)
     {
-        if( stristr($method, $type) )
+        $func = $type;
+        $col  = substr($method, strlen($type));
+        $data = NULL;
+
+        if( $func === 'update' )
         {
-            $func = $type;
-            $col  = substr($method, strlen($type));
-            $data = NULL;
-
-            if( $func === 'update' )
+            # 5.3.7[added]
+            if( ! empty($this->options) )
             {
-                # 5.3.7[added]
-                if( ! empty($this->options) )
-                {
-                    $params[1] = $params[0];
-                    $params[0] = $this->options;
+                $params[1] = $params[0];
+                $params[0] = $this->options;
 
-                    $this->options = [];
-                }
-
-                if( ! isset($params[1]) )
-                {
-                    return false;
-                }
-
-                return $this->where($col, $params[1])->$func($params[0]);
+                $this->options = [];
             }
 
-            return $this->where($col, $params[0])->$func();
+            if( ! isset($params[1]) )
+            {
+                return false;
+            }
+
+            return $this->where($col, $params[1])->$func($params[0]);
         }
 
-        return NULL;
+        return $this->where($col, $params[0])->$func();
     }
 
     /**

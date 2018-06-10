@@ -97,7 +97,7 @@ class Register extends UserExtends
                     $email = NULL;
                 }
 
-                $this->_activation($loginUsername, $encodePassword, $activationReturnLink, $email);
+                $this->sendActivationEmail($loginUsername, $encodePassword, $activationReturnLink, $email);
             }
             else
             {
@@ -204,11 +204,11 @@ class Register extends UserExtends
             return $this->setErrorMessage('resendActivationError');
         }
         
-        return $this->_activation($username, $data->{$this->passwordColumn}, $returnLink, $email);
+        return $this->sendActivationEmail($username, $data->{$this->passwordColumn}, $returnLink, $email);
     }
 
     /**
-     * protected activation
+     * Protected send activation email
      * 
      * @param string $user
      * @param string $pass 
@@ -217,7 +217,7 @@ class Register extends UserExtends
      * 
      * @return bool
      */
-    protected function _activation($user, $pass, $activationReturnLink, $email)
+    protected function sendActivationEmail($user, $pass, $activationReturnLink, $email)
     {
         $url = Base::suffix($activationReturnLink);
 

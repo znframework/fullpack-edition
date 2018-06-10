@@ -436,6 +436,9 @@ class Autoloader
                 # If the file contains valid class information, scanning continues.
                 if( isset($classInfo['class']) )
                 {
+                    # Gets relative file path.
+                    $file = self::getRelativeFilePath($file);
+                 
                     # In the class map, array keys are kept in lower case.
                     $class = strtolower($classInfo['class']);
                     
@@ -582,7 +585,7 @@ class Autoloader
         $classContent .= '#-------------------------------------------------------------------------'.EOL;
         $classContent .= '# This file automatically created and updated'.EOL;
         $classContent .= '#-------------------------------------------------------------------------'.EOL.EOL;
-        $classContent .= 'class '.$newClassName.' extends StaticAccess'.EOL;
+        $classContent .= 'class '.$newClassName.' extends ZN\StaticAccess'.EOL;
         $classContent .= '{'.EOL;
         $classContent .= $constants;
         $classContent .= HT.'public static function getClassName()'.EOL;
@@ -650,6 +653,14 @@ class Autoloader
         {
             require $file;
         }
+    }
+
+    /**
+     * Protected get realative file path
+     */
+    protected static function getRelativeFilePath($file)
+    {
+        return str_replace(REAL_BASE_DIR, NULL, $file);
     }
 
     /**
