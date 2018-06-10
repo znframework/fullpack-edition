@@ -25,13 +25,13 @@ class DatagridDefaultConfiguration
     |
     */
 
-    protected $styleElement =
+    public $styleElement =
     [
         '#DBGRID_TABLE tr:nth-child(even)' => ['background' => '#E6F9FF'],
         '#DBGRID_TABLE tr:nth-child(odd)'  => ['background' => '#FFF']
     ];
 
-    protected $attributes =
+    public $attributes =
     [
         'table'         => ['width' => '100%', 'cellspacing' => 0, 'cellpadding' => 10, 'style' => 'margin-top:15px; margin-bottom:15px; border:solid 1px #ddd; font-family:Arial; color:#888; font-size:14px;'],
         'editTables'    => ['style' => 'font-family:Arial; color:#888; font-size:14px;'],
@@ -55,7 +55,7 @@ class DatagridDefaultConfiguration
         ]
     ];
     
-    protected $pagination =
+    public $pagination =
     [
         'style' =>
         [

@@ -28,7 +28,7 @@ class DateTimeDefaultConfiguration
     |
     */
 
-    protected $locale =
+    public $locale =
     [
         'charset'  => 'tr_TR.UTF-8',
         'language' => 'turkish',
