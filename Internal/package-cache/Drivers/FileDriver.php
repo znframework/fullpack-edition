@@ -34,10 +34,7 @@ class FileDriver extends DriverMappingAbstract
     {
         parent::__construct();
         
-        if( ! is_dir($this->path) )
-        {
-            mkdir($this->path, 0755);
-        }
+        $this->createCacheDirectoryIfNotExists();
 
         Support::writable($this->path);
 
@@ -54,7 +51,7 @@ class FileDriver extends DriverMappingAbstract
      */
     public function select($key, $compressed)
     {
-        $data = $this->_select($key);
+        $data = $this->selectCacheKey($key);
 
         if( ! empty($data['data']) )
         {
@@ -125,7 +122,7 @@ class FileDriver extends DriverMappingAbstract
      */
     public function increment($key, $increment)
     {
-        $data = $this->_select($key);
+        $data = $this->selectCacheKey($key);
 
         if( $data === false )
         {
@@ -153,7 +150,7 @@ class FileDriver extends DriverMappingAbstract
      */
     public function decrement($key, $decrement)
     {
-        $data = $this->_select($key);
+        $data = $this->selectCacheKey($key);
 
         if( $data === false )
         {
@@ -242,13 +239,24 @@ class FileDriver extends DriverMappingAbstract
     }
 
     /**
+     * Protected create cache directory if not exists
+     */
+    protected function createCacheDirectoryIfNotExists()
+    {
+        if( ! is_dir($this->path) )
+        {
+            mkdir($this->path, 0755);
+        }
+    }
+
+    /**
      * protected select key
      * 
      * @param string $key
      * 
      * @return mixed
      */
-    protected function _select($key)
+    protected function selectCacheKey($key)
     {
         if( ! file_exists($this->path.$key) )
         {

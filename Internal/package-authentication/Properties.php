@@ -16,7 +16,7 @@ class Properties
      * 
      * @var array
      */
-    public static $parameters;
+    public static $parameters = [];
 
     /**
      * Keeps errors
