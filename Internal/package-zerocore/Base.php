@@ -20,7 +20,9 @@ class Base
      */
     public static function project($default = 'Frontend')
     {
-        return is_dir(PROJECTS_DIR . ($host = self::host())) ? $host : $default;
+        $host = self::host();
+
+        return ! empty($host) && is_dir(PROJECTS_DIR . $host) ? $host : $default;
     }
 
 
