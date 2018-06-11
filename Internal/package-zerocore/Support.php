@@ -14,38 +14,6 @@ use ZN\ErrorHandling\Errors;
 class Support
 {
     /**
-     * Protected Loaded
-     * 
-     * @param string $name
-     * @param string $value
-     * @param string $function
-     * @param mixed  $error
-     * 
-     * @return bool
-     */
-    protected static function _loaded($name, $value, $func, $error)
-    {
-        if( empty($value) )
-        {
-            $value = ucfirst($name);
-        }
-
-        if( ! $func($name) )
-        {
-            if( is_string($error) )
-            {
-                throw new Exception('Error', $error, $value);
-            }
-            else
-            {
-                throw new Exception(key($error), current($error), $value);
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Function
      * 
      * @param string $name
@@ -157,5 +125,37 @@ class Support
             'undefinedFunction',
             Datatype::divide(str_ireplace(INTERNAL_ACCESS, '', Classes::onlyName($class)), '\\', -1)."::$method()"
         );
+    }
+
+    /**
+     * Protected Loaded
+     * 
+     * @param string $name
+     * @param string $value
+     * @param string $function
+     * @param mixed  $error
+     * 
+     * @return bool
+     */
+    protected static function _loaded($name, $value, $func, $error)
+    {
+        if( empty($value) )
+        {
+            $value = ucfirst($name);
+        }
+
+        if( ! $func($name) )
+        {
+            if( is_string($error) )
+            {
+                throw new Exception('Error', $error, $value);
+            }
+            else
+            {
+                throw new Exception(key($error), current($error), $value);
+            }
+        }
+
+        return false;
     }
 }
