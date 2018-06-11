@@ -38,11 +38,11 @@ class Migration implements MigrationInterface
     private $classFix = INTERNAL_ACCESS . 'Migrate';
 
     /**
-     * Keeps migration table
+     * Keeps migrate table name
      * 
      * @var string
      */
-    private $tbl;
+    private $migrateTableName;
 
     /**
      * Keeps version directory path
@@ -67,11 +67,11 @@ class Migration implements MigrationInterface
             mkdir($this->path, 0755);
         }
 
-        $this->db    = Singleton::class('ZN\Database\DB');
+        $this->db = Singleton::class('ZN\Database\DB');
         $this->forge = Singleton::class('ZN\Database\DBForge');
-        $this->tbl   = defined('static::table') ? static::table : false;
+        $this->migrateTableName = defined('static::table') ? static::table : false;
 
-        $this->_create();
+        $this->createMigrationTableIfNotExists();
     }
 
     /**
@@ -83,7 +83,7 @@ class Migration implements MigrationInterface
      */
     public function upAll(String ...$migrations) : Bool
     {
-        $this->_up('up', $migrations);
+        $this->runMigrateAll('up', $migrations);
 
         return true;
     }
@@ -97,7 +97,7 @@ class Migration implements MigrationInterface
      */
     public function downAll(String ...$migrations) : Bool
     {
-        $this->_up('down', $migrations);
+        $this->runMigrateAll('down', $migrations);
 
         return true;
     }
@@ -111,9 +111,9 @@ class Migration implements MigrationInterface
      */
     public function createTable(Array $data) : Bool
     {
-        $this->forge->createTable($this->_tableName(), $data);
+        $this->forge->createTable($this->getTableName(), $data);
 
-        return $this->_action(__FUNCTION__);
+        return $this->saveActionQuery(__FUNCTION__);
     }
 
     /**
@@ -125,9 +125,9 @@ class Migration implements MigrationInterface
      */
     public function dropTable() : Bool
     {
-        $this->forge->dropTable($this->_tableName());
+        $this->forge->dropTable($this->getTableName());
 
-        return $this->_action(__FUNCTION__);
+        return $this->saveActionQuery(__FUNCTION__);
     }
 
     /**
@@ -139,9 +139,9 @@ class Migration implements MigrationInterface
      */
     public function addColumn(Array $column) : Bool
     {
-        $this->forge->addColumn($this->_tableName(), $column);
+        $this->forge->addColumn($this->getTableName(), $column);
 
-        return $this->_action(__FUNCTION__);
+        return $this->saveActionQuery(__FUNCTION__);
     }
 
     /**
@@ -153,9 +153,9 @@ class Migration implements MigrationInterface
      */
     public function dropColumn($column) : Bool
     {
-        $this->forge->dropColumn($this->_tableName(), $column);
+        $this->forge->dropColumn($this->getTableName(), $column);
 
-        return $this->_action(__FUNCTION__);
+        return $this->saveActionQuery(__FUNCTION__);
     }
 
     /**
@@ -167,9 +167,9 @@ class Migration implements MigrationInterface
      */
     public function modifyColumn(Array $column) : Bool
     {
-        $this->forge->modifyColumn($this->_tableName(), $column);
+        $this->forge->modifyColumn($this->getTableName(), $column);
 
-        return $this->_action(__FUNCTION__);
+        return $this->saveActionQuery(__FUNCTION__);
     }
 
     /**
@@ -181,9 +181,9 @@ class Migration implements MigrationInterface
      */
     public function renameColumn(Array $column) : Bool
     {
-        $this->forge->renameColumn($this->_tableName(), $column);
+        $this->forge->renameColumn($this->getTableName(), $column);
 
-        return $this->_action(__FUNCTION__);
+        return $this->saveActionQuery(__FUNCTION__);
     }
 
     /**
@@ -195,9 +195,9 @@ class Migration implements MigrationInterface
      */
     public function truncate() : Bool
     {
-        $this->forge->truncate($this->_tableName());
+        $this->forge->truncate($this->getTableName());
 
-        return $this->_action(__FUNCTION__);
+        return $this->saveActionQuery(__FUNCTION__);
     }
 
     /**
@@ -224,31 +224,20 @@ class Migration implements MigrationInterface
      */
     public function create(String $name, Int $ver = 0) : Bool
     {
-        if( $version = $this->_version($ver) )
+        if( $version = $this->getValidVersionNumber($ver) )
         {
-            $dir  = $this->path.$name.$this->versionDir;
+            $this->createVersionDirectoryIfNotExists($name);
 
-            if( ! is_dir($dir) )
-            {
-                mkdir($dir);
-            }
+            $file = $this->getVersionFile($name, $version);
 
-            $file = $dir.Base::suffix($version, '.php');
-            $name = $name.$version;
+            $name .= $version;
         }
         else
         {
-            $file = $this->path.Base::suffix($name, '.php');
+            $file = $this->getWithoutVersionFile($name);
         }
 
-        if( ! is_file($file) )
-        {
-            return $this->createMigrateFile($name, $file);
-        }
-        else
-        {
-            return false;
-        }
+        return $this->generateMigrateFileIfNotExists($name, $file);
     }
 
     /**
@@ -261,22 +250,18 @@ class Migration implements MigrationInterface
      */
     public function delete(String $name, Int $ver = 0) : Bool
     {
-        if( $version = $this->_version($ver) )
+        if( $version = $this->getValidVersionNumber($ver) )
         {
-            $dir  = $this->path.$name.$this->versionDir;
-            $file = $dir.Base::suffix($version, '.php');
+            $file = $this->getVersionFile($name, $version);
 
-            if( $ver === 'all' && is_dir($this->path.$name.$this->versionDir) )
-            {
-                Filesystem::deleteFolder($this->path.$name.$this->versionDir);
-            }
+            $this->deleteAllVersionDirectoryIfExists($name, $ver);
         }
         else
         {
-            $file = $this->path.Base::suffix($name, '.php');
+            $file = $this->getWithoutVersionFile($name);
         }
 
-        return unlink($file);
+        return $this->deleteMigrateFileIfExists($file);
     }
 
     /**
@@ -307,47 +292,107 @@ class Migration implements MigrationInterface
      */
     public function version(Int $version = 0)
     {
-        if( empty($this->tbl) )
+        if( empty($this->migrateTableName) )
         {
             return false;
         }
 
-        $name = $this->classFix.$this->_tableName();
+        $name = $this->classFix.$this->getTableName();
 
         if( $version <= 0 )
         {
             return Singleton::class($name);
         }
 
-        $name .= $this->_version($version);
+        $name .= $this->getValidVersionNumber($version);
 
         return Singleton::class($name);
     }
 
     /**
-     * protected action
-     * 
-     * @param string $type
-     * 
-     * @return mixed
+     * Protected delete migrate file if exists
      */
-    protected function _action($type)
+    protected function deleteMigrateFileIfExists($file)
     {
-        if( $type === '' )
+        if( is_file($file) )
         {
-            $type = 'noAction';
+            unlink($file);
+        } 
+    }
+
+    /**
+     * Protected generate migrate file if not exists
+     */
+    protected function generateMigrateFileIfNotExists($name, $file)
+    {
+        if( ! is_file($file) )
+        {
+            return $this->createMigrateFile($name, $file);
         }
+        
+        return false;
+    }
 
-        $table   = $this->_tableName();
-        $version = $this->_getVersion();
+    /**
+     * Protected delete all version directory if exists
+     */
+    protected function deleteAllVersionDirectoryIfExists($name, $version)
+    {
+        $getVersionDirectory = $this->getVersionDirectory($name);
 
+        if( $version === 'all' && is_dir($getVersionDirectory) )
+        {
+            Filesystem::deleteFolder($getVersionDirectory);
+        }
+    }
+
+    /**
+     * Protected create version directory if not exists
+     */
+    protected function createVersionDirectoryIfNotExists($name)
+    {
+        if( ! is_dir($getVersionDirectory = $this->getVersionDirectory($name)) )
+        {
+            mkdir($getVersionDirectory);
+        }
+    }
+
+    /**
+     * Protected get file without version
+     */
+    protected function getWithoutVersionFile($name)
+    {
+        return $this->path . Base::suffix($name, '.php');
+    }
+
+    /**
+     * Protected get version file
+     */
+    protected function getVersionFile($name, $version)
+    {
+        return $this->getVersionDirectory($name) . Base::suffix($version, '.php');
+    }
+
+    /**
+     * Protected create migrate
+     */
+    protected function getVersionDirectory($name)
+    {
+        return $this->path . $name . $this->versionDir;
+    }
+
+    /**
+     * Protected save action query
+     */
+    protected function saveActionQuery($type)
+    {
         if( ! $this->forge->error() )
         {
             return $this->db->insert($this->config['migration']['table'],
             [
-                'name'    => $table,
-                'type'    => $type,
-                'version' => $version,
+                'name'    => $this->getTableName(),
+                'type'    => $type ?: 'noAction',
+                'version' => $this->getVersionNumberFromTableName(),
                 'date'    => date('Ymdhis')
             ]);
         }
@@ -362,7 +407,7 @@ class Migration implements MigrationInterface
      * 
      * @return void
      */
-    protected function _create()
+    protected function createMigrationTableIfNotExists()
     {
         $table   = $this->config['database']['prefix'] . $this->config['migration']['table'];
      
@@ -382,35 +427,27 @@ class Migration implements MigrationInterface
      * 
      * @return string
      */
-    protected function _tableName()
+    protected function getTableName()
     {
-        $table = preg_replace('/[0-9][0-9][0-9]/', '', $this->tbl);
+        $table = preg_replace('/[0-9][0-9][0-9]/', '', $this->migrateTableName);
 
         return str_replace($this->classFix, '', $table);
     }
 
     /**
-     * Get version
-     * 
-     * @param void
-     * 
-     * @return string
+     * Protected get version number from table name
      */
-    protected function _getVersion()
+    protected function getVersionNumberFromTableName()
     {
-        preg_match('(\w+([0-9][0-9][0-9]))', $this->tbl, $match);
+        preg_match('(\w+([0-9][0-9][0-9]))', $this->migrateTableName, $match);
 
         return $match[1] ?? '000';
     }
 
     /**
-     * Converts migration version
-     * 
-     * @param mixed $numeric
-     * 
-     * @return mixed
+     * Protected get valid version number
      */
-    protected function _version($numeric)
+    protected function getValidVersionNumber($numeric)
     {
         $length = strlen((string)$numeric);
 
@@ -434,14 +471,9 @@ class Migration implements MigrationInterface
     }
 
     /**
-     * protected migration up
-     * 
-     * @param string $type
-     * @param array $migrations
-     * 
-     * @return void
+     * Protected run migrate all
      */
-    protected function _up($type, $migrations)
+    protected function runMigrateAll($type, $migrations)
     {
         foreach( $migrations as $migration )
         {

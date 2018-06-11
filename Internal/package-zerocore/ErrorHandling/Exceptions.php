@@ -51,7 +51,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     public function __toString()
     {
-        return $this->_template($this->getMessage(), $this->getFile(), $this->getLine(), $this->getTrace());
+        return $this->importExceptionTemplate($this->getMessage(), $this->getFile(), $this->getLine(), $this->getTrace());
     }
 
     /**
@@ -65,11 +65,11 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     public static function throws(String $message = NULL, String $key = NULL, $send = NULL)
     {
-        $debug = self::_throwFinder(debug_backtrace(2), 0, 2);
+        $debug = self::throwFinder(debug_backtrace(2), 0, 2);
 
         if( $lang = Lang::select($message, $key, $send) )
         {
-            $message = '['.self::_cleanClassName($debug['class']).'::'.$debug['function'].'()] '.$lang;
+            $message = '['.self::cleanInternalPrefixFromClassName($debug['class']).'::'.$debug['function'].'()] '.$lang;
         }
 
         self::table('self', $message, $debug['file'], $debug['line']);
@@ -103,7 +103,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         Helper::report('ExceptionError', $message, 'ExceptionError');
 
-        $table = self::_template($msg, $file, $line, $no, $trace);
+        $table = self::importExceptionTemplate($msg, $file, $line, $no, $trace);
 
         $projectError = Config::default('ZN\ErrorHandling\ErrorHandlingDefaultConfiguration')::get('Project');
 
@@ -130,7 +130,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     public static function continue($msg, $file, $line)
     {
-        return self::_template($msg, $file, $line, NULL, NULL);
+        return self::importExceptionTemplate($msg, $file, $line, NULL, NULL);
     }
 
     /**
@@ -168,7 +168,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return string
      */
-    private static function _template($msg, $file, $line, $no, $trace)
+    private static function importExceptionTemplate($msg, $file, $line, $no, $trace)
     {
         $projects = Config::default('ZN\ErrorHandling\ErrorHandlingDefaultConfiguration')::get('Project');
 
@@ -182,7 +182,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             return false;
         }
 
-        if( self::_returnValue($msg) === true )
+        if( self::isReturnValue($msg) === true )
         {
             return false;
         }
@@ -198,7 +198,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
         
         if( stristr($exceptionData['file'] ?? $file, DS . 'Buffering.php') )
         {
-            $templateWizardData    = self::_templateWizard();
+            $templateWizardData    = self::getTemplateWizardErrorData();
             $exceptionData['file'] = $templateWizardData->file;
 
             if( empty($exceptionData['message']) )
@@ -219,7 +219,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return string
      */
-    protected static function _cleanClassName($class)
+    protected static function cleanInternalPrefixFromClassName($class)
     {
         return str_ireplace(INTERNAL_ACCESS, '', Datatype::divide($class, '\\', -1));
     }
@@ -233,12 +233,12 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return array
      */
-    protected static function _traceFinder($trace, $p1 = 2, $p2 = 0)
+    protected static function traceFinder($trace, $p1 = 2, $p2 = 0)
     {
         if
         (
             isset($trace[$p1]['class']) &&
-            self::_cleanClassName($trace[$p1]['class']) === 'StaticAccess' &&
+            self::cleanInternalPrefixFromClassName($trace[$p1]['class']) === 'StaticAccess' &&
             $trace[$p1]['function'] === '__callStatic'
         )
         {
@@ -249,7 +249,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
         }
         else
         {
-            $traceInfo = $trace[$p2] ?? self::_traceFinder(debug_backtrace(2), 8, 6);
+            $traceInfo = $trace[$p2] ?? self::traceFinder(debug_backtrace(2), 8, 6);
         }
 
         if( ! isset($traceInfo['class']) )
@@ -259,7 +259,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         return
         [
-            'class'    => self::_cleanClassName($traceInfo['class']),
+            'class'    => self::cleanInternalPrefixFromClassName($traceInfo['class']),
             'function' => $traceInfo['function'],
             'file'     => $traceInfo['file'],
             'line'     => $traceInfo['line'],
@@ -276,7 +276,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return array
      */
-    protected static function _throwFinder($trace, $p1 = 3, $p2 = 5)
+    protected static function throwFinder($trace, $p1 = 3, $p2 = 5)
     {
         $classInfo = $trace[$p1];
         $fileInfo  = $trace[$p2];
@@ -290,7 +290,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         return
         [
-            'class'    => self::_cleanClassName($classInfo['class']),
+            'class'    => self::cleanInternalPrefixFromClassName($classInfo['class']),
             'function' => $classInfo['function'],
             'file'     => $fileInfo['file'],
             'line'     => $fileInfo['line'],
@@ -305,7 +305,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return bool
      */
-    protected static function _returnValue($msg)
+    protected static function isReturnValue($msg)
     {
         if( stripos($msg, 'Return value') === 0 )
         {
@@ -322,7 +322,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return object
      */
-    protected static function _templateWizard()
+    protected static function getTemplateWizardErrorData()
     {
         $trace = debug_backtrace()[6]['args']    ?? [NULL];
         $args  = debug_backtrace()[1]['args'][4] ?? [];

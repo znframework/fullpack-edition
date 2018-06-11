@@ -19,83 +19,6 @@ class Restoration
     protected static $restoreFix = 'Restore';
 
     /**
-     * Start restoration
-     * 
-     * @param string $project
-     * @param mixed  $folders - options[standart|full|array]
-     * 
-     * @return bool
-     */
-    public static function start(String $project, $folders = 'standart')
-    {
-        $restoreFix = self::$restoreFix;
-
-        if( $folders === 'full' )
-        {
-            return Filesystem::copy(PROJECTS_DIR . $project, PROJECTS_DIR . $restoreFix . $project);
-        }
-        else
-        {
-            $array = ['Views', 'Controllers', 'Storage'];
-
-            if( $folders !== 'standart' )
-            {
-                $array = array_merge($array, $folders);
-            }
-    
-            foreach( $array as $folder )
-            {
-                $path   = $project . DS . $folder;
-                $return = Filesystem::copy(PROJECTS_DIR . $path, PROJECTS_DIR . $restoreFix . $path);
-            }
-
-            return $return;
-        }
-    }
-
-    /**
-     * End restoration
-     * 
-     * @param string $project
-     * @param string $type = NULL - options[NULL|delete]
-     * 
-     * @return bool
-     */
-    public static function end(String $project, String $type = NULL)
-    {
-        $project = Base::prefix($project, self::$restoreFix);
-
-        $restoreFolder = PROJECTS_DIR . Base::suffix($project);
-
-        # 5.7.2.6[fixed]
-        if( file_exists($classMapFile = $restoreFolder . 'ClassMap.php') )
-        {
-            unlink($classMapFile);
-        }
-
-        $return = Filesystem::copy($restoreFolder, PROJECTS_DIR . Base::removePrefix($project, self::$restoreFix));
-
-        if( $type === 'delete' )
-        {
-            return Filesystem::deleteFolder($restoreFolder);
-        }
-
-        return $return;
-    }
-
-    /**
-     * End & delete restoration
-     * 
-     * @param string $project
-     * 
-     * @return bool
-     */
-    public static function endDelete(String $project)
-    {
-        return self::end($project, 'delete');
-    }
-
-    /**
      * Redirect request according to route.
      * 
      * @param mixed  $machinesIP
@@ -120,18 +43,17 @@ class Restoration
      */
     public static function isMachinesIP($manipulation = NULL)
     {
-        $projects      = Config::get('Project');
-        $restorationIP = $projects['restoration']['machinesIP'];
+        $restorationMachinesIP = self::getRestorationConfig()['machinesIP'];
 
         if( PROJECT_MODE === 'restoration' || $manipulation !== NULL)
         {
             $ipv4 = Request::ipv4();
 
-            if( is_array($restorationIP) )
+            if( is_array($restorationMachinesIP) )
             {
-                $result = (bool) in_array($ipv4, $restorationIP);
+                $result = (bool) in_array($ipv4, $restorationMachinesIP);
             }
-            elseif( $ipv4 == $restorationIP )
+            elseif( $ipv4 == $restorationMachinesIP )
             {
                 $result = true;
             }
@@ -173,20 +95,23 @@ class Restoration
 
         error_reporting(0);
 
-        $currentPath          = $restorable === true ? strtolower(CURRENT_CFUNCTION) : strtolower(rtrim(Request::getActiveURI(), '/'));
-        $projects             = Config::get('Project');
-        $restoration          = $projects['restoration'];
-        $restorationPages     = $restorable === true && ! isset($settings['functions'])
-                              ? [Config::get('Routing', 'openFunction') ?: 'main']
-                              : (array) ($settings['functions'] ?? $restoration['pages']);
-        $restorationRoutePage = $settings['routePage'] ?? $restoration['routePage'];
-        $routePage            = strtolower($restorationRoutePage);
+        $restoration = self::getRestorationConfig();
 
+        $restorationPages = $restorable === true && ! isset($settings['functions'])
+                          ? [self::getOpenFunction()]
+                          : (array) ($settings['functions'] ?? $restoration['pages']);
+        
         if( IS::array($restorationPages) )
         {
+            $restorationRoutePage = $settings['routePage'] ?? $restoration['routePage'];
+
+            $routePage = strtolower($restorationRoutePage);
+
+            $currentURI = self::getCurrentURI($restorable);
+
             if( $restorationPages[0] === 'all' )
             {
-                if( $currentPath !== $routePage )
+                if( $currentURI !== $routePage )
                 {
                     Response::redirect($restorationRoutePage);
                 }
@@ -194,15 +119,15 @@ class Restoration
 
             foreach( $restorationPages as $k => $rp )
             {
-                if( strstr($currentPath, strtolower($k)) )
+                if( strstr($currentURI, strtolower($k)) )
                 {
                     Response::redirect($rp);
                 }
                 else
                 {
-                    if( strstr($currentPath, strtolower($rp)) )
+                    if( strstr($currentURI, strtolower($rp)) )
                     {
-                        if( $currentPath !== $routePage )
+                        if( $currentURI !== $routePage )
                         {
                             Response::redirect($restorationRoutePage);
                         }
@@ -210,6 +135,165 @@ class Restoration
                 }
             }
         }
+    }
+
+    /**
+     * Start restoration
+     * 
+     * @param string $project
+     * @param mixed  $directories - options[standart|full|array]
+     * 
+     * @return bool
+     */
+    public static function start(String $project, $directories = 'standart')
+    {
+        if( $directories === 'full' )
+        {
+            return self::moveProjectRestoreDirectory($project);
+        }
+        else
+        {
+            $restoreDirectories = self::getRestoreProjectDirectories($directories);
+    
+            foreach( $restoreDirectories as $directory )
+            {
+                $return = self::moveProjectRestoreDirectory($project . DS . $directory);
+            }
+
+            return $return;
+        }
+    }
+
+    /**
+     * End restoration
+     * 
+     * @param string $project
+     * @param string $type = NULL - options[NULL|delete]
+     * 
+     * @return bool
+     */
+    public static function end(String $project, String $type = NULL)
+    {
+        self::deleteClassMapIfExists($project);
+
+        $return = self::endRestorationProject($project);
+
+        if( $type === 'delete' )
+        {
+            return self::deleteRestoreProject($project);
+        }
+
+        return $return;
+    }
+
+    /**
+     * End & delete restoration
+     * 
+     * @param string $project
+     * 
+     * @return bool
+     */
+    public static function endDelete(String $project)
+    {
+        return self::end($project, 'delete');
+    }
+
+    /**
+     * Protected get current uri
+     */
+    protected static function getCurrentURI($restorable)
+    {
+        return strtolower($restorable === true ? CURRENT_CFUNCTION : rtrim(Request::getActiveURI(), '/'));
+    }
+
+    /**
+     * Protected get default project directories
+     */
+    protected static function getRestoreProjectDirectories($directories)
+    {
+        $restoreDirectories = 
+        [
+            self::getOnlyDirectoryName(VIEWS_DIR), 
+            self::getOnlyDirectoryName(CONTROLLERS_DIR), 
+            self::getOnlyDirectoryName(STORAGE_DIR)
+        ];
+
+        if( $directories !== 'standart' )
+        {
+            $restoreDirectories = array_merge($restoreDirectories, $directories);
+        }
+
+        return $restoreDirectories;
+    }
+
+    /**
+     * Protected get only directory name
+     */
+    protected static function getOnlyDirectoryName($directory)
+    {
+        return Datatype::divide(rtrim($directory, '/'), '/', -1);
+    }
+
+    /**
+     * Protected delete class map if exists
+     */
+    protected static function deleteClassMapIfExists($project)
+    {
+        # 5.7.2.6[fixed]
+        if( file_exists($classMapFile = self::getRestoreProjectDirectory($project) . 'ClassMap.php') )
+        {
+            unlink($classMapFile);
+        }
+    }
+
+    /**
+     * Protected get restore project directory
+     */
+    protected static function getRestoreProjectDirectory($project)
+    {
+        $project = Base::prefix($project, self::$restoreFix);
+
+        return PROJECTS_DIR . Base::suffix($project);
+    }
+
+    /**
+     * Protected delete restore project
+     */
+    protected static function deleteRestoreProject($project)
+    {
+        return Filesystem::deleteFolder(self::getRestoreProjectDirectory($project));
+    }
+
+    /**
+     * Protected end restoration project
+     */
+    protected static function endRestorationProject($project)
+    {
+        return Filesystem::copy(self::getRestoreProjectDirectory($project), PROJECTS_DIR . Base::removePrefix($project, self::$restoreFix));
+    }
+
+    /**
+     * Protected create project restore directory
+     */
+    protected static function moveProjectRestoreDirectory($project)
+    {
+        return Filesystem::copy(PROJECTS_DIR . $project, PROJECTS_DIR . self::$restoreFix . $project);
+    }
+
+    /**
+     * Protected get open function
+     */
+    protected static function getOpenFunction()
+    {
+        return Config::get('Routing', 'openFunction') ?: 'main';
+    }
+
+    /**
+     * Protected get restoration config
+     */
+    protected static function getRestorationConfig()
+    {
+        return Config::get('Project', 'restoration');
     }
 }
 

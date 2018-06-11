@@ -67,19 +67,49 @@ trait UnitTest
     {
         if( $list = self::getCalledMethodList() )
         {
-            $callClass = get_called_class();
-            
-            foreach( $list as $key => $met )
-            {
-                (new $callClass)->$met();
-
-                $met = self::convertMultipleMethodName($met);
-
-                self::$unitMethods[$met] = self::$parameters[$key] ?? self::$fakeParameters[$met] ?? [];
-            }
+            self::runUnitMethods($list);
         }
 
-        $class   = self::unitClass();
+        return self::getTestResult($method);
+    }
+
+    /**
+     * Protected run unit methods
+     */
+    protected static function runUnitMethods($list)
+    {
+        $callClass = get_called_class();
+            
+        foreach( $list as $key => $met )
+        {
+            (new $callClass)->$met();
+
+            $met = self::convertMultipleMethodName($met);
+
+            self::$unitMethods[$met] = self::$parameters[$key] ?? self::$fakeParameters[$met] ?? [];
+        }
+    }
+
+    /**
+     * Protected get test result
+     */
+    protected static function getTestResult($method)
+    {
+        $tester = Singleton::class('ZN\Tester');
+        
+        $tester->class(self::unitClass())
+               ->methods(self::getUnitMethods($method))
+               ->compares(self::$compares)
+               ->start();
+
+        return $tester->result();
+    }
+
+    /**
+     * Protected get unit methods
+     */
+    protected static function getUnitMethods($method)
+    {
         $methods = self::unitMethods();
 
         if( ! empty($method) )
@@ -93,14 +123,7 @@ trait UnitTest
             }
         }
 
-        $tester = Singleton::class('ZN\Tester');
-        
-        $tester->class($class)
-               ->methods($methods)
-               ->compares(self::$compares)
-               ->start();
-
-        return $tester->result();
+        return $methods;
     }
 
     /**

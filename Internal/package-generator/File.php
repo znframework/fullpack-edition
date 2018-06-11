@@ -144,7 +144,7 @@ class File
             $this->settings['application'] = Datatype::divide(rtrim(PROJECT_DIR, '/'), '/', -1);
         }
 
-        return PROJECTS_DIR.$this->settings['application'].$this->type($type).Base::suffix($name, '.php');
+        return PROJECTS_DIR.Base::suffix($this->settings['application']).$this->type($type).Base::suffix($name, '.php');
     }
 
     /**
@@ -438,12 +438,12 @@ class File
     {
         switch( $type )
         {
-            case 'model'     : $return = 'Models';      break;
-            case 'controller': $return = 'Controllers'; break;
-            case 'library'   : $return = 'Libraries';   break;
-            case 'command'   : $return = 'Commands';    break;
+            case 'model'     : $return = MODELS_DIR;      break;
+            case 'controller': $return = CONTROLLERS_DIR; break;
+            case 'library'   : $return = LIBRARIES_DIR;   break;
+            case 'command'   : $return = COMMANDS_DIR;    break;
         }
 
-        return Base::presuffix($return ?? NULL, '/');
+        return Datatype::divide(rtrim($return ?? NULL, '/'), '/', -1);
     }
 }

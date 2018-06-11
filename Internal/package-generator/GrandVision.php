@@ -87,7 +87,7 @@ class GrandVision extends DatabaseDefinitions
                     [
                         'path'      => $filePath,
                         'namespace' => 'Visions\\'.$database,
-                        'use'       => ['GrandModel'],
+                        'use'       => ['ZN\Database\GrandModel'],
                         'extends'   => 'GrandModel',
                         'constants' =>
                         [
