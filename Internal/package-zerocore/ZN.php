@@ -464,7 +464,7 @@ class ZN
 
         if( ! is_dir(CONTROLLERS_DIR) && self::$projectType !== NULL )
         {
-            Base::trace
+            defined('CONSOLE_ENABLED') ?: Base::trace
             (
                 'The [controller directory] for the custom edition must be defined. 
                 To do this, specify the corresponding controller directory in the [index.php] file.'
@@ -686,13 +686,13 @@ class ZN
         )
         {
             # All requests are directed to the home.
-            Response::redirect();
+            defined('CONSOLE_ENABLED') ?: Response::redirect();
         }
 
         # If there is no valid Projects/ directory, it returns an error.
         if( ! is_dir(PROJECT_DIR) )
         {
-            Base::trace('["'.$getProjectNameFromOthers.'"] Project Directory Not Found!');
+            defined('CONSOLE_ENABLED') ?: Base::trace('["'.$getProjectNameFromOthers.'"] Project Directory Not Found!');
         }
     }
 

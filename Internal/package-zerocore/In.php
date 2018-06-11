@@ -422,8 +422,8 @@ class In
 
         $config = Config::get('Routing');
 
-        $uriChange   = $config['changeUri'];
-        $patternType = $config['patternType'];
+        $uriChange   = $config['changeUri'] ?? NULL;
+        $patternType = $config['patternType'] ?? NULL;
 
         if( ! empty($uriChange) ) foreach( $uriChange as $key => $val )
         {
