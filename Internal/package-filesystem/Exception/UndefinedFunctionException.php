@@ -9,9 +9,13 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use Exception;
+use ZN\Exception;
 
 class UndefinedFunctionException extends Exception
 {
-
+    const lang = 
+    [
+        'en' => 'Call to undefined function `%`!',
+        'tr' => '%` fonksiyonu tanımlı değil!'
+    ];
 }

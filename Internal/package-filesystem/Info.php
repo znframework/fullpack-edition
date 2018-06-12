@@ -12,9 +12,6 @@
 use stdClass;
 use ZN\Base;
 use ZN\Config;
-use ZN\Filesystem\Exception\FileNotFoundException;
-use ZN\Filesystem\Exception\UndefinedFunctionException;
-use ZN\Filesystem\Exception\FolderNotFoundException;
 
 class Info
 {
@@ -194,7 +191,7 @@ class Info
 
         if( ! is_file($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         return (object)
@@ -224,7 +221,7 @@ class Info
 
         if( ! file_exists($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $size      = 0;
@@ -289,7 +286,7 @@ class Info
 
         if( ! file_exists($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $date = filectime($file);
@@ -311,7 +308,7 @@ class Info
 
         if( ! file_exists($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $date = filemtime($file);
@@ -332,7 +329,7 @@ class Info
 
         if( ! file_exists($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $owner = fileowner($file);
@@ -360,7 +357,7 @@ class Info
 
         if( ! file_exists($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $group = filegroup($file);
@@ -389,7 +386,7 @@ class Info
 
         if( ! file_exists($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         if( is_file($file) )
@@ -486,7 +483,7 @@ class Info
         }
         else
         {
-            throw new FolderNotFoundException($dir);
+            throw new Exception\FolderNotFoundException(NULL, $dir);
         }
     }
 
@@ -504,7 +501,7 @@ class Info
 
         if( ! is_dir($dir) )
         {
-            throw new FolderNotFoundException($dir);
+            throw new Exception\FolderNotFoundException(NULL, $dir);
         }
 
         if( $type === 'free' )
@@ -552,7 +549,7 @@ class Info
 
         if( ! function_exists($validType) || $validType === NULL )
         {
-            throw new UndefinedFunctionException('Error', 'undefinedFunction', get_called_class().'::'.$type.'()');
+            throw new Exception\UndefinedFunctionException(NULL, get_called_class().'::'.$type.'()');
         }
 
         if( $validType($file) )

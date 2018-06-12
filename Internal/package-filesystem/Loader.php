@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Filesystem\Exception\FileNotFoundException;
-
 class Loader
 {
     /**
@@ -27,7 +25,7 @@ class Loader
 
         if( ! is_file($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         switch( $type )

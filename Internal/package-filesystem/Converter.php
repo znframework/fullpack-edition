@@ -10,7 +10,6 @@
  */
 
 use ZN\Base;
-use ZN\Filesystem\Exception\FileNotFoundException;
 
 class Converter
 {
@@ -52,7 +51,7 @@ class Converter
 
         if( ! is_file($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $row  = 1;
