@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Comparison\Exception\InvalidParameterException;
-
 class MemoryUsage
 {
     /**
@@ -27,12 +25,12 @@ class MemoryUsage
 
         if( ! isset(Properties::$memtests[$restart]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'start']);        
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'start']);        
         }
 
         if( ! isset(Properties::$memtests[$resend]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'end']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'end']);
         }
 
         return Properties::$memtests[$resend] - Properties::$memtests[$restart];

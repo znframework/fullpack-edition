@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Comparison\Exception\InvalidParameterException;
-
 class ElapsedTime
 {
     /**
@@ -28,12 +26,12 @@ class ElapsedTime
 
         if( ! isset(Properties::$tests[$restart]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'elapsedTime', '%' => $result, 'start']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'elapsedTime', '%' => $result, 'start']);
         }
 
         if( ! isset(Properties::$tests[$resend]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'elapsedTime', '%' => $result, 'end']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'elapsedTime', '%' => $result, 'end']);
         }
 
         return round(((float) Properties::$tests[$resend] - (float) Properties::$tests[$restart]), $decimal);
