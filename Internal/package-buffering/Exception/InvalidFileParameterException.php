@@ -9,9 +9,13 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Ability\Exclusion;
+use ZN\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException
+class InvalidFileParameterException extends Exception
 {
-    use Exclusion;
+    const lang = 
+    [
+        'en' => '`%` parameter should contain the file data type!',
+        'tr' => '`%` parametresi dosya bilgisi içermelidir!'
+    ];
 }

@@ -10,7 +10,6 @@
  */
 
 use ZN\Buffering;
-use ZN\Buffering\Exception\InvalidArgumentException;
 
 class File
 {
@@ -26,7 +25,7 @@ class File
     {
         if( ! is_file($randomBufferClassPagePath) )
         {
-            throw new InvalidArgumentException('Error', 'fileParameter', '1.($file)');
+            throw new Exception\InvalidFileParameterException(NULL, '1.');
         }
 
         return Buffering::file($randomBufferClassPagePath, $randomBufferClassDataVariable);
