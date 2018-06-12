@@ -9,8 +9,8 @@
     |
     */
     
-    'fileNotFound'          => 'Error: `%` file was not found!',
-    'folderNotFound'        => 'Error: `%` folder was not found!',
+    'fileNotFound'          => '`%` file was not found!',
+    'folderNotFound'        => '`%` folder was not found!',
     'fileAllready'          => '`%` file already exists!',
     'folderAllready'        => '`%` folder already exists!',
     'folderChangeDir'       => '`%` Can not change the working directory!',

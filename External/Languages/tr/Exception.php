@@ -9,8 +9,8 @@
     |
 	*/
 
-    'fileNotFound'          => 'Hata: `%` dosyasi bulunamadi!',
-    'folderNotFound'        => 'Hata: `%` dizini bulunamadi!',
+    'fileNotFound'          => '`%` dosyasi bulunamadi!',
+    'folderNotFound'        => '`%` dizini bulunamadi!',
     'fileAllready'          => '`%` dosyası zaten var!',
     'folderAllready'        => '`%` dizini zaten var!',
     'folderChangeDir'       => '`%` çalışma dizini olarak değiştirilemiyor!',
