@@ -294,6 +294,12 @@ class Base
      */
     public static function trace(String $message)
     {
+        # Shows console trace
+        if( defined('CONSOLE_ENABLED') )
+        {
+            self::consoleTrace('CONSOLE TRACE', $message);
+        }
+
         $style  = 'border:solid 1px #E1E4E5;';
         $style .= 'background:#FEFEFE;';
         $style .= 'padding:10px;';
@@ -310,5 +316,25 @@ class Base
         $str .= '</div>';
 
         exit($str);
+    }
+
+    /**
+     * Console trace
+     * 
+     * @param string $title
+     * @param string $message
+     */
+    public static function consoleTrace(String $title, String $message)
+    {
+        $repeat = self::presuffix(str_repeat('-', strlen($message) + 2), '+');
+        $titleSpaceRepeat = str_repeat(' ', strlen($message) - strlen($title));
+
+        $output  = $repeat . CRLF;
+        $output .= '| '.$title . $titleSpaceRepeat .' |' . CRLF;
+        $output .= $repeat . CRLF;
+        $output .= '| ' . $message . ' |' . CRLF;
+        $output .= $repeat;
+
+        exit($output);
     }
 }
