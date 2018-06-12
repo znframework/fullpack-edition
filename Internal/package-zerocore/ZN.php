@@ -686,7 +686,7 @@ class ZN
         )
         {
             # All requests are directed to the home.
-            Response::redirect();
+            defined('CONSOLE_PROJECT_NAME') ?: Response::redirect();
         }
 
         # If there is no valid Projects/ directory, it returns an error.
