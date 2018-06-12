@@ -9,7 +9,14 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-class FileNotFoundException extends \Exception
-{
+use ZN\Exception;
 
+class FileNotFoundException extends Exception
+{
+    const lang = 
+    [
+        'en' => '`%` file was not found!',
+        'tr' => '`%` dosyasi bulunamadi!'
+    ];
 }
+

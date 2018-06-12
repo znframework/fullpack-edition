@@ -57,7 +57,7 @@ class BzDriver extends DriverMappingAbstract
 
         if( empty($open) )
         {
-            throw new FileNotFoundException('Error', 'fileNotFound', $file);
+            throw new FileNotFoundException(NULL, $file);
         }
 
         $return = bzwrite($open, $data, strlen($data));
@@ -80,7 +80,7 @@ class BzDriver extends DriverMappingAbstract
 
         if( empty($open) )
         {
-            throw new FileNotFoundException('Error', 'fileNotFound', $file);
+            throw new FileNotFoundException(NULL, $file);
         }
 
         $return = bzread($open, 8096);
