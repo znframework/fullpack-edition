@@ -12,8 +12,6 @@
 use ZipArchive;
 use ZN\Base;
 use ZN\Filesystem;
-use ZN\Filesystem\Exception\FileNotFoundException;
-use ZN\Filesystem\Exception\FolderNotFoundException;
 
 class Forge
 {
@@ -63,7 +61,7 @@ class Forge
 
         if( ! is_file($name))
         {
-            throw new FileNotFoundException($name);
+            throw new Exception\FileNotFoundException(NULL, $name);
         }
         else
         {
@@ -88,7 +86,7 @@ class Forge
 
         if( ! file_exists($source) )
         {
-            throw new FileNotFoundException($source);
+            throw new Exception\FileNotFoundException(NULL, $source);
         }
 
         if( empty($target) )
@@ -187,7 +185,7 @@ class Forge
 
         if( ! file_exists($oldName) )
         {
-            throw new FileNotFoundException($oldName);
+            throw new Exception\FileNotFoundException(NULL, $oldName);
         }
 
         return rename($oldName, $newName);
@@ -226,7 +224,7 @@ class Forge
 
         if( ! is_file($file) )
         {
-            throw new FileNotFoundException($file);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $fileOpen  = fopen($file, $mode);
@@ -249,7 +247,7 @@ class Forge
 
         if( ! file_exists($name) )
         {
-            throw new FileNotFoundException($name);
+            throw new Exception\FileNotFoundException(NULL, $name);
         }
 
         return chmod($name, $permission);
@@ -320,7 +318,7 @@ class Forge
 
         if( ! is_dir($name) )
         {
-            throw new FolderNotFoundException($name);
+            throw new Exception\FolderNotFoundException(NULL, $name);
         }
 
         return chdir($name);

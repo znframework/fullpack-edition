@@ -10,7 +10,6 @@
  */
 
 use ZN\Ability\Driver;
-use ZN\Compression\Exception\InvalidArgumentException;
 
 class Force implements ForceInterface
 {
@@ -42,7 +41,7 @@ class Force implements ForceInterface
     {
         if( ! is_file($source) )
         {
-            throw new InvalidArgumentException('Error', 'fileParameter', '1.($source)');
+            throw new Exception\FileNotFoundException(NULL, $source);
         }
 
         return $this->driver->extract($source, $target, $password);

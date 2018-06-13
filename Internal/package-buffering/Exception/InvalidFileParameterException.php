@@ -1,4 +1,4 @@
-<?php namespace ZN\Filesystem\Exception;
+<?php namespace ZN\Buffering\Exception;
 /**
  * ZN PHP Web Framework
  * 
@@ -11,11 +11,11 @@
 
 use ZN\Exception;
 
-class InvalidTypeException extends Exception
+class InvalidFileParameterException extends Exception
 {
     const lang = 
     [
-        'tr' => 'Geçersiz tür tanımlaması! Kullanılabilir seçenekler: %',
-        'en' => 'Invalid type definition! Available options: %'
+        'en' => '`%` parameter should contain the file data type!',
+        'tr' => '`%` parametresi dosya bilgisi içermelidir!'
     ];
 }

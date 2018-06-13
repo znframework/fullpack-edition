@@ -15,6 +15,7 @@ class InvalidParameterException extends Exception
 {
     const lang = 
     [
-        'en' => '[Benchmark::&(\'%\')] -> Parameter is not a valid test #!'
+        'en' => '[Benchmark::&(\'%\')] -> The parameter is not a valid test key!',
+        'tr' => '[Benchmark::&(\'%\')] -> Parametre geçerli bir test anahtarı değildir!'
     ];
 }

@@ -45,18 +45,6 @@ class Transfer
      */
     public static function download(String $file)
     {
-        if( ! Info::available($file) )
-        {
-            throw new FileNotFoundException($file);
-        }
-
-        $fileEx   = explode('/', $file);
-        $fileName = $fileEx[count($fileEx) - 1];
-        $filePath = trim($file, $fileName);
-
-        header("Content-type: application/x-download");
-        header("Content-Disposition: attachment; filename=".$fileName);
-
-        readfile($filePath.$fileName);
+        Download::start($file);
     }
 }

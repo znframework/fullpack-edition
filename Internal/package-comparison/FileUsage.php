@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Comparison\Exception\InvalidParameterException;
-
 class FileUsage
 {
     /**
@@ -32,12 +30,12 @@ class FileUsage
 
         if( ! isset(Properties::$usedtests[$restart]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'usedFiles', '%' => $result, 'start']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'usedFiles', '%' => $result, 'start']);
         }
 
         if( ! isset(Properties::$usedtests[$resend]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'usedFiles', '%' => $result, 'end']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'usedFiles', '%' => $result, 'end']);
         }
 
         return array_diff(Properties::$usedtests[$resend], Properties::$usedtests[$restart]);
@@ -62,12 +60,12 @@ class FileUsage
 
         if( ! isset(Properties::$usedtests[$restart]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'usedFileCount', '%' => $result, 'start']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'usedFileCount', '%' => $result, 'start']);
         }
 
         if( ! isset(Properties::$usedtests[$resend]) )
         {
-            throw new InvalidParameterException(NULL, ['&' => 'usedFileCount', '%' => $result, 'end']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'usedFileCount', '%' => $result, 'end']);
         }
 
         return count(Properties::$usedtests[$resend]) - count(Properties::$usedtests[$restart]);

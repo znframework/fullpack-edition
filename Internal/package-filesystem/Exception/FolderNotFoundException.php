@@ -9,13 +9,13 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use Exception;
-use ZN\Lang;
+use ZN\Exception;
 
 class FolderNotFoundException extends Exception
 {
-    public function __construct($folder)
-    {
-        parent::__construct(Lang::select('Exception', 'folderNotFound', $folder));
-    }
+    const lang = 
+    [
+        'en' => '`%` directory was not found!',
+        'tr' => '`%` dizini bulunamadi!'
+    ];
 }

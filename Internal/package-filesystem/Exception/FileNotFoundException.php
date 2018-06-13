@@ -9,13 +9,13 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use Exception;
-use ZN\Lang;
+use ZN\Exception;
 
 class FileNotFoundException extends Exception
 {
-    public function __construct($file)
-    {
-        parent::__construct(Lang::select('Exception', 'fileNotFound', $file));
-    }
+    const lang = 
+    [
+        'en' => '`%` file was not found!',
+        'tr' => '`%` dosyasi bulunamadi!'
+    ];
 }

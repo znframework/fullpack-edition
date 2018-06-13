@@ -12,7 +12,6 @@
 use ZN\Base;
 use ZN\Support;
 use ZN\Singleton;
-use ZN\Compression\Exception\InvalidArgumentException;
 use ZN\Compression\DriverMappingAbstract;
 
 class RarDriver extends DriverMappingAbstract
@@ -52,7 +51,7 @@ class RarDriver extends DriverMappingAbstract
         }
         else
         {
-            throw new InvalidArgumentException('Error', 'emptyVariable', '$list');
+            return false;
         }
 
         rar_close($rarFile);

@@ -57,7 +57,7 @@ class GzDriver extends DriverMappingAbstract
 
         if( empty($open) )
         {
-            throw new FileNotFoundException('Error', 'fileNotFound', $file);
+            throw new FileNotFoundException(NULL, $file);
         }
 
         $return = gzwrite($open, $data, strlen($data));
@@ -80,7 +80,7 @@ class GzDriver extends DriverMappingAbstract
 
         if( empty($open) )
         {
-            throw new FileNotFoundException('Error', 'fileNotFound', $file);
+            throw new FileNotFoundException(NULL, $file);
         }
 
         $return = gzread($open, 8096);
