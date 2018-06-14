@@ -181,11 +181,6 @@ class Exceptions extends \Exception implements ExceptionsInterface
         {
             return false;
         }
-
-        if( self::isReturnValue($msg) === true )
-        {
-            return false;
-        }
         
         $exceptionData =
         [
@@ -296,23 +291,6 @@ class Exceptions extends \Exception implements ExceptionsInterface
             'line'     => $fileInfo['line'],
             'trace'    => $trace
         ];
-    }
-
-    /**
-     * protected return value
-     * 
-     * @param string $msg
-     * 
-     * @return bool
-     */
-    protected static function isReturnValue($msg)
-    {
-        if( stripos($msg, 'Return value') === 0 )
-        {
-            return true;
-        }
-
-        return false;
     }
 
     /**
