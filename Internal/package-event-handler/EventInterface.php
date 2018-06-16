@@ -19,7 +19,7 @@ interface EventInterface
      * 
      * @return bool
      */
-    public function run(String $eventName, Array $parameters = []) : Bool;
+    public static function run(String $eventName, Array $parameters = []) : Bool;
 
     /**
      * Insert a listener.
