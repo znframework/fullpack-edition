@@ -36,7 +36,7 @@ class ZN
         'COMMANDS_DIR'    => 'Commands/',
         'LANGUAGES_DIR'   => 'Languages/',
         'LIBRARIES_DIR'   => 'Libraries/',
-        'MODELS_DIR'      => 'Models',
+        'MODELS_DIR'      => 'Models/',
         'STARTING_DIR'    => 'Starting/',
         'AUTOLOAD_DIR'    => 'Starting/Autoload/',
         'HANDLOAD_DIR'    => 'Starting/Handload/',
