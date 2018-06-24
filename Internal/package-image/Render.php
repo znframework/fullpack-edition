@@ -51,41 +51,19 @@ class Render implements RenderInterface
      */
     public function getProsize(String $path, Int $width = 0, Int $height = 0) : stdClass
     {
-        if( ! is_file($path) )
-        {
-            throw new ImageNotFoundException('[Image::getProsize(\''.$path.'\')] -> Image file is not found!');
-        }
+        # If the image file is not found, an exception is thrown.
+        $this->throwExceptionImageFileIfNotExists($path);
 
-        $g = getimagesize($path);
-        $x = $g[0]; $y = $g[1];
+        $getImageCoordinate = getimagesize($path);
 
-        if( $width > 0 )
-        {
-            if( $width <= $x )
-            {
-                $o = $x / $width; $x = $width; $y = $y / $o;
-            }
-            else
-            {
-                $o = $width / $x; $x = $width; $y = $y * $o;
-            }
-        }
+        $this->getProwidth($width, $x = $getImageCoordinate[0], $y = $getImageCoordinate[1]);
+        $this->getProheight($height, $x, $y);
 
-        if( $height > 0 )
-        {
-            if( $height <= $y )
-            {
-                $o = $y / $height; $y = $height; $x = $x / $o;
-            }
-            else
-            {
-                $o = $height / $y; $y = $height; $x = $x * $o;
-            }
-        }
-
-        $array["width"] = round($x); $array["height"] = round($y);
-
-        return (object) $array;
+        return (object) 
+        [
+            'width'  => round($x),
+            'height' => round($y)
+        ];
     }
 
     /**
@@ -98,108 +76,206 @@ class Render implements RenderInterface
      */
     public function thumb(String $fpath, Array $set) : String
     {
-        $filePath = trim($fpath);
-        $baseUrl  = Request::getBaseURL();
+        # If the image file is not found, an exception is thrown.
+        $this->throwExceptionImageFileIfNotExists($filePath = $this->cleanURLFix($fpath));
 
-        if( strstr($filePath, $baseUrl) )
+        # If the file is not a valid image file, an exception is thrown.
+        $this->throwExceptionIsNotImageFile($filePath);
+
+        # It extracts the settings made on the image as variables.
+        extract($this->extractSettingVariables($fpath, $set));
+
+        $this->setThumbPaths($filePath);
+
+        # If the Thumb array does not exist, it is created.
+        $this->createThumbDirectoryIfNotExists();
+
+        # If the same operation is applied before, the image is not rebuilt.
+        if( $this->isThumbFileExists($getThumbFilePath = $this->getThumbFilePath($this->getThumbFileName($x, $y, $width, $height))) )
         {
-            $filePath = str_replace($baseUrl, '', $filePath);
+            return $this->getThumbFileURL($getThumbFilePath);
         }
 
-        if( ! file_exists($filePath) )
+        $createNewImage = imagecreatetruecolor($width, $height);
+
+        # If the extension of the image file is png, the background is transparent.
+        if( $this->isPNGExtension($filePath) )
         {
-            throw new ImageNotFoundException(NULL, $filePath);
+            $this->applyBackgroundTransparency($createNewImage, $width, $height);
         }
 
-        if( ! $this->isImageFile($filePath) )
+        # The image is being resized according to the settings made.
+        imagecopyresampled($createNewImage, $createNewImageByType = $this->fromFileType($filePath),  0, 0, $x, $y, $width, $height, $rWidth, $rHeight);
+
+        # Creating a new image based on the file type.
+        $this->createFileType($createNewImage, $getThumbFilePath, $quality);
+
+        # The created images are being deleted.
+        $this->deleteCreatedImages($createNewImageByType, $createNewImage);
+
+        # The new image path is returned from the URL type.
+        return $this->getThumbFileURL($getThumbFilePath);
+    }
+
+    /**
+     * Protected throw exception image file if not exists
+     */
+    protected function throwExceptionIsNotImageFile($file)
+    {
+        if( ! $this->isImageFile($file) )
         {
-            throw new InvalidImageFileException(NULL, $filePath);
+            throw new InvalidImageFileException(NULL, $file);
         }
+    }
 
-        list($currentWidth, $currentHeight) = getimagesize($filePath);
-
-        $width    = $set["width"]    ?? $currentWidth;
-        $height   = $set["height"]   ?? $currentHeight;
-        $rewidth  = $set["rewidth"]  ?? 0;
-        $reheight = $set["reheight"] ?? 0;
-        $x        = $set["x"]        ?? 0;
-        $y        = $set["y"]        ?? 0;
-        $quality  = $set["quality"]  ?? 0;
-
-        if( ! empty($set["proheight"]) )
+    /**
+     * Protected throw exception image file if not exists
+     */
+    protected function throwExceptionImageFileIfNotExists($file)
+    {
+        if( ! file_exists($file) )
         {
-            if( $set["proheight"] < $currentHeight )
-            {
-                $height = $set["proheight"];
-                $width  = round(($currentWidth * $height) / $currentHeight);
-            }
+            throw new ImageNotFoundException(NULL, $file);
         }
+    }
 
-        if( ! empty($set["prowidth"]) )
+    /**
+     * Protected delete created images
+     */
+    protected function deleteCreatedImages(...$images)
+    {
+        foreach( $images as $image )
         {
-            if( $set["prowidth"] < $currentWidth )
-            {
-                $width  = $set["prowidth"];
-                $height = round(($currentHeight * $width) / $currentWidth);
-            }
+            imagedestroy($image);
         }
+    }
 
-        $rWidth = $width; $rHeight = $height;
+    /**
+     * Protected get thumb file url
+     */
+    protected function getThumbFileURL($file)
+    {
+        return Request::getBaseURL($file);
+    }
 
-        if( ! empty($rewidth ) ) $width  = $rewidth;
-        if( ! empty($reheight) ) $height = $reheight;
+    /**
+     * Protected is thumb file exists
+     */
+    protected function isThumbFileExists($file)
+    {
+        return file_exists($file);
+    }
 
-        $prefix = "-".$x."x".$y."px-".$width."x".$height."size";
+    /**
+     * Protected get thumb file path
+     */
+    protected function getThumbFilePath($file)
+    {
+        return $this->thumbPath . $file;
+    }
 
-        $this->newPath($filePath);
+    /**
+     * Protected get thumb file name
+     */
+    protected function getThumbFileName($x, $y, $width, $height)
+    {
+        return Filesystem::removeExtension($this->file)                 .
+               $this->addPrefixToThumbFileName($x, $y, $width, $height) . 
+               Filesystem::getExtension($this->file, true);
+    }
+    
+    /**
+     * Protected add prefix to thumb file name
+     */
+    protected function addPrefixToThumbFileName($x, $y, $width, $height)
+    {
+        return '-' . $x . 'x' . $y . 'px-' . $width . 'x' . $height . 'size';
+    }
 
+    /**
+     * Protected create thumb directory if not exists
+     */
+    protected function createThumbDirectoryIfNotExists()
+    {
         if( ! is_dir($this->thumbPath) )
         {
             mkdir($this->thumbPath);
         }
+    }
 
-        $newFile = Filesystem::removeExtension($this->file).$prefix.Filesystem::getExtension($this->file, true);
+    /**
+     * Protected is png extension
+     */
+    protected function isPNGExtension($file)
+    {
+        return Filesystem::getExtension($file) === 'png';
+    }
 
-        if( file_exists($this->thumbPath.$newFile) )
-        {
-            return Request::getBaseURL($this->thumbPath.$newFile);
-        }
+    /**
+     * Protected apply bacground transparency
+     */
+    protected function applyBackgroundTransparency($file, $width, $height)
+    {       
+        imagealphablending($file, false);
+        imagesavealpha($file, true);
+        imagefilledrectangle($file, 0, 0, $width, $height, $this->transparentBackground($file));
+    }
 
-        $rFile   = $this->fromFileType($filePath);
-        $nFile   = imagecreatetruecolor($width, $height);
-
-        if( ! empty($set['prowidth']) || ! empty($set['proheight']) )
-        {
-            $rWidth = $currentWidth; $rHeight = $currentHeight;
-        }
-
-        if( Filesystem::getExtension($filePath) === 'png' )
-        {
-            imagealphablending($nFile, false);
-            imagesavealpha($nFile, true);
-            $transparent = imagecolorallocatealpha($nFile, 255, 255, 255, 127);
-            imagefilledrectangle($nFile, 0, 0, $width, $height, $transparent);
-        }
-
-        imagecopyresampled($nFile, $rFile,  0, 0, $x, $y, $width, $height, $rWidth, $rHeight);
-
-        $this->createFileType($nFile ,$this->thumbPath.$newFile, $quality);
-
-        imagedestroy($rFile); imagedestroy($nFile);
-
-        return Request::getBaseURL($this->thumbPath.$newFile);
+    /**
+     * Protected transparent background
+     */
+    protected function transparentBackground($file)
+    {
+        return imagecolorallocatealpha($file, 255, 255, 255, 127);
     }
 
     /**
      * Protected New Path
      */
-    protected function newPath($filePath)
+    protected function setThumbPaths($file)
     {
-        $fileEx          = explode("/", $filePath);
-        $this->file      = $fileEx[count($fileEx) - 1];
-        $this->thumbPath = substr($filePath,0,strlen($filePath) - strlen($this->file)).$this->dirName;
-        $this->thumbPath = Base::suffix($this->thumbPath);
-        $this->thumbPath = str_replace(Request::getBaseURL(), "", $this->thumbPath);
+        $this->file      = $this->getOnlyFileName($file);
+        $this->thumbPath = $this->createThumbDirectory($file);
+    }
+
+    /**
+     * Protected get only file name
+     */
+    protected function getOnlyFileName($file)
+    {
+        return pathinfo($file, PATHINFO_BASENAME);
+    }
+
+    /**
+     * Protected get only directory name
+     */
+    protected function getFileDirectory($file, $thumb = NULL)
+    {
+        return pathinfo($file, PATHINFO_DIRNAME) . '/';
+    }
+
+    /**
+     * Protected get thumb directory name
+     */
+    protected function getThumbDirectoryName()
+    {
+        return Base::suffix($this->dirName);
+    }
+
+    /**
+     * Protected clean url fix
+     */
+    protected function cleanURLFix($path)
+    {
+        return Base::removePrefix($path, Request::getBaseURL());
+    }
+
+    /**
+     * Protected create thumb directory
+     */
+    protected function createThumbDirectory($file)
+    {
+        return $this->cleanURLFix($this->getFileDirectory($file) . $this->getThumbDirectoryName());
     }
 
     /**
@@ -251,6 +327,95 @@ class Render implements RenderInterface
                 return imagepng($files, $paths, $quality ?: 8 );
             case 'gif' : return imagegif($files, $paths);
             default    : return false;
+        }
+    }
+
+    /**
+     * Protected extract setting variables
+     */
+    protected function extractSettingVariables($file, $settings)
+    {
+        $variables = [];
+
+        list($currentWidth, $currentHeight) = getimagesize($file);
+
+        $variables['x']         = $settings['x']         ?? 0;
+        $variables['y']         = $settings['y']         ?? 0;
+        $variables['quality']   = $settings['quality']   ?? 0;
+        $variables['prowidth']  = $settings['prowidth']  ?? NULL;
+        $variables['proheight'] = $settings['proheight'] ?? NULL;
+        $rewidth                = $settings['width']     ?? $currentWidth;
+        $reheight               = $settings['height']    ?? $currentHeight;
+
+        # Resizes the height value.
+        if( ! empty($settings['reheight' ]) ) 
+        {
+            $height = $settings['reheight'];
+        } 
+        # It gives the width and height value proportional to the height value of the picture.
+        elseif( ! empty($settings['proheight']) && $settings['proheight'] < $currentHeight )
+        {
+            $height = $settings['proheight'];
+            $width  = round(($currentWidth * $height) / $currentHeight);    
+        }  
+        
+        # Resizes the width value.
+        if( ! empty($settings['rewidth'  ]) ) 
+        {
+            $width = $settings['rewidth' ];
+        }
+        # It gives the width and height value proportional to the width value of the picture.
+        elseif( ! empty($settings['prowidth']) && $settings['prowidth'] < $currentWidth )
+        {
+            $width  = $settings['prowidth'];
+            $height = round(($currentHeight * $width) / $currentWidth);   
+        }
+
+        # Gets width and height value information.
+        $variables['width' ] = $width  ?? $rewidth;
+        $variables['height'] = $height ?? $reheight;
+
+        # The black portions are cut off.
+        $variables['rWidth']  = $rewidth  - $variables['x'];
+        $variables['rHeight'] = $reheight - $variables['y'];
+
+        # Return setting variables.
+        return $variables;
+    }
+
+    /**
+     * Protected get pro height
+     */
+    protected function getProheight($height, &$x, &$y)
+    {
+        if( $height > 0 )
+        {
+            if( $height <= $y )
+            {
+                $rate = $y / $height; $y = $height; $x = $x / $rate;
+            }
+            else
+            {
+                $rate = $height / $y; $y = $height; $x = $x * $rate;
+            }
+        }
+    }
+
+    /**
+     * Protected get pro width
+     */
+    protected function getProwidth($width, &$x, &$y)
+    {
+        if( $width > 0 )
+        {
+            if( $width <= $x )
+            {
+                $rate = $x / $width; $x = $width; $y = $y / $rate;
+            }
+            else
+            {
+                $rate = $width / $x; $x = $width; $y = $y * $rate;
+            }
         }
     }
 }
