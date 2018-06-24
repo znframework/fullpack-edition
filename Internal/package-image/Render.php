@@ -54,11 +54,16 @@ class Render implements RenderInterface
         # If the image file is not found, an exception is thrown.
         $this->throwExceptionImageFileIfNotExists($path);
 
+        # Get image size.
         $getImageCoordinate = getimagesize($path);
 
-        $this->getProwidth($width, $x = $getImageCoordinate[0], $y = $getImageCoordinate[1]);
-        $this->getProheight($height, $x, $y);
+        # It gives the width and height value proportional to the width value of the picture.
+        $this->calculateProportion($width, $x = $getImageCoordinate[0], $y = $getImageCoordinate[1]);
 
+        # It gives the width and height value proportional to the height value of the picture.
+        $this->calculateProportion($height, $x, $y);
+
+        # Return width & height
         return (object) 
         [
             'width'  => round($x),
@@ -384,37 +389,19 @@ class Render implements RenderInterface
     }
 
     /**
-     * Protected get pro height
+     * Protected calculate proportion
      */
-    protected function getProheight($height, &$x, &$y)
+    protected function calculateProportion($size, &$c1, &$c2)
     {
-        if( $height > 0 )
+        if( $size > 0 )
         {
-            if( $height <= $y )
+            if( $size <= $c2 )
             {
-                $rate = $y / $height; $y = $height; $x = $x / $rate;
+                $rate = $c2 / $size; $c2 = $size; $c1 = $c1 / $rate;
             }
             else
             {
-                $rate = $height / $y; $y = $height; $x = $x * $rate;
-            }
-        }
-    }
-
-    /**
-     * Protected get pro width
-     */
-    protected function getProwidth($width, &$x, &$y)
-    {
-        if( $width > 0 )
-        {
-            if( $width <= $x )
-            {
-                $rate = $x / $width; $x = $width; $y = $y / $rate;
-            }
-            else
-            {
-                $rate = $width / $x; $x = $width; $y = $y * $rate;
+                $rate = $size / $c2; $c2 = $size; $c1 = $c1 * $rate;
             }
         }
     }
