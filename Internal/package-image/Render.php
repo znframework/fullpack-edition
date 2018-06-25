@@ -58,10 +58,13 @@ class Render implements RenderInterface
         $getImageCoordinate = getimagesize($path);
 
         # It gives the width and height value proportional to the width value of the picture.
-        $this->calculateProportion($width, $x = $getImageCoordinate[0], $y = $getImageCoordinate[1]);
+        $x = $getImageCoordinate[0];
+        $y = $getImageCoordinate[1];
+
+        CoordinateRateCalculator::run($width, $x, $y);
 
         # It gives the width and height value proportional to the height value of the picture.
-        $this->calculateProportion($height, $x, $y);
+        CoordinateRateCalculator::run($height, $x, $y);
 
         # Return width & height
         return (object) 
@@ -386,23 +389,5 @@ class Render implements RenderInterface
 
         # Return setting variables.
         return $variables;
-    }
-
-    /**
-     * Protected calculate proportion
-     */
-    protected function calculateProportion($size, &$c1, &$c2)
-    {
-        if( $size > 0 )
-        {
-            if( $size <= $c2 )
-            {
-                $rate = $c2 / $size; $c2 = $size; $c1 = $c1 / $rate;
-            }
-            else
-            {
-                $rate = $size / $c2; $c2 = $size; $c1 = $c1 * $rate;
-            }
-        }
     }
 }
