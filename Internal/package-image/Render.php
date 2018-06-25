@@ -54,11 +54,19 @@ class Render implements RenderInterface
         # If the image file is not found, an exception is thrown.
         $this->throwExceptionImageFileIfNotExists($path);
 
+        # Get image size.
         $getImageCoordinate = getimagesize($path);
 
-        $this->getProwidth($width, $x = $getImageCoordinate[0], $y = $getImageCoordinate[1]);
-        $this->getProheight($height, $x, $y);
+        # It gives the width and height value proportional to the width value of the picture.
+        $x = $getImageCoordinate[0];
+        $y = $getImageCoordinate[1];
 
+        CoordinateRateCalculator::run($width, $x, $y);
+
+        # It gives the width and height value proportional to the height value of the picture.
+        CoordinateRateCalculator::run($height, $x, $y);
+
+        # Return width & height
         return (object) 
         [
             'width'  => round($x),
@@ -381,41 +389,5 @@ class Render implements RenderInterface
 
         # Return setting variables.
         return $variables;
-    }
-
-    /**
-     * Protected get pro height
-     */
-    protected function getProheight($height, &$x, &$y)
-    {
-        if( $height > 0 )
-        {
-            if( $height <= $y )
-            {
-                $rate = $y / $height; $y = $height; $x = $x / $rate;
-            }
-            else
-            {
-                $rate = $height / $y; $y = $height; $x = $x * $rate;
-            }
-        }
-    }
-
-    /**
-     * Protected get pro width
-     */
-    protected function getProwidth($width, &$x, &$y)
-    {
-        if( $width > 0 )
-        {
-            if( $width <= $x )
-            {
-                $rate = $x / $width; $x = $width; $y = $y / $rate;
-            }
-            else
-            {
-                $rate = $width / $x; $x = $width; $y = $y * $rate;
-            }
-        }
     }
 }
