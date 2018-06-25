@@ -26,6 +26,6 @@ class CronList
      */
     public function __construct()
     {   
-        echo Crontab::list();
+        new Result(Crontab::listArray(), 'ID | JOB');
     }
 }
