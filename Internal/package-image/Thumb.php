@@ -13,6 +13,8 @@ use ZN\Singleton;
 
 class Thumb implements ThumbInterface
 {
+    use CallableFilters;
+
     /**
      * Keeps settings
      * 
@@ -133,6 +135,10 @@ class Thumb implements ThumbInterface
         {
             $path = $this->sets['filePath'];
         }
+
+        # It keeps the used filters belonging to the GD class.
+        # [5.7.8]added
+        $this->sets['filters'] = $this->filters;
 
         return $this->image->thumb($path, $this->sets);
     }

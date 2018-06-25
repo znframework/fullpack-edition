@@ -12,10 +12,7 @@
 use stdClass;
 use ZN\Base;
 use ZN\Request;
-use ZN\Singleton;
 use ZN\Filesystem;
-use ZN\Image\Exception\ImageNotFoundException;
-use ZN\Image\Exception\InvalidImageFileException;
 
 class Render implements RenderInterface
 {
@@ -39,6 +36,11 @@ class Render implements RenderInterface
      * @var string
      */
     protected $thumbPath;
+
+    /**
+     * Valid Mimes
+     */
+    protected $validMimes = ['jpeg', 'png', 'gif'];
 
     /**
      * Get prosize
@@ -86,7 +88,7 @@ class Render implements RenderInterface
     {
         # If the image file is not found, an exception is thrown.
         $this->throwExceptionImageFileIfNotExists($filePath = $this->cleanURLFix($fpath));
-
+       
         # If the file is not a valid image file, an exception is thrown.
         $this->throwExceptionIsNotImageFile($filePath);
 
@@ -113,10 +115,13 @@ class Render implements RenderInterface
         }
 
         # The image is being resized according to the settings made.
-        imagecopyresampled($createNewImage, $createNewImageByType = $this->fromFileType($filePath),  0, 0, $x, $y, $width, $height, $rWidth, $rHeight);
+        imagecopyresampled($createNewImage, $createNewImageByType = ImageTypeCreator::from($filePath),  0, 0, $x, $y, $width, $height, $rWidth, $rHeight);
 
         # Creating a new image based on the file type.
-        $this->createFileType($createNewImage, $getThumbFilePath, $quality);
+        ImageTypeCreator::create($createNewImage, $getThumbFilePath, $quality);
+
+        # Applies the used filters belonging to the GD class.
+        GDFilter::apply($getThumbFilePath, $set['filters'] ?? NULL);
 
         # The created images are being deleted.
         $this->deleteCreatedImages($createNewImageByType, $createNewImage);
@@ -132,7 +137,7 @@ class Render implements RenderInterface
     {
         if( ! $this->isImageFile($file) )
         {
-            throw new InvalidImageFileException(NULL, $file);
+            throw new Exception\InvalidImageFileException(NULL, $file);
         }
     }
 
@@ -143,7 +148,7 @@ class Render implements RenderInterface
     {
         if( ! file_exists($file) )
         {
-            throw new ImageNotFoundException(NULL, $file);
+            throw new Exception\ImageNotFoundException(NULL, $file);
         }
     }
 
@@ -289,15 +294,15 @@ class Render implements RenderInterface
     /**
      * Protected From File Type
      */
-    protected function fromFileType($paths)
+    protected function fromFileType($path)
     {
-        switch( Filesystem::getExtension($this->file) )
+        switch( Filesystem::getExtension($path) )
         {
+            case 'png' : return imagecreatefrompng($path);
+            case 'gif' : return imagecreatefromgif($path);
             case 'jpg' :
-            case 'jpeg': return imagecreatefromjpeg($paths);
-            case 'png' : return imagecreatefrompng ($paths);
-            case 'gif' : return imagecreatefromgif ($paths);
-            default    : return false;
+            case 'jpeg':
+            default    : return imagecreatefromjpeg($path);
         }
     }
 
@@ -306,35 +311,13 @@ class Render implements RenderInterface
      */
     protected function isImageFile($file)
     {
-        $mimes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
-
-        if( in_array(Singleton::class('ZN\Helpers\Mime')->type($file), $mimes) )
+        if( in_array(MimeTypeFinder::get($file), $this->validMimes) )
         {
             return true;
         }
         else
         {
             return false;
-        }
-    }
-
-    /**
-     * Protected Create File Type
-     */
-    protected function createFileType($files, $paths, $quality = 0)
-    {
-        switch( Filesystem::getExtension($this->file) )
-        {
-            case 'jpg' :
-            case 'jpeg': return imagejpeg($files, $paths, $quality ?: 80);
-            case 'png' : 
-                if( $quality > 10 )
-                {
-                    $quality = (int) ($quality / 10);
-                }
-                return imagepng($files, $paths, $quality ?: 8 );
-            case 'gif' : return imagegif($files, $paths);
-            default    : return false;
         }
     }
 
