@@ -31,8 +31,8 @@ class GDFilter
             {
                 $method     = $filter[0];
                 $parameters = $filter[1] ?? [];
-    
-                $gd->$method(...$parameters);
+
+                $gd->$method(...(array) $parameters);
             }
     
             $gd->generate(MimeTypeFinder::get($file), $file);

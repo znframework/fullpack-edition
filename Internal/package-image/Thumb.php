@@ -31,6 +31,30 @@ class Thumb implements ThumbInterface
     }
 
     /**
+     * Watermark.
+     * 
+     * @return Thumb
+     */
+    public function watermark(String $source, String $align = NULL, $margin = 0) : Thumb
+    {
+        $this->sets['watermark'] = [$source, $align, $margin]; 
+
+        return $this;
+    }
+
+    /**
+     * Refresh image filtering.
+     * 
+     * @return Thumb
+     */
+    public function refresh() : Thumb
+    {
+        $this->sets['refresh'] = true;
+
+        return $this;
+    }
+
+    /**
      * Sets file path
      * 
      * @param string $file
@@ -140,7 +164,11 @@ class Thumb implements ThumbInterface
         # [5.7.8]added
         $this->sets['filters'] = $this->filters;
 
-        return $this->image->thumb($path, $this->sets);
+        $settings = $this->sets;
+        
+        $this->sets = [];
+
+        return $this->image->thumb($path, $settings);
     }
 
     /**

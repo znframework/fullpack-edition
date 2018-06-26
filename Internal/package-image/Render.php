@@ -100,12 +100,18 @@ class Render implements RenderInterface
         # If the Thumb array does not exist, it is created.
         $this->createThumbDirectoryIfNotExists();
 
+        # Gets the path information of the new formatted file.
+        $getThumbFilePath = $this->getThumbFilePath($this->getThumbFileName($x, $y, $width, $height));
+
         # If the same operation is applied before, the image is not rebuilt.
-        if( $this->isThumbFileExists($getThumbFilePath = $this->getThumbFilePath($this->getThumbFileName($x, $y, $width, $height))) )
+        # It checks to see if there is an image refresh request.
+        # If the same output was previously output, no re-creation is performed.
+        if( ! $this->isRefreshThumbImageCreation($set['refresh'] ?? NULL) && $this->isThumbFileExists($getThumbFilePath) )
         {
             return $this->getThumbFileURL($getThumbFilePath);
         }
-
+        
+        # Create a new true color image.
         $createNewImage = imagecreatetruecolor($width, $height);
 
         # If the extension of the image file is png, the background is transparent.
@@ -119,6 +125,9 @@ class Render implements RenderInterface
 
         # Creating a new image based on the file type.
         ImageTypeCreator::create($createNewImage, $getThumbFilePath, $quality);
+ 
+        # Applies watermark filter if exists.
+        self::addWatermarkFilterIfExists($set, $width, $height);
 
         # Applies the used filters belonging to the GD class.
         GDFilter::apply($getThumbFilePath, $set['filters'] ?? NULL);
@@ -128,6 +137,27 @@ class Render implements RenderInterface
 
         # The new image path is returned from the URL type.
         return $this->getThumbFileURL($getThumbFilePath);
+    }
+
+    /**
+     * Protected add watermark filter
+     */
+    protected function addWatermarkFilterIfExists(&$set, $width, $height)
+    {
+        if( isset($set['watermark']) )
+        {
+            if( ! empty($set['watermark'][1])) 
+            {
+                $set['filters'][] = ['target', [$set['watermark'][1]]];
+            }
+
+            if( ! empty($set['watermark'][2])) 
+            {
+                $set['filters'][] = ['margin', [$set['watermark'][2]]];
+            }
+
+            $set['filters'][] = ['mix', [$set['watermark'][0]]];
+        }  
     }
 
     /**
@@ -177,6 +207,14 @@ class Render implements RenderInterface
     protected function isThumbFileExists($file)
     {
         return file_exists($file);
+    }
+
+    /**
+     * Protected is refresh thumb image creation
+     */
+    protected function isRefreshThumbImageCreation($isRefresh)
+    {
+        return $isRefresh === true;
     }
 
     /**
