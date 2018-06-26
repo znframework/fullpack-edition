@@ -1251,13 +1251,15 @@ class GD implements GDInterface
         {
             $size = getimagesize($source);
 
-            $width  = $size[0];
-            $height = $size[1];
-            $return = WatermarkImageAligner::align($this->target, $width, $height, $this->imageSize[0], $this->imageSize[1], $this->margin ?? 0);
+            $this->width  = $this->width  ?? $size[0];
+            $this->height = $this->height ?? $size[1];
 
-            $this->width  = $width;
-            $this->height = $height;
+            $return = WatermarkImageAligner::align($this->target, $this->width, $this->height, $this->imageSize[0], $this->imageSize[1], $this->margin ?? 0);
+
             $this->target = $return;
+            
+            if( isset($this->x) ) $this->source[0] = $this->x;
+            if( isset($this->y) ) $this->source[1] = $this->y;
         }
     }
 
