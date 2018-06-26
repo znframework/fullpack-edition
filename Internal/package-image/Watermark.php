@@ -12,7 +12,21 @@
 class Watermark
 {
     /**
-     * Protected align
+     * It forms the alignment values ​​according to conformation.
+     * 
+     * @param string $type - options
+     * [
+     *     topleft   |topcenter   |topright   
+     *     middleleft|center      |middleright
+     *     bottomleft|bottomcenter|bottomright
+     * ]
+     * @param string $sourceWidth 
+     * @param string $sourceHeight
+     * @param string $targetWidth
+     * @param string $targetHeight
+     * @param int    $margin
+     * 
+     * @return array - [x, y]
      */
     public static function align($type, $swidth, $sheight, $twidth, $theight, $margin)
     {
