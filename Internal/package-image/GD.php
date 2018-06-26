@@ -18,7 +18,14 @@ use ZN\Image\Exception\InvalidArgumentException;
 
 class GD implements GDInterface
 {
-    use Revolving;
+    use Revolving, CallableFilterMethod;
+
+    /**
+     * Call callable method
+     * 
+     * @const string
+     */
+    const call = 'callable';
 
     /**
      * Keeps canvas settings
