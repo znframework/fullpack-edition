@@ -1233,7 +1233,7 @@ class GD implements GDInterface
 
             $width  = $size[0];
             $height = $size[1];
-            $return = Watermark::align($this->target, $width, $height, $this->imageSize[0], $this->imageSize[1], $this->margin ?? 0);
+            $return = WatermarkImageAligner::align($this->target, $width, $height, $this->imageSize[0], $this->imageSize[1], $this->margin ?? 0);
 
             $this->width  = $width;
             $this->height = $height;

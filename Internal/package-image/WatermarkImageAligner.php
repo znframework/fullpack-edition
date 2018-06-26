@@ -9,7 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-class Watermark
+class WatermarkImageAligner
 {
     /**
      * It forms the alignment values ​​according to conformation.
