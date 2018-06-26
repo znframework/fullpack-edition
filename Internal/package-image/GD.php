@@ -81,48 +81,62 @@ class GD implements GDInterface
     {   
         if( $this->mime->type($width, 0) === 'image' )
         {
-            $this->type = $this->mime->type($width, 1);
-            
-            $height = NULL; $rgb = NULL; $real = NULL; $p1 = NULL;
-
-            $this->imageSize = $real === NULL ? getimagesize($width) : [$real, $p1];
-
-            $this->canvas = $this->createFrom($width,
-            [
-                # For type gd2p
-                'x'      => (int) ($this->x      ?? $height ?? 0),
-                'y'      => (int) ($this->y      ?? $rgb    ?? 0),
-                'width'  => (int) ($this->width  ?? $real       ),
-                'height' => (int) ($this->height ?? $p1         )
-            ]);
+            $this->createImageCanvas($width);
         }
         else
         {
-            $width  = $this->width  ?? $width;
-            $height = $this->height ?? $height;
-            $rgb    = $this->color  ?? $rgb;
-            $real   = $this->real   ?? $real;
-
-            $this->imageSize = [$width, $height];
-
-            if( $real === false )
-            {
-                $this->canvas = imagecreate($width, $height);
-            }
-            else
-            {
-                $this->canvas = imagecreatetruecolor($width, $height);
-            }
-    
-            if( ! empty($rgb) )
-            {
-                $this->allocate($rgb);
-            }
+            $this->createEmptyCanvas($width, $height, $rgb, $real, $p1);
         }
         
         $this->defaultRevolvingVariables();
 
         return $this;
+    }
+
+    /**
+     * Protected create image canvas
+     */
+    protected function createImageCanvas($image)
+    {
+        $this->type = $this->mime->type($image, 1);
+            
+        $this->imageSize = ! isset($this->width) ? getimagesize($image) : [$this->width ?? 0, $this->height ?? 0];
+
+        $this->canvas = $this->createFrom($image,
+        [
+            # For type gd2p
+            'x'      => $this->x      ?? 0,
+            'y'      => $this->y      ?? 0,
+            'width'  => $this->width  ?? $this->imageSize[0],
+            'height' => $this->height ?? $this->imageSize[1]
+        ]);
+    }
+
+    /**
+     * Protected create empty canvas
+     */
+    protected function createEmptyCanvas($width, $height, $rgb, $real, $p1)
+    {
+        $width  = $this->width  ?? $width;
+        $height = $this->height ?? $height;
+        $rgb    = $this->color  ?? $rgb;
+        $real   = $this->real   ?? $real;
+
+        $this->imageSize = [$width, $height];
+
+        if( $real === false )
+        {
+            $this->canvas = imagecreate($width, $height);
+        }
+        else
+        {
+            $this->canvas = imagecreatetruecolor($width, $height);
+        }
+
+        if( ! empty($rgb) )
+        {
+            $this->allocate($rgb);
+        }
     }
 
     /**
