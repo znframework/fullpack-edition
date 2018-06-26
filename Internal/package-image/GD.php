@@ -73,11 +73,10 @@ class GD implements GDInterface
      * @param mixed $height = NULL
      * @param mixed $rgb    = 'transparent'
      * @param mixed $real   = false
-     * @param mixed $p1     = 0
      * 
      * @return GD
      */
-    public function canvas($width, $height = NULL, $rgb = 'transparent', $real = false, $p1 = 0) : GD
+    public function canvas($width, $height = NULL, $rgb = 'transparent', $real = false) : GD
     {   
         if( $this->mime->type($width, 0) === 'image' )
         {
@@ -1219,7 +1218,7 @@ class GD implements GDInterface
     /**
      * Protected create empty canvas
      */
-    protected function createEmptyCanvas($width, $height, $rgb, $real, $p1)
+    protected function createEmptyCanvas($width, $height, $rgb, $real)
     {
         $width  = $this->width  ?? $width;
         $height = $this->height ?? $height;

@@ -25,11 +25,10 @@ interface GDInterface
      * @param mixed $height = NULL
      * @param mixed $rgb    = 'transparent'
      * @param mixed $real   = false
-     * @param mixed $p1     = 0
      * 
      * @return GD
      */
-    public function canvas($width, $height, $rgb, $real, $p1) : GD;
+    public function canvas($width, $height, $rgb, $real) : GD;
 
     /**
      * Creates form
