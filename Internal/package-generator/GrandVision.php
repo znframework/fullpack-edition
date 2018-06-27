@@ -29,7 +29,9 @@ class GrandVision extends DatabaseDefinitions
     {
         parent::__construct();
 
-        $this->defaultDatabaseName = Config::get('Database', 'database')['database'];
+        $config = Config::default('ZN\Database\DatabaseDefaultConfiguration')::get('Database', 'database');
+
+        $this->defaultDatabaseName = $config['database'];
     }
 
     /**
@@ -38,6 +40,118 @@ class GrandVision extends DatabaseDefinitions
      * @param mixed ...$database
      */
     public function generate(...$database)
+    {
+        $databases = $this->getDatabaseList($database);
+
+        foreach( $databases as $connection => $database )
+        {
+            $this->setDatabaseConfiguration($connection, $database, $configs);
+
+            $this->createVisionDirectoryByDatabaseName($database);
+
+            $this->createVisionModelFile($database, $configs);
+        }
+    }
+
+    /**
+     * Delete Grand Vision
+     * 
+     * @param string $databaes = '*'
+     * @param array  $tables   = NULL
+     */
+    public function delete(String $database = '*', Array $tables = NULL)
+    {
+        if( $database === '*' )
+        {
+            $this->deleteVisionsDirectory();
+        }
+        else
+        {
+            if( $tables === NULL )
+            {
+                $this->deleteVisionDirectory($database);
+            }
+            else
+            {
+                $this->deleteVisionFile($database, $tables);
+            }
+        }
+    }
+
+    /**
+     * Protected set database configuration
+     */
+    protected function setDatabaseConfiguration($connection, &$database, &$configs)
+    {
+        $configs = [];
+
+        if( is_array($database) )
+        {
+            $configs  = $database;
+            $database = $connection;
+        }
+
+        $configs['database'] = $database ?: $this->defaultDatabaseName;
+    }
+
+    /**
+     * Protected get database vision directory
+     */
+    protected function getDatabaseVisionDirectory($database)
+    {
+        return $this->visionDirectory . $this->getDatabaseName($database);
+    }
+
+    /**
+     * Protected get database name
+     */
+    protected function getDatabaseName($database)
+    {
+        return ucfirst($database ?: $this->defaultDatabaseName);
+    }
+    
+    /**
+     * Protected create vision model file
+     */
+    protected function createVisionModelFile($database, $configs)
+    {
+        $tables = $this->getTableList($database);
+
+        $database = ucfirst($database);
+
+        foreach( $tables as $table )
+        {
+            (new File)->object
+            (
+                'model', 
+                $this->getDatabaseVisionClassName($database, $table),
+                [
+                    'path'      => $this->getDatabaseVisionDirectory($database),
+                    'namespace' => $this->getDatabaseVisionNamespace($database),
+                    'use'       => ['GrandModel'],
+                    'extends'   => 'GrandModel',
+                    'constants' =>
+                    [
+                        'table'      => "'".ucfirst($table)."'",
+                        'connection' => $this->stringArray($configs)
+                    ]
+                ]
+            );
+        }
+    }
+
+    /**
+     * Protected get table list
+     */
+    protected function getTableList($database)
+    {
+        return $this->tool->differentConnection(['database' => $database])->listTables();
+    }
+
+    /**
+     * Protected get database list
+     */
+    protected function getDatabaseList($database)
     {
         $databases = $database;
 
@@ -51,90 +165,74 @@ class GrandVision extends DatabaseDefinitions
             $databases = $this->tool->listDatabases();
         }
 
-        $visionPath = $this->visionDirectory;
-        $defaultDB  = $this->defaultDatabaseName;
+        return $databases;
+    }
 
-        foreach( $databases as $connection => $database )
+    /**
+     * Protected create vision diretory by database name
+     */
+    protected function createVisionDirectoryByDatabaseName($file)
+    {
+        Filesystem::createFolder(MODELS_DIR . $this->getDatabaseVisionDirectory(ucfirst($file)));
+    }
+
+    /**
+     * Protected delete vision
+     */
+    protected function deleteVisionDirectory($vision)
+    {
+        Filesystem::deleteFolder($this->getVisionDirectory() . $this->getDatabaseName($vision));
+    }
+
+    /**
+     * Protected delete visions
+     */
+    protected function deleteVisionsDirectory()
+    {
+        Filesystem::deleteFolder($this->getVisionDirectory());
+    }
+
+    /**
+     * Protected delete vision file
+     */
+    protected function deleteVisionFile($database, $tables)
+    {
+        foreach( $tables as $table )
         {
-            $configs = [];
-
-            if( is_array($database) )
-            {
-                $configs  = $database;
-                $database = $connection;
-            }
-
-            $configs['database'] = $database;
-
-            $tables   = $this->tool->differentConnection(['database' => $database])->listTables();
-            $database = ucfirst($database);
-            $filePath = $visionPath.$database;
-
-            Filesystem::createFolder(MODELS_DIR.$filePath);
-
-            foreach( $tables as $table )
-            {
-                $table = ucfirst($table);
-
-                $name = INTERNAL_ACCESS.
-                        ( strtolower($database) === strtolower($defaultDB) ? NULL : $database ).
-                        $table . 'Vision';
-
-                (new File)->object
-                (
-                    'model', 
-                    $name,
-                    [
-                        'path'      => $filePath,
-                        'namespace' => 'Visions\\'.$database,
-                        'use'       => ['ZN\Database\GrandModel'],
-                        'extends'   => 'GrandModel',
-                        'constants' =>
-                        [
-                            'table'      => "'".$table."'",
-                            'connection' => $this->stringArray($configs)
-                        ]
-                    ]
-                );
-            }
+            unlink($this->getVisionFilePath($database, $table));
         }
     }
 
     /**
-     * Delete Grand Vision
-     * 
-     * @param string $databaes = '*'
-     * @param array  $tables   = NULL
+     * Protected get visison directory
      */
-    public function delete(String $database = '*', Array $tables = NULL)
+    protected function getVisionDirectory()
     {
-        $path = MODELS_DIR . $this->visionDirectory;
+        return MODELS_DIR . $this->visionDirectory;
+    }
 
-        if( $database === '*' )
-        {
-            Filesystem::deleteFolder($path);
-        }
-        else
-        {
-            $database = ucfirst($database);
+    /**
+     * Protected get database vision class name
+     */
+    protected function getDatabaseVisionClassName($database, $table)
+    {
+        return INTERNAL_ACCESS . ( strtolower($database) === strtolower($this->defaultDatabaseName) ? NULL : ucfirst($database) ) . ucfirst($table) . 'Vision';
+    }
 
-            if( $tables === NULL )
-            {
-                Filesystem::deleteFolder($path.$database);
-            }
-            else
-            {
-                foreach( $tables as $table )
-                {
-                    unlink
-                    (
-                        $path.$database.DS.INTERNAL_ACCESS.
-                        ( strtolower($database) === strtolower($this->defaultDatabaseName) ? NULL : $database ).
-                        ucfirst($table).'Vision.php'
-                    );
-                }
-            }
-        }
+    /**
+     * Protected get vision file path
+     */
+    protected function getVisionFilePath($database, $table)
+    {
+        return $this->getVisionDirectory() . Base::suffix(ucfirst($database)) . $this->getDatabaseVisionClassName($database, $table) . '.php';
+    }
+
+    /**
+     * Protected get database vision namespace
+     */
+    protected function getDatabaseVisionNamespace($database)
+    {
+        return 'Visions\\' . $this->getDatabaseName($database);
     }
 
     /**

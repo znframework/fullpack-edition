@@ -27,6 +27,6 @@ class DeleteGrandVision
      */
     public function __construct($command)
     {   
-        new Result(Generate::deleteVision($command ?: Config::get('Database', 'database')['database']));
+        new Result(Generate::deleteVision($command ?? '*'));
     }
 }
