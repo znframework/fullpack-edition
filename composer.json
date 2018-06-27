@@ -1,0 +1,21 @@
+{
+    "name": "znframework/fullpack-edition",
+    "type": "project",
+    "description": "ZN Framework Fullpack Edition",
+    "keywords": ["zn","fullpack"],
+    "homepage": "https://github.com/znframework/fullpack-edition",
+    "license": "MIT",
+    "authors": 
+    [
+        {
+            "name": "Ozan UYKUN",
+            "email": "ozanbote@gmail.com",
+            "homepage": "http://www.znframework.com",
+            "role": "Developer"
+        }
+    ],
+    "require": 
+    {
+        "php": ">=7.0.0"
+    }
+}
