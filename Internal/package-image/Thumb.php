@@ -13,6 +13,8 @@ use ZN\Singleton;
 
 class Thumb implements ThumbInterface
 {
+    use CallableFilters;
+
     /**
      * Keeps settings
      * 
@@ -26,6 +28,30 @@ class Thumb implements ThumbInterface
     public function __construct()
     {
         $this->image = Singleton::class('ZN\Image\Render');
+    }
+
+    /**
+     * Watermark.
+     * 
+     * @return Thumb
+     */
+    public function watermark(String $source, String $align = NULL, $margin = 0) : Thumb
+    {
+        $this->sets['watermark'] = [$source, $align, $margin]; 
+
+        return $this;
+    }
+
+    /**
+     * Refresh image filtering.
+     * 
+     * @return Thumb
+     */
+    public function refresh() : Thumb
+    {
+        $this->sets['refresh'] = true;
+
+        return $this;
     }
 
     /**
@@ -134,7 +160,15 @@ class Thumb implements ThumbInterface
             $path = $this->sets['filePath'];
         }
 
-        return $this->image->thumb($path, $this->sets);
+        # It keeps the used filters belonging to the GD class.
+        # [5.7.8]added
+        $this->sets['filters'] = $this->filters;
+
+        $settings = $this->sets;
+        
+        $this->sets = [];
+
+        return $this->image->thumb($path, $settings);
     }
 
     /**

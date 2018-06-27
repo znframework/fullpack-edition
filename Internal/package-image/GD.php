@@ -18,7 +18,14 @@ use ZN\Image\Exception\InvalidArgumentException;
 
 class GD implements GDInterface
 {
-    use Revolving;
+    use Revolving, CallableFilterMethod;
+
+    /**
+     * Call callable method
+     * 
+     * @const string
+     */
+    const call = 'callable';
 
     /**
      * Keeps canvas settings
@@ -66,47 +73,18 @@ class GD implements GDInterface
      * @param mixed $height = NULL
      * @param mixed $rgb    = 'transparent'
      * @param mixed $real   = false
-     * @param mixed $p1     = 0
      * 
      * @return GD
      */
-    public function canvas($width, $height = NULL, $rgb = 'transparent', $real = false, $p1 = 0) : GD
+    public function canvas($width, $height = NULL, $rgb = 'transparent', $real = false) : GD
     {   
         if( $this->mime->type($width, 0) === 'image' )
         {
-            $this->type   = $this->mime->type($width, 1);
-            
-            $height = NULL; $rgb = NULL; $real = NULL; $p1 = NULL;
-
-            $this->canvas = $this->createFrom($width,
-            [
-                // For type gd2p
-                'x'      => (int) ($this->x      ?? $height ?? 0),
-                'y'      => (int) ($this->y      ?? $rgb    ?? 0),
-                'width'  => (int) ($this->width  ?? $real       ),
-                'height' => (int) ($this->height ?? $p1         )
-            ]);
+            $this->createImageCanvas($width);
         }
         else
         {
-            $width  = $this->width  ?? $width;
-            $height = $this->height ?? $height;
-            $rgb    = $this->color  ?? $rgb;
-            $real   = $this->real   ?? $real;
-
-            if( $real === false )
-            {
-                $this->canvas = imagecreate($width, $height);
-            }
-            else
-            {
-                $this->canvas = imagecreatetruecolor($width, $height);
-            }
-    
-            if( ! empty($rgb) )
-            {
-                $this->allocate($rgb);
-            }
+            $this->createEmptyCanvas($width, $height, $rgb, $real, $p1);
         }
         
         $this->defaultRevolvingVariables();
@@ -562,7 +540,7 @@ class GD implements GDInterface
      */
     public function closest(String $rgb) : Int
     {
-        return $this->_imageColor($rgb, 'imagecolorclosestalpha');
+        return $this->getImageColor($rgb, 'imagecolorclosestalpha');
     }
 
     /**
@@ -574,7 +552,7 @@ class GD implements GDInterface
      */
     public function resolve(String $rgb) : Int
     {
-        return $this->_imageColor($rgb, 'imagecolorresolvealpha');
+        return $this->getImageColor($rgb, 'imagecolorresolvealpha');
     }
 
     /**
@@ -586,7 +564,7 @@ class GD implements GDInterface
      */
     public function index(String $rgb) : Int
     {
-        return $this->_imageColor($rgb, 'imagecolorexactalpha');
+        return $this->getImageColor($rgb, 'imagecolorexactalpha');
     }
 
     /**
@@ -611,7 +589,7 @@ class GD implements GDInterface
      */
     public function closestHwb(String $rgb) : Int
     {
-        return $this->_imageColor($rgb, 'imagecolorclosesthwb');
+        return $this->getImageColor($rgb, 'imagecolorclosesthwb');
     }
 
     /**
@@ -643,9 +621,9 @@ class GD implements GDInterface
      */
     public function set(Int $index, String $rgb = NULL) : GD
     {
-        $rgb = $index . '|' . ($this->_colors($this->color ?? $rgb));
+        $rgb = $index . '|' . ($this->getColors($this->color ?? $rgb));
 
-        $this->_imageColor($rgb, 'imagecolorset');
+        $this->getImageColor($rgb, 'imagecolorset');
 
         return $this;
     }
@@ -714,7 +692,7 @@ class GD implements GDInterface
      */
     public function copy($source, Array $settings = []) : GD
     {
-        if( is_file($source) )
+        if( is_file($file = $source) )
         {
             $source = $this->createFrom($source);
         }
@@ -723,6 +701,8 @@ class GD implements GDInterface
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
+
+        $this->alignImageWatermark($file);
 
         $xt     = $settings['xt']     ?? $this->target[0] ?? 0;
         $yt     = $settings['yt']     ?? $this->target[1] ?? 0;
@@ -748,7 +728,7 @@ class GD implements GDInterface
      */
     public function mix($source, Array $settings = [], $function = 'imagecopymerge') : GD
     {
-        if( is_file($source) )
+        if( is_file($file = $source) )
         {
             $source = $this->createFrom($source);
         }
@@ -757,6 +737,8 @@ class GD implements GDInterface
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
+        
+        $this->alignImageWatermark($file);
 
         $xt      = $settings['xt']      ?? $this->target[0] ?? 0;
         $yt      = $settings['yt']      ?? $this->target[1] ?? 0;
@@ -764,7 +746,7 @@ class GD implements GDInterface
         $ys      = $settings['ys']      ?? $this->source[1] ?? 0;
         $width   = $settings['width']   ?? $this->width     ?? 0;
         $height  = $settings['height']  ?? $this->height    ?? 0;
-        $percent = $settings['percent'] ?? $this->percent   ?? 0;
+        $percent = $settings['percent'] ?? $this->percent   ?? 100;
 
         $function($this->canvas, $source, $xt, $yt, $xs, $ys, $width, $height, $percent);
 
@@ -798,7 +780,7 @@ class GD implements GDInterface
      */
     public function resample($source, Array $settings = [], $function = 'imagecopyresampled') : GD
     {
-        if( is_file($source) )
+        if( is_file($file = $source) )
         {
             $source = $this->createFrom($source);
         }
@@ -807,6 +789,8 @@ class GD implements GDInterface
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
+
+        $this->alignImageWatermark($file);
 
         $xt = $settings['xt'] ?? $this->target[0]    ?? 0;
         $yt = $settings['yt'] ?? $this->target[1]    ?? 0;
@@ -1187,12 +1171,12 @@ class GD implements GDInterface
 
         if( empty($this->save) && $this->output === true )
         {
-            $this->_content();
+            $this->getImageContent();
         }
 
-        $this->_types();
-        $this->_destroy();
-        $this->_defaultVariables();
+        $this->generateImageType();
+        $this->destroyImage();
+        $this->defaultVariables();
 
         return $canvas;
     }
@@ -1213,9 +1197,76 @@ class GD implements GDInterface
     }
 
     /**
+     * Protected create image canvas
+     */
+    protected function createImageCanvas($image)
+    {
+        $this->type = $this->mime->type($image, 1);
+            
+        $this->imageSize = ! isset($this->width) ? getimagesize($image) : [$this->width ?? 0, $this->height ?? 0];
+
+        $this->canvas = $this->createFrom($image,
+        [
+            # For type gd2p
+            'x'      => $this->x      ?? 0,
+            'y'      => $this->y      ?? 0,
+            'width'  => $this->width  ?? $this->imageSize[0],
+            'height' => $this->height ?? $this->imageSize[1]
+        ]);
+    }
+
+    /**
+     * Protected create empty canvas
+     */
+    protected function createEmptyCanvas($width, $height, $rgb, $real)
+    {
+        $width  = $this->width  ?? $width;
+        $height = $this->height ?? $height;
+        $rgb    = $this->color  ?? $rgb;
+        $real   = $this->real   ?? $real;
+
+        $this->imageSize = [$width, $height];
+
+        if( $real === false )
+        {
+            $this->canvas = imagecreate($width, $height);
+        }
+        else
+        {
+            $this->canvas = imagecreatetruecolor($width, $height);
+        }
+
+        if( ! empty($rgb) )
+        {
+            $this->allocate($rgb);
+        }
+    }
+    
+    /**
+     * Protected align image watermark
+     */
+    protected function alignImageWatermark($source)
+    {
+        if( is_string($this->target ?? NULL) )
+        {
+            $size = getimagesize($source);
+
+            $this->width  = $this->width  ?? $size[0];
+            $this->height = $this->height ?? $size[1];
+
+            $return = WatermarkImageAligner::align($this->target, $this->width, $this->height, $this->imageSize[0], $this->imageSize[1], $this->margin ?? 0);
+
+            $this->target = $return;
+            
+            if( isset($this->x) ) $this->source[0] = $this->x;
+            if( isset($this->y) ) $this->source[1] = $this->y;
+        }
+    }
+
+    /**
      * Protected Colors
      */
-    protected function _colors($rgb)
+    protected function getColors($rgb)
     {
         // Renkler küçük isimlerle yazılmıştır.
         $rgb    = strtolower($rgb);
@@ -1236,7 +1287,7 @@ class GD implements GDInterface
      */
     protected function allocate($rgb)
     {
-        $rgb = explode('|', $this->_colors($rgb));
+        $rgb = explode('|', $this->getColors($rgb));
 
         $red   = $rgb[0] ?? 0;
         $green = $rgb[1] ?? 0;
@@ -1249,7 +1300,7 @@ class GD implements GDInterface
     /**
      * Protected Image Color
      */
-    public function _imageColor($rgb, $function)
+    public function getImageColor($rgb, $function)
     {
         $rgb = explode('|', $rgb);
 
@@ -1264,7 +1315,7 @@ class GD implements GDInterface
     /**
      * Protected Destroy
      */
-    protected function _destroy()
+    protected function destroyImage()
     {
         imagedestroy($this->canvas);
 
@@ -1274,7 +1325,7 @@ class GD implements GDInterface
     /**
      * Protected Content
      */
-    protected function _content()
+    protected function getImageContent()
     {
         header("Content-type: image/".($this->type ?? 'jpeg'));
     }
@@ -1282,7 +1333,7 @@ class GD implements GDInterface
     /**
      * Protected Default Variables
      */
-    protected function _defaultVariables()
+    protected function defaultVariables()
     {
         $this->canvas  = NULL;
         $this->save    = NULL;
@@ -1293,7 +1344,7 @@ class GD implements GDInterface
     /**
      * Protected Types
      */
-    protected function _types()
+    protected function generateImageType()
     {
         $type = strtolower($this->type ?? 'jpeg');
 

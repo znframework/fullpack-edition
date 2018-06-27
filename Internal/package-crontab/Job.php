@@ -103,7 +103,7 @@ class Job implements JobInterface, CrontabIntervalInterface
     {
         $this->getConfig = Config::default('ZN\Prompt\PromptDefaultConfiguration')
                                  ::get('Services', 'processor');
-        $this->directoryIndexCommand  = $this->getDirectoryIndexCommand();
+        $this->directoryIndexCommand = $this->getDirectoryIndexCommand();
         $this->processor = Singleton::class('ZN\Prompt\Processor');
 
         if( PROJECT_TYPE === 'EIP' )

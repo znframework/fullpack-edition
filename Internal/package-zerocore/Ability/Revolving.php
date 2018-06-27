@@ -27,7 +27,16 @@ trait Revolving
      * @return $this
      */
     public function __call($method, $param)
-    {   
+    {  
+        # It opens the way for you to use multiple magic call methods.
+        if( defined('static::call') )
+        {
+            if( $return = $this->{static::call}($method, $param) )
+            {
+                return $return;
+            }
+        }
+     
         $this->$method = (count($param ?? NULL) > 1) ? $param : ($param[0] ?? NULL);
         
         $this->revolvings[$method] = $this->$method;

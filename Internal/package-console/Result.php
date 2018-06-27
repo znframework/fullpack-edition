@@ -14,7 +14,7 @@ use ZN\Buffering;
 
 class Result
 {
-    protected $title = 'Result';
+    protected $title = 'RESULT';
 
     /**
      * Magic constructor
@@ -23,8 +23,13 @@ class Result
      * 
      * @return void
      */
-    public function __construct($result)
+    public function __construct($result, $title = NULL)
     {
+        if( $title !== NULL )
+        {
+            $this->title = $title;
+        }
+
         $this->return = Buffering\Callback::do(function() use($result)
         {
             $success = Lang::select('Success', 'success');
@@ -45,9 +50,7 @@ class Result
                 {
                     if( ! empty($result) )
                     {
-                        print_r($result);
-
-                        $this->print = 'array';
+                        $this->print = $result;
                     }
                     else
                     {
@@ -68,18 +71,14 @@ class Result
             }
         });
 
-        if( isset($this->print) )
+        if( isset($this->print) ) 
         {
-            exit($this->return);
+            $this->outputMultipleResult();
         }
-
-        $line = $this->line();
-
-        echo $line;
-        echo $this->title();                                                                                         
-        echo $line;
-        echo $this->content();
-        echo $line;
+        else
+        {
+            $this->outputSingleResult();
+        } 
     }
 
     /**
@@ -122,5 +121,38 @@ class Result
                                                      ? $titleLength - $returnLength + 1
                                                      : 1
             )) . '|'.EOL;
+    }
+
+    /**
+     * Protected output single result
+     */
+    protected function outputSingleResult()
+    {
+        echo $this->line();
+        echo $this->title();                                                                                         
+        echo $this->line();
+        echo $this->content();
+        echo $this->line();
+    }
+
+    /**
+     * Protected output multiple result
+     */
+    protected function outputMultipleResult()
+    {
+        $this->return = $max = max($this->print) . '    ';
+
+        echo $this->line();
+        echo $this->title();                                                                                         
+        echo $this->line();
+
+        foreach( $this->print as $key => $ret )
+        {
+            $diff = strlen($max) - strlen($return = $key . ' | ' . $ret);
+            $this->return = $return . str_repeat(' ', $diff);            
+        
+            echo $this->content();
+            echo $this->line();
+        }
     }
 }

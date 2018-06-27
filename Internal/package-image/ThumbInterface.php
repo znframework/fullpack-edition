@@ -12,6 +12,20 @@
 interface ThumbInterface
 {
     /**
+     * Watermark.
+     * 
+     * @return Thumb
+     */
+    public function watermark(String $source, String $align = NULL, $margin = 0) : Thumb;
+
+    /**
+     * Refresh image filtering.
+     * 
+     * @return Thumb
+     */
+    public function refresh() : Thumb;
+
+    /**
      * Sets file path
      * 
      * @param string $file
