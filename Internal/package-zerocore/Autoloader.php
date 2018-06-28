@@ -490,10 +490,11 @@ class Autoloader
         {
             $getFacadeName = $match['name'] === true ? $onlyClassName : $match['name'];
 
-                # If constants are used in the scanned class, these constants are taken.
+            # If constants are used in the scanned class, these constants are taken.
             $constants = self::findConstantsClassContent($file, ['facade', 'target']);
 
-            $getFacadeContent = self::getFacadecontent($getFacadeName , $fullClassName, $constants);
+            # The static view of the scanned class is being created.
+            $getFacadeContent = self::getFacadeContent($getFacadeName , $fullClassName, $constants);
     
             $facadeClassPath  = pathinfo($file, PATHINFO_DIRNAME) . '/' . $onlyClassName . 'Facade.php';
             
@@ -642,7 +643,7 @@ class Autoloader
      * 
      * @return string
      */
-    protected static function getFacadecontent($facade, $target, $constants)
+    protected static function getFacadeContent($facade, $target, $constants)
     {
         self::getClassNamespace($facade, $namespace);
 
