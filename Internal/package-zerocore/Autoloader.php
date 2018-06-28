@@ -519,7 +519,7 @@ class Autoloader
                 file_put_contents($facadeClassPath, $getFacadeContent);
             }   
 
-            $classes['classes'][strtolower($getFacadeName)] = Base::removePrefix($facadeClassPath, './');
+            $classes['classes'][strtolower($getFacadeName)] = $facadeClassPath;
   
             return true;
         }
