@@ -503,13 +503,11 @@ class Autoloader
      */
     protected static function createFacadeClass($file, $onlyClassName, $fullClassName, &$classes)
     {
-        if( preg_match('/const\s+(facade)\s+\=\s+(\'|\")(?<name>([A-Z]\w+(\\\\)*){1,})(\'|\");/i', file_get_contents($file), $match) )
+        if( self::isFacadeConstantExistsInFile($file, $match) )
         {
-            $facadeClassPath  = pathinfo($file, PATHINFO_DIRNAME) . '/' . $onlyClassName . 'Facade.php';
-            
             $getFacadeName = $match['name'] === true ? $onlyClassName : $match['name'];
 
-            if( ! is_file($facadeClassPath) )
+            if( ! is_file($facadeClassPath = self::getFacadeClassFilePath($file, $onlyClassName)) )
             {
                 # If constants are used in the scanned class, these constants are taken.
                 $constants = self::findConstantsClassContent($file, ['facade', 'target']);
@@ -517,6 +515,7 @@ class Autoloader
                 # The static view of the scanned class is being created.
                 $getFacadeContent = self::getFacadeContent($getFacadeName , $fullClassName, $constants);
 
+                # Creates facade class.
                 file_put_contents($facadeClassPath, $getFacadeContent);
             }   
 
@@ -526,6 +525,22 @@ class Autoloader
         }
 
         return false;
+    }
+
+    /**
+     * Protected get facade class file path
+     */
+    protected static function getFacadeClassFilePath($file, $onlyClassName)
+    {
+        return Base::removePrefix(pathinfo($file, PATHINFO_DIRNAME) . '/' . $onlyClassName . 'Facade.php', './');
+    }
+
+    /**
+     * Protected is facade constant exists in file
+     */
+    protected static function isFacadeConstantExistsInFile($file, &$match)
+    {
+        return preg_match('/const\s+(facade)\s+\=\s+(\'|\")(?<name>([A-Z]\w+(\\\\)*){1,})(\'|\");/i', file_get_contents($file), $match);
     }
 
     /**
