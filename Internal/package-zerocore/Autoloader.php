@@ -65,21 +65,14 @@ class Autoloader
         # Getting information from the class map of the class being called according to ZN's autoloader.
         $classInfo = self::getClassFileInfo($class);
 
-        # Retrieves the path information of the class to be loaded from the classmap file.
-        $file = $classInfo['path'];
-        
         # If the class file exists, it is included.
-        if( is_file($file) )
+        if( is_file($file = $classInfo['path']) )
         {
+            # Requires class file.
             require $file;
 
             # If the class file can not be loaded, the class map is rebuilt.
-            if
-            (
-                ! class_exists($classInfo['namespace']) &&
-                ! trait_exists($classInfo['namespace']) &&
-                ! interface_exists($classInfo['namespace'])
-            )
+            if( self::isClassExists($classInfo['namespace']) )
             {
                 self::tryAgainCreateClassMap($class);
             }
@@ -180,65 +173,6 @@ class Autoloader
         # It is checked whether the content to be newly added is empty.
         # 5.7.4.4[added|changed]
         self::addToClassMap($classMapPage);
-    }
-
-    /**
-     * Protected create class map top output.
-     */
-    protected static function createClassMapTopOutput(&$classMapPage)
-    {
-        if( ! is_file(self::$path) )
-        {
-            $classMapPage  = '<?php'.EOL;
-            $classMapPage .= '#----------------------------------------------------------------------'.EOL;
-            $classMapPage .= '# This file automatically created and updated'.EOL;
-            $classMapPage .= '#----------------------------------------------------------------------'.EOL;
-        }
-        else
-        {
-            $classMapPage = '';
-        }
-    }
-
-    /**
-     * Protected get classes & namespaces output
-     */
-    protected static function getClassesAndNamespacesOutput($type = '', $classMaps, &$classMapPage)
-    {
-         # Get the class and namespace array information from the Project/Any/ClassMap.php file
-         $configClassMap = self::getClassMapContent();
-
-        # Getting class paths to print on the class map.
-        # For the concurrent correct class list, information is obtained from 
-        # both the configuration file and the  $classes variable of this class.
-        $classArray = array_diff_key
-        (
-            $classMaps[$type]      ?? [],
-            $configClassMap[$type] ?? []
-        );
-
-        if( ! empty($classArray) )
-        {
-            self::${$type} = $classMaps[$type];
-
-            foreach( $classArray as $k => $v )
-            {
-                $classMapPage .= '$classMap[\''.$type.'\'][\''.$k.'\'] = \''.$v.'\';'.EOL;
-            }
-        }
-    }
-
-    /**
-     * Protected add to class map
-     * 
-     * 5.7.4.4[added]
-     */
-    protected static function addToClassMap($content)
-    {
-        if( ! is_file(self::$path) || (! empty($content) && ! strstr(file_get_contents(self::$path), $content)) )
-        {
-            file_put_contents(self::$path, $content, FILE_APPEND);
-        }
     }
 
     /**
@@ -379,6 +313,89 @@ class Autoloader
     }
 
     /**
+     * spl autoload register
+     * 
+     * @param string $type = 'run' - options[run|standart]
+     * 
+     * @return void
+     */
+    public static function register($type = 'run')
+    {
+        # Autoload register.
+        spl_autoload_register('ZN\Autoloader::' . $type);
+
+        # If the use of alias is obvious, it will activate this operation.
+        self::aliases();
+    }
+
+    /**
+     * Protected is class exists
+     */
+    protected static function isClassExists($class)
+    {
+       return ! class_exists($class) && ! trait_exists($class) && ! interface_exists($class);
+    }
+
+    /**
+     * Protected create class map top output.
+     */
+    protected static function createClassMapTopOutput(&$classMapPage)
+    {
+        if( ! is_file(self::$path) )
+        {
+            $classMapPage  = '<?php'.EOL;
+            $classMapPage .= '#----------------------------------------------------------------------'.EOL;
+            $classMapPage .= '# This file automatically created and updated'.EOL;
+            $classMapPage .= '#----------------------------------------------------------------------'.EOL;
+        }
+        else
+        {
+            $classMapPage = '';
+        }
+    }
+
+    /**
+     * Protected get classes & namespaces output
+     */
+    protected static function getClassesAndNamespacesOutput($type = '', $classMaps, &$classMapPage)
+    {
+         # Get the class and namespace array information from the Project/Any/ClassMap.php file
+         $configClassMap = self::getClassMapContent();
+
+        # Getting class paths to print on the class map.
+        # For the concurrent correct class list, information is obtained from 
+        # both the configuration file and the  $classes variable of this class.
+        $classArray = array_diff_key
+        (
+            $classMaps[$type]      ?? [],
+            $configClassMap[$type] ?? []
+        );
+
+        if( ! empty($classArray) )
+        {
+            self::${$type} = $classMaps[$type];
+
+            foreach( $classArray as $k => $v )
+            {
+                $classMapPage .= '$classMap[\''.$type.'\'][\''.$k.'\'] = \''.$v.'\';'.EOL;
+            }
+        }
+    }
+
+    /**
+     * Protected add to class map
+     * 
+     * 5.7.4.4[added]
+     */
+    protected static function addToClassMap($content)
+    {
+        if( ! is_file(self::$path) || (! empty($content) && ! strstr(file_get_contents(self::$path), $content)) )
+        {
+            file_put_contents(self::$path, $content, FILE_APPEND);
+        }
+    }
+
+    /**
      * If the use of alias is obvious, it will activate this operation.
      */
     protected static function aliases()
@@ -488,18 +505,18 @@ class Autoloader
     {
         if( preg_match('/const\s+(facade)\s+\=\s+(\'|\")(?<name>([A-Z]\w+(\\\\)*){1,})(\'|\");/i', file_get_contents($file), $match) )
         {
-            $getFacadeName = $match['name'] === true ? $onlyClassName : $match['name'];
-
-            # If constants are used in the scanned class, these constants are taken.
-            $constants = self::findConstantsClassContent($file, ['facade', 'target']);
-
-            # The static view of the scanned class is being created.
-            $getFacadeContent = self::getFacadeContent($getFacadeName , $fullClassName, $constants);
-    
             $facadeClassPath  = pathinfo($file, PATHINFO_DIRNAME) . '/' . $onlyClassName . 'Facade.php';
             
+            $getFacadeName = $match['name'] === true ? $onlyClassName : $match['name'];
+
             if( ! is_file($facadeClassPath) )
             {
+                # If constants are used in the scanned class, these constants are taken.
+                $constants = self::findConstantsClassContent($file, ['facade', 'target']);
+
+                # The static view of the scanned class is being created.
+                $getFacadeContent = self::getFacadeContent($getFacadeName , $fullClassName, $constants);
+
                 file_put_contents($facadeClassPath, $getFacadeContent);
             }   
 
@@ -516,60 +533,97 @@ class Autoloader
      */
     protected static function createStaticAccessClass($className, $file, $permission, &$classes)
     {
-        if( stripos($className, INTERNAL_ACCESS) === 0 && ! preg_match('/(Interface|Trait)$/i', $className) )
+        if( self::isInternalClassExists($className) )
         {
-            # [Internal] prefix is cleared from class name.
-            $originClassName = str_ireplace(INTERNAL_ACCESS, '', $className);
-            
-            # Static view is getting position information.
-            $staticClassDirectory = pathinfo($file, PATHINFO_DIRNAME);
-            
-            # Static views are built into the Resources/Statics/ directory.
-            $staticClassDirectory = self::$staticAccessDirectory . $staticClassDirectory;
-
-            # The predefined authorization number for directories to which static views are written.
-            $directoryPermission = $permission ?? 0755;
-            
             # If the directory in which static views are to be created does not exist, 
             # it will be rebuilt.
-            if( ! is_dir(self::$staticAccessDirectory) )
-            {
-                # Created Resources/Statics/ directory.
-                mkdir(self::$staticAccessDirectory, $directoryPermission, true);
-
-                # Access to this directory via URL is blocked.
-                # It is assumed that the system is running on apache.
-                file_put_contents(self::$staticAccessDirectory . '.htaccess', 'Deny from all');
-            }
+            self::createStaticsDirectoryIfNotExists($directoryPermission = $permission ?? 0755);
 
             # The static view creates a new directory with the same name into 
             # the Resources Statics/ directory according to the location of the original class.
-            if( ! is_dir($staticClassDirectory) )
-            {
-                mkdir($staticClassDirectory, $directoryPermission, true);
-            }
-
-            # Static view file path information.
-            $staticClassPath = Base::suffix($staticClassDirectory) . $className . '.php';
-            
-            # If constants are used in the scanned class, these constants are taken.
-            $constants = self::findConstantsClassContent($file);
-
+            self::createStaticClassDirectoryIfNotExists($staticClassDirectory = self::getStaticClassDirectoryFromFile($file), $directoryPermission);
+     
             # The static view of the scanned class is being created.
-            $classContent = self::createClassFileContent($originClassName, $constants);
+            $classContent = self::createClassFileContent($originClassName = self::getOriginalClassName($className), self::findConstantsClassContent($file));
 
             # If a previously rendered static view of the scanned class has been created,
             # it is checked for changes in appearance before this static view is reconstructed.
-            $fileContentLength = is_file($staticClassPath) ? strlen(file_get_contents($staticClassPath)) : 0;
-
-            if( strlen($classContent) !== $fileContentLength )
+            if( $classContent != self::getStaticAccessFileContent($staticClassPath = self::getStaticClassFile($staticClassDirectory, $className)) )
             {
                 # If the data do not match, recreate it.
                 file_put_contents($staticClassPath, $classContent);
             }
             
+            # Add the class to the class map.
             $classes['classes'][strtolower($originClassName)] = $staticClassPath;
         }
+    }
+
+    /**
+     * Protected is internal class exists
+     */
+    protected static function isInternalClassExists($className)
+    {
+        return stripos($className, INTERNAL_ACCESS) === 0 && ! preg_match('/(Interface|Trait)$/i', $className);
+    }
+
+    /**
+     * Protected get static class file
+     */
+    protected static function getStaticClassFile($staticClassDirectory, $className)
+    {
+        return Base::suffix($staticClassDirectory) . $className . '.php';
+    }
+
+    /**
+     * Protected get static class directory from file
+     */
+    protected static function getStaticClassDirectoryFromFile($file)
+    {
+        return self::$staticAccessDirectory . pathinfo($file, PATHINFO_DIRNAME);
+    }
+
+    /**
+     * Protected get original class name
+     */
+    protected static function getOriginalClassName($className)
+    {
+        return str_ireplace(INTERNAL_ACCESS, '', $className);
+    }
+
+    /**
+     * Protected create static class directory if not exists
+     */
+    protected static function createStaticClassDirectoryIfNotExists($staticClassDirectory, $directoryPermission)
+    {
+        if( ! is_dir($staticClassDirectory) )
+        {
+            mkdir($staticClassDirectory, $directoryPermission, true);
+        }
+    }
+
+    /**
+     * Protected create statics directory if not exists
+     */
+    protected static function createStaticsDirectoryIfNotExists($directoryPermission)
+    {
+        if( ! is_dir(self::$staticAccessDirectory) )
+        {
+            # Created Resources/Statics/ directory.
+            mkdir(self::$staticAccessDirectory, $directoryPermission, true);
+
+            # Access to this directory via URL is blocked.
+            # It is assumed that the system is running on apache.
+            file_put_contents(self::$staticAccessDirectory . '.htaccess', 'Deny from all');
+        }
+    }
+
+    /**
+     * Protected get static access file content
+     */
+    protected static function getStaticAccessFileContent($staticClassPath)
+    {
+        return is_file($staticClassPath) ? file_get_contents($staticClassPath) : NULL;
     }
 
     /**
@@ -756,22 +810,6 @@ class Autoloader
     {
         # If the class or namespace information contains quotes, these quotes are cleared.
         return str_replace(["'", '"'], NULL, $string);
-    }
-
-    /**
-     * spl autoload register
-     * 
-     * @param string $type = 'run' - options[run|standart]
-     * 
-     * @return void
-     */
-    public static function register($type = 'run')
-    {
-        # Autoload register.
-        spl_autoload_register('ZN\Autoloader::' . $type);
-
-        # If the use of alias is obvious, it will activate this operation.
-        self::aliases();
     }
 }
 
