@@ -440,14 +440,14 @@ class Autoloader
                     $file = self::getRelativeFilePath($file);
                  
                     # In the class map, array keys are kept in lower case.
-                    $class = strtolower($classInfo['class']);
+                    $class = strtolower($realOnlyClassName = $classInfo['class']);
                     
                     # It is checked whether the scanned class a namespace. 
                     # According to this information class name is obtained.
                     if( isset($classInfo['namespace']) )
                     {
-                        $className = strtolower($classInfo['namespace']).'\\'.$class;
-
+                        $className = strtolower($realFullClassName = $classInfo['namespace'] . '\\' . $realOnlyClassName);
+                    
                         # If the class contains a namespace, it is kept in the namespace array in the class map.
                         # This data is stored in the direct controller of a class that contains a namespace to 
                         # provide access to the $this object using only the class name.
@@ -457,13 +457,17 @@ class Autoloader
                     {
                         $className = $class;
                     }
-
+                    
                     # The name and path information of the scanned class is added to the class map.
                     $classes['classes'][self::cleanNailClassMapContent($className)] = self::cleanNailClassMapContent($file);
 
-                    # If the scanned class has the prefix [Internal], 
-                    # the static view of this class is created.
-                    self::createStaticAccessClass($classInfo['class'], $file, $configAutoloader['directoryPermission'], $classes);
+                    # Creates facade of class.
+                    if( ! self::createFacadeClass($file, $realOnlyClassName, $realFullClassName ?? $realOnlyClassName, $classes) )
+                    {
+                        # If the scanned class has the prefix [Internal], 
+                        # the static view of this class is created.
+                        self::createStaticAccessClass($realOnlyClassName, $file, $configAutoloader['directoryPermission'], $classes);
+                    }
                 }
             }
             # If the value is an index, resume the scan from that index.
@@ -475,6 +479,35 @@ class Autoloader
         }
 
         return $classes;
+    }
+
+    /**
+     * Protected create facade class
+     */
+    protected static function createFacadeClass($file, $onlyClassName, $fullClassName, &$classes)
+    {
+        if( preg_match('/const\s+(facade)\s+\=\s+(\'|\")(?<name>([A-Z]\w+(\\\\)*){1,})(\'|\");/i', file_get_contents($file), $match) )
+        {
+            $getFacadeName = $match['name'] === true ? $onlyClassName : $match['name'];
+
+                # If constants are used in the scanned class, these constants are taken.
+            $constants = self::findConstantsClassContent($file, ['facade', 'target']);
+
+            $getFacadeContent = self::getFacadecontent($getFacadeName , $fullClassName, $constants);
+    
+            $facadeClassPath  = pathinfo($file, PATHINFO_DIRNAME) . '/' . $onlyClassName . 'Facade.php';
+            
+            if( ! is_file($facadeClassPath) )
+            {
+                file_put_contents($facadeClassPath, $getFacadeContent);
+            }   
+
+            $classes['classes'][strtolower($getFacadeName)] = $facadeClassPath;
+  
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -545,7 +578,7 @@ class Autoloader
      * 
      * @return string
      */
-    protected static function findConstantsClassContent($v)
+    protected static function findConstantsClassContent($v, $exclude = [])
     {
         $getFileContent = file_get_contents($v);
 
@@ -562,7 +595,10 @@ class Autoloader
         {
             foreach( $const as $key => $c )
             {
-                $constants .= HT."const ".$c.' = '.$value[$key].';'.EOL.EOL;
+                if( ! in_array($c, $exclude) )
+                {
+                    $constants .= HT."const ".$c.' = '.$value[$key].';'.EOL.EOL;
+                }        
             }
         }
 
@@ -596,6 +632,51 @@ class Autoloader
         $classContent .= '#-------------------------------------------------------------------------';
 
         return $classContent;
+    }
+
+    /**
+     * Creates internal class content.
+     * 
+     * @param string $newClassName
+     * @param string $constants
+     * 
+     * @return string
+     */
+    protected static function getFacadecontent($facade, $target, $constants)
+    {
+        self::getClassNamespace($facade, $namespace);
+
+        $classContent  = '<?php' . $namespace . EOL;
+        $classContent .= '#-------------------------------------------------------------------------'.EOL;
+        $classContent .= '# This file automatically created and updated'.EOL;
+        $classContent .= '#-------------------------------------------------------------------------'.EOL.EOL;
+        $classContent .= 'class '.$facade.EOL;
+        $classContent .= '{'.EOL;
+        $classContent .= $constants;
+        $classContent .= HT.'use \ZN\Ability\Facade;'.EOL.EOL;
+        $classContent .= HT.'const target = \'' . $target . '\';'.EOL;
+        $classContent .= '}'.EOL.EOL;
+        $classContent .= '#-------------------------------------------------------------------------';
+
+        return $classContent;
+    }
+
+    /**
+     * Protected get class namespace
+     */
+    protected static function getClassNamespace(&$facade, &$namespace)
+    {
+        $namespace = NULL;
+        $facadeEx  = explode('\\', $facade);
+
+        if( count($facadeEx) > 1 )
+        {
+            $facade = $facadeEx[count($facadeEx) - 1];
+
+            array_pop($facadeEx);
+
+            $namespace = ' namespace ' . implode('\\', $facadeEx) . ';';
+        }
     }
 
     /**
