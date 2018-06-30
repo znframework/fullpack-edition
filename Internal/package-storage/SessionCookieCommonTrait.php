@@ -9,8 +9,12 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\IS;
+use ZN\Config;
+use ZN\Datatype;
 use ZN\DataTypes\Arrays;
 use ZN\DataTypes\Strings;
+use ZN\Cryptography\Encode;
 
 trait SessionCookieCommonTrait
 {
@@ -63,6 +67,36 @@ trait SessionCookieCommonTrait
     }
 
     /**
+     * Magic constructor
+     * 
+     * @param void
+     * 
+     * @return void
+     */
+    public function __construct(Array $config = [])
+    {
+        $this->config = $config ?: Config::default(__CLASS__ . 'DefaultConfiguration')
+                                         ::get('Storage', strtolower(Datatype::divide(__CLASS__, '/', -1)));
+
+        $this->start();
+    }
+
+    /**
+     * Session start
+     * 
+     * @param void
+     * 
+     * @return void
+     */
+    public static function start()
+    {
+        if( ! isset($_SESSION) )
+        {
+            session_start();
+        }
+    }
+
+    /**
      * Encode session key & value
      * 
      * @param string $nameAlgo  = NULL
@@ -104,6 +138,77 @@ trait SessionCookieCommonTrait
         $this->regenerate = $regenerate;
 
         return $this;
+    }
+
+    /**
+     * Protected regenerate session id
+     */
+    protected function regenerateSessionId()
+    {
+        if( $this->regenerate === true )
+        {
+            session_regenerate_id();
+        }
+    }
+
+    /**
+     * Protected encode name value
+     */
+    protected function encodeNameValue(&$name, &$value = NULL)
+    {
+        if( ! empty($this->encode) )
+        {
+            $this->encodeDataByType('name' , $name );
+
+            if( $value !== NULL )
+            {
+                $this->encodeDataByType('value', $value);
+            }       
+        }
+
+        if( ! isset($this->encode['name']) )
+        {
+            $this->defaultEncodeData($name);
+        }
+
+        $this->encode = [];
+    }
+
+    /**
+     * Protected default encode data
+     */
+    protected function defaultEncodeData(&$name)
+    {
+        if( ($encode = $this->config['encode']) === true )
+        {
+            $name = md5($name);
+        }
+        elseif( is_string($encode) )
+        {
+            $this->encodeDataIfValidHash($name, $encode);
+        }
+    }
+
+    /**
+     * Protected encode data by type
+     */
+    protected function encodeDataByType($type = 'value', &$data)
+    {
+        if( isset($this->encode[$type]) )
+        {
+            $this->encodeDataIfValidHash($data, $this->encode[$type]);
+        }
+    }
+
+    /**
+     * Protected encode data if valid hash
+     */
+    protected function encodeDataIfValidHash(&$data, $encode)
+    {
+        if( IS::hash($encode) )
+        {
+            $data = Encode\Type::create($data, $encode);
+        }
     }
 
     /**
