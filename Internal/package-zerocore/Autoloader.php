@@ -503,7 +503,7 @@ class Autoloader
      */
     protected static function createFacadeClass($file, $onlyClassName, $fullClassName, &$classes)
     {
-        if( self::isFacadeConstantExistsInFile($file, $match) )
+        if( in_array('facade', self::tokenFileInfo($file, T_CONST)) && self::isFacadeConstantExistsInFile($file, $match) )
         {
             $getFacadeName = $match['name'] === true ? $onlyClassName : $match['name'];
 
