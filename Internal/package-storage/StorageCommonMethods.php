@@ -10,14 +10,12 @@
  */
 
 use ZN\IS;
-use ZN\Config;
-use ZN\Datatype;
-use ZN\DataTypes\Arrays;
-use ZN\DataTypes\Strings;
 use ZN\Cryptography\Encode;
 
-trait SessionCookieCommonTrait
+trait StorageCommonMethods
 {
+    use CallableKeys, Initialize;
+
     /**
      * Regenarate session
      * 
@@ -31,55 +29,6 @@ trait SessionCookieCommonTrait
      * @var array
      */
     protected $encode = [];
-
-    /**
-     * Magic call
-     * 
-     * @param string $method
-     * @param array  $parameters
-     * 
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        $split = Strings\Split::upperCase($method);
-
-        if( Arrays\GetElement::last($split) === 'Delete' )
-        {
-            $method = 'delete';
-
-            return $this->delete($split[0]);
-        }
-
-        if( $method === 'all' )
-        {
-            $method = 'selectAll';
-
-            return $this->$method();
-        }
-
-        if( $param = ($parameters[0] ?? NULL) )
-        {
-            return $this->insert($method, $param);
-        }
-
-        return $this->select($method);
-    }
-
-    /**
-     * Magic constructor
-     * 
-     * @param void
-     * 
-     * @return void
-     */
-    public function __construct(Array $config = [])
-    {
-        $this->config = $config ?: Config::default(__CLASS__ . 'DefaultConfiguration')
-                                         ::get('Storage', strtolower(Datatype::divide(__CLASS__, '/', -1)));
-
-        $this->start();
-    }
 
     /**
      * Session start

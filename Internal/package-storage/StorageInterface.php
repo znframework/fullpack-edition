@@ -9,7 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-interface SessionCookieCommonInterface
+interface StorageInterface
 {
     /**
      * Encode session key & value
