@@ -13,7 +13,7 @@ use ZN\IS;
 use ZN\Config;
 use ZN\Cryptography\Encode;
 
-class Session implements SessionInterface, SessionCookieCommonInterface
+class Session implements SessionCookieCommonInterface
 {
     use SessionCookieCommonTrait;
 
