@@ -23,6 +23,13 @@ class Theme
     public static $active = NULL;
 
     /**
+     * Match elements.
+     * 
+     * @var array
+     */
+    protected static $elements = [NULL, NULL];
+
+    /**
      * Active theme.
      * 
      * @param string $active = 'Default'
@@ -32,6 +39,18 @@ class Theme
     public static function active(String $active = 'Default')
     {
         self::$active = Base::suffix($active);
+    }
+
+    /**
+     * Match element.
+     * 
+     * @param array $elements
+     */
+    public static function matchElement(String $inputs = NULL, String $attributes = NULL)
+    {
+        self::$elements = [Base::prefix($inputs, '|'), Base::prefix($attributes, '|')];
+
+        return new self;
     }
 
     /**
@@ -49,7 +68,7 @@ class Theme
         $data = preg_replace_callback
         (
             [
-                '/<(link|img|script|div|a)\s.*?(href|src)\=(\"|\')(?<element>.*?)(\"|\').*?\>/i',
+                '/<(link|img|script|div|a' . self::$elements[0] . ')\s.*?(href|src' . self::$elements[1] . ')\=(\"|\')(?<element>.*?)(\"|\').*?\>/i',
                 '/background(-image)*\s*\:\s*url\((?<element>.*?)\)/i'                            
             ], 
             function($selector) use ($themeName)

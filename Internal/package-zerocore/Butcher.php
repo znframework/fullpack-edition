@@ -536,14 +536,13 @@ class Butcher
     }
 
     /**
-     * Protected function
+     * Protected move assets
      */
     protected function moveAssets($path)
     {
-        $dir  = $path;
-        $path = $this->findBaseThemeDirectory . $path;
+        $assetsBaseDirectory = $this->findBaseThemeDirectory . $path;
 
-        Filesystem::copy($path, $this->getThemePath($dir));
+        Filesystem::copy($assetsBaseDirectory, $this->getThemePath($path));
     }
 
     /**

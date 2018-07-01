@@ -9,28 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\IS;
-use ZN\Config;
-use ZN\Cryptography\Encode;
-
-class Session implements SessionInterface, SessionCookieCommonInterface
+class Session implements StorageInterface
 {
-    use SessionCookieCommonTrait;
-
-    /**
-     * Magic constructor
-     * 
-     * @param void
-     * 
-     * @return void
-     */
-    public function __construct(Array $config = [])
-    {
-        $this->config = $config ?: Config::default('ZN\Storage\SessionDefaultConfiguration')
-                                         ::get('Storage', 'session');
-
-        $this->start();
-    }
+    use StorageCommonMethods;
 
     /**
      * Insert session
@@ -42,53 +23,13 @@ class Session implements SessionInterface, SessionCookieCommonInterface
      */
     public function insert(String $name, $value) : Bool
     {
-        if( ! empty($this->encode) )
-        {
-            if( isset($this->encode['name']) )
-            {
-                if( IS::hash($this->encode['name']) )
-                {
-                    $name = Encode\Type::create($name, $this->encode['name']);
-                }
-            }
-
-            if( isset($this->encode['value']) )
-            {
-                if( IS::hash($this->encode['value']) )
-                {
-                    $value = Encode\Type::create($value, $this->encode['value']);
-                }
-            }
-        }
-
-        $sessionConfig = $this->config;
-
-        if( ! isset($this->encode['name']))
-        {
-            $encode = $sessionConfig["encode"];
-
-            if( $encode === true )
-            {
-                $name = md5($name);
-            }
-            elseif( is_string($encode) )
-            {
-                if( IS::hash($encode) )
-                {
-                    $name = Encode\Type::create($name, $encode);
-                }
-            }
-        }
+        $this->encodeNameValue($name, $value);
 
         $_SESSION[$name] = $value;
 
         if( $_SESSION[$name] )
         {
-            if( $this->regenerate === true )
-            {
-                session_regenerate_id();
-            }
-
+            $this->regenerateSessionId();
             $this->defaultVariable();
 
             return true;
@@ -108,30 +49,7 @@ class Session implements SessionInterface, SessionCookieCommonInterface
      */
     public function select(String $name)
     {
-        if( isset($this->encode['name']) )
-        {
-            if( IS::hash($this->encode['name']) )
-            {
-                $name = Encode\Type::create($name, $this->encode['name']);
-                $this->encode = [];
-            }
-        }
-        else
-        {
-            $encode = $this->config['encode'];
-
-            if( $encode === true )
-            {
-                $name = md5($name);
-            }
-            elseif( is_string($encode) )
-            {
-                if( IS::hash($encode) )
-                {
-                    $name = Encode\Type::create($name, $encode);
-                }
-            }
-        }
+        $this->encodeNameValue($name);
 
         return $_SESSION[$name] ?? false;
     }
@@ -149,21 +67,6 @@ class Session implements SessionInterface, SessionCookieCommonInterface
     }
 
     /**
-     * Session start
-     * 
-     * @param void
-     * 
-     * @return void
-     */
-    public static function start()
-    {
-        if( ! isset($_SESSION) )
-        {
-            session_start();
-        }
-    }
-
-    /**
      * Delete session
      * 
      * @param string $name
@@ -172,32 +75,7 @@ class Session implements SessionInterface, SessionCookieCommonInterface
      */
     public function delete(String $name) : Bool
     {
-        $sessionConfig = $this->config;
-
-        if( isset($this->encode['name']) )
-        {
-            if( IS::hash($this->encode['name']) )
-            {
-                $name = Encode\Type::create($name, $this->encode['name']);
-                $this->encode = [];
-            }
-        }
-        else
-        {
-            $encode = $sessionConfig["encode"];
-
-            if( $encode === true )
-            {
-                $name = md5($name);
-            }
-            elseif( is_string($encode) )
-            {
-                if( IS::hash($encode) )
-                {
-                    $name = Encode\Type::create($name, $encode);
-                }
-            }
-        }
+        $this->encodeNameValue($name);
 
         if( isset($_SESSION[$name]) )
         {

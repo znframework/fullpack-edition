@@ -9,15 +9,12 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\IS;
-use ZN\Config;
 use ZN\Protection\Json;
-use ZN\Cryptography\Encode;
 use ZN\Storage\Exception\SetcookieException;
 
-class Cookie implements CookieInterface, SessionCookieCommonInterface
+class Cookie implements CookieInterface, StorageInterface
 {
-    use SessionCookieCommonTrait;
+    use StorageCommonMethods;
 
     /**
      * Keeps time
@@ -53,21 +50,6 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
      * @var bool
      */
     protected $httpOnly;
-
-    /**
-     * Magic constructor
-     * 
-     * @param void
-     * 
-     * @return void
-     */
-    public function __construct(Array $config = [])
-    {
-        Session::start();
-
-        $this->config = $config ?: Config::default('ZN\Storage\CookieDefaultConfiguration')
-                                         ::get('Storage', 'cookie');
-    }
 
     /**
      * Sets cookie time
@@ -152,49 +134,9 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
     {
         if( ! empty($time) ) $this->time($time);
 
-        if( ! empty($this->encode) )
-        {
-            if( isset($this->encode['name']) )
-            {
-                if( IS::hash($this->encode['name']) )
-                {
-                    $name = Encode\Type::create($name, $this->encode['name']);
-                }
-            }
+        $this->encodeNameValue($name, $value);
 
-            if( isset($this->encode['value']) )
-            {
-                if( IS::hash($this->encode['value']) )
-                {
-                    $value = Encode\Type::create($value, $this->encode['value']);
-                }
-            }
-        }
-
-        $cookieConfig = $this->config;
-
-        if( empty($this->time) )        $this->time     = $cookieConfig['time'];
-        if( empty($this->path) )        $this->path     = $cookieConfig['path'];
-        if( empty($this->domain) )      $this->domain   = $cookieConfig['domain'];
-        if( empty($this->secure) )      $this->secure   = $cookieConfig['secure'];
-        if( empty($this->httpOnly) )    $this->httpOnly = $cookieConfig['httpOnly'];
-
-        if( ! isset($this->encode['name']) )
-        {
-            $encode = $cookieConfig["encode"];
-
-            if( $encode === true )
-            {
-                $name = md5($name);
-            }
-            elseif( is_string($encode) )
-            {
-                if( IS::hash($encode) )
-                {
-                    $name = Encode\Type::create($name, $encode);
-                }
-            }
-        }
+        $this->setParameters();
 
         if( ! is_scalar($value) )
         {
@@ -203,11 +145,7 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
 
         if( setcookie($name, $value, time() + $this->time, $this->path, $this->domain, $this->secure, $this->httpOnly) )
         {
-            if( $this->regenerate === true )
-            {
-                session_regenerate_id();
-            }
-
+            $this->regenerateSessionId();
             $this->defaultVariable();
             $this->cookieDefaultVariable();
 
@@ -228,30 +166,7 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
      */
     public function select(String $name)
     {
-        if( isset($this->encode['name']) )
-        {
-            if( IS::hash($this->encode['name']) )
-            {
-                $name = Encode\Type::create($name, $this->encode['name']);
-                $this->encode = [];
-            }
-        }
-        else
-        {
-            $encode = $this->config['encode'];
-
-            if( $encode === true )
-            {
-                $name = md5($name);
-            }
-            elseif( is_string($encode) )
-            {
-                if( IS::hash($encode) )
-                {
-                    $name = Encode\Type::create($name, $encode);
-                }
-            }
-        }
+        $this->encodeNameValue($name);
 
         if( ! empty($this->decode) )
         {
@@ -260,9 +175,7 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
 
         if( isset($_COOKIE[$name]) )
         {
-            return ! Json::check($_COOKIE[$name])
-                   ? $_COOKIE[$name]
-                   : json_decode($_COOKIE[$name], true);
+            return $this->getScalarCookieContentByName($name);
         }
         else
         {
@@ -299,46 +212,14 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
      */
     public function delete(String $name, String $path = NULL) : Bool
     {
-        $cookieConfig = $this->config;
+        $this->setCookiePath($path);
 
-        if( ! empty($path) )
-        {
-            $this->path = $path;
-        }
-
-        if( empty($this->path) )
-        {
-            $this->path = $cookieConfig["path"];
-        }
-
-        if( isset($this->encode['name']) )
-        {
-            if( IS::hash($this->encode['name']) )
-            {
-                $name = Encode\Type::create($name, $this->encode['name']);
-                $this->encode = [];
-            }
-        }
-        else
-        {
-            $encode = $cookieConfig["encode"];
-
-            if( $encode === true )
-            {
-                $name = md5($name);
-            }
-            elseif( is_string($encode) )
-            {
-                if( IS::hash($encode) )
-                {
-                    $name = Encode\Type::create($name, $encode);
-                }
-            }
-        }
+        $this->encodeNameValue($name);
 
         if( isset($_COOKIE[$name]) )
         {
             setcookie($name, '', (time() - 1), $this->path);
+
             $this->path = NULL;
 
             return true;
@@ -373,6 +254,37 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
     }
 
     /**
+     * Protected set parameters
+     */
+    protected function setParameters()
+    {
+        if( empty($this->time    ) ) $this->time     = $this->config['time'];
+        if( empty($this->path    ) ) $this->path     = $this->config['path'];
+        if( empty($this->domain  ) ) $this->domain   = $this->config['domain'];
+        if( empty($this->secure  ) ) $this->secure   = $this->config['secure'];
+        if( empty($this->httpOnly) ) $this->httpOnly = $this->config['httpOnly'];
+    }
+
+    /**
+     * Protected set cookie path
+     */
+    protected function setCookiePath($path = NULL)
+    {
+        if( empty($this->path) )
+        {
+            $this->path = $path ?? $this->config["path"];
+        }
+    }
+
+    /**
+     * Protected get scalar cookie content
+     */
+    protected function getScalarCookieContentByName($name)
+    {
+        return ! Json::check($_COOKIE[$name]) ? $_COOKIE[$name] : json_decode($_COOKIE[$name], true);
+    }
+
+    /**
      * Default Cookie Variable
      * 
      * @param void
@@ -381,10 +293,10 @@ class Cookie implements CookieInterface, SessionCookieCommonInterface
      */
     protected function cookieDefaultVariable()
     {
-        $this->time       = NULL;
-        $this->path       = NULL;
-        $this->domain     = NULL;
-        $this->secure     = NULL;
-        $this->httpOnly   = NULL;
+        $this->time     = NULL;
+        $this->path     = NULL;
+        $this->domain   = NULL;
+        $this->secure   = NULL;
+        $this->httpOnly = NULL;
     }
 }

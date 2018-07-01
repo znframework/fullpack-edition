@@ -355,17 +355,11 @@ class In
             # If a valid class is found, the resolving continues.
             if( isset($match['vartype']) )
             {
-                # The class name is being created.
-                $class = '\\' . $match['vartype'];
-                
-                # The class instance is being created.
-                $class = new $class;
-
                 # The name of the class instance is obtained.
                 $varname = $match['varname'];
 
                 # Generated instances are being sent for use in views.
-                View::$varname($class);
+                View::$varname($class = Singleton::class($match['vartype']));
 
                 # The controller is creating injections of the corresponding method.
                 $getExportParameters[] = $class;
