@@ -12,15 +12,15 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "5.7.*",
-        "znframework/package-datatypes": "5.7.*",
-        "znframework/package-buffering": "5.7.*",
-        "znframework/package-protection": "5.7.*",
-        "znframework/package-authorization": "5.7.*",
-        "znframework/package-database": "5.7.*",
-        "znframework/package-validation": "5.7.*",
-        "znframework/package-request": "5.7.*",
-        "znframework/package-storage": "5.7.*"
+        "znframework/package-zerocore": "5.8.*",
+        "znframework/package-datatypes": "5.8.*",
+        "znframework/package-buffering": "5.8.*",
+        "znframework/package-protection": "5.8.*",
+        "znframework/package-authorization": "5.8.*",
+        "znframework/package-database": "5.8.*",
+        "znframework/package-validation": "5.8.*",
+        "znframework/package-request": "5.8.*",
+        "znframework/package-storage": "5.8.*"
 	},
     "autoload": {
         "psr-4": {

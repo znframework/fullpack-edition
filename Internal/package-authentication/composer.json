@@ -12,11 +12,11 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "5.7.*",
-        "znframework/package-email": "5.7.*",
-        "znframework/package-database": "5.7.*",
-        "znframework/package-storage": "5.7.*",
-        "znframework/package-cryptography": "5.7.*"
+        "znframework/package-zerocore": "5.8.*",
+        "znframework/package-email": "5.8.*",
+        "znframework/package-database": "5.8.*",
+        "znframework/package-storage": "5.8.*",
+        "znframework/package-cryptography": "5.8.*"
 	},
     "autoload": {
         "psr-4": {
