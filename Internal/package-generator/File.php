@@ -444,6 +444,6 @@ class File
             case 'command'   : $return = COMMANDS_DIR;    break;
         }
 
-        return Datatype::divide(rtrim($return ?? NULL, '/'), '/', -1);
+        return Base::suffix(Datatype::divide(rtrim($return ?? NULL, '/'), '/', -1));
     }
 }
