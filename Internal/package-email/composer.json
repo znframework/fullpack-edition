@@ -12,10 +12,10 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "5.7.*",
-        "znframework/package-helpers": "5.7.*",
-        "znframework/package-security": "5.7.*",
-        "znframework/package-datatypes": "5.7.*"
+        "znframework/package-zerocore": "5.8.*",
+        "znframework/package-helpers": "5.8.*",
+        "znframework/package-security": "5.8.*",
+        "znframework/package-datatypes": "5.8.*"
 
 	},
     "autoload": {

@@ -12,12 +12,12 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "5.7.*",
-        "znframework/package-cache": "5.7.*",
-        "znframework/package-generator": "5.7.*",
-        "znframework/package-crontab": "5.7.*",
-        "znframework/package-helpers": "5.7.*",
-        "znframework/package-buffering": "5.7.*"
+        "znframework/package-zerocore": "5.8.*",
+        "znframework/package-cache": "5.8.*",
+        "znframework/package-generator": "5.8.*",
+        "znframework/package-crontab": "5.8.*",
+        "znframework/package-helpers": "5.8.*",
+        "znframework/package-buffering": "5.8.*"
 	},
     "autoload": {
         "psr-4": {
