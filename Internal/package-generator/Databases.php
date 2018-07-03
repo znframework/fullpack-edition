@@ -39,22 +39,27 @@ class Databases extends DatabaseDefinitions
     }
 
     /**
-     * Protected Actives Databases
+     * Protected get active database list
      */
-    protected function active()
+    protected function getActiveDatabaseList()
     {
-        $activesPath  = $this->activesPath;
-        $archivesPath = $this->archivesPath;
-        $folders      = Filesystem::getFiles($activesPath, 'dir');
+        return Filesystem::getFiles($this->activesPath, 'dir');
+    }
 
-        if( empty($folders) )
-        {
-            return false;
-        }
+    /**
+     * Protected get archive database list
+     */
+    protected function getArchiveDatabaseList()
+    {
+        return Filesystem::getFiles($this->archivesPath, 'dir');
+    }
 
-        $currentDriver = Config::get('Database', 'database')['driver'];
-
-        if( stristr('pdo:mysql|mysqli', $currentDriver) )
+    /**
+     * Protected set active database encoding
+     */
+    protected function setActiveDatabaseEncoding(&$encoding)
+    {
+        if( stristr('pdo:mysql|mysqli', Config::get('Database', 'database')['driver']) )
         {
             $encoding = $this->db->encoding();
         }
@@ -62,92 +67,213 @@ class Databases extends DatabaseDefinitions
         {
             $encoding = NULL;
         }
+    }
+
+    /**
+     * Protected get table key column design data
+     */
+    protected function getTableKeyColumnDesignData()
+    {
+        return [$this->db->varchar(1), $this->db->null()];
+    }
+
+    /**
+     * Protected get active database directory
+     */
+    protected function getActiveDatabaseDirectory($database)
+    {
+        return $this->activesPath . $database . '/';
+    }
+
+    /**
+     * Protected get table list by active database
+     */
+    protected function getTableListByActiveDatabase($database)
+    {
+        return Filesystem::getFiles($this->getActiveDatabaseDirectory($database), 'php');
+    }
+
+    /**
+     * Protected get db forge different connection by database name
+     */
+    protected function getDBForgeDifferentConnectionByDatabaseName($database)
+    {
+        return $this->forge->differentConnection(['database' => $database]);
+    }
+
+    /**
+     * Protected get db tool different connection by database name
+     */
+    protected function getDBToolDifferentConnectionByDatabaseName($database)
+    {
+        return $this->tool->differentConnection(['database' => $database]);
+    }
+
+    /**
+     * Protected get db different connection by database name
+     */
+    protected function getDBDifferentConnectionByDatabaseName($database)
+    {
+        return $this->db->differentConnection(['database' => $database]);
+    }
+
+    /**
+     * Protected get active table column schema
+     */
+    protected function getActiveTableColumnSchema($database, $table)
+    {
+        return Base::import($this->getActiveDatabaseDirectory($database) . $table);
+    }
+
+    /**
+     * Protected get table name without extension
+     */
+    protected function getTableNameWithoutExtension($table)
+    {
+        return Filesystem::removeExtension($table);
+    }
+
+    /**
+     * Protected add id column to active table if not exists
+     */
+    protected function addIdColumnToActiveTableIfNotExists(&$activeTable)
+    {
+        if( ! array_key_exists('id', $activeTable) )
+        {
+            $activeTable = array_merge
+            ([
+                'id' => [$this->db->int(11), $this->db->notNull(), $this->db->autoIncrement(), $this->db->primaryKey()]
+            ], $activeTable);                        
+        }
+    }
+
+    /**
+     * Protected get active table columns
+     */
+    protected function getActiveTableColumns($table, $db)
+    {
+        return $db->get($table)->columns();
+    }
+
+    /**
+     * Protected active table key and columns
+     */
+    protected function getActiveTableKeyAndColumns($columns, &$tableKey, &$tableColumns)
+    {
+        $pregGrepArray = preg_grep('/_000/', $columns);
+        $tableKey      = strtolower(current($pregGrepArray));
+        $tableColumns  = Arrays\RemoveElement::element($columns, $pregGrepArray);
+    }
+
+    /**
+     * Protected get current table key
+     */
+    protected function getCurrentTableKey($table, $schema)
+    {
+        return strtolower($table.'_000' . md5(json_encode($schema)));
+    }
+
+    /**
+     * Protected drop column from active table
+     */
+    protected function dropColumnFromActiveTable($table, $key, $dbForge, &$status)
+    {
+        $dbForge->dropColumn($table, $key);
+        $status = true;
+    }
+
+    /**
+     * Protected modify column from active table
+     */
+    protected function modifyColumnFromActiveTable($table, $key, $val, $dbForge, &$status, $active, $current)
+    {
+        if( $active !== $current )
+        {
+            $dbForge->modifyColumn($table, [$key => $val]);
+            $status = true;
+        }
+        else
+        {
+            $status = false;
+        }
+    }
+
+    /**
+     * Protected add column from active table
+     */
+    protected function addColumnFromActiveTable($table, $key, $val, $dbForge, &$status)
+    {
+        $dbForge->addColumn($table, [$key => $val]);
+        $status = true;
+    }
+
+    /**
+     * Protected Actives Databases
+     */
+    protected function active()
+    {
+        if( empty($activeDatabaseList = $this->getActiveDatabaseList()) )
+        {
+            return false;
+        }
+
+        $this->setActiveDatabaseEncoding($encoding);
 
         $status = false;
-        $tableKeyColumnValues = [$this->db->varchar(1), $this->db->null()];
 
-        foreach( $folders as $database )
+        $tableKeyColumnDesignData = $this->getTableKeyColumnDesignData();
+        
+        foreach( $activeDatabaseList as $database )
         {
             $this->forge->createDatabase($database, $encoding);
 
-            $databasePath = $activesPath . $database . '/';
-
-            $tables = Filesystem::getFiles($databasePath, 'php');
-
-            if( ! empty($tables) )
+            if( ! empty($activeTableList = $this->getTableListByActiveDatabase($database)) )
             {
-                $dbForge = $this->forge->differentConnection(['database' => $database]);
-                $db      = $this->db->differentConnection(['database' => $database]);
+                $dbForge = $this->getDBForgeDifferentConnectionByDatabaseName($database);
+                $db      = $this->getDBDifferentConnectionByDatabaseName($database);
 
-                foreach( $tables as $table )
+                foreach( $activeTableList as $table )
                 {
-                    $tableData = Base::import($databasePath . $table);
-                    $file      = $table;
-                    $table     = Filesystem::removeExtension($table);
+                    $activeTableColumnSchema = $this->getActiveTableColumnSchema($database, $table);
 
-                    if( ! array_key_exists('id', $tableData) )
+                    $this->addIdColumnToActiveTableIfNotExists($activeTableColumnSchema);
+
+                    $activeTableColumns = $this->getActiveTableColumns($table = $this->getTableNameWithoutExtension($table), $db);
+
+                    $this->getActiveTableKeyAndColumns($activeTableColumns, $activeTableKey, $activeTableColumns);
+
+                    $currentTableKey = $this->getCurrentTableKey($table, $activeTableColumnSchema);
+
+                    if( ! empty($activeTableColumns) )
                     {
-                        $tableData = array_merge
-                        ([
-                            'id' => [$this->db->int(11), $this->db->notNull(), $this->db->autoIncrement(), $this->db->primaryKey()]
-                        ], $tableData);                        
-                    }
-
-                    $tableColumns    = $db->get($table)->columns();
-                    $pregGrepArray   = preg_grep('/_000/', $tableColumns);
-                    $currentTableKey = strtolower(current($pregGrepArray));
-                    $currentColumns  = Arrays\RemoveElement::element($tableColumns, $pregGrepArray);
-                    $tableKey        = strtolower($table.'_000' . md5(json_encode($tableData)));
-
-                    if( ! empty($currentColumns) )
-                    {
-                        $columnsMerge = array_merge(array_flip($currentColumns), $tableData);
+                        $columnsMerge = array_merge(array_flip($activeTableColumns), $activeTableColumnSchema);
 
                         foreach( $columnsMerge as $key => $val )
                         {
                             if( is_numeric($val) )
                             {
-                                $dbForge->dropColumn($table, $key);
-                                $status = true;
+                                $this->dropColumnFromActiveTable($table, $key, $dbForge, $status);
                             }
-                            elseif( in_array($key, $currentColumns) )
+                            elseif( in_array($key, $activeTableColumns) )
                             {
-                                if( $currentTableKey !== $tableKey )
-                                {
-                                    $dbForge->modifyColumn($table, [$key => $val]);
-                                    $status = true;
-                                }
-                                else
-                                {
-                                    $status = false;
-                                }
+                                $this->modifyColumnFromActiveTable($table, $key, $val, $dbForge, $status, $activeTableKey, $currentTableKey);
                             }
                             else
                             {
-                                $dbForge->addColumn($table, [$key => $val]);
-                                $status = true;
+                                $this->addColumnFromActiveTable($table, $key, $val, $dbForge, $status);
                             }
                         }
 
                         if( $status === true )
                         {
-                            $tableName     = $database . '/' . $table;
-                            $dbArchivePath = $archivesPath . $database . '/';
-                            $writePath     = $archivesPath . $tableName . '_' . time() . '.php';
-                            $writeContent  = file_get_contents($activesPath . $tableName . '.php');
-
-                            Filesystem::createFolder($dbArchivePath);
-
-                            file_put_contents($writePath, $writeContent);
-
-                            $dbForge->renameColumn($table, [$currentTableKey.' '.$tableKey => $tableKeyColumnValues]);
+                            $this->addTableToArchive($database, $table);
                         }
                     }
                     else
                     {
-                        $tableData[$tableKey] = $tableKeyColumnValues;
+                        $activeTableColumnSchema[$currentTableKey] = $tableKeyColumnDesignData;
 
-                        $dbForge->createTable($table, $tableData);
+                        $dbForge->createTable($table, $activeTableColumnSchema);
                     }
                 }
             }
@@ -155,43 +281,91 @@ class Databases extends DatabaseDefinitions
     }
 
     /**
+     * Protected add table to archive
+     */
+    protected function addTableToArchive($database, $table)
+    {
+        $this->createArchiveDatabaseDirectoryIfNotExists($database);
+
+        file_put_contents
+        (
+            $this->getArchiveTableFilePath($path = $database . '/' . $table), 
+            $this->getActiveTableFileContent($path)
+        );
+    }
+
+    /**
+     * Protected get active table file content
+     */
+    protected function getActiveTableFileContent($table)
+    {
+        return file_get_contents($this->activesPath . $table . '.php');
+    }
+
+    /**
+     * Protected get archive table file path
+     */
+    protected function getArchiveTableFilePath($table)
+    {
+        return $this->archivesPath . $table . '_' . date('YmdHis') . '.php';
+    }
+
+    /**
+     * Protected create archive database directory if not exists
+     */
+    protected function createArchiveDatabaseDirectoryIfNotExists($database)
+    {
+        $path = $this->archivesPath . $database . '/';
+        
+        if( ! is_dir($path) )
+        {
+            Filesystem::createFolder($path);
+        }
+    }
+
+    /**
+     * Protected get archive database table list
+     */
+    protected function getArchiveDatabaseTableList($database)
+    {
+        $databasePath = $this->archivesPath . $database . '/';
+
+        $tables   = Filesystem::getFiles($databasePath, 'php');
+        $pregGrep = preg_grep("/\_[0-9]*\.php/", $tables);
+        
+        return Arrays\RemoveElement::element($tables, $pregGrep);
+    }
+
+    /**
      * Protected Archives Database
      */
     protected function archive()
     {
-        $archivesPath = $this->archivesPath;
-
-        $folders = Filesystem::getFiles($archivesPath, 'dir');
-
-        if( empty($folders) )
+        if( $archiveDatabaseList = $this->getArchiveDatabaseList() )
         {
-            return false;
-        }
-
-        foreach( $folders as $database )
-        {
-            $databasePath = $archivesPath . $database . '/';
-
-            $tables   = Filesystem::getFiles($databasePath, 'php');
-            $pregGrep = preg_grep("/\_[0-9]*\.php/", $tables);
-            $tables   = Arrays\RemoveElement::element($tables, $pregGrep);
-
-            if( ! empty($tables) )
+            foreach( $archiveDatabaseList as $database )
             {
-                $dbForge  = $this->forge->differentConnection(['database' => $database]);
-
-                foreach( $tables as $table )
+                if( ! empty($tables = $this->getArchiveDatabaseTableList($database)) )
                 {
-                    $dbForge->dropTable(Filesystem::removeExtension($table));
+                    $dbForge = $this->getDBForgeDifferentConnectionByDatabaseName($database);
+    
+                    foreach( $tables as $table )
+                    {
+                        $dbForge->dropTable($this->getTableNameWithoutExtension($table));
+                    }
+                }
+    
+                $tool = $this->getDBToolDifferentConnectionByDatabaseName($database);
+    
+                if( empty($tool->listTables()) )
+                {
+                    $this->forge->dropDatabase($database);
                 }
             }
 
-            $tool = $this->tool->differentConnection(['database' => $database]);
-
-            if( empty($tool->listTables()) )
-            {
-                $this->forge->dropDatabase($database);
-            }
+            return true;
         }
+        
+        return false;
     }
 }
