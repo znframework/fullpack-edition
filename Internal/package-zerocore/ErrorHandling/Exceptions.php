@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Lang;
 use ZN\Config;
 use ZN\Helper;
@@ -194,6 +195,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
         if( stristr($exceptionData['file'] ?? $file, DS . 'Buffering.php') )
         {
             $templateWizardData    = self::getTemplateWizardErrorData();
+
             $exceptionData['file'] = $templateWizardData->file;
 
             if( empty($exceptionData['message']) )
@@ -307,13 +309,18 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         foreach( $args as $key => $value )
         {
-            if( is_array($value) && preg_match('/Views\/.*?\.\wizard\.php/', $find = ($value['args'][0] ?? NULL)) )
+            if( is_array($value) )
             {
-                $file = $find;
+                if( preg_match('/(Views\/)*.*?\.\wizard(\.php)*/', $find = ($value['args'][0] ?? NULL)) )
+                {
+                    $file = $find;
+
+                    break;
+                }
             }
         }
 
-        $file    = $file ?? VIEWS_DIR.($trace[0] ?? strtolower(CURRENT_CFUNCTION).'.wizard') . '.php';
+        $file    = Base::suffix(Base::prefix($file ?? $trace[0] ?? (strtolower(CURRENT_CFUNCTION) . '.wizard'), VIEWS_DIR), '.php');
         $message = $trace[0] ?? Lang::select('Error', 'templateWizard');
 
         $exceptionData['file']    = $file;
@@ -341,7 +348,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
         <div id="openExceptionMessage<?php echo $key?>" class="collapse<?php echo $key !== NULL ? '' : ' in'?>">
         <pre style="color:#ccc; background:#222; margin-top:-20px; border:0px">
         <?php
-        $content = file($file);
+        $content = is_file($file) ? file($file) : NULL;
         $newdata = '<?PHP' . EOL;
         $intline = $line;
         $errorBlock = '<div class="error-block col-lg-12"></div>';

@@ -11,7 +11,7 @@ class Home extends Controller
     public function main(String $params = NULL)
     {  
         # Sending data to the view page.
-        View::pageTitle('ZN')->pageSubtitle('"Simplicity is the ultimate sophistication" - Da Vinci');
+        View::pageTitle('ZN');
     } 
 
     /**

@@ -394,41 +394,34 @@ class File
     /**
      * Protected Variable Type
      */
-    protected function vartype($var)
+    protected function vartype($variable)
     {
-        $static = NULL;
-
-        if( strstr($var, 'static') )
-        {
-            $static = ' static';
-        }
-
-        if( stripos($var, 'protected'.$static.':') === 0 )
-        {
-            $priority = 'protected';
-            $var      = str_ireplace('protected'.$static.':', '', $var);
-        }
-        elseif( stripos($var, 'public'.$static.':') === 0 )
-        {
-            $priority = 'public';
-            $var      = str_ireplace('public'.$static.':', '', $var);
-        }
-        elseif( stripos($var, 'private'.$static.':') === 0 )
-        {
-            $priority = 'private';
-            $var     = str_ireplace('private'.$static.':', '', $var);
-        }
-        else
-        {
-            $priority = 'public';
-            $var      = $var;
-        }
+        $this->getEncapsulationType($variable, $priority, $static);
 
         return (object)
         [
             'priority' => $priority . $static,
-            'var'      => $var
+            'var'      => $variable
         ];
+    }
+
+    /**
+     * Protected get encapsulation type
+     */
+    protected function getEncapsulationType(&$variable, &$priority, &$static)
+    {
+        $static = NULL;
+
+        if( preg_match('/^((?<type>public|protected|private)(?<access>\sstatic)*\:)/', $variable, $match) )
+        {
+            $priority = $match['type'];
+            $static   = $match['access'] ?? $static;
+            $variable = str_ireplace($match[1], NULL, $variable);
+        }
+        else
+        {
+            $priority = 'public';
+        }
     }
 
     /**

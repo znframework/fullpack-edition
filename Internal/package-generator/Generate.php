@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Filesystem\Exception\InvalidTypeException;
-
 class Generate extends File implements GenerateInterface
 {
     /**
@@ -43,7 +41,7 @@ class Generate extends File implements GenerateInterface
             return $this->object($method, $name, $parameters[1] ?? []);
         }   
         
-        throw new InvalidTypeException(NULL, implode(', ', $this->types)); 
+        throw new Exception\InvalidTypeException(NULL, implode(', ', $this->types)); 
     }
 
     /**
