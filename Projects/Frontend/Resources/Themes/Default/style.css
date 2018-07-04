@@ -1,11 +1,11 @@
-html, body{height: 100%; background:#030303}
+html, body{height: 100%; background:#030303; background-image: url('bg.jpg');}
 body{margin: 0;padding: 0;width: 100%;display: table;font-weight: lighter;font-family: 'Lato', sans-serif;}
 #container{text-align: center;display: table-cell;vertical-align: middle;}
-#content{font-family: 'Sarpanch', cursive; text-align: center;display: inline-block; color:#777}
+#content{font-family: 'Sarpanch', cursive; text-align: center;display: inline-block; color:#a7a7a7}
 #sub-title{font-size: 34px;}
 #sub-title-2{margin-top: -13px;font-size: 15px;}
 #sub-title-3{font-size: 18px;}
 #sup-title-2{margin-bottom:-17px;font-size: 15px;}
-.grey-color{color:#131313}
-.blue-color{color:#125c75}
+.grey-color{color:#3e3e3e}
+.blue-color{color:#1fbbd6}
 .sum{font-size:30px;}
