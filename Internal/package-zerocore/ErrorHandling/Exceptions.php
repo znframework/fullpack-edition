@@ -311,7 +311,9 @@ class Exceptions extends \Exception implements ExceptionsInterface
         {
             if( is_array($value) )
             {
-                if( preg_match('/(Views\/)*.*?\.\wizard(\.php)*/', $find = ($value['args'][0] ?? NULL)) )
+                $find = $value['args'][0] ?? NULL;
+
+                if( is_string($find) && preg_match('/(Views\/)*.*?\.\wizard(\.php)*/', $find) )
                 {
                     $file = $find;
 
