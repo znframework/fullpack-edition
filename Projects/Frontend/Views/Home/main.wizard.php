@@ -1,6 +1,6 @@
 <div id="container">
     <div id="content">
-        <div id="title">{{$pageTitle}} <span class="blue-color">{{ZN_VERSION}}</span> is dedicated to <span class="blue-color">{{ZN_DEDICATE}}</span></div>
+        <div id="title">ZN <span class="blue-color">{{ZN_VERSION}}</span> is dedicated to <span class="blue-color">{{ZN_DEDICATE}}</span></div>
         <div id="sup-title-2" class="grey-color">
             n
         </div>
