@@ -182,27 +182,17 @@ class Exceptions extends \Exception implements ExceptionsInterface
         {
             return false;
         }
-        
+
+        $wizardErrorData = self::getTemplateWizardErrorData();
+
         $exceptionData =
         [
             'type'    => self::$errorCodes[$no] ?? 'ERROR',
             'message' => $msg,
-            'file'    => $file,
-            'line'    => $line,
+            'file'    => $wizardErrorData->file ?: $file,
+            'line'    => $wizardErrorData->line ?: $line,
             'trace'   => $trace
         ];
-        
-        if( stristr($exceptionData['file'] ?? $file, DS . 'Buffering.php') )
-        {
-            $templateWizardData    = self::getTemplateWizardErrorData();
-
-            $exceptionData['file'] = $templateWizardData->file;
-
-            if( empty($exceptionData['message']) )
-            {
-                $exceptionData['message'] = $templateWizardData->message;
-            }
-        }
 
         ob_end_clean();
 
@@ -300,7 +290,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @param void
      * 
-     * @return object
+     * @return string|null
      */
     protected static function getTemplateWizardErrorData()
     {
@@ -309,6 +299,11 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         foreach( $args as $key => $value )
         {
+            if( ! isset($line) && isset($value['file']) && stristr($value['file'], DS . 'Buffering.php') )
+            {
+                $line = $value['line'] ?? NULL;
+            }
+
             if( is_array($value) )
             {
                 $find = $value['args'][0] ?? NULL;
@@ -322,13 +317,20 @@ class Exceptions extends \Exception implements ExceptionsInterface
             }
         }
 
-        $file    = Base::suffix(Base::prefix($file ?? $trace[0] ?? (strtolower(CURRENT_CFUNCTION) . '.wizard'), VIEWS_DIR), '.php');
-        $message = $trace[0] ?? Lang::select('Error', 'templateWizard');
+        $file = $file ?? $trace[0] ?? NULL;
 
-        $exceptionData['file']    = $file;
-        $exceptionData['message'] = $message;
+        if( $file !== NULL )
+        {
+            $file = Base::suffix(Base::suffix(Base::prefix($file, VIEWS_DIR), '.wizard'), '.php');
+        }
 
-        return (object) $exceptionData;
+        
+
+        return (object)
+        [ 
+            'file' => $file,
+            'line' => $line ?? NULL
+        ];
     }
 
     /**
@@ -347,9 +349,10 @@ class Exceptions extends \Exception implements ExceptionsInterface
             <span><i class="fa fa-angle-down fa-fw panel-text"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             <?php echo $file ?? NULL; ?></span>
         </a>
-        <div id="openExceptionMessage<?php echo $key?>" class="collapse<?php echo $key !== NULL ? '' : ' in'?>">
+        <div id="openExceptionMessage<?php echo $key?>" class="collapse<?php echo $key !== 0 ? '' : ' in'?>">
         <pre style="color:#ccc; background:#222; margin-top:-20px; border:0px">
         <?php
+        
         $content = is_file($file) ? file($file) : NULL;
         $newdata = '<?PHP' . EOL;
         $intline = $line;
@@ -379,7 +382,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             str_repeat(' ', strlen($intcount) - strlen($i + 1)) . 
             $line;
         }
-        
+
         echo preg_replace('/(<br\s\/>|'.CRLF.'|'.CR.'|'.LF.')+/', EOL, str_replace(['&#60;&#63;PHP', '{!!!!}'], [NULL, $errorBlock], Helper::highlight($newdata, 
         [
             'default:color' => '#ccc',
