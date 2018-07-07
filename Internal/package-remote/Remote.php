@@ -1,4 +1,4 @@
-<?php namespace ZN\Storage;
+<?php namespace ZN\Remote;
 /**
  * ZN PHP Web Framework
  * 
@@ -11,17 +11,17 @@
 
 use ZN\Ability\Container;
 
-class Storage
+class Remote
 {
     use Container;
 
     /**
      * Magic constructor
      * 
-     * @param StorageInterface $storage
+     * @param RemoteInterface $remote
      */
-    public function __construct(StorageInterface $storage = NULL)
+    public function __construct(RemoteInterface $remote = NULL)
     {
-        self::$container = $storage;
+        self::$container = $remote;
     }
 }
