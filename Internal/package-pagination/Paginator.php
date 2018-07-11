@@ -355,87 +355,93 @@ class Paginator implements PaginatorInterface
 
         # If the limit is set to 0, 1 is accepted.
         $this->limit = $this->limit === 0 ? 1 : $this->limit;
-
-        if( $this->isBasicPaginationBar() )
+        
+        # Generate pagination bar.
+        if( $this->isPaginationBar() )
         {
-            # Add prev link.
-            if( $this->isPrevLink($startRowNumber) )
-            {
-                $this->addPrevLink($startRowNumber, $prevLink);
-            }
-            # Remove prev link.
-            else
-            {
-                $this->removeLinkFromPagingationBar($prevLink);
-            }
+            return $this->isBasicPaginationBar() ? $this->createBasicPaginationBar($startRowNumber) : $this->createAdvancedPaginationBar($startRowNumber);
+        }
 
-            # Add next link.
-            if( $this->isNextLink($this->getPerPage(), $startRowNumber) )
-            {
-                $this->addNextLink($startRowNumber, $nextLink);
-            }
-            # Remove next link.
-            else
-            {
-                $this->removeLinkFromPagingationBar($nextLink);
-            }
+        return false;
+    }
 
-            # Generate pagination bar.
-            if( $this->isPaginationBar() )
-            {
-                return $this->generatePaginationBar($prevLink, $this->getNumberLinks($this->getPerPage(), $startRowNumber), $nextLink);
-            }
+    /**
+     * Protected create basic pagination bar
+     */
+    protected function createBasicPaginationBar($startRowNumber)
+    {
+        # Add prev link.
+        if( $this->isPrevLink($startRowNumber) )
+        {
+            $this->addPrevLink($startRowNumber, $prevLink);
+        }
+        # Remove prev link.
+        else
+        {
+            $this->removeLinkFromPagingationBar($prevLink);
+        }
+
+        # Add next link.
+        if( $this->isNextLink($this->getPerPage(), $startRowNumber) )
+        {
+            $this->addNextLink($startRowNumber, $nextLink);
+        }
+        # Remove next link.
+        else
+        {
+            $this->removeLinkFromPagingationBar($nextLink);
+        }
+
+        # Generate pagination bar.
+        return $this->generatePaginationBar($prevLink, $this->getNumberLinks($this->getPerPage(), $startRowNumber), $nextLink);
+    }
+
+    /**
+     * Protected create advanced pagination bar
+     */
+    protected function createAdvancedPaginationBar($startRowNumber)
+    {
+        # Add prev link.
+        if( $this->isAdvancedPrevLink($startRowNumber) )
+        {
+            $this->addPrevLink($startRowNumber, $prevLink);
+        }
+        # Remove prev link.
+        else
+        {
+            $this->removeLinkFromPagingationBar($prevLink);
+        }
+
+        # Add first, next, last links.
+        if( $this->isAdvancedNextLink($startRowNumber) )
+        {
+            $this->addNextLink($startRowNumber, $nextLink);
+            $this->addLastLink($lastLink);
+            
+            $pageIndex = $this->getPageIndex($startRowNumber);
+        }
+        # Remove next, last links.
+        else
+        {
+            $this->removeLinkFromPagingationBar($nextLink);
+            $this->removeLinkFromPagingationBar($lastLink);
+
+            $pageIndex = $this->getPageIndexWithoutNextLinks();
+        }
+        
+        # On the first page, remove the first link.
+        if( $this->isFirstLink($startRowNumber, $pageIndex) )
+        {
+            $this->removeLinkFromPagingationBar($firstLink);
         }
         else
         {
-            # Add prev link.
-            if( $this->isAdvancedPrevLink($startRowNumber) )
-            {
-                $this->addPrevLink($startRowNumber, $prevLink);
-            }
-            # Remove prev link.
-            else
-            {
-                $this->removeLinkFromPagingationBar($prevLink);
-            }
-
-            # Add first, next, last links.
-            if( $this->isAdvancedNextLink($startRowNumber) )
-            {
-                $this->addNextLink($startRowNumber, $nextLink);
-                $this->addLastLink($lastLink);
-                
-                $pageIndex = $this->getPageIndex($startRowNumber);
-            }
-            # Remove next, last links.
-            else
-            {
-                $this->removeLinkFromPagingationBar($nextLink);
-                $this->removeLinkFromPagingationBar($lastLink);
-
-                $pageIndex = $this->getPageIndexWithoutNextLinks();
-            }
-            
-            # On the first page, remove the first link.
-            if( $this->isFirstLink($startRowNumber, $pageIndex) )
-            {
-                $this->removeLinkFromPagingationBar($firstLink);
-            }
-            else
-            {
-                $this->addFirstLink($firstLink);
-            }
-
-            $advancedPerPage = $this->getAdvancedPerPage($pageIndex, $nextLink, $lastLink);
-            
-             # Generate pagination bar.
-            if( $this->isPaginationBar() )
-            {
-                return $this->generatePaginationBar($firstLink, $prevLink, $this->getNumberLinks($advancedPerPage, $startRowNumber, $pageIndex), $nextLink, $lastLink);
-            }
+            $this->addFirstLink($firstLink);
         }
+
+        $advancedPerPage = $this->getAdvancedPerPage($pageIndex, $nextLink, $lastLink);
         
-        return false;
+        return $this->generatePaginationBar($firstLink, $prevLink, $this->getNumberLinks($advancedPerPage, $startRowNumber, $pageIndex), $nextLink, $lastLink);
     }
 
     /**
