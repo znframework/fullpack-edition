@@ -385,10 +385,6 @@ class Paginator implements PaginatorInterface
             {
                 return $this->generatePaginationBar($prevLink, $this->getNumberLinks($this->getPerPage(), $startRowNumber), $nextLink);
             }
-            else
-            {
-                return false;
-            }
         }
         else
         {
@@ -437,11 +433,9 @@ class Paginator implements PaginatorInterface
             {
                 return $this->generatePaginationBar($firstLink, $prevLink, $this->getNumberLinks($advancedPerPage, $startRowNumber, $pageIndex), $nextLink, $lastLink);
             }
-            else
-            {
-                return false;
-            }
         }
+        
+        return false;
     }
 
     /**
