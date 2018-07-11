@@ -104,14 +104,7 @@ class SmtpDriver extends DriverMappingAbstract
             return true;
         }
 
-        $ssl = $this->encode === 'ssl' ? 'ssl://' : '';
-
-        $this->connect = fsockopen($ssl.$this->host, $this->port, $errno, $errstr, $this->timeout);
-
-        if( ! is_resource($this->connect) )
-        {
-            throw new SMTPConnectException(NULL, $errno.' '.$errstr);
-        }
+        $this->socketSSLConnection($errno, $errstr) ?: $this->socketSSLWithoutConnection($errno, $errstr);
 
         stream_set_timeout($this->connect, $this->timeout);
 
@@ -119,18 +112,67 @@ class SmtpDriver extends DriverMappingAbstract
 
         if( $this->encode === 'tls' )
         {
-            $this->setCommand('hello');
-            $this->setCommand('starttls');
-
-            $crypto = stream_socket_enable_crypto($this->connect, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
-
-            if( $crypto !== true )
-            {
-                throw new SMTPConnectException(NULL, $this->getData());
-            }
+            $this->encodeSocketWithTLSMethod();
         }
 
         return $this->setCommand('hello');
+    }
+
+    /**
+     * Protected encode socket with tls method
+     */
+    protected function encodeSocketWithTLSMethod()
+    {
+        $this->setCommand('hello'); $this->setCommand('starttls');
+
+        $crypto = stream_socket_enable_crypto($this->connect, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+
+        if( $crypto !== true )
+        {
+            throw new SMTPConnectException(NULL, $this->getData());
+        }
+    }
+
+    /**
+     * Protected socket ssl connection
+     */
+    protected function socketSSLConnection(&$errno, &$errstr)
+    {
+        if( $this->encode === 'ssl' )
+        {
+            $context = stream_context_create
+            ([
+                'ssl' => 
+                [
+                    'verify_peer'      => false,
+                    'verify_peer_name' => false
+                ]
+            ]);
+
+            $ssl = $this->encode === 'ssl' ? 'ssl://' : '';
+            
+            $this->connect = stream_socket_client($ssl . $this->host . ":" . $this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
+
+            if( is_resource($this->connect) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Protected socket ssl without connection
+     */
+    protected function socketSSLWithoutConnection(&$errno, &$errstr)
+    {
+        $this->connect = fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
+
+        if( ! is_resource($this->connect) )
+        {
+            throw new SMTPConnectException(NULL, $errno.' '.$errstr);
+        }
     }
 
     /**
