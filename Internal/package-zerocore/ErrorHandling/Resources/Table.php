@@ -17,9 +17,9 @@ unset($trace['params']);
         <div class="panel-body" style="margin-bottom:-17px;">
             <div class="list-group">
                 <?php
-                ZN\ErrorHandling\Exceptions::display($file, $line, NULL);
-            
+                $i = 0;
                 foreach( $trace as $key => $debug )
+                {
                     if
                     (   
                         is_array($debug)                          &&
@@ -34,7 +34,14 @@ unset($trace['params']);
                         ! strstr($debug['file'], 'View.php')      &&
                         $debug['file'] !== $file                         
                     )
-                    ZN\ErrorHandling\Exceptions::display($debug['file'], $debug['line'], $key);
+                    {
+                        ZN\ErrorHandling\Exceptions::display($debug['file'], $debug['line'], $i);
+                        
+                        $i++;
+                    }  
+                }
+                
+                ZN\ErrorHandling\Exceptions::display($file, $line, $i === 0 ? $i : count($trace));
                 ?>
             </div>
         </div>

@@ -796,7 +796,7 @@ class Butcher
     {
         return $this->addSlashesToAt(preg_replace_callback('/(?<attribute>(href|action))\=(\"|\')(?<filename>.*?\.html)(\"|\')/', function($link)
         {
-            $self = $link['attribute'];
+            $data = $link[0];
 
             if( ! IS::url($url = $link['filename']) )
             {
@@ -804,11 +804,11 @@ class Butcher
                 (
                     $url, 
                     '{|{ URL::site(\''.$this->convertValidControllerName($url).'\') }|}',
-                    $self
+                    $data
                 );
             }
             
-            return $self;
+            return $data;
 
         }, $body));
     }
