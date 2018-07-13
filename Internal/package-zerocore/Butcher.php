@@ -73,6 +73,13 @@ class Butcher
     protected $multiple = NULL;
 
     /**
+     * Protected supported file extensions
+     * 
+     * @var array
+     */
+    protected $supportedFileExtensions = ['html', 'htm', 'php'];
+
+    /**
      * Magic constructor
      */
     public function __construct()
@@ -444,7 +451,7 @@ class Butcher
      */
     protected function getHTMLFiles()
     {
-        return Filesystem::getFiles($this->findBaseThemeDirectory, 'html');
+        return Filesystem::getFiles($this->findBaseThemeDirectory, $this->supportedFileExtensions);
     }
 
     /**
@@ -480,7 +487,7 @@ class Butcher
      */
     protected function findHTMLFiles($directory = BUTCHERY_DIR)
     {
-        $getHTMLFiles = Filesystem::getFiles($directory, 'html');
+        $getHTMLFiles = Filesystem::getFiles($directory, $this->supportedFileExtensions);
 
         if( ! $getHTMLFiles )
         {
@@ -794,7 +801,7 @@ class Butcher
      */
     protected function bodyParser($body)
     {
-        return $this->addSlashesToAt(preg_replace_callback('/(?<attribute>(href|action))\=(\"|\')(?<filename>.*?\.html)(\"|\')/', function($link)
+        return $this->addSlashesToAt(preg_replace_callback($this->getFileLinkPattern(), function($link)
         {
             $data = $link[0];
 
@@ -811,6 +818,14 @@ class Butcher
             return $data;
 
         }, $body));
+    }
+
+    /**
+     * Protected get file link pattern
+     */
+    protected function getFileLinkPattern()
+    {
+        return '/(?<attribute>(href|action))\=(\"|\')(?<filename>.*?\.(' . implode('|', $this->supportedFileExtensions) . '))(\"|\')/';
     }
 
     /**
