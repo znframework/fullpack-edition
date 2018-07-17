@@ -319,18 +319,43 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         $file = $file ?? $trace[0] ?? NULL;
 
-        if( $file !== NULL )
-        {
-            $file = Base::suffix(Base::suffix(Base::prefix($file, VIEWS_DIR), '.wizard'), '.php');
-        }
-
-        
+        self::isWizardOrStandartFileExists($file);
 
         return (object)
         [ 
             'file' => $file,
             'line' => $line ?? NULL
         ];
+    }
+
+    /**
+     * Protected is wizard or standart file exists
+     */
+    protected static function isWizardOrStandartFileExists(&$file)
+    {
+        if( $file !== NULL )
+        {
+            $file = Base::prefix($file, VIEWS_DIR);
+
+            if( ! is_file($file) )
+            {
+                if( ! is_file($rfile = $file . '.php') )
+                {
+                    if( ! is_file($rfile = $file . '.wizard.php') )
+                    {
+                        $file = NULL;
+                    }
+                    else
+                    {
+                        $file = $rfile;
+                    }
+                }
+                else
+                {
+                    $file = $rfile;    
+                }
+            } 
+        }
     }
 
     /**
@@ -356,7 +381,6 @@ class Exceptions extends \Exception implements ExceptionsInterface
         $content = is_file($file) ? file($file) : NULL;
         $newdata = '<?PHP' . EOL;
         $intline = $line;
-        $errorBlock = '<div class="error-block col-lg-12"></div>';
 
         for( $i = (($startLine = ($intline - 10)) < 0 ? 0 : $startLine); $i < ($intcount = $intline + 10); $i++ )
         {
@@ -383,12 +407,33 @@ class Exceptions extends \Exception implements ExceptionsInterface
             $line;
         }
 
-        echo preg_replace('/(<br\s\/>|'.CRLF.'|'.CR.'|'.LF.')+/', EOL, str_replace(['&#60;&#63;PHP', '{!!!!}'], [NULL, $errorBlock], Helper::highlight($newdata, 
+        echo self::displayHighlightErrorContent($newdata)
+
+        ?></pre></div><?php
+    }
+
+    /**
+     * Protected convert php tag to wizard tag
+     */
+    protected static function convertPHPTagToWizardTag(&$content)
+    {
+        $content = str_replace(['<?php', '?>', '<?='], ['{[', ']}', '{[='], $content);
+    }
+
+    /**
+     * Protected display highlight error content
+     */
+    protected static function displayHighlightErrorContent($content)
+    {
+        self::convertPHPTagToWizardTag($content);
+        
+        $errorBlock = '<div class="error-block col-lg-12"></div>';
+
+        return preg_replace('/(<br\s\/>|'.CRLF.'|'.CR.'|'.LF.')+/', EOL, str_replace(['&#60;&#63;PHP', '{!!!!}'], [NULL, $errorBlock], Helper::highlight($content, 
         [
             'default:color' => '#ccc',
             'keyword:color' => '#00BFFF',
             'string:color'  => '#fff'
         ])));
-        ?></pre></div><?php
     }
 }
