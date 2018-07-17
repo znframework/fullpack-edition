@@ -146,6 +146,14 @@ class Connection
     }
 
     /**
+     * Magic Debug Info
+     */
+    public function __debugInfo()
+    {
+        return ['return' => 'This is a general object, please call the sub method!'];
+    }
+
+    /**
      * Creates different connection
      * 
      * @param mixed $connectName = NULL
