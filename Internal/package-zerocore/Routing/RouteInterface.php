@@ -117,9 +117,8 @@ interface RouteInterface
      * Sets old URI
      * 
      * @param string $path   = NULL
-     * @param bool   $usable = true
      */
-    public function uri(String $path = NULL, Bool $usable = true);
+    public function uri(String $path = NULL);
 
     /**
      * Sets all route
