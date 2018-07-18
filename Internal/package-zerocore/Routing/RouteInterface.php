@@ -61,13 +61,6 @@ interface RouteInterface
     public function ajax();
 
     /**
-     * CURL
-     * 
-     * @return Route
-     */
-    public function curl();
-
-    /**
      * Restful
      * 
      * @return Route
