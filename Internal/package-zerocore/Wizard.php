@@ -51,7 +51,7 @@ class Wizard
         self::$config = $config ?: Config::get('ViewObjects', 'wizard');
 
         self::textControl($string); # 5.4.6[added]
-
+        
         $pattern = array_merge
         (
             self::symbolsHeader(),
@@ -233,7 +233,7 @@ class Wizard
             $function = '(\w+.*?(\)|\}|\]|\-\>\w+))'.self::CRLF.'/sm';
             $array    =
             [
-                '/((\W)@|^@)' . $function => '$2<?php if( is_scalar($3) ) echo $3; ?>'  # Function
+                '/((\W)@|^@)' . $function => '$2<?php echo $3; ?>'  # Function
             ];
         }
 
