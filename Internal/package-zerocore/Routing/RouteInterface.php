@@ -61,13 +61,6 @@ interface RouteInterface
     public function ajax();
 
     /**
-     * CURL
-     * 
-     * @return Route
-     */
-    public function curl();
-
-    /**
      * Restful
      * 
      * @return Route
@@ -117,9 +110,8 @@ interface RouteInterface
      * Sets old URI
      * 
      * @param string $path   = NULL
-     * @param bool   $usable = true
      */
-    public function uri(String $path = NULL, Bool $usable = true);
+    public function uri(String $path = NULL);
 
     /**
      * Sets all route

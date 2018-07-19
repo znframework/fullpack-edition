@@ -75,18 +75,6 @@ class FilterProperties
     }
 
     /**
-     * CURL
-     * 
-     * @return Route
-     */
-    public function curl()
-    {
-        $this->filters['curl'] = true;
-
-        return $this;
-    }
-
-    /**
      * Restful
      * 
      * @return Route
