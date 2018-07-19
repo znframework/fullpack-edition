@@ -433,6 +433,11 @@ class Form
                     }
                     elseif( $process === 'insert' )
                     {
+                        if( isset($this->settings['duplicateCheck']) )
+                        {
+                            $dbClass->duplicateCheck();
+                        }
+
                         $dbClass->insert(strtolower($method).':'.$name); 
                     }
                     else

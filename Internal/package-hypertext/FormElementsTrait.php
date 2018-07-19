@@ -137,6 +137,18 @@ trait FormElementsTrait
     }
 
     /**
+     * Duplicate check with insert process
+     * 
+     * @return self
+     */
+    public function duplicateCheck()
+    {
+        $this->settings['duplicateCheck'] = true;
+
+        return $this;
+    }
+
+    /**
      * Database Where Clause
      * 
      * @param mixed  $column
