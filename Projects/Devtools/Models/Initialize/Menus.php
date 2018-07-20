@@ -17,11 +17,8 @@ class Menus extends Model
     {
         $menus['versionNotes']  = ['icon' => 'arrow-circle-o-right',   'href' => 'version/notes'];
         $menus['home']          = ['icon' => 'home',       'href' => 'home/main'];
-
-        if( IS_CONTAINER === FALSE )
-        {
-            $menus['configs']   = ['icon' => 'cog',        'href' => 'generate/config'];
-        }
+       
+        if( self::isDirectory('Models') ) $menus['configs']   = ['icon' => 'cog',        'href' => 'generate/config'];
 
         if( ! IS_EXTERNAL )
         {
@@ -33,17 +30,14 @@ class Menus extends Model
                 $tools['themeIntegration'] = 'integration';
             }
         }
-
-        if( IS_CONTAINER === FALSE )
-        {
-            $menus['models']     = ['icon' => 'database',   'href' => 'generate/model'];
-            $menus['migrations'] = ['icon' => 'cubes',      'href' => 'generate/migration'];
-            $menus['libraries']  = ['icon' => 'book',       'href' => 'generate/library'];
-            $menus['commands']   = ['icon' => 'code',       'href' => 'generate/command'];
-            $menus['routes']     = ['icon' => 'repeat',     'href' => 'generate/route'];
-            $tools['languages']  = 'system/language';
-            $menus['starting']   = ['icon' => 'renren',     'href' => 'generate/starting'];
-        }
+        
+        if( self::isDirectory('Models'   ) ) $menus['models']     = ['icon' => 'database',   'href' => 'generate/model'];
+        if( self::isDirectory('Models'   ) ) $menus['migrations'] = ['icon' => 'cubes',      'href' => 'generate/migration'];
+        if( self::isDirectory('Libraries') ) $menus['libraries']  = ['icon' => 'book',       'href' => 'generate/library'];
+        if( self::isDirectory('Commands' ) ) $menus['commands']   = ['icon' => 'code',       'href' => 'generate/command'];
+        if( self::isDirectory('Routes'   ) ) $menus['routes']     = ['icon' => 'repeat',     'href' => 'generate/route'];
+        if( self::isDirectory('Languages') ) $tools['languages']  = 'system/language';
+        if( self::isDirectory('Starting' ) ) $menus['starting']   = ['icon' => 'renren',     'href' => 'generate/starting'];
 
         $tools['datatables']    = 'datatables';
         $tools['grids']         = 'system/grid';
@@ -70,5 +64,10 @@ class Menus extends Model
 
         define('TOOLS', $tools);
         define('MENUS', $menus);
+    }
+
+    public static function isDirectory($directory)
+    {
+        return is_dir( SELECT_PROJECT_DIR . $directory);
     }
 }
