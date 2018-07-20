@@ -508,12 +508,12 @@ class DBGrid
                   $this->form->close(), 'addButton');
         $table .= '</tr><tr'.$this->html->attributes($this->getConfig['attributes']['columns']).'>';
         $table .= '<td width="20">#</td>';
-
+        
         # Head Columns
         if( IS::array($columns) ) foreach( $columns as $key => $column )
         {
-            $orderRealColumn = isset($this->select[$key]) ? explode(' ', $this->select[$key])[0] : $column;
-
+            $orderRealColumn = $this->_origincolumns()[$key] ?? $column;
+          
             $table .= '<td>'.$this->html->anchor
             (
                 CURRENT_CFPATH . URI::manipulation(['column', 'process', 'order' => $orderRealColumn, 'type' => (URI::get('type') === 'asc' ? 'desc' : 'asc'), 'page'], 'left'),
