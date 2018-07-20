@@ -10,7 +10,7 @@
 
     <div class="col-lg-2">
         <h1 class="page-header pull-right">
-            @if( ZN::$projectType === 'FE' && ($isUndoUpgrade ?? NULL) ) 
+            @if( ZN\ZN::$projectType === 'FE' && ($isUndoUpgrade ?? NULL) ) 
             {{Form::class('btn btn-danger')->submit('undoUpgrade', LANG['undoUpgrade'])}}
             @endif
             {{Form::class('btn btn-info')->submit('upgrade', LANG['upgradeButton'])}}
