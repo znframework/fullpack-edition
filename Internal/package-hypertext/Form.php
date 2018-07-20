@@ -485,5 +485,6 @@ class Form
         unset($this->settings['query']);
         unset($this->settings['token']);
         unset($this->settings['process']);
+        unset($this->settings['duplicateCheck']);
     }
 }
