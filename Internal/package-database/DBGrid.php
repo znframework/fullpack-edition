@@ -510,11 +510,13 @@ class DBGrid
         $table .= '<td width="20">#</td>';
 
         # Head Columns
-        if( IS::array($columns) ) foreach( $columns as $column )
+        if( IS::array($columns) ) foreach( $columns as $key => $column )
         {
+            $orderRealColumn = isset($this->select[$key]) ? explode(' ', $this->select[$key])[0] : $column;
+
             $table .= '<td>'.$this->html->anchor
             (
-                CURRENT_CFPATH . URI::manipulation(['column', 'process', 'order' => $column, 'type' => (URI::get('type') === 'asc' ? 'desc' : 'asc'), 'page'], 'left'),
+                CURRENT_CFPATH . URI::manipulation(['column', 'process', 'order' => $orderRealColumn, 'type' => (URI::get('type') === 'asc' ? 'desc' : 'asc'), 'page'], 'left'),
                 $this->html->strong($column), $this->getConfig['attributes']['columns']
             ).'</td>';
         }
@@ -751,6 +753,8 @@ class DBGrid
         if( ! empty($this->joins) )
         {
             array_unshift($select, $this->table.'.'.$this->processColumn.' as ID');
+
+            $this->select = $select;
         }
 
         $this->db->select(...$select);
@@ -944,7 +948,9 @@ class DBGrid
                 $this->joinTables[$currentTable] = $currentColumn;
             }
 
-            $this->joins = sort(array_unique($this->joins));
+            $this->joins = array_unique($this->joins);
+
+            sort($this->joins);
         }
     }
 
