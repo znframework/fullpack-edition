@@ -1,10 +1,18 @@
 <!-- Page Heading -->
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-11">
         <h1 class="page-header">
             {{LANG['versionNotes']}} <small> {{LANG['overview']}}</small>
         </h1>
 
+    </div>
+
+    <div class="col-lg-1">
+        <h1 class="page-header">
+        @Form::open()
+            {{Form::class('btn btn-info')->submit('refreshNotes', LANG['refreshButton'])}}
+        @Form::close()
+        </h1>
     </div>
 </div>
 <div class="row">
