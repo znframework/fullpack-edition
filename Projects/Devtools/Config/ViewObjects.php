@@ -227,9 +227,7 @@
         [
             'style' =>
             [
-                'links' => 'color:#0085B2; width:30px; height:30px; text-align:center; padding-top:4px;
-                            display:inline-block; background:white; border:solid 1px #ddd; border-radius: 4px;
-                            -webkit-border-radius: 4px; -moz-border-radius: 4px;text-decoration:none;',
+                'links' => '',
 
                 'current' => 'font-weight:bold;'
             ],

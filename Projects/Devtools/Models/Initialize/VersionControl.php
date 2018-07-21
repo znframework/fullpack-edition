@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use Post;
 use Session;
 use Restful;
 use Masterpage;
@@ -30,7 +31,7 @@ class VersionControl extends Model
 
     public static function getLast()
     {
-        if( ! Session::lastversion() )
+        if( ! Session::lastversion() || Post::refreshNotes() )
         {   
             if( $return = Restful::useragent(true)->get('https://api.github.com/repos/znframework/'.(ZN::$projectType === 'EIP' ? 'znframework' : 'fullpack-edition').'/tags') )
             {

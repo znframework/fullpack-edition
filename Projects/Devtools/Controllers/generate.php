@@ -12,6 +12,7 @@
 use Method;
 use Redirect;
 use Http;
+use Initialize\Menus;
 use Generate as GenerateModel;
 
 class Generate extends Controller
@@ -21,6 +22,11 @@ class Generate extends Controller
      */
     public function controller(String $params = NULL)
     {
+        if( ! Menus::isDirectory('Controllers') )
+        {
+            Redirect::location();
+        }
+
         # Generating controller.
         if( Method::post('generate') )
         {
@@ -39,6 +45,11 @@ class Generate extends Controller
      */
     public function library(String $params = NULL)
     {
+        if( ! Menus::isDirectory('Libraries') )
+        {
+            Redirect::location();
+        }
+
         # Generating library.
         if( Method::post('generate') )
         {
@@ -57,10 +68,10 @@ class Generate extends Controller
      */
     public function command(String $params = NULL)
     {
-        if( IS_CONTAINER )
+        if( ! Menus::isDirectory('Commands') )
         {
             Redirect::location();
-        }   
+        } 
 
         # Generating command.
         if( Method::post('generate') )
@@ -80,7 +91,7 @@ class Generate extends Controller
      */
     public function route(String $params = NULL)
     {
-        if( IS_CONTAINER )
+        if( ! Menus::isDirectory('Routes') )
         {
             Redirect::location();
         }
@@ -103,7 +114,7 @@ class Generate extends Controller
      */
     public function config(String $params = NULL)
     {
-        if( IS_CONTAINER )
+        if( ! Menus::isDirectory('Config') )
         {
             Redirect::location();
         }
@@ -126,7 +137,7 @@ class Generate extends Controller
      */
     public function model(String $params = NULL)
     {
-        if( IS_CONTAINER )
+        if( ! Menus::isDirectory('Models') )
         {
             Redirect::location();
         }
@@ -149,6 +160,11 @@ class Generate extends Controller
      */
     public function view(String $params = NULL)
     {
+        if( ! Menus::isDirectory('Views') )
+        {
+            Redirect::location();
+        }
+
         GenerateModel\View::defineTemplates();
 
         # Generating view.
@@ -169,6 +185,11 @@ class Generate extends Controller
      */
     public function starting(String $params = NULL)
     {   
+        if( ! Menus::isDirectory('Starting') )
+        {
+            Redirect::location();
+        }
+
         # Generating starting file.
         if( Method::post('generate') )
         {
@@ -187,7 +208,7 @@ class Generate extends Controller
      */
     public function migration(String $params = NULL)
     {
-        if( IS_CONTAINER )
+        if( ! Menus::isDirectory('Models') )
         {
             Redirect::location();
         }
