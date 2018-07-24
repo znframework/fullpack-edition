@@ -6,11 +6,11 @@
     </tr>
     <tr>
         <td><?php echo ZN\Lang::select('Authentication', 'username')?></td>
-        <td><?php echo $usernameColumn; ?></td>
+        <td><?php echo $username; ?></td>
     </tr>
     <tr>
         <td><?php echo ZN\Lang::select('Authentication', 'password')?></td>
-        <td><?php echo $newPassword; ?></td>
+        <td><?php echo $password; ?></td>
     </tr>
 
     <tr>

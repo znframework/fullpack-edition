@@ -15,6 +15,7 @@ use ZN\Inclusion;
 use ZN\Singleton;
 use ZN\Request\URL;
 use ZN\Request\URI;
+use ZN\Request\Method;
 use ZN\Response\Redirect;
 
 class Register extends UserExtends
@@ -44,14 +45,15 @@ class Register extends UserExtends
     /**
      * Do register.
      * 
-     * @param array  $data                 = NULL
-     * @param mixed  $autoLogin            = false
-     * @param string $activationReturnLink = ''
+     * @param string|array  $data                 = NULL
+     * @param mixed         $autoLogin            = false
+     * @param string        $activationReturnLink = ''
      * 
      * @return Bool
      */
-    public function do(Array $data = NULL, $autoLogin = false, String $activationReturnLink = '') : Bool
+    public function do($data = NULL, $autoLogin = false, String $activationReturnLink = '') : Bool
     {
+        $this->autoMatchColumns($data);
         $this->controlPropertiesParameters($data, $autoLogin, $activationReturnLink);
         
         if( ! empty($this->joinTables) )
@@ -60,7 +62,7 @@ class Register extends UserExtends
             $data     = $data[$this->tableName] ?? [$this->tableName];
         }
 
-        if( ! isset($data[$this->usernameColumn]) ||  ! isset($data[$this->passwordColumn]) )
+        if( ! isset($data[$this->usernameColumn]) || ! isset($data[$this->passwordColumn]) )
         {
             return $this->setErrorMessage('registerUsernameError');
         }
@@ -90,13 +92,18 @@ class Register extends UserExtends
             {
                 if( ! IS::email($loginUsername) )
                 {
-                    $email = $data[$this->emailColumn];
+                    $email = $data[$this->emailColumn] ?? NULL;
                 }
                 else
                 {
                     $email = NULL;
                 }
 
+                if( empty($activationReturnLink) )
+                {
+                    throw new Exception\ActivationReturnLinkNotFoundException;
+                }
+                
                 $this->sendActivationEmail($loginUsername, $encodePassword, $activationReturnLink, $email);
             }
             else
@@ -247,6 +254,11 @@ class Register extends UserExtends
 
         $user = $email ?? $user;
 
+        if( ! IS::email($user) )
+        {
+            throw new Exception\InvalidEmailException(NULL, $user);
+        }
+
         $emailclass = Singleton::class('ZN\Email\Sender');
 
         $emailclass->sender($this->senderMail, $this->senderName)
@@ -370,6 +382,26 @@ class Register extends UserExtends
     protected function doLogin($username, $password)
     {
         (new Login)->do($username, $password);
+    }
+
+    /**
+     * Protected auto match columns
+     */
+    protected function autoMatchColumns(&$data)
+    {
+        if( is_string($data) && in_array($data, ['post', 'get', 'request']) )
+        {
+            $columns = array_flip($this->getUserTableColumns());
+            $data    = array_intersect_key(Method::$data(), $columns);
+        }
+    }
+
+    /**
+     * Protected get user table columns
+     */
+    protected function getUserTableColumns()
+    {
+        return $this->dbClass->get($this->tableName)->columns();
     }
 
     /**
