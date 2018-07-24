@@ -24,15 +24,15 @@
     'encode'   => 'super',
     'matching' =>
     [
-        'table'   => 'users',
+        'table'   => '',
         'columns' =>
         [
-            'username'     => 'user', # Required
-            'password'     => 'pw', # Required
+            'username'     => '', # Required
+            'password'     => '', # Required
             'email'        => '', # Relative
             'active'       => '', # Relative
             'banned'       => '', # Relative
-            'activation'   => 'activation', # Relative
+            'activation'   => '', # Relative
             'verification' => '', # Relative
             'otherLogin'   => []  # Relative
         ]
