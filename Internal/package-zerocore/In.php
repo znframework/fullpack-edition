@@ -107,7 +107,7 @@ class In
      */
     public static function defaultProjectKey(String $fix = NULL) : String
     {
-        return md5('http://' . Base::host() . '/' . strtolower(CONTAINER_PROJECT) . $fix);
+        return md5(strtolower(CONTAINER_PROJECT) . $fix);
     }
 
     /**
