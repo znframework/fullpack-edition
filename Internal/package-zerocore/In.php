@@ -107,7 +107,7 @@ class In
      */
     public static function defaultProjectKey(String $fix = NULL) : String
     {
-        return md5(strtolower(CONTAINER_PROJECT) . $fix);
+        return hash('ripemd320', CONTAINER_PROJECT . $fix);
     }
 
     /**
