@@ -11,6 +11,7 @@
 
 use ZN\Lang;
 use ZN\Config;
+use ZN\Inclusion;
 use ZN\Singleton;
 use ZN\Cryptography\Encode;
 
@@ -104,10 +105,65 @@ class UserExtends
 
     /**
      * Get encryption password
+     * 
+     * @param string $password
+     * 
+     * @return string
      */
     public function getEncryptionPassword($password)
     {
         return ! empty($this->encodeType) ? Encode\Type::create($password, $this->encodeType) : $password;
+    }
+
+    /**
+     * Sets activation email
+     * 
+     * 5.7.3[added]
+     * 
+     * @param string $message
+     */
+    public function setEmailTemplate(String $message)
+    {
+        Properties::$setEmailTemplate = $message;
+    }
+
+    /**
+     * Protected activation email data
+     */
+    protected function replaceActivationEmailData(Array $replace)
+    {
+        $data = Properties::$setEmailTemplate;
+
+        Properties::$setEmailTemplate = NULL;
+
+        $preg = 
+        [
+            '/\{user\}/' => $replace['user'],
+            '/\{pass\}/' => $replace['pass'],
+            '/\{url\}/'  => $replace['url']
+        ];
+
+		return preg_replace_callback('/\[(.*?)\]/', function($match) use($replace)
+		{
+			return $replace['url'] . $match[1];
+			
+		}, preg_replace(array_keys($preg), array_values($preg), $data));
+    }
+
+    /**
+     * Protected get email template
+     */
+    protected function getEmailTemplate($data, $template)
+    {
+        # 5.7.3[added]
+        # Sets activation email content
+        if( ! empty(Properties::$setEmailTemplate) )
+        {
+            return $this->replaceActivationEmailData($data);
+        }
+        
+        # Default activation email template
+        return Inclusion\View::use($template, $data, true, __DIR__ . '/Resources/');
     }
 
     /**

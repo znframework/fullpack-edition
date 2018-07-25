@@ -11,7 +11,6 @@
 
 use ZN\IS;
 use ZN\Base;
-use ZN\Inclusion;
 use ZN\Singleton;
 use ZN\Request\URL;
 use ZN\Request\URI;
@@ -86,14 +85,15 @@ class ForgotPassword extends UserExtends
 
             $newPassword    = $this->createRandomNewPassword();
             $encodePassword = $this->getEncryptionPassword($newPassword);
-            $templateData   = 
-            [
-                'username'       => $username = $row->{$this->usernameColumn},
-                'password'       => $newPassword,
-                'returnLinkPath' => $this->encryptionReturnLink($returnLinkPath, $username, $encodePassword)
-            ];
 
-            if( $this->sendForgotPasswordEmail($email, $this->setForgotPasswordEmailBodyTemplate($templateData)) )
+            $message = $this->getEmailTemplate
+            ([
+                'user' => $username = $row->{$this->usernameColumn},
+                'pass' => $newPassword,
+                'url'  => $this->encryptionReturnLink($returnLinkPath, $username, $encodePassword)
+            ], 'ForgotPassword');
+
+            if( $this->sendForgotPasswordEmail($email, $message) )
             {
                 if( $changePassword === 'before' )
                 {
@@ -178,14 +178,6 @@ class ForgotPassword extends UserExtends
     protected function createRandomNewPassword()
     {
         return Encode\RandomPassword::create(10);
-    }
-
-    /**
-     * Protected set forgot passward email body template
-     */
-    protected function setForgotPasswordEmailBodyTemplate($data)
-    {
-        return Inclusion\View::use('ForgotPassword', $data, true, __DIR__ . '/Resources/');
     }
 
     /**
