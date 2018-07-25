@@ -34,6 +34,13 @@ class RedisDriver extends DriverMappingAbstract
     protected $serialized = [];
 
     /**
+     * Private redis members key
+     * 
+     * @var string
+     */
+    private $sMembersKey = 'ZNRedisSerialized';
+
+    /**
      * Magic constructor
      * 
      * @param array $settings = NULL
@@ -76,7 +83,7 @@ class RedisDriver extends DriverMappingAbstract
             throw new AuthenticationFailedException;
         }
 
-        $serialized = $this->redis->sMembers('ZNRedisSerialized');
+        $serialized = $this->redis->sMembers($this->sMembersKey);
 
         if ( ! empty($serialized) )
         {
@@ -120,7 +127,7 @@ class RedisDriver extends DriverMappingAbstract
     {
         if( is_array($data) || is_object($data) )
         {
-            if( ! $this->redis->sIsMember('ZNRedisSerialized', $key) && ! $this->redis->sAdd('ZNRedisSerialized', $key) )
+            if( ! $this->redis->sIsMember($this->sMembersKey, $key) && ! $this->redis->sAdd($this->sMembersKey, $key) )
             {
                 return false;
             }
@@ -136,7 +143,7 @@ class RedisDriver extends DriverMappingAbstract
         {
             $this->serialized[$key] = NULL;
 
-            $this->redis->sRemove('ZNRedisSerialized', $key);
+            $this->redis->sRemove($this->sMembersKey, $key);
         }
 
         return $this->redis->set($key, $data, $time);
@@ -160,7 +167,7 @@ class RedisDriver extends DriverMappingAbstract
         {
             $this->serialized[$key] = NULL;
 
-            $this->redis->sRemove('ZNRedisSerialized', $key);
+            $this->redis->sRemove($this->sMembersKey, $key);
         }
 
         return true;
