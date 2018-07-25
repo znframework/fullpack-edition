@@ -46,11 +46,7 @@ class RedisDriver extends DriverMappingAbstract
         
         Support::extension('redis');
 
-        $config =  $this->config['driverSettings'];
-
-        $config = ! empty($settings)
-                  ? $settings
-                  : $config['redis'];
+        $config = $settings ?: $this->config['driverSettings']['redis'];
 
         $this->redis = new Redis();
 
@@ -75,12 +71,9 @@ class RedisDriver extends DriverMappingAbstract
             throw new ConnectionRefusedException(NULL, $e->getMessage());
         }
 
-        if( isset($config['password']) )
+        if ( ! $this->redis->auth($config['password']) )
         {
-            if ( ! $this->redis->auth($config['password']))
-            {
-                throw new AuthenticationFailedException;
-            }
+            throw new AuthenticationFailedException;
         }
 
         $serialized = $this->redis->sMembers('ZNRedisSerialized');
@@ -125,7 +118,7 @@ class RedisDriver extends DriverMappingAbstract
      */
     public function insert($key, $data, $time, $compressed)
     {
-        if( is_array($data) OR is_object($data) )
+        if( is_array($data) || is_object($data) )
         {
             if( ! $this->redis->sIsMember('ZNRedisSerialized', $key) && ! $this->redis->sAdd('ZNRedisSerialized', $key) )
             {
