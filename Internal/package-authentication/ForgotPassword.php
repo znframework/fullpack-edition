@@ -90,7 +90,7 @@ class ForgotPassword extends UserExtends
             [
                 'username'       => $username = $row->{$this->usernameColumn},
                 'password'       => $newPassword,
-                'returnLinkPath' => $this->encryptionReturnLink($returnLinkPath, $username, $newPassword)
+                'returnLinkPath' => $this->encryptionReturnLink($returnLinkPath, $username, $encodePassword)
             ];
 
             if( $this->sendForgotPasswordEmail($email, $this->setForgotPasswordEmailBodyTemplate($templateData)) )
@@ -141,9 +141,9 @@ class ForgotPassword extends UserExtends
     /**
      * Protected encryption return link
      */
-    protected function encryptionReturnLink($returnLinkPath, $username, $newPassword)
+    protected function encryptionReturnLink($returnLinkPath, $username, $newEncodePassword)
     {
-        return Base::suffix($returnLinkPath) . base64_encode($username) . '/' . base64_encode($newPassword);
+        return Base::suffix($returnLinkPath) . base64_encode($username) . '/' . base64_encode($newEncodePassword);
     }
 
     /**
