@@ -99,6 +99,18 @@ class In
     }
 
     /**
+     * Creates the secret project key.
+     * 
+     * @param string $fix = NULL
+     * 
+     * @return string
+     */
+    public static function secretProjectKey(String $fix = NULL) : String
+    {
+        return hash('ripemd320', CONTAINER_PROJECT . $fix);
+    }
+
+    /**
      * Creates the default project key.
      * 
      * @param string $fix = NULL
@@ -107,7 +119,7 @@ class In
      */
     public static function defaultProjectKey(String $fix = NULL) : String
     {
-        return hash('ripemd320', CONTAINER_PROJECT . $fix);
+        return md5(Request::getBaseURL(strtolower(CONTAINER_PROJECT)) . $fix);
     }
 
     /**
