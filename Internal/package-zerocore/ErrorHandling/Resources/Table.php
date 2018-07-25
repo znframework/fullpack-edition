@@ -32,6 +32,8 @@ unset($trace['params']);
                         ! strstr($debug['file'], 'Kernel.php')    &&
                         ! strstr($debug['file'], 'Wizard.php')    &&
                         ! strstr($debug['file'], 'View.php')      &&
+                        ! strstr($debug['file'], 'In.php')        &&
+                        ! strstr($debug['file'], 'Factory.php')   &&
                         $debug['file'] !== $file                         
                     )
                     {

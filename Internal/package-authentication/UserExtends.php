@@ -103,6 +103,14 @@ class UserExtends
     }
 
     /**
+     * Get encryption password
+     */
+    public function getEncryptionPassword($password)
+    {
+        return ! empty($this->encodeType) ? Encode\Type::create($password, $this->encodeType) : $password;
+    }
+
+    /**
      * Get user table by username
      */
     protected function getUserTableByUsername($username)
@@ -115,7 +123,7 @@ class UserExtends
      */
     protected function setErrorMessage($string)
     {
-        return ! Properties::$error = $this->getLang[$string];
+        return ! (bool) (Properties::$error = $this->getLang[$string]);
     }
 
     /**
@@ -123,15 +131,7 @@ class UserExtends
      */
     protected function setSuccessMessage($string)
     {
-        return Properties::$success = $this->getLang[$string];
-    }
-
-    /**
-     * Protected get encryption password
-     */
-    protected function getEncryptionPassword($password)
-    {
-        return ! empty($this->encodeType) ? Encode\Type::create($password, $this->encodeType) : $password;
+        return (bool) (Properties::$success = $this->getLang[$string]);
     }
 
     /**

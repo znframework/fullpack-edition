@@ -9,7 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use Html;
 use Method;
 use DB;
 use DBForge;
@@ -18,6 +17,7 @@ use Import;
 use ZN\Base;
 use ZN\Config;
 use ZN\Model;
+use ZN\Security\Html;
 use ZN\DataTypes\Arrays\RemoveElement;
 
 class Table extends Model
@@ -101,6 +101,8 @@ class Table extends Model
         else
         {
             $status = DB::query($content);
+
+            $error  = $status->error();
         }
 
         $result = Import::usable()->view('datatables-tables.wizard', ['tables' => DBTool::listTables()]);
@@ -109,7 +111,7 @@ class Table extends Model
         ([
             'status' => $status,
             'result' => $result,
-            'error'  => DBForge::error() . DB::error() . DBTool::error()
+            'error'  => $error ?? false
         ]);
     }
 

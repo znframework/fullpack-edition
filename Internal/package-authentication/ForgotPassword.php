@@ -10,9 +10,12 @@
  */
 
 use ZN\IS;
+use ZN\Base;
 use ZN\Inclusion;
 use ZN\Singleton;
 use ZN\Request\URL;
+use ZN\Request\URI;
+use ZN\Response\Redirect;
 use ZN\Cryptography\Encode;
 
 class ForgotPassword extends UserExtends
@@ -40,16 +43,29 @@ class ForgotPassword extends UserExtends
     }
 
     /**
+     * Password change process
+     * 
+     * @param string $changePassword
+     * 
+     * @return ForgotPassword
+     */
+    public function passwordChangeProcess(String $changePassword = 'before')
+    {
+        Properties::$parameters['changePassword'] = $changePassword;
+    }
+
+    /**
      * Forgot Password
      * 
      * @param string $email          = NULL
-     * @param string $returnLinkPath = NULL
+     * @param string $returnLinkPath
+     * @param string $changePassword = 'before'
      * 
      * @return bool
      */
-    public function do(String $email = NULL, String $returnLinkPath = NULL) : Bool
+    public function do(String $email = NULL, String $returnLinkPath, String $changePassword = 'before') : Bool
     {
-        $this->controlPropertiesParameters($email, $verification, $returnLinkPath);
+        $this->controlPropertiesParameters($email, $verification, $returnLinkPath, $changePassword);
 
         $row = $this->getUserDataRowByEmail($email);
 
@@ -72,19 +88,24 @@ class ForgotPassword extends UserExtends
             $encodePassword = $this->getEncryptionPassword($newPassword);
             $templateData   = 
             [
-                'usernameColumn' => $row->{$this->usernameColumn},
-                'newPassword'    => $newPassword,
-                'returnLinkPath' => $returnLinkPath
+                'username'       => $username = $row->{$this->usernameColumn},
+                'password'       => $newPassword,
+                'returnLinkPath' => $this->encryptionReturnLink($returnLinkPath, $username, $encodePassword)
             ];
 
             if( $this->sendForgotPasswordEmail($email, $this->setForgotPasswordEmailBodyTemplate($templateData)) )
             {
-                if( $this->updateUserPassword($email, $encodePassword) )
+                if( $changePassword === 'before' )
                 {
-                    return $this->setSuccessMessage('forgotPasswordSuccess');
+                    if( $this->updateUserPassword($email, $encodePassword) )
+                    {
+                        return $this->setSuccessMessage('forgotPasswordSuccess');
+                    }
+
+                    return $this->setErrorMessage('updateError');
                 }
 
-                return $this->setErrorMessage('updateError');
+                return $this->setSuccessMessage('forgotPasswordSuccess');
             }
             else
             {
@@ -95,6 +116,43 @@ class ForgotPassword extends UserExtends
         {
             return $this->setErrorMessage('forgotPasswordError');
         }
+    }
+
+    /**
+     * Password change complete
+     */
+    public function passwordChangeComplete(String $redirect = NULL)
+    {
+        $this->decryptionReturnLink($username, $password);
+
+        if( $this->updateUserPasswordByUsernameAndPassword($username, $password) )
+        {
+            if( $redirect !== NULL )
+            {
+                new Redirect($redirect);
+            }
+
+            return $this->setSuccessMessage('updateProcessSuccess');
+        }
+
+        return $this->setErrorMessage('forgotPasswordError');
+    }
+
+    /**
+     * Protected encryption return link
+     */
+    protected function encryptionReturnLink($returnLinkPath, $username, $newEncodePassword)
+    {
+        return Base::suffix($returnLinkPath) . base64_encode($username) . '/' . base64_encode($newEncodePassword);
+    }
+
+    /**
+     * Protected decryption return link
+     */
+    protected function decryptionReturnLink(&$username, &$password)
+    {
+        $username = base64_decode(URI::segment(-2));
+        $password = base64_decode(URI::segment(-1));
     }
 
     /**
@@ -161,13 +219,22 @@ class ForgotPassword extends UserExtends
     }
 
     /**
+     * Protected update user password with username
+     */
+    protected function updateUserPasswordByUsernameAndPassword($username, $newPassword)
+    {
+        return $this->dbClass->where($this->usernameColumn, $username)->update($this->tableName, [$this->passwordColumn => $newPassword]);
+    }
+
+    /**
      * Protected control properties parameters
      */
-    protected function controlPropertiesParameters(&$email, &$verification, &$returnLinkPath)
+    protected function controlPropertiesParameters(&$email, &$verification, &$returnLinkPath, &$changePassword)
     {
-        $email          = Properties::$parameters['email']        ?? $email;
-        $verification   = Properties::$parameters['verification'] ?? NULL;
-        $returnLinkPath = Properties::$parameters['returnLink']   ?? $returnLinkPath;
+        $email          = Properties::$parameters['email']          ?? $email;
+        $verification   = Properties::$parameters['verification']   ?? NULL;
+        $returnLinkPath = Properties::$parameters['returnLink']     ?? $returnLinkPath;
+        $changePassword = Properties::$parameters['changePassword'] ?? $changePassword;
 
         Properties::$parameters = [];
     }

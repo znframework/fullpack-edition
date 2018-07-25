@@ -17,13 +17,14 @@ class User extends Factory
     [
         'methods' =>
         [
-            'register'              => 'Register::do',
-            'column'                => 'UserExtends::column:this',
+            'register'              => 'Register::do',        
             'autologin'             => 'Register::autoLogin:this',
-            'returnlink'            => 'UserExtends::returnLink:this',
             'activationcomplete'    => 'Register::activationComplete',
             'setactivationemail'    => 'Register::setActivationEmail:this',
             'resendactivationemail' => 'Register::resendActivationEmail',
+            'returnlink'            => 'UserExtends::returnLink:this',
+            'column'                => 'UserExtends::column:this',
+            'getencryptionpassword' => 'UserExtends::getEncryptionPassword',
             'update'                => 'Update::do',
             'oldpassword'           => 'Update::oldPassword:this',
             'newpassword'           => 'Update::newPassword:this',
@@ -37,6 +38,8 @@ class User extends Factory
             'forgotpassword'        => 'ForgotPassword::do',
             'verification'          => 'ForgotPassword::verification:this',
             'email'                 => 'ForgotPassword::email:this',
+            'passwordchangeprocess' => 'ForgotPassword::passwordChangeProcess:this',
+            'passwordchangecomplete'=> 'ForgotPassword::passwordChangeComplete',
             'data'                  => 'Data::get',
             'activecount'           => 'Data::activeCount',
             'bannedcount'           => 'Data::bannedCount',
