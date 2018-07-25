@@ -340,26 +340,6 @@ class Register extends UserExtends
     }
 
     /**
-     * Protected auto match columns
-     */
-    protected function autoMatchColumns(&$data)
-    {
-        if( is_string($data) && in_array($data, ['post', 'get', 'request']) )
-        {
-            $columns = array_flip($this->getUserTableColumns());
-            $data    = array_intersect_key(Method::$data(), $columns);
-        }
-    }
-
-    /**
-     * Protected get user table columns
-     */
-    protected function getUserTableColumns()
-    {
-        return $this->dbClass->get($this->tableName)->columns();
-    }
-
-    /**
      * Protected control properties parameters
      */
     protected function controlPropertiesParameters(&$data, &$autoLogin, &$activationReturnLink)
