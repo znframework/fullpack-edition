@@ -10,6 +10,7 @@
  */
 
 use stdClass;
+use ZN\Base;
 use ZN\Helper;
 use ZN\Config;
 use ZN\Datatype;
@@ -280,7 +281,7 @@ class Converter
      */
     public static function time(Int $count, String $type = 'second', String $output = 'day') : Float
     {
-        switch( $output )
+        switch( Base::removeSuffix($output, 's') )
         {
             case 'second': $out = 1;                                 break;
             case 'minute': $out = 60;                                break;
@@ -291,7 +292,7 @@ class Converter
             case 'year'  : $out = 60 * 60 * 24 * 30 * 12;            break;
         }
 
-        switch( $type )
+        switch( Base::removeSuffix($type, 's') )
         {
             case 'second': $time = $count;                           break;
             case 'minute': $time = 60 * $count;                      break;
