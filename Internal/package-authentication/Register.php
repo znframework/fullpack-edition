@@ -11,7 +11,6 @@
 
 use ZN\IS;
 use ZN\Base;
-use ZN\Inclusion;
 use ZN\Singleton;
 use ZN\Request\URL;
 use ZN\Request\URI;
@@ -28,18 +27,6 @@ class Register extends UserExtends
     public function autoLogin($autoLogin = true)
     {
         Properties::$parameters['autoLogin'] = $autoLogin;
-    }
-
-    /**
-     * Sets activation email
-     * 
-     * 5.7.3[added]
-     * 
-     * @param string $message
-     */
-    public function setActivationEmail(String $message)
-    {
-        Properties::$setActivationEmail = $message;
     }
 
     /**
@@ -233,24 +220,14 @@ class Register extends UserExtends
             $url = URL::site($url);
         }
 
-        $templateData =
-        [
+        # 5.7.3[added]
+        # Sets activation email content
+        $message = $this->getEmailTemplate
+        ([
             'url'  => $url,
             'user' => $user,
             'pass' => $pass
-        ];
-
-        # 5.7.3[added]
-        # Sets activation email content
-        if( ! empty(Properties::$setActivationEmail) )
-        {
-            $message = $this->replaceActivationEmailData($templateData);
-        }
-        # Default activation email template
-        else
-        {
-            $message = Inclusion\View::use('Activation', $templateData, true, __DIR__ . '/Resources/');
-        }
+        ], 'Activation');
 
         $user = $email ?? $user;
 
@@ -274,28 +251,6 @@ class Register extends UserExtends
         {
             return $this->setErrorMessage('emailError');
         }
-    }
-
-    /**
-     * Protected replace activation email data
-     */
-    protected function replaceActivationEmailData(Array $replace)
-    {
-        $data = Properties::$setActivationEmail;
-
-        Properties::$setActivationEmail = NULL;
-
-        $preg = 
-        [
-            '/\{user\}/' => $replace['user'],
-			'/\{pass\}/' => $replace['pass']
-        ];
-
-		return preg_replace_callback('/\[(.*?)\]/', function($match) use($replace)
-		{
-			return $replace['url'] . $match[1];
-			
-		}, preg_replace(array_keys($preg), array_values($preg), $data));
     }
 
     /**

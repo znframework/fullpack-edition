@@ -6,16 +6,16 @@
     </tr>
     <tr>
         <td><?php echo ZN\Lang::select('Authentication', 'username')?></td>
-        <td><?php echo $username; ?></td>
+        <td><?php echo $user; ?></td>
     </tr>
     <tr>
         <td><?php echo ZN\Lang::select('Authentication', 'password')?></td>
-        <td><?php echo $password; ?></td>
+        <td><?php echo $pass; ?></td>
     </tr>
 
     <tr>
         <td colspan="2">
-            <a href="<?php echo $returnLinkPath; ?>"><?php echo ZN\Lang::select('Authentication', 'learnNewPassword'); ?></a>
+            <a href="<?php echo $url; ?>"><?php echo ZN\Lang::select('Authentication', 'learnNewPassword'); ?></a>
         </td>
     </tr>
 </pre>

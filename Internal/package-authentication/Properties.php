@@ -33,11 +33,11 @@ class Properties
     public static $success;
 
     /**
-     * Keeps set atctivation email
+     * Keeps set email template
      * 
      * 5.7.3[added]
      * 
      * @var string
      */
-    public static $setActivationEmail = NULL;
+    public static $setEmailTemplate = NULL;
 }
