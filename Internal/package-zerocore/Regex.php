@@ -51,7 +51,10 @@ class Regex
         '{lnlr}'                        => '\n\r',
         '{tab}|{lt}|{ht}'               => '\t',
         '{esc}|{le}'                    => '\e',
-        '{hex}|{lx}'                    => '\x'
+        '{hex}|{lx}'                    => '\x',
+
+        # Special
+        '{\/}'                          => '($|\/)'
     ];
 
     /**
