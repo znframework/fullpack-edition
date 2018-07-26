@@ -118,9 +118,25 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createTable(String $table = NULL, Array $colums = NULL, $extras = NULL)
+    public function createTable(String $table = NULL, Array $columns = NULL, $extras = NULL)
     {
-        $query = $this->forge->createTable($this->_p($table), $this->_p($colums, 'column'), $this->_p($extras, 'extras'));
+        $query = $this->forge->createTable($this->_p($table), $this->_p($columns, 'column'), $this->_p($extras, 'extras'));
+
+        return $this->_runExecQuery($query);
+    }
+
+    /**
+     * Create Temporary Table
+     * 
+     * @param string $tabşe
+     * @param array  $columns
+     * @param string $extras
+     * 
+     * @return bool
+     */
+    public function createTempTable(String $table = NULL, Array $columns = NULL, $extras = NULL)
+    {
+        $query = $this->forge->createTempTable($this->_p($table), $this->_p($columns, 'column'), $this->_p($extras, 'extras'));
 
         return $this->_runExecQuery($query);
     }

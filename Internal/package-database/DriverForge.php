@@ -61,6 +61,28 @@ class DriverForge
      */
     public function createTable($table, $columns, $extras)
     {
+        return 'CREATE TABLE ' . $this->createTableColumnsSyntax($table, $columns, $extras);
+    }
+
+    /**
+     * Create Temporary Table
+     * 
+     * @param string $tabşe
+     * @param array  $columns
+     * @param string $extras
+     * 
+     * @return string
+     */
+    public function createTempTable($table, $columns, $extras)
+    {
+        return 'CREATE TEMPORARY TABLE ' . $this->createTableColumnsSyntax($table, $columns, $extras);
+    }
+
+    /**
+     * Protected create table columns syntax
+     */
+    protected function createTableColumnsSyntax($table, $columns, $extras)
+    {
         $column = '';
 
         foreach( $columns as $key => $value )
@@ -81,7 +103,7 @@ class DriverForge
             $column .= $key . ' ' . rtrim($values) . ', ';
         }
 
-        return 'CREATE TABLE ' . $table . '(' .rtrim(trim($column), ', ') . ')' . $this->_extras($extras);
+        return  $table . '(' .rtrim(trim($column), ', ') . ')' . $this->_extras($extras);
     }
 
     /**
