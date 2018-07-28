@@ -14,6 +14,20 @@ use ZN\Database\DriverForge;
 class DBForge extends DriverForge
 {
     /**
+     * Create Temporary Table
+     * 
+     * @param string $tabşe
+     * @param array  $columns
+     * @param string $extras
+     * 
+     * @return string
+     */
+    public function createTempTable($table, $columns, $extras)
+    {
+        return 'CREATE GLOBAL TEMPORARY TABLE ' . $this->createTableColumnsSyntax($table, $columns, $extras) .  ' ON COMMIT PRESERVE ROWS;';
+    }
+
+    /**
      * Rename column
      * 
      * @param string $table

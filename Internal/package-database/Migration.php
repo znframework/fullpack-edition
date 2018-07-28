@@ -316,8 +316,10 @@ class Migration implements MigrationInterface
     {
         if( is_file($file) )
         {
-            unlink($file);
-        } 
+            return unlink($file);
+        }
+        
+        return false;
     }
 
     /**

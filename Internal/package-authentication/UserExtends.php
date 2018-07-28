@@ -167,6 +167,26 @@ class UserExtends
     }
 
     /**
+     * Protected auto match columns
+     */
+    protected function autoMatchColumns(&$data)
+    {
+        if( is_string($data) && in_array($data, ['post', 'get', 'request']) )
+        {
+            $columns = array_flip($this->getUserTableColumns());
+            $data    = array_intersect_key(Method::$data(), $columns);
+        }
+    }
+
+    /**
+     * Protected get user table columns
+     */
+    protected function getUserTableColumns()
+    {
+        return $this->dbClass->get($this->tableName)->columns();
+    }
+
+    /**
      * Get user table by username
      */
     protected function getUserTableByUsername($username)

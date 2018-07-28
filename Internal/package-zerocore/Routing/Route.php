@@ -69,10 +69,11 @@ class Route extends FilterProperties implements RouteInterface
     {
         if( empty( $this->route ) )
         {
-            $this->change('404');
+            $s404 = '404';
+            $this->change('{start}404{end}');
         }
 
-        Config::set('Routing', 'show404', $this->route);
+        Config::set('Routing', 'show404', $s404 ?? $this->route);
 
         $this->uri($controllerAndMethod, false);
     }
@@ -188,7 +189,26 @@ class Route extends FilterProperties implements RouteInterface
         $routeSegment = explode('/', $route);
 
         // Database Routing
-        $route = preg_replace_callback
+        $route = $this->database($route, $routeSegment, $return);
+
+        if( empty($return) )
+        {
+            $this->route = NULL;
+        }
+        else
+        {
+            $this->route = $route;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Protected routing database
+     */
+    protected function database($route, $routeSegment, &$return)
+    {
+        return preg_replace_callback
         (
             '/\[(?<table>\w+|\.)\:(?<column>\w+|\.)(\s*\,\s*(?<separator>json|serial|separator)(\:(?<key>.*?))*)*\]/i', 
             function($match) use (&$count, &$return, $routeSegment)
@@ -233,17 +253,6 @@ class Route extends FilterProperties implements RouteInterface
             }, 
             $route
         );
-
-        if( empty($return) )
-        {
-            $this->route = NULL;
-        }
-        else
-        {
-            $this->route = $route;
-        }
-
-        return $this;
     }
 
     /**

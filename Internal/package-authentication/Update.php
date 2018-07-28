@@ -44,17 +44,18 @@ class Update extends UserExtends
     /**
      * Do Update
      * 
-     * @param string $old      = NULL
-     * @param string $new      = NULL
-     * @param string $newAgain = NULL
-     * @param array  $data     = []
+     * @param string       $old      = NULL
+     * @param string       $new      = NULL
+     * @param string       $newAgain = NULL
+     * @param string|array $data     = []
      * 
      * @return bool
      */
-    public function do(String $old = NULL, String $new = NULL, String $newAgain = NULL, Array $data = []) : Bool
+    public function do(String $old = NULL, String $new = NULL, String $newAgain = NULL, $data = []) : Bool
     {
         if( $this->isLogin() )
         {
+            $this->autoMatchColumns($data);
             $this->controlPropertiesParameters($old, $new, $newAgain, $data);
 
             if( empty($newAgain) )

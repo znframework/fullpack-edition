@@ -195,9 +195,12 @@ class Processor implements ProcessorInterface
      */
     public function insert(String $key, $var, $time = 60, $compressed = false) : Bool
     {
-        $timeEx = explode(' ', $time);
+        if( ! preg_match('/(?<count>[0-9]+)\s*(?<type>second|minute|hour|day|week|month|year)*s*/', $time, $match) )
+        {
+            throw new Exception\InvalidTimeException(NULL, $time);
+        }
 
-        $time = Converter::time($timeEx[0], $timeEx[1] ?? 'second', 'second');
+        $time = Converter::time($match['count'], $match['type'] ?? 'second', 'second');
 
         return $this->driver->insert($key, $var, $time, $compressed);
     }
