@@ -100,7 +100,7 @@ trait ViewCommonTrait
         {
             if( in_array($method, $this->elements['input']) )
             {
-                return $this->_input($parameters[0], $parameters[1] ?? NULL, $parameters[2] ?? [], $realMethod);
+                return $this->_input($parameters[0] ?? '', $parameters[1] ?? '', $parameters[2] ?? [], $realMethod);
             }
         }
 
