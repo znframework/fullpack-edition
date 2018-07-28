@@ -27,9 +27,9 @@ class GenerateProjectKey
     public function __construct($command)
     {   
         $contents         = file_get_contents($file = CONFIG_DIR . 'Project.php');
-        $replaceContents  = preg_replace_callback('/(?<key>\'key\'\s*=>\s*)(?<data>.*?),/', function($data)
+        $replaceContents  = preg_replace_callback('/(?<key>\'key\'\s*=>\s*)(?<data>.*?),\s*$/m', function($data)
         {
-            return $data['key'] . Base::presuffix(hash('ripemd320', uniqid($command ?? '')), '\'') . ',';
+            return $data['key'] . Base::presuffix(hash('ripemd320', uniqid($command ?? '')), '\'') . ',' . PHP_EOL;
 
         }, $contents);
 
@@ -40,6 +40,8 @@ class GenerateProjectKey
             $return = (bool) file_put_contents($file, $replaceContents);
         }
 
-        new Result($return);
+        $message = $return === true ? 'Project key was created with success.' : 'Project key could not be created!';
+
+        new Result($message);
     }
 }
