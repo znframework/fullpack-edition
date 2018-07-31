@@ -50,6 +50,7 @@ class File extends Factory
             'generate'        => 'Forge::generate',
             'create'          => 'Forge::create',
             'replace'         => 'Forge::replace',
+            'reglace'         => 'Forge::reglace',
             'delete'          => 'Forge::delete',
             'zipextract'      => 'Forge::zipExtract',
             'createzip'       => 'Forge::createZip',

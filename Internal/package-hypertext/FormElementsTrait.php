@@ -10,7 +10,10 @@
  */
 
 use ZN\IS;
+use ZN\Base;
+use ZN\Lang;
 use ZN\Request;
+use ZN\Inclusion;
 use ZN\Singleton;
 use ZN\Protection\Json;
 
@@ -41,6 +44,160 @@ trait FormElementsTrait
      * @var array
      */
     protected $validate = [];
+
+    /**
+     * Magic destruct
+     */
+    public function __destruct()
+    {
+        if( isset($this->getJavascriptValidationFunction) )
+        {
+            echo Inclusion\View::use('JavascriptValidationFunctions', $this->getJavascriptValidationFunction, true, __DIR__ . '/');
+        }
+    }
+
+    /**
+     * Email control
+     * 
+     * @return string
+     */
+    public function vEmail()
+    {
+        return $this->onInvalidEventPattern('^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$', 'email');
+    }
+
+    /**
+     * URL control
+     * 
+     * @return string
+     */
+    public function vUrl()
+    {
+        return $this->onInvalidEventPattern('^(\w+:)?//', 'url');
+    }
+
+    /**
+     * Numeric control
+     * 
+     * @return string
+     */
+    public function vNumeric()
+    {
+        return $this->onInvalidEventPattern('^[0-9]+$', 'numeric');
+    }
+
+    /**
+     * Alpha control
+     * 
+     * @return string
+     */
+    public function vAlpha()
+    {
+        return $this->onInvalidEventPattern('^[a-zA-Z]+$', 'alpha');
+    }
+
+    /**
+     * Alnum control
+     * 
+     * @return string
+     */
+    public function vAlnum()
+    {
+        return $this->onInvalidEventPattern('^([a-zA-Z]|[0-9])+$', 'alnum');
+    }
+
+    /**
+     * Required control
+     * 
+     * @return string
+     */
+    public function vRequired()
+    {
+        return $this->onInvalidEventPattern('^.+$', 'required');
+    }
+
+    /**
+     * Between control
+     * 
+     * @param int $min = 0
+     * @param int $max = 0
+     * 
+     * @return string
+     */
+    public function vBetween(Int $min = 0, Int $max = 0)
+    {
+        return $this->setJavascriptValidation
+        (
+            'ZNValidationBetween', 
+            ['betweenBoth' => [':p1' => $min, ':p2' => $max]],
+            ['betweenBoth' => [$min, $max]],
+            [$min, $max]  
+        );
+    }
+
+    /**
+     * Captcha control
+     * 
+     * @return string
+     */
+    public function vCaptcha()
+    {
+        return $this->setJavascriptValidation('ZNValidationCaptcha', 'captcha');
+    }
+
+    /**
+     * Phone control
+     * 
+     * @return string
+     */
+    public function vPhone(String $pattern = NULL)
+    {
+        return $this->setJavascriptValidation('ZNValidationPhone', 'phone', ['phone' => $pattern], [Base::presuffix($pattern, '\'')]);
+    }
+
+    /**
+     * Pattern control
+     * 
+     * @param string $pattern
+     * 
+     * @return string
+     */
+    public function vPattern(String $pattern)
+    {
+        return $this->onInvalidEventPatternWithoutValidate($pattern, 'pattern');
+    }
+
+    /**
+     * Identity control
+     * 
+     * @return string
+     */
+    public function vIdentity()
+    {
+        return $this->setJavascriptValidation('ZNValidationIdentity', 'identity');
+    }
+
+    /**
+     * Numeric control
+     * 
+     * @param int $min = 0
+     * @param int $max = NULL
+     * 
+     * @return string
+     */
+    public function vLimit(Int $min = 0, Int $max = NULL)
+    {
+        $key['minchar'] = [':p1' => $min];
+        $typ['minchar'] = $min;
+
+        if( $max !== NULL )
+        {
+            $key['maxchar'] = [':p1' => $max];
+            $typ['maxchar'] = $max;
+        }
+
+        return $this->onInvalidEventPattern('(.){' . $min . ',' . $max . '}', $key, [], $typ);
+    }
 
     /**
      * Defines validate rules.
@@ -288,6 +445,73 @@ trait FormElementsTrait
         }
 
         return $this;
+    }
+
+    /**
+     * Protected set javascript validation
+     */
+    protected function setJavascriptValidation($name, $lang, $rule = NULL, $param = [])
+    {
+        $this->getJavascriptValidationFunction[$name] = $function = $name . md5($name);
+
+        return $this->onkeyup($function . '(this, ' . Base::suffix(implode(', ', $param), ', ') . '\''.$this->setCustomValidity($lang).'\')') 
+                    ->required()
+                    ->validate($rule ?: $lang);
+    }
+
+    /**
+     * Protected on invalid event pattern
+     */
+    protected function onInvalidEventPattern($pattern, $key, $check = [], $type = NULL)
+    {
+        return $this->onInvalidEventPatternWithoutValidate($pattern, $key, $check)
+                    ->validate($type ?? $key);
+    }
+
+    /**
+     * Protected on invalid event pattern without validate
+     */
+    protected function onInvalidEventPatternWithoutValidate($pattern, $key, $check = [])
+    {
+        return $this->required()->pattern($pattern)->onInvalidEventCustomValidity($key, $check);
+    }
+
+    /**
+     * Protected on invalid event custom validity
+     */
+    protected function onInvalidEventCustomValidity($key, $check = [])
+    {
+        return $this->oninvalid('setCustomValidity(\'' . $this->setCustomValidity($key, $check) . '\')')
+                    ->oninput('setCustomValidity(\'\')');
+    }
+
+    /**
+     * Protected set custom validity
+     */
+    protected function setCustomValidity($key, $check = [])
+    {
+        $message = NULL;
+        
+        if( is_scalar($key) )
+        {
+            $message = $this->getValidationLangValue($key, $check);
+        }
+        else foreach( $key as $k => $c )
+        {
+            $message .= $this->getValidationLangValue($k, $c) . ' ';
+        }
+
+        return rtrim($message);
+    }
+
+    /**
+     * Protected get validation lang value
+     */
+    protected function getValidationLangValue($key, $check)
+    {
+        $check[':name'] = 'Input';
+
+        return Lang::default('ZN\Validation\ValidationDefaultLanguage')::select('ViewObjects', 'validation:'.$key, $check) ?: $key;
     }
 
     /**
