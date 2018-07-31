@@ -73,7 +73,7 @@ trait FormElementsTrait
      */
     public function vUrl()
     {
-        return $this->onInvalidEventPattern('^(\w+:)?//', 'url');
+        return $this->onInvalidEventPattern('^(\w+:)?//.*', 'url');
     }
 
     /**
