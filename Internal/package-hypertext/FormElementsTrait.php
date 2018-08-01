@@ -196,7 +196,32 @@ trait FormElementsTrait
             $typ['maxchar'] = $max;
         }
 
-        return $this->onInvalidEventPattern('(.){' . $min . ',' . $max . '}', $key, [], $typ);
+        return $this->onInvalidEventPattern('.{' . $min . ',' . $max . '}', $key, [], $typ);
+    }
+
+    /**
+     * Minchar control
+     * 
+     * @param int $min = 0
+     * @param int $max = NULL
+     * 
+     * @return string
+     */
+    public function vMinchar(Int $min = 0)
+    {
+        return $this->minlength($min)->onInvalidEventAttributeValidate('minchar', [':p1' => $min], ['minchar' => $min]);
+    }
+
+    /**
+     * Maxchar control
+     * 
+     * @param int $max = 0
+     * 
+     * @return string
+     */
+    public function vMaxchar(Int $max = 0)
+    {
+        return $this->maxlength($max)->onInvalidEventAttributeValidate('maxchar', [':p1' => $max], ['maxchar' => $max]);
     }
 
     /**
@@ -474,6 +499,14 @@ trait FormElementsTrait
     protected function onInvalidEventPatternWithoutValidate($pattern, $key, $check = [])
     {
         return $this->required()->pattern($pattern)->onInvalidEventCustomValidity($key, $check);
+    }
+
+    /** 
+     * Protected on invalid event attribute validate
+     */
+    protected function onInvalidEventAttributeValidate($key, $check = [], $rule = NULL)
+    {
+        return $this->required()->onInvalidEventCustomValidity($key, $check)->validate($rule ?? $key);
     }
 
     /**
