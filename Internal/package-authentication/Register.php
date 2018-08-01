@@ -14,7 +14,6 @@ use ZN\Base;
 use ZN\Singleton;
 use ZN\Request\URL;
 use ZN\Request\URI;
-use ZN\Request\Method;
 use ZN\Response\Redirect;
 
 class Register extends UserExtends

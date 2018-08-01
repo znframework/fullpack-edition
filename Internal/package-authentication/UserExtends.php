@@ -13,6 +13,7 @@ use ZN\Lang;
 use ZN\Config;
 use ZN\Inclusion;
 use ZN\Singleton;
+use ZN\Request\Method;
 use ZN\Cryptography\Encode;
 
 class UserExtends

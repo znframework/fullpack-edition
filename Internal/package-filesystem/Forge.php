@@ -11,6 +11,7 @@
 
 use ZipArchive;
 use ZN\Base;
+use ZN\Regex;
 use ZN\Filesystem;
 
 class Forge
@@ -46,6 +47,35 @@ class Forge
         }
 
         return Filesystem::replaceData($file, $data, $replace);
+    }
+
+    /**
+     * Performs data modification on the file with ZN regex.
+     * 
+     * @param string $file
+     * @param mixed  $pattern
+     * @param mixed  $replace
+     * 
+     * @return string
+     */
+    public static function reglace(String $file, $pattern, $replace) : String
+    {
+        $file = Info::rpath($file);
+
+        if( ! is_file($file))
+        {
+            throw new Exception\FileNotFoundException(NULL, $name);
+        }
+
+        $contents        = file_get_contents($file);
+        $replaceContents = Regex::replace($pattern, $replace, $contents);
+
+        if( $contents !== $replaceContents )
+        {
+            file_put_contents($file, $replaceContents);
+        }
+
+        return $replaceContents;
     }
 
     /**

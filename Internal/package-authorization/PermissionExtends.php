@@ -44,7 +44,7 @@ class PermissionExtends
      * 
      * @var mixed
      */
-    protected static $roleId;
+    public static $roleId;
 
     /**
      * Role ID

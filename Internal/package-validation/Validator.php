@@ -154,7 +154,7 @@ class Validator implements ValidatorInterface
      */
     public static function required(String $data) : Bool
     {
-        return ! empty($data);
+        return $data !== '';
     }
 
     /**
