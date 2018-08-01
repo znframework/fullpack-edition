@@ -13,8 +13,9 @@ use ZN\IS;
 use ZN\Base;
 use ZN\Lang;
 use ZN\Helpers\Mime;
-use ZN\Helpers\Converter;
+use ZN\Request\Method;
 use ZN\DataTypes\Arrays;
+use ZN\Helpers\Converter;
 use ZN\Cryptography\Encode;
 
 class Upload implements UploadInterface
@@ -90,6 +91,18 @@ class Upload implements UploadInterface
     public function __construct()
     {
         $this->getLang = Lang::default('ZN\Filesystem\FilesystemDefaultLanguage')::select('Filesystem');
+    }
+
+    /**
+     * Is file input name
+     * 
+     * @param string $name
+     * 
+     * @return bool
+     */
+    public function isFile(String $name) : Bool
+    {
+        return (bool) Method::files($name);
     }
 
     /**

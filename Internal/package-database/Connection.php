@@ -150,7 +150,7 @@ class Connection
      */
     public function __debugInfo()
     {
-        return ['return' => 'This is a general object, please call the sub method!'];
+        return ['return' => $this->stringQuery ?: 'This is a general object, please call the sub method!'];
     }
 
     /**

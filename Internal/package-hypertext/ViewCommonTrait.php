@@ -11,8 +11,8 @@
 
 use ZN\Classes;
 use ZN\Datatype;
+use ZN\Authorization;
 use ZN\DataTypes\Arrays;
-use ZN\Authorization\Permission;
 use ZN\Hypertext\Exception\PermissionRoleIdException;
 
 trait ViewCommonTrait
@@ -241,12 +241,12 @@ trait ViewCommonTrait
     {
         if( $perm !== NULL )
         {
-            if( Permission\PermissionExtends::$roleId === NULL )
+            if( Authorization\PermissionExtends::$roleId === NULL )
             {
                 throw new PermissionRoleIdException();
             }
 
-            return Permission\Process::use($perm, $return);
+            return Authorization\Process::use($perm, $return);
         }
 
         return $return;

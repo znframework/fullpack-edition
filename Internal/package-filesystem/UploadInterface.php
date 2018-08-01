@@ -12,6 +12,15 @@
 interface UploadInterface
 {
     /**
+     * Is file input name
+     * 
+     * @param string $name
+     * 
+     * @return bool
+     */
+    public function isFile(String $name) : Bool;
+    
+    /**
      * Settings
      * 
      * @param array $settings = []
