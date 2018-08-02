@@ -84,7 +84,7 @@ class Select extends MLExtends
         {
             if( $app === NULL )
             {
-                $MLFiles = Filesystem::getFiles($this->appdir, 'ml');
+                $MLFiles = $this->getMLFiles();
             }
             elseif( is_array($app) )
             {
@@ -99,7 +99,7 @@ class Select extends MLExtends
 
             if( ! empty($MLFiles) ) foreach( $MLFiles as $file )
             {
-                $removeExtension = str_replace($this->extension, '', $file);
+                $removeExtension = $this->removeExtension($file);
                 $allMLFiles[$removeExtension] = $this->all($removeExtension);
             }
 
@@ -126,5 +126,39 @@ class Select extends MLExtends
     public function keys()
     {
         return (object) $this->all(Lang::get());
+    }
+
+    /**
+     * Get langs
+     * 
+     * @return array
+     */
+    public function langs()
+    {
+        $langs = [];
+        $files = $this->getMLFiles();
+
+        foreach( $files as $file )
+        {
+            $langs[] = $this->removeExtension($file);
+        }
+    
+        return $langs;
+    }
+
+    /**
+     * Protected get ml files
+     */
+    protected function getMLFiles()
+    {
+        return Filesystem::getFiles($this->appdir, 'ml');
+    }
+
+    /**
+     * Protected remove extension
+     */
+    protected function removeExtension($file)
+    {
+        return str_replace($this->extension, '', $file);
     }
 }
