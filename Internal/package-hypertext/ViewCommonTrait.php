@@ -227,6 +227,8 @@ trait ViewCommonTrait
             $this->_getrow($type, $value, $attributes);
         }
 
+        $this->getVMethodMessages();
+
         $perm   = $this->settings['attr']['perm'] ?? NULL;
         
         $return = '<input type="'.$type.'"'.$this->attributes($attributes).'>'.EOL;

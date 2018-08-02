@@ -46,6 +46,13 @@ trait FormElementsTrait
     protected $validate = [];
 
     /**
+     * Keeps validation method messages
+     * 
+     * @var string
+     */
+    protected $vMethodMessages = NULL;
+
+    /**
      * Magic destruct
      */
     public function __destruct()
@@ -114,6 +121,18 @@ trait FormElementsTrait
     public function vRequired()
     {
         return $this->onInvalidEventPattern('^.+$', 'required');
+    }
+
+    /**
+     * Message control
+     * 
+     * @return string
+     */
+    public function vMessage(String $message)
+    {
+        $this->vMethodMessages = $message;
+        
+        return $this;
     }
 
     /**
@@ -479,9 +498,10 @@ trait FormElementsTrait
     {
         $this->getJavascriptValidationFunction[$name] = $function = $name . md5($name);
 
+        $this->validate[] = $rule ?: $lang;
+
         return $this->onkeyup($function . '(this, ' . Base::suffix(implode(', ', $param), ', ') . '\''.$this->setCustomValidity($lang).'\')') 
-                    ->required()
-                    ->validate($rule ?: $lang);
+                    ->required();
     }
 
     /**
@@ -489,8 +509,9 @@ trait FormElementsTrait
      */
     protected function onInvalidEventPattern($pattern, $key, $check = [], $type = NULL)
     {
-        return $this->onInvalidEventPatternWithoutValidate($pattern, $key, $check)
-                    ->validate($type ?? $key);
+        $this->validate[] = $type ?: $key;
+
+        return $this->onInvalidEventPatternWithoutValidate($pattern, $key, $check);
     }
 
     /**
@@ -506,7 +527,9 @@ trait FormElementsTrait
      */
     protected function onInvalidEventAttributeValidate($key, $check = [], $rule = NULL)
     {
-        return $this->required()->onInvalidEventCustomValidity($key, $check)->validate($rule ?? $key);
+        $this->validate[] = $rule ?: $key;
+
+        return $this->required()->onInvalidEventCustomValidity($key, $check);
     }
 
     /**
@@ -514,8 +537,23 @@ trait FormElementsTrait
      */
     protected function onInvalidEventCustomValidity($key, $check = [])
     {
-        return $this->oninvalid('setCustomValidity(\'' . $this->setCustomValidity($key, $check) . '\')')
-                    ->oninput('setCustomValidity(\'\')');
+        $this->vMethodMessages .= $this->setCustomValidity($key, $check) . ' ';
+
+        return $this;
+    }
+
+    /**
+     * Protected get validate method messages
+     */
+    protected function getVMethodMessages()
+    {
+        if( $this->vMethodMessages !== NULL )
+        {
+            $this->oninvalid('setCustomValidity(\'' . rtrim($this->vMethodMessages) . '\')')->oninput('setCustomValidity(\'\')')->validate(...$this->validate);
+
+            $this->vMethodMessages = NULL;
+            $this->validate = [];
+        } 
     }
 
     /**
