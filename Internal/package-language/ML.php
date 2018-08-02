@@ -20,6 +20,7 @@ class ML extends Factory
         [
             'select'       => 'Select::do',
             'selectall'    => 'Select::all',
+            'keys'         => 'Select::keys',
             'insert'       => 'Insert::do',
             'update'       => 'Update::do',
             'delete'       => 'Delete::do',

@@ -10,6 +10,7 @@
  * @since   2011
  */
 
+use ZN\Lang;
 use ZN\Filesystem;
 
 class Select extends MLExtends
@@ -106,11 +107,24 @@ class Select extends MLExtends
         }
         else
         {
-            $createFile = $this->_langFile($app);
+            if( is_file($createFile = $this->_langFile($app)) )
+            {
+                $read = file_get_contents($createFile);
 
-            $read = file_get_contents($createFile);
+                return json_decode($read, true);
+            }   
 
-            return json_decode($read, true);
+            return [];
         }
+    }
+
+    /**
+     * Returns the keys and values of the selected language from the object type.
+     * 
+     * @return object 
+     */
+    public function keys()
+    {
+        return (object) $this->all(Lang::get());
     }
 }
