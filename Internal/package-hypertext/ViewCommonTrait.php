@@ -220,14 +220,15 @@ trait ViewCommonTrait
         {
             $this->_postback($attributes['name'], $attributes['value'], $type);
 
+            # 5.8.2.8[added]
+            $this->getVMethodMessages();
+
             # 5.4.2[added]
             $this->_validate($attributes['name'], $attributes['name']);
 
             # 5.4.2[added]
             $this->_getrow($type, $value, $attributes);
         }
-
-        $this->getVMethodMessages();
 
         $perm   = $this->settings['attr']['perm'] ?? NULL;
         

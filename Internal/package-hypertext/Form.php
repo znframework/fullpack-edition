@@ -180,10 +180,13 @@ class Form
         {
             $this->_postback($this->settings['attr']['name'], $value);
 
-            // 5.4.2[added]
+            # 5.8.2.8[added]
+            $this->getVMethodMessages();
+
+            # 5.4.2[added]
             $this->_validate($this->settings['attr']['name'], $this->settings['attr']['name']);
             
-            // 5.4.2[added]|5.4.5|5.4.6[edited]
+            # 5.4.2[added]|5.4.5|5.4.6[edited]
             $value = $this->_getrow('textarea', $value, $this->settings['attr']);
         }
 
@@ -283,6 +286,9 @@ class Form
         if( ! empty($_attributes['name']) )
         {
             $this->_postback($_attributes['name'], $selected);
+
+            # 5.8.2.8[added]
+            $this->getVMethodMessages();
 
             # 5.4.2[added]
             $this->_validate($_attributes['name'], $_attributes['name']);

@@ -252,7 +252,14 @@ trait FormElementsTrait
      */
     public function validate(...$validate)
     {
-        $this->validate = $validate;
+        if( $this->validate === [] )
+        {
+            $this->validate = $validate;
+        }
+        else
+        {
+            $this->validate = array_merge($this->validate, $validate);
+        }
 
         return $this;
     }
@@ -552,7 +559,6 @@ trait FormElementsTrait
             $this->oninvalid('setCustomValidity(\'' . rtrim($this->vMethodMessages) . '\')')->oninput('setCustomValidity(\'\')')->validate(...$this->validate);
 
             $this->vMethodMessages = NULL;
-            $this->validate = [];
         } 
     }
 
