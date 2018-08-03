@@ -126,7 +126,7 @@ class Register extends UserExtends
     {
         # Return link values.
         # 5.7.3[added]
-        if( is_scalar($$userUriKey) )
+        if( is_scalar($userUriKey) )
         {
             $user = URI::get($userUriKey); 
         }
