@@ -12,6 +12,13 @@
 class Request
 {   
     /**
+     * Protected keeps lang
+     * 
+     * @var string
+     */
+    public static $lang = NULL;
+
+    /**
      * Request CURL
      * 
      * @return bool
@@ -134,13 +141,17 @@ class Request
      */
     public static function getSiteURL(String $uri = NULL) : String
     {
-        return self::getHostName
+        $return = self::getHostName
         (
-               BASE_DIR.
-               In::getCurrentProject().
-               Base::suffix(Lang::current()).
-               $uri
-         );
+            BASE_DIR.
+            In::getCurrentProject().
+            Base::suffix(self::$lang ?? Lang::current()).
+            $uri
+        );
+
+        self::$lang = NULL;
+
+        return $return;
     }
 
     /**

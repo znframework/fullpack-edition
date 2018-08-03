@@ -12,9 +12,26 @@
 use ZN\Base;
 use ZN\Helper;
 use ZN\Request;
+use ZN\Ability\Singleton;
 
 class URL implements URLInterface
 {
+    use Singleton;
+
+    /**
+     * Sets lang
+     * 
+     * @param string $lang
+     * 
+     * @return self
+     */
+    public static function lang(String $lang)
+    {
+        Request::$lang = $lang;
+
+        return self::singleton();
+    }
+
     /**
      * Get base name
      * 

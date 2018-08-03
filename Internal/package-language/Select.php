@@ -10,6 +10,7 @@
  * @since   2011
  */
 
+use ZN\Lang;
 use ZN\Filesystem;
 
 class Select extends MLExtends
@@ -83,7 +84,7 @@ class Select extends MLExtends
         {
             if( $app === NULL )
             {
-                $MLFiles = Filesystem::getFiles($this->appdir, 'ml');
+                $MLFiles = $this->getMLFiles();
             }
             elseif( is_array($app) )
             {
@@ -98,7 +99,7 @@ class Select extends MLExtends
 
             if( ! empty($MLFiles) ) foreach( $MLFiles as $file )
             {
-                $removeExtension = str_replace($this->extension, '', $file);
+                $removeExtension = $this->removeExtension($file);
                 $allMLFiles[$removeExtension] = $this->all($removeExtension);
             }
 
@@ -106,11 +107,58 @@ class Select extends MLExtends
         }
         else
         {
-            $createFile = $this->_langFile($app);
+            if( is_file($createFile = $this->_langFile($app)) )
+            {
+                $read = file_get_contents($createFile);
 
-            $read = file_get_contents($createFile);
+                return json_decode($read, true);
+            }   
 
-            return json_decode($read, true);
+            return [];
         }
+    }
+
+    /**
+     * Returns the keys and values of the selected language from the object type.
+     * 
+     * @return object 
+     */
+    public function keys()
+    {
+        return (object) $this->all(Lang::get());
+    }
+
+    /**
+     * Get langs
+     * 
+     * @return array
+     */
+    public function langs()
+    {
+        $langs = [];
+        $files = $this->getMLFiles();
+
+        foreach( $files as $file )
+        {
+            $langs[] = $this->removeExtension($file);
+        }
+    
+        return $langs;
+    }
+
+    /**
+     * Protected get ml files
+     */
+    protected function getMLFiles()
+    {
+        return Filesystem::getFiles($this->appdir, 'ml');
+    }
+
+    /**
+     * Protected remove extension
+     */
+    protected function removeExtension($file)
+    {
+        return str_replace($this->extension, '', $file);
     }
 }
