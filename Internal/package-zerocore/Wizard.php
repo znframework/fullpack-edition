@@ -66,6 +66,8 @@ class Wizard
             self::html()
         );
 
+        self::callableJS($string);
+
         return Buffering::code(self::replace($pattern, $string), $data);
     }
 
@@ -215,6 +217,28 @@ class Wizard
         }
 
         return $array;
+    }
+
+    /**
+     * protected functions
+     * 
+     * @param void
+     * 
+     * @return array
+     */
+    protected static function callableJS(&$string)
+    {
+        if( self::$config['callableJS'] ?? true )
+        {
+            $string = preg_replace_callback('/(function\((.*?)\)\s*)*\{\<\s+(.*?)\s+\>\}/s', function($data)
+            {
+                $code = str_replace('\\\'', '+[symbol??slashnail]+', $data[3]);      
+                $code = str_replace('\'', '\\\'', $code);
+                $code = str_replace('+[symbol??slashnail]+', '\\\\\\\'', $code);
+    
+                return 'function(' . $data[2] . '){ echo \'' . $code . '\'; }';
+            }, $string);
+        }
     }
 
     /**

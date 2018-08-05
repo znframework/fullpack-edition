@@ -53,7 +53,7 @@ class View
         # If the view starts with / symbol, it refers to pulling a file from 
         # the view directory linked to the corresponding controller.
         # 5.7.4[added]
-        if( $page[0] === '/' )
+        if( isset($page[0]) && $page[0] === '/' )
         {
             $page = CURRENT_CONTROLLER . $page;
         }
