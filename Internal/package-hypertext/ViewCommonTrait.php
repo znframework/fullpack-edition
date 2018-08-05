@@ -245,18 +245,24 @@ trait ViewCommonTrait
     /**
      * Serilize form into controller
      * 
-     * @param string $url
-     * @param string $selector
-     * @param string $attr
+     * @param string          $url
+     * @param string|callable $selector
+     * @param string          $attr
      */
-    public function serializer(String $url, String $selector = '.modal-body', String $attr = 'html')
+    public function serializer(String $url, $selector = '.modal-body', $datatype = 'standart')
     {
+        $selector = is_string($selector)
+                  ? ($this->settings['attr']['data-target'] ?? NULL) . Base::prefix($selector, ' ')
+                  : $selector;
+
+        $this->convertSerializerDataType($datatype);
+
         $data = 
         [
             'serializerUrl'       => $url,
-            'serializerSelector'  => ($this->settings['attr']['data-target'] ?? NULL) . Base::prefix($selector, ' '),
-            'serializerAttr'      => $attr,
-            'serializerFunction'  => $function = 'serializer' . md5(uniqid())
+            'serializerSelector'  => $selector,
+            'serializerFunction'  => $function = 'serializer' . md5(uniqid()),
+            'serializerProperties'=> $this->transferAttributesAndUnset('serializer', 'properties')
         ];
 
         $this->settings['attr']['onclick'] = $function . '(this)';
@@ -264,6 +270,33 @@ trait ViewCommonTrait
         echo $this->getAjaxResource('serializer', $data);
 
         return $this;
+    }
+
+    /**
+     * Protected convert serializeer data type
+     */
+    protected function convertSerializerDataType($datatype)
+    {
+        if( $datatype === 'json' )
+        {
+            $this->settings['serializer']['properties'] = 'dataType:"json",' . EOL;
+        }
+        elseif( is_array($datatype) )
+        {
+            $this->settings['serializer']['properties'] = rtrim(ltrim(json_encode($datatype), '{'), '}') . ',' . PHP_EOL;
+        }
+    }
+
+    /**
+     * Protected transfer attributes and unset
+     */
+    protected function transferAttributesAndUnset($type, $attr)
+    {
+        $return = $this->settings[$type][$attr] ?? NULL;
+
+        unset($this->settings[$type][$attr]);
+
+        return $return;
     }
 
     /**

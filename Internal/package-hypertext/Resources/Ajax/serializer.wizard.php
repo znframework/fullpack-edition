@@ -7,9 +7,14 @@ function {{$serializerFunction}}(element)
         url  : '{{ URL::site($serializerUrl) }}', 
         type : 'post', 
         data : $(element).closest('form').serialize(),
+        {{ $serializerProperties}}
         success:function(data)
         {
-            $('{{$serializerSelector}}').{{$serializerAttr}}(data);
+            @if( is_string($serializerSelector) )
+            $('{{$serializerSelector}}').html(data);
+            @elseif( is_callable($serializerSelector) )
+            {{ $serializerSelector() }}
+            @endif
         }
     });
 }
