@@ -247,7 +247,7 @@ trait ViewCommonTrait
      * 
      * @param string          $url
      * @param string|callable $selector
-     * @param string          $attr
+     * @param string|array    $datatype|$properties
      */
     public function serializer(String $url, $selector = '.modal-body', $datatype = 'standart')
     {
