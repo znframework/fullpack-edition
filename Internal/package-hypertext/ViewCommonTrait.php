@@ -213,7 +213,7 @@ trait ViewCommonTrait
     public function modal(String $selector)
     {
         $this->settings['attr']['data-toggle'] = 'modal';
-        $this->settings['attr']['data-target'] = $selector;
+        $this->settings['attr']['data-target'] = Base::prefix($selector, '#');
 
         return $this;
     }
@@ -255,19 +255,32 @@ trait ViewCommonTrait
                   ? ($this->settings['attr']['data-target'] ?? NULL) . Base::prefix($selector, ' ')
                   : $selector;
 
+        return $this->trigger('click', $url, $selector, $datatype, 'serializer');
+    }
+
+    /**
+     * Trigger controller
+     * 
+     * @param string          $event
+     * @param string          $url
+     * @param string|callable $selector
+     * @param string|array    $datatype|$properties
+     */
+    public function trigger(String $event, String $url, $selector, $datatype = 'standart', $resource = 'trigger')
+    {
         $this->convertSerializerDataType($datatype);
 
         $data = 
         [
             'serializerUrl'       => $url,
             'serializerSelector'  => $selector,
-            'serializerFunction'  => $function = 'serializer' . md5(uniqid()),
+            'serializerFunction'  => $function = $resource . md5(uniqid()),
             'serializerProperties'=> $this->transferAttributesAndUnset('serializer', 'properties')
         ];
 
-        $this->settings['attr']['onclick'] = $function . '(this)';
+        $this->settings['attr'][Base::prefix($event, 'on')] = $function . '(this)';
 
-        echo $this->getAjaxResource('serializer', $data);
+        echo $this->getAjaxResource($resource, $data);
 
         return $this;
     }
