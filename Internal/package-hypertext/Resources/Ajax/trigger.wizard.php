@@ -5,11 +5,14 @@ function {{$serializerFunction}}(element)
 
     if ( form.is(":valid") ) 
     {
+        var value = $(element).val();
+        var name  = $(element).attr('name');
+
         $.ajax
         ({
             url  : '{{ URL::site($serializerUrl) }}', 
             type : 'post', 
-            data : form.serialize(),
+            data : {name : value},
             {{ $serializerProperties}}
             success:function(data)
             {
@@ -20,6 +23,6 @@ function {{$serializerFunction}}(element)
                 @endif
             }
         });
-    } 
+    }
 }
 </script>

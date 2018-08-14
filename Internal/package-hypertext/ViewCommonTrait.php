@@ -213,7 +213,7 @@ trait ViewCommonTrait
     public function modal(String $selector)
     {
         $this->settings['attr']['data-toggle'] = 'modal';
-        $this->settings['attr']['data-target'] = $selector;
+        $this->settings['attr']['data-target'] = Base::prefix($selector, '#');
 
         return $this;
     }
@@ -245,25 +245,71 @@ trait ViewCommonTrait
     /**
      * Serilize form into controller
      * 
-     * @param string $url
-     * @param string $selector
-     * @param string $attr
+     * @param string          $url
+     * @param string|callable $selector
+     * @param string|array    $datatype|$properties
      */
-    public function serializer(String $url, String $selector = '.modal-body', String $attr = 'html')
+    public function serializer(String $url, $selector = '.modal-body', $datatype = 'standart')
     {
+        $selector = is_string($selector)
+                  ? ($this->settings['attr']['data-target'] ?? NULL) . Base::prefix($selector, ' ')
+                  : $selector;
+
+        return $this->trigger('click', $url, $selector, $datatype, 'serializer');
+    }
+
+    /**
+     * Trigger controller
+     * 
+     * @param string          $event
+     * @param string          $url
+     * @param string|callable $selector
+     * @param string|array    $datatype|$properties
+     */
+    public function trigger(String $event, String $url, $selector, $datatype = 'standart', $resource = 'trigger')
+    {
+        $this->convertSerializerDataType($datatype);
+
         $data = 
         [
             'serializerUrl'       => $url,
-            'serializerSelector'  => ($this->settings['attr']['data-target'] ?? NULL) . Base::prefix($selector, ' '),
-            'serializerAttr'      => $attr,
-            'serializerFunction'  => $function = 'serializer' . md5(uniqid())
+            'serializerSelector'  => $selector,
+            'serializerFunction'  => $function = $resource . md5(uniqid()),
+            'serializerProperties'=> $this->transferAttributesAndUnset('serializer', 'properties')
         ];
 
-        $this->settings['attr']['onclick'] = $function . '(this)';
+        $this->settings['attr'][Base::prefix($event, 'on')] = $function . '(this)';
 
-        echo $this->getAjaxResource('serializer', $data);
+        echo $this->getAjaxResource($resource, $data);
 
         return $this;
+    }
+
+    /**
+     * Protected convert serializeer data type
+     */
+    protected function convertSerializerDataType($datatype)
+    {
+        if( $datatype === 'json' )
+        {
+            $this->settings['serializer']['properties'] = 'dataType:"json",' . EOL;
+        }
+        elseif( is_array($datatype) )
+        {
+            $this->settings['serializer']['properties'] = rtrim(ltrim(json_encode($datatype), '{'), '}') . ',' . PHP_EOL;
+        }
+    }
+
+    /**
+     * Protected transfer attributes and unset
+     */
+    protected function transferAttributesAndUnset($type, $attr)
+    {
+        $return = $this->settings[$type][$attr] ?? NULL;
+
+        unset($this->settings[$type][$attr]);
+
+        return $return;
     }
 
     /**

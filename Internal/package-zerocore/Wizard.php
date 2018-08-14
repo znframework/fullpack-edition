@@ -26,6 +26,13 @@ class Wizard
     protected static $config;
 
     /**
+     * Keeps true codes
+     * 
+     * @var array
+     */
+    protected static $keepTrueCodes;
+
+    /**
      * PHP tag isolation
      * 
      * @param string $data
@@ -50,6 +57,31 @@ class Wizard
     {
         self::$config = $config ?: Config::get('ViewObjects', 'wizard');
 
+        self::callableJS($string);
+
+        $code = self::convertWizardContent($string);
+
+        self::convertTrueCode($code);
+
+        return Buffering::code($code, $data);
+    }
+
+    /**
+     * Protected convert true code
+     */
+    protected static function convertTrueCode(&$code)
+    {
+        if( ! empty(self::$keepTrueCodes) )
+        {
+            $code = str_replace(array_keys(self::$keepTrueCodes), array_values(self::$keepTrueCodes), $code);
+        }
+    }
+
+    /**
+     * Protected convert wizard content
+     */
+    protected static function convertWizardContent($string)
+    {
         self::textControl($string); # 5.4.6[added]
         
         $pattern = array_merge
@@ -66,9 +98,7 @@ class Wizard
             self::html()
         );
 
-        self::callableJS($string);
-
-        return Buffering::code(self::replace($pattern, $string), $data);
+        return self::replace($pattern, $string);
     }
 
     /**
@@ -230,13 +260,13 @@ class Wizard
     {
         if( self::$config['callableJS'] ?? true )
         {
-            $string = preg_replace_callback('/(function\((.*?)\)\s*)*\{\<\s+(.*?)\s+\>\}/s', function($data)
+            $string = preg_replace_callback('/(function\((?<parameters>.*?)\)\s*)*(?<use>use\(.*?\)\s*)*\{\<\s+(?<code>.*?)\s+\>\}/s', function($data)
             {
-                $code = str_replace('\\\'', '+[symbol??slashnail]+', $data[3]);      
-                $code = str_replace('\'', '\\\'', $code);
-                $code = str_replace('+[symbol??slashnail]+', '\\\\\\\'', $code);
-    
-                return 'function(' . $data[2] . '){ echo \'' . $code . '\'; }';
+                $code = self::convertWizardContent($data['code']);
+
+                self::$keepTrueCodes[$c = md5($code)] = $code;
+
+                return 'function(' . $data['parameters'] . ')' . $data['use'] . '{ ?>' . $c . '<?php }';
             }, $string);
         }
     }

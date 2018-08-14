@@ -30,4 +30,4 @@ require __DIR__ . '/Internal/autoload.php';
 |
 */
 
-ZN\ZN::run('FE', '5.8.3.5', 'Cahit Arf');
+ZN\ZN::run('FE', '5.8.4.4', 'Cahit Arf');

@@ -65,41 +65,23 @@ class Form
      */
     public function open(String $name = NULL, Array $_attributes = []) : String
     {
-        $name = $this->settings['attr']['name'] ?? $name;
-  
-        $_attributes['name'] = $name;
+        $this->setFormName($name, $_attributes);
 
-        if( isset($_attributes['enctype']) )
-        {
-            $enctype = $_attributes['enctype'];
-
-            if( isset($this->enctypes[$enctype]) )
-            {
-                $_attributes['enctype'] = $this->enctypes[$enctype];
-            }
-        }
+        $this->isEnctypeAttribute($_attributes);
        
-        if( isset($this->settings['where']) )
-        {
-            $this->settings['getrow'] = Singleton::class('ZN\Database\DB')->get($name)->row();
-        }
+        $this->isWhereAttribute($name);
         
-        if( $query = ($this->settings['query'] ?? NULL) )
-        {
-            $this->settings['getrow'] = Singleton::class('ZN\Database\DB')->query($query)->row();
-        }
-        
-        $this->method = ($_attributes['method'] = $_attributes['method'] ?? $this->settings['attr']['method'] ?? 'post');
-        
-        $return  = '<form'.$this->attributes($_attributes).'>'.EOL;
+        $this->isQueryAttribute();
 
-        # 5.4.2[added]
-        $return .= $this->_process($name, $this->method);
+        $this->isPreventAttribute();
+        
+        $this->setMethodType($_attributes);
+        
+        $this->createFormElementByAttributes($_attributes, $return);
 
-        if( isset($this->settings['token']) )
-        {
-            $return .= CSRFInput();
-        }
+        $this->isDatabaseProcessWithName($name, $return);
+
+        $this->isCSRFAttribute($return);
 
         $this->_unsetopen();
 
@@ -169,12 +151,9 @@ class Form
      */
     public function textarea(String $name = NULL, String $value = NULL, Array $_attributes = []) : String
     {
-        if( ! isset($this->settings['attr']['name']) && ! empty($name) )
-        {
-            $this->settings['attr']['name'] = $name;
-        }
+        $this->setNameAttribute($name);
 
-        $value = $this->settings['attr']['value'] ?? $value;
+        $this->setValueAttribute($value);
 
         if( ! empty($this->settings['attr']['name']) )
         {
@@ -190,9 +169,9 @@ class Form
             $value = $this->_getrow('textarea', $value, $this->settings['attr']);
         }
 
-        $perm   = $this->settings['attr']['perm'] ?? NULL;
+        $this->getPermAttribute($perm);
 
-        $return = '<textarea'.$this->attributes($_attributes).'>'.$value.'</textarea>'.EOL;
+        $this->createTextareaElementByValueAndAttributes($value, $_attributes, $return);
 
         return $this->_perm($perm, $return);
     }
@@ -210,78 +189,21 @@ class Form
      */
     public function select(String $name = NULL, Array $options = [], $selected = NULL, Array $_attributes = [], Bool $multiple = false) : String
     {
-        if( ! empty($this->settings['table']) || ! empty($this->settings['query']) )
-        {
-            $key     = key($options);
-            $current = current($options);
-            
-            array_shift($options);
+        $this->isTableOrQueryData($options);
 
-            $dbClass = Singleton::class('ZN\Database\DB');
+        $this->setOptionAttribute($options);
 
-            if( ! empty($this->settings['table']) )
-            {
-                $table = $this->settings['table'];
+        $this->isExcludeAttribute($options);
 
-                if( strstr($table, ':') )
-                {
-                    $tableEx = explode(':', $tableEx);
-                    $table   = $tableEx[1];
-                    $db      = $tableEx[0];
+        $this->isIncludeAttribute($options);
 
-                    $db     = $dbClass->differentConnection($db);
-                    $result = $db->select($current, $key)->get($table)->result();
-                }
-                else
-                {
-                    $result = $dbClass->select($current, $key)->get($table)->result();
-                }
-            }
-            else
-            {
-                $result = $dbClass->query($this->settings['query'])->result();
-            }
+        $this->isOrderAttribute($options);
 
-            foreach( $result as $row )
-            {
-                $options[$row->$key] = $row->$current;
-            }
-        }
+        $this->setSelectedAttribute($selected, $options);
 
-        $options = $this->settings['option'] ?? $options;
+        $this->setMultipleAttribute($multiple, $_attributes);
 
-        if( isset($this->settings['exclude']) )
-        {
-            $options = Arrays\Excluding::use($options, $this->settings['exclude']);
-        }
-
-        if( isset($this->settings['include']) )
-        {
-            $options = Arrays\Including::use($options, $this->settings['include']);
-        }
-
-        if( isset($this->settings['order']['type']) )
-        {
-            $options = Arrays\Sort::order($options, $this->settings['order']['type'], $this->settings['order']['flags']);
-        }
-
-        $selected = $this->settings['selectedKey'] ?? $selected;
-
-        if( isset($this->settings['selectedValue']) )
-        {
-            $flip     = array_flip($options);
-            $selected = $flip[$this->settings['selectedValue']];
-        }
-
-        if( $multiple === true )
-        {
-            $_attributes['multiple'] ="multiple";
-        }
-
-        if( $name !== '' )
-        {
-            $_attributes['name'] = $name;
-        }
+        $this->setNameAttributeWithReference($name, $_attributes);
 
         if( ! empty($_attributes['name']) )
         {
@@ -297,43 +219,13 @@ class Form
             $selected = $this->_getrow('select', $selected, $_attributes);
         }
 
-        $perm      = $this->settings['attr']['perm'] ?? NULL;
+        $this->getPermAttribute($perm);
 
-        $selectbox = '<select'.$this->attributes($_attributes).'>';
-
-        if( is_array($options) ) foreach( $options as $key => $value )
-        {
-            if( is_array($selected) )
-            {
-                if( in_array($key, $selected) )
-                {
-                    $select = ' selected="selected"';
-                }
-                else
-                {
-                    $select = "";
-                }
-            }
-            else
-            {
-                if( $selected == $key )
-                {
-                    $select = ' selected="selected"';
-                }
-                else
-                {
-                    $select = "";
-                }
-            }
-
-            $selectbox .= '<option value="'.$key.'"'.$select.'>'.$value.'</option>'.EOL;
-        }
-
-        $selectbox .= '</select>'.EOL;
+        $this->createSelectElement($options, $selected, $_attributes, $return);
 
         $this->_unsetselect();
 
-        return $this->_perm($perm, $selectbox);
+        return $this->_perm($perm, $return);
     }
 
     /**
@@ -406,6 +298,296 @@ class Form
         }
 
         return $this->_input($name, '', $_attributes, 'file');
+    }
+
+    /**
+     * Protected create select element
+     */
+    protected function createSelectElement($options, $selected, $_attributes, &$return)
+    {
+        $return = '<select'.$this->attributes($_attributes).'>';
+
+        if( is_array($options) ) foreach( $options as $key => $value )
+        {
+            if( is_array($selected) )
+            {
+                if( in_array($key, $selected) )
+                {
+                    $select = ' selected="selected"';
+                }
+                else
+                {
+                    $select = "";
+                }
+            }
+            else
+            {
+                if( $selected == $key )
+                {
+                    $select = ' selected="selected"';
+                }
+                else
+                {
+                    $select = "";
+                }
+            }
+
+            $return .= '<option value="'.$key.'"'.$select.'>'.$value.'</option>'.EOL;
+        }
+
+        $return .= '</select>'.EOL;
+    }
+
+    /**
+     * Protected set name attribute with reference
+     */
+    protected function setNameAttributeWithReference($name, &$_attributes)
+    {
+        if( $name !== '' )
+        {
+            $_attributes['name'] = $name;
+        }
+    }
+
+    /**
+     * Protected set multiple attribute
+     */
+    protected function setMultipleAttribute($multiple, &$_attributes)
+    {
+        if( $multiple === true )
+        {
+            $_attributes['multiple'] = 'multiple';
+        }
+    }
+
+    /**
+     * Protected set selected attribute
+     */
+    protected function setSelectedAttribute(&$selected, $options)
+    {
+        $selected = $this->settings['selectedKey'] ?? $selected;
+
+        if( isset($this->settings['selectedValue']) )
+        {
+            $flip     = array_flip($options);
+            $selected = $flip[$this->settings['selectedValue']];
+        }
+    }
+
+    /**
+     * Protected is order attribute
+     */
+    protected function isOrderAttribute(&$options)
+    {
+        if( isset($this->settings['order']['type']) )
+        {
+            $options = Arrays\Sort::order($options, $this->settings['order']['type'], $this->settings['order']['flags']);
+        }
+    }
+
+    /**
+     * Protected is exclude attribute
+     */
+    protected function isExcludeAttribute(&$options)
+    {
+        if( isset($this->settings['exclude']) )
+        {
+            $options = Arrays\Excluding::use($options, $this->settings['exclude']);
+        }
+    }
+
+    /**
+     * Protected is include attribute
+     */
+    protected function isIncludeAttribute(&$options)
+    {
+        if( isset($this->settings['include']) )
+        {
+            $options = Arrays\Including::use($options, $this->settings['include']);
+        }
+    }
+
+    /**
+     * Protected set option attribute
+     */
+    protected function setOptionAttribute(&$options)
+    {
+        $options = $this->settings['option'] ?? $options;
+    }
+
+    /**
+     * Protected is table or query data
+     */
+    protected function isTableOrQueryData(&$options)
+    {
+        if( ! empty($this->settings['table']) || ! empty($this->settings['query']) )
+        {
+            $key     = key($options);
+            $current = current($options);
+            
+            array_shift($options);
+
+            $dbClass = Singleton::class('ZN\Database\DB');
+
+            if( ! empty($this->settings['table']) )
+            {
+                $table = $this->settings['table'];
+
+                if( strstr($table, ':') )
+                {
+                    $tableEx = explode(':', $tableEx);
+                    $table   = $tableEx[1];
+                    $db      = $tableEx[0];
+
+                    $db     = $dbClass->differentConnection($db);
+                    $result = $db->select($current, $key)->get($table)->result();
+                }
+                else
+                {
+                    $result = $dbClass->select($current, $key)->get($table)->result();
+                }
+            }
+            else
+            {
+                $result = $dbClass->query($this->settings['query'])->result();
+            }
+
+            foreach( $result as $row )
+            {
+                $options[$row->$key] = $row->$current;
+            }
+        }
+    }
+
+    /**
+     * Protected get perm attribute
+     */
+    protected function getPermAttribute(&$perm)
+    {
+        $perm = $this->settings['attr']['perm'] ?? NULL;
+    }
+
+    /**
+     * Protected create textarea element by value and attributes
+     */
+    protected function createTextareaElementByValueAndAttributes($value, $_attributes, &$return)
+    {
+        $return = '<textarea'.$this->attributes($_attributes).'>'.$value.'</textarea>' . EOL;
+    }
+
+    /**
+     * Protected set textarea name attribute
+     */
+    protected function setNameAttribute($name)
+    {
+        if( ! isset($this->settings['attr']['name']) && ! empty($name) )
+        {
+            $this->settings['attr']['name'] = $name;
+        }
+    }
+
+    /**
+     * Protected set value attribute
+     */
+    protected function setValueAttribute(&$value)
+    {
+        $value = $this->settings['attr']['value'] ?? $value;
+    }
+
+    /**
+     * Protected set form name
+     */
+    protected function setFormName(&$name, &$_attributes)
+    {
+        $name = $this->settings['attr']['name'] ?? $name;
+  
+        $_attributes['name'] = $name;
+    }
+
+    /**
+     * Protected create form element by attributes
+     */
+    protected function createFormElementByAttributes($_attributes, &$return)
+    {
+        $return = '<form'.$this->attributes($_attributes).'>' . EOL;
+    }
+
+    /**
+     * Protected is database process with name
+     */
+    protected function isDatabaseProcessWithName($name, &$return)
+    {
+        $return .= $this->_process($name, $this->method);
+    }
+
+    /**
+     * Protected is csrf attribute
+     */
+    protected function isCSRFAttribute(&$return)
+    {
+        if( isset($this->settings['token']) )
+        {
+            $return .= CSRFInput();
+        }
+    }
+
+    /**
+     * Protected set method type
+     */
+    protected function setMethodType(&$_attributes)
+    {
+        $this->method = ($_attributes['method'] = $_attributes['method'] ?? $this->settings['attr']['method'] ?? 'post');
+    }
+
+    /**
+     * Protected is enctype attribute
+     */
+    protected function isEnctypeAttribute(&$_attributes)
+    {
+        if( isset($_attributes['enctype']) )
+        {
+            $enctype = $_attributes['enctype'];
+
+            if( isset($this->enctypes[$enctype]) )
+            {
+                $_attributes['enctype'] = $this->enctypes[$enctype];
+            }
+        }
+    }
+
+    /**
+     * Protected is where attribute
+     */
+    protected function isWhereAttribute($name)
+    {
+        if( isset($this->settings['where']) )
+        {
+            $this->settings['getrow'] = Singleton::class('ZN\Database\DB')->get($name)->row();
+        }
+    }
+
+    /**
+     * Protected is query attribute
+     */
+    protected function isQueryAttribute()
+    {
+        if( $query = ($this->settings['query'] ?? NULL) )
+        {
+            $this->settings['getrow'] = Singleton::class('ZN\Database\DB')->query($query)->row();
+        }
+    }
+
+    /**
+     * Protected is prevent attribute
+     */
+    protected function isPreventAttribute()
+    {
+        if( isset($this->settings['attr']['prevent']) )
+        {
+            unset($this->settings['attr']['prevent']);
+
+            $this->settings['attr']['onsubmit'] = 'event.preventDefault()';
+        }
     }
 
     /**
