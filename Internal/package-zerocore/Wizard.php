@@ -182,7 +182,7 @@ class Wizard
     {
         return 
         [
-            '/\$this/' => '$getZNClassInstance'
+            '/\$this\-\>/' => '$getZNClassInstance->'
         ];
     }
 
