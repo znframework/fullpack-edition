@@ -86,6 +86,7 @@ class Wizard
         
         $pattern = array_merge
         (
+            self::changeVariables(),
             self::symbolsHeader(),
             self::tags(),
             self::keywords(),
@@ -171,6 +172,17 @@ class Wizard
         [
             '/\{\{\{\s*(.*?)\s*\}\}\}/s' => '<?php echo htmlentities($1) ?>',
             '/\{\{(\s*.*?)\s*\}\}/s'     => '<?php echo $1 ?>',
+        ];
+    }
+
+    /**
+     * Protected change variables
+     */
+    protected static function changeVariables()
+    {
+        return 
+        [
+            '/\$this\-\>/' => '$getZNClassInstance->'
         ];
     }
 

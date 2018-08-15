@@ -28,6 +28,8 @@ class Controller
         {
             $this->$key = $val;
         }
+        
+        View::getZNClassInstance($this);
     }
 
     /**
