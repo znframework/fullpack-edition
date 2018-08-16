@@ -333,15 +333,9 @@ trait ViewCommonTrait
      */
     protected function _input($name = '', $value = '', $attributes = [], $type = '')
     {
-        if( $name !== '' )
-        {
-            $attributes['name'] = $name;
-        }
+        $this->setNameAttributeWithReference($name, $attributes);
 
-        if( $value !== '' )
-        {
-            $attributes['value'] = $value;
-        }
+        $this->setValueAttributeWithReference($value, $attributes);
 
         if( ! empty($attributes['name']) )
         {
@@ -357,11 +351,198 @@ trait ViewCommonTrait
             $this->_getrow($type, $value, $attributes);
         }
 
-        $perm   = $this->settings['attr']['perm'] ?? NULL;
+        $this->commonMethodsForInputElements($type);
+
+        $this->getPermAttribute($perm);
+
+        $this->createFormInputElementByType($type, $attributes, $return);
         
-        $return = '<input type="'.$type.'"'.$this->attributes($attributes).'>'.EOL;
+        $this->createBootstrapFormInputElementByType($type, $return, $attributes, $return);
 
         return $this->_perm($perm, $return);
+    }
+
+    /**
+     * Protected common methods for input elements
+     */
+    protected function commonMethodsForInputElements($type)
+    {
+        $this->isBootstrapLabelUsage($type);
+        $this->isBootstrapGroupUsage($type);
+    }
+
+    /**
+     * Protected is bootstrap label usage
+     */
+    protected function isBootstrapLabelUsage($type)
+    {
+        if( $for = ($this->settings['label']['for'] ?? NULL) )
+        {   
+            if( ! $this->isCheckboxOrRadio($type) )
+            {
+                $this->settings['attr']['id'] = $for;
+            }
+        }
+    }
+
+    /**
+     * Protected is bootstrap group usage
+     */
+    protected function isBootstrapGroupUsage($type)
+    {
+        if( $this->settings['group']['class'] ?? NULL )
+        {   
+            if( ! $this->isCheckboxOrRadio($type) )
+            {
+                if( ! isset($this->settings['attr']['class']) )
+                {
+                    $this->settings['attr']['class'] = 'form-control';
+                }
+                else
+                {
+                    $this->settings['attr']['class'] .= ' form-control';
+                }
+            }
+        }
+    }
+
+    /**
+     * Protected is checkbox or radio
+     */
+    protected function isCheckboxOrRadio($type)
+    {
+        return in_array($type, ['checkbox', 'radio']);
+    }
+
+    /**
+     * Protected set name attribute with reference
+     */
+    protected function setNameAttributeWithReference($name, &$attributes)
+    {
+        if( $name !== '' )
+        {
+            $attributes['name'] = $name;
+        }
+    }
+
+    /**
+     * Protected set value attribute with reference
+     */
+    protected function setValueAttributeWithReference($value, &$attributes)
+    {
+        if( $value !== '' )
+        {
+            $attributes['value'] = $value;
+        }
+    }
+
+    protected function createFormInputElementByType($type, $attributes, &$return)
+    {
+        $return .= '<input type="' . $type . '"' . $this->attributes($attributes) . '>' . EOL;
+    }
+
+    /**
+     * Protected create form input element by type
+     */
+    protected function createBootstrapFormInputElementByType($type, $value, $attributes, &$return)
+    {
+        $return = NULL;
+
+        if( $class = ($this->settings['group']['class'] ?? NULL) )
+        {
+            if( $this->isCheckboxOrRadio($type) )
+            {
+                if( $class === 'form-group' )
+                {
+                    $class = $type;
+                }
+                elseif( $class !== $type )
+                {
+                    $class = Base::prefix($class, $type . ' ');
+                }
+            }
+
+            $return .= '<div class="' . $class . '">' . EOL;
+
+            unset($this->settings['group']);
+        }
+
+        if( $for = ($this->settings['label']['for'] ?? NULL) )
+        {   
+            if( ! $this->isCheckboxOrRadio($type) )
+            {
+                $this->createBootstrapInputLabelElement($for, $return);
+            }
+            else
+            {
+                $this->createBootstrapRadioOrCheckboxOpenLabelElement($type, $radioOrCheckboxLabel, $return);
+            }
+
+            unset($this->settings['label']);
+        }
+
+        $return .= $value;
+
+        if( isset($radioOrCheckboxLabel) )
+        {
+            $this->createBootstrapRadioOrCheckboxCloseLabelElement($for, $radioOrCheckboxLabel, $return);
+        }
+
+        if( $class )
+        {
+            $return .= '<div>' . EOL;
+        }
+    }
+
+    /**
+     * Protected create bootstrap input label element
+     */
+    protected function createBootstrapInputLabelElement($for, &$return)
+    {
+        $return .= '<label'.$this->createAttribute('class', $this->settings['label']['class']).' for="' . $for . '">' . 
+                   $this->settings['label']['value'] . 
+                   '</label>' . EOL;
+    }
+
+    /**
+     * Protected create bootstrap radio or checkbox open label element
+     */
+    protected function createBootstrapRadioOrCheckboxOpenLabelElement($type, &$radioOrCheckboxLabel, &$return)
+    {
+        if( $value = $this->settings['label']['value'] )
+        {
+            $this->settings['label']['value'] = Base::prefix($value, $type . '-');
+        }
+        
+        $return .= '<label'.$this->createAttribute('class', $this->settings['label']['value']).'>' . EOL;
+
+        $radioOrCheckboxLabel = true;
+    }
+
+    /**
+     * Protected create bootstrap radio or checkbox close label element
+     */
+    protected function createBootstrapRadioOrCheckboxCloseLabelElement($for, &$radioOrCheckboxLabel, &$return)
+    {
+        $return .= $for . EOL . '</label>' . EOL;
+
+        unset($radioOrCheckboxLabel);
+    }
+
+    /**
+     * Protected craete attribute
+     */
+    protected function createAttribute($type, $value)
+    {
+        return $value ? ' ' . $type . '="' . $value. '"' : NULL;
+    }
+
+    /**
+     * Protected get perm attribute
+     */
+    protected function getPermAttribute(&$perm)
+    {
+        $perm = $this->settings['attr']['perm'] ?? NULL;
     }
 
     /**

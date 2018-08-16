@@ -169,6 +169,8 @@ class Form
             $value = $this->_getrow('textarea', $value, $this->settings['attr']);
         }
 
+        $this->commonMethodsForInputElements('textarea');
+
         $this->getPermAttribute($perm);
 
         $this->createTextareaElementByValueAndAttributes($value, $_attributes, $return);
@@ -219,9 +221,13 @@ class Form
             $selected = $this->_getrow('select', $selected, $_attributes);
         }
 
+        $this->commonMethodsForInputElements('select');
+
         $this->getPermAttribute($perm);
 
         $this->createSelectElement($options, $selected, $_attributes, $return);
+
+        $this->createBootstrapFormInputElementByType('select', $return, $_attributes, $return);
 
         $this->_unsetselect();
 
@@ -263,11 +269,11 @@ class Form
 
         if( is_array($name) ) foreach( $name as $key => $val )
         {
-            $hiddens .= '<input type="hidden" name="'.$key.'" id="'.$key.'" value="'.$val.'">'.EOL;
+            $hiddens .= $this->createHiddenElement($key, $val);
         }
         else
         {
-            $hiddens =  '<input type="hidden" name="'.$name.'" id="'.$name.'" '.$value.'>'.EOL;
+            $hiddens =  $this->createHiddenElement($name, $value);
         }
 
         return $hiddens;
@@ -297,7 +303,47 @@ class Form
             $name = Base::suffix($name, '[]');
         }
 
+        $this->commonMethodsForInputElements('file');
+
         return $this->_input($name, '', $_attributes, 'file');
+    }
+
+    /**
+     * Use of bootstrap group
+     * 
+     * @return this
+     */
+    public function group(String $class = 'form-group')
+    {
+        $this->settings['group']['class'] = $class;
+
+        return $this;
+    }
+
+    /**
+     * Use of bootstrap label
+     * 
+     * @param string $for
+     * @param string $value = NULL
+     * @param string $class = NULL
+     * 
+     * @return this
+     */
+    public function label(String $for, String $value = NULL, String $class = NULL)
+    {
+        $this->settings['label']['for'  ] = $for;
+        $this->settings['label']['value'] = $value;
+        $this->settings['label']['class'] = $class;
+
+        return $this;
+    }
+
+    /**
+     * Protected create hidden element
+     */
+    protected function createHiddenElement($key, $value)
+    {
+        return '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '">' . EOL;
     }
 
     /**
@@ -336,17 +382,6 @@ class Form
         }
 
         $return .= '</select>'.EOL;
-    }
-
-    /**
-     * Protected set name attribute with reference
-     */
-    protected function setNameAttributeWithReference($name, &$_attributes)
-    {
-        if( $name !== '' )
-        {
-            $_attributes['name'] = $name;
-        }
     }
 
     /**
@@ -457,14 +492,6 @@ class Form
                 $options[$row->$key] = $row->$current;
             }
         }
-    }
-
-    /**
-     * Protected get perm attribute
-     */
-    protected function getPermAttribute(&$perm)
-    {
-        $perm = $this->settings['attr']['perm'] ?? NULL;
     }
 
     /**
