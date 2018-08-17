@@ -12,6 +12,7 @@
 use ZN\Hypertext\Exception\InvalidArgumentException;
 use ZN\DataTypes\Arrays;
 use ZN\Request\Method;
+use ZN\Buffering;
 use ZN\Singleton;
 use ZN\Base;
 
@@ -311,31 +312,88 @@ class Form
     /**
      * Use of bootstrap group
      * 
-     * @return this
+     * @param string|callable $code  = ''
+     * @param string          $class = ''
+     * 
+     * @return string|this
      */
-    public function group(String $class = 'form-group')
+    public function group($code = '', String $class = '')
     {
-        $this->settings['group']['class'] = $class;
+        if( is_string($code) )
+        {
+            $this->settings['group']['class'] = $this->bootstrapClassResolution('form-group', $code);
 
-        return $this;
+            return $this;
+        }
+        elseif( is_callable($code) )
+        {
+            $this->callableGroup = true;
+
+            $result = $this->getHTMLClass()
+                           ->class('form-group row' . Base::prefix($class, ' '))
+                           ->div(EOL . Buffering\Callback::do($code));
+
+            unset($this->callableGroup);
+            
+            return $result;
+        }
     }
 
     /**
      * Use of bootstrap label
      * 
-     * @param string $for
+     * @param string $for   = NULL
      * @param string $value = NULL
      * @param string $class = NULL
      * 
      * @return this
      */
-    public function label(String $for, String $value = NULL, String $class = NULL)
+    public function label(String $for = NULL, String $value = NULL, String $class = NULL)
     {
         $this->settings['label']['for'  ] = $for;
         $this->settings['label']['value'] = $value;
         $this->settings['label']['class'] = $class;
 
         return $this;
+    }
+
+    /**
+     * Help text
+     * 
+     * @param string $content
+     * @param string $class = NULL
+     * 
+     * @return this
+     */
+    public function helptext(String $content, String $class = '')
+    {
+        $this->settings['help']['text'] = $this->getHTMLClass()
+                                               ->class('help-block' . Base::prefix($class, ' '))
+                                               ->span($content);
+
+        return $this;
+    }   
+
+    /**
+     * Bootstrap col size
+     * 
+     * @param string $size
+     * 
+     * @return this
+     */
+    public function col(String $size)
+    {
+        $this->settings['col']['size'] = $size;
+
+        return $this;
+    }
+
+    /**
+     * Protected getHTMLClass
+     */
+    protected function getHTMLClass()
+    {
+        return Singleton::class('ZN\Hypertext\Html');
     }
 
     /**
@@ -536,6 +594,12 @@ class Form
      */
     protected function createFormElementByAttributes($_attributes, &$return)
     {
+        $this->changeFormAttributes
+        ([
+            'inline'     => 'class:form-inline',
+            'horizontal' => 'class:form-horizontal'
+        ]);
+
         $return = '<form'.$this->attributes($_attributes).'>' . EOL;
     }
 

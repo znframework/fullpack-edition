@@ -56,8 +56,16 @@ trait ViewCommonTrait
         {
             $multiElement = $this->elements['multiElement'];
 
+            # Bootstrap Gridsystem
+            if( $this->isBootstrapColumn($method, $match) )
+            {
+                $this->bootstrapColumn($parameters[0] ?? '', $match);
+
+                return $this;
+            }
+            
             # Multiple Element
-            if( array_key_exists($method, $multiElement) )
+            elseif( array_key_exists($method, $multiElement) )
             {
                 $realMethod = $multiElement[$method];
 
@@ -286,6 +294,46 @@ trait ViewCommonTrait
     }
 
     /**
+     * Protected class resolution
+     */
+    protected function bootstrapClassResolution($type, $class)
+    {
+        $result = $type . ' ';
+
+        $parts = explode(' ', $class);
+
+        foreach( $parts as $part )
+        {
+            if( ! strstr($part, $type) )
+            {
+                $result .= Base::prefix($part, $type . '-');
+            }
+            else
+            {
+                $result .= $part;
+            }
+
+            $result .= ' ';
+        }
+
+        return trim($result);
+    }
+
+    /**
+     * Protected bootstrap class complement
+     */
+    protected function bootstrapClassComplement($class)
+    {
+        return preg_replace
+        ([
+            '/((sm|md|lg|xs|xl)-[0-9]+)/'
+        ],
+        [
+            'col-$1'
+        ], $class);
+    }
+
+    /**
      * Protected convert serializeer data type
      */
     protected function convertSerializerDataType($datatype)
@@ -363,6 +411,24 @@ trait ViewCommonTrait
     }
 
     /**
+     * Protected change form attributes
+     */
+    protected function changeFormAttributes($types)
+    {
+        foreach( $types as $new => $old )
+        {
+            $oldEx = explode(':', $old);
+
+            if( isset($this->settings['attr'][$new]) )
+            {
+                unset($this->settings['attr'][$new]);
+    
+                $this->settings['attr'][$oldEx[0]] = $oldEx[1]; 
+            }
+        } 
+    }
+
+    /**
      * Protected common methods for input elements
      */
     protected function commonMethodsForInputElements($type)
@@ -390,7 +456,7 @@ trait ViewCommonTrait
      */
     protected function isBootstrapGroupUsage($type)
     {
-        if( $this->settings['group']['class'] ?? NULL )
+        if( ($this->settings['group']['class'] ?? NULL) || isset($this->callableGroup) )
         {   
             if( ! $this->isCheckboxOrRadio($type) )
             {
@@ -483,6 +549,10 @@ trait ViewCommonTrait
 
         $return .= $value;
 
+        $this->isHelpBlockElement($return);
+
+        $this->isBootstrapColumnSize($return);
+
         if( isset($radioOrCheckboxLabel) )
         {
             $this->createBootstrapRadioOrCheckboxCloseLabelElement($for, $radioOrCheckboxLabel, $return);
@@ -490,7 +560,26 @@ trait ViewCommonTrait
 
         if( $class )
         {
-            $return .= '<div>' . EOL;
+            $return .= '</div>' . EOL;
+        }
+    }
+
+    /**
+     * Protected is help block element
+     */
+    protected function isHelpBlockElement(&$return)
+    {
+        $return .= $this->transferAttributesAndUnset('help', 'text');
+    }
+
+    /**
+     * Protected bootstrap column size
+     */
+    protected function isBootstrapColumnSize(&$return)
+    {
+        if( $colsize = $this->transferAttributesAndUnset('col', 'size'))
+        {
+            $return = $this->getHTMLClass()->class(Base::prefix($colsize, 'col-'))->div($return);
         }
     }
 
