@@ -63,11 +63,11 @@ trait BootstrapGridsystemTrait
      */
     protected function bootstrapColumn($content, $match)
     {
-        $parts = ['col', $match['type'], $match['number'] ?? 1];
+        $parts = $this->getGridsystemColumMethodParts($match);
 
-        $this->bootstrapGridsystemCol .= $this->class(implode('-', $parts))->div($content);
+        $this->bootstrapGridsystemCol .= $this->class($this->getGridsytemColumnClass($parts))->div($content);
 
-        $this->bootstrapGridsystemColumnCount += (int) $parts[2];
+        $this->bootstrapGridsystemColumnCount += (int) $parts['number'];
 
         if( $this->bootstrapGridsystemColumnCount === 12 )
         {
@@ -86,6 +86,22 @@ trait BootstrapGridsystemTrait
     {
         return preg_match('/col(?<type>[a-z][a-z])(?<number>[0-9]{1,})*/', $method, $match);
     }   
+
+    /**
+     * Protected get grid system column method parts
+     */
+    protected function getGridsystemColumMethodParts($match)
+    {
+        return ['name' => 'col', 'type' => $match['type'], 'number' => $match['number'] ?? 1];
+    }
+
+    /**
+     * Protected get grid system column class
+     */
+    protected function getGridsytemColumnClass($parts)
+    {
+        return implode('-', $parts);
+    }
 
     /**
      * Protected get bootstrap grid system

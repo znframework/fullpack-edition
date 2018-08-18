@@ -64,6 +64,12 @@ trait ViewCommonTrait
                 return $this;
             }
             
+            # Bootstrap Alert
+            elseif( strpos($method, 'alert') === 0 )
+            {
+                return $this->alert(Base::removePrefix($method, 'alert'), $parameters[0] ?? '');
+            }
+
             # Multiple Element
             elseif( array_key_exists($method, $multiElement) )
             {
@@ -238,11 +244,11 @@ trait ViewCommonTrait
     {
         $data = 
         [
-            'modalId'             => $id,
-            'modalHeader'         => $this->settings['attr']['modal-header'         ] ?? NULL,
-            'modalBody'           => $this->settings['attr']['modal-body'           ] ?? NULL,
-            'modalFooter'         => $this->settings['attr']['modal-footer'         ] ?? NULL,
-            'modalDissmissButton' => $this->settings['attr']['modal-dissmiss-button'] ?? NULL
+            'modalId'            => $id,
+            'modalHeader'        => $this->settings['attr']['modal-header'        ] ?? NULL,
+            'modalBody'          => $this->settings['attr']['modal-body'          ] ?? NULL,
+            'modalFooter'        => $this->settings['attr']['modal-footer'        ] ?? NULL,
+            'modalDismissButton' => $this->settings['attr']['modal-dismiss-button'] ?? NULL
         ];
 
         $this->settings['attr'] = [];

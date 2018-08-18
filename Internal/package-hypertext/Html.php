@@ -17,7 +17,7 @@ use ZN\Hypertext\Exception\InvalidArgumentException;
 
 class Html
 {
-    use ViewCommonTrait, BootstrapGridsystemTrait;
+    use ViewCommonTrait, BootstrapGridsystemTrait, BootstrapComponentsTrait;
 
     protected $elements =
     [
@@ -68,9 +68,22 @@ class Html
      * 
      * @return string
      */
-    public function ul(Callable $list, Array $attributes = []) : String
+    public function ul(Callable $list, Array $attributes = [], $type = 'ul') : String
     {
-        return $this->_multiElement(__FUNCTION__, Buffering\Callback::do($list, [new $this]), $attributes);
+        return $this->_multiElement($type, Buffering\Callback::do($list, [new $this]), $attributes);
+    }
+
+    /**
+     * Sets ol attributes [5.0.0]
+     * 
+     * @param callable $list
+     * @param array    $attributes = []
+     * 
+     * @return string
+     */
+    public function ol(Callable $list, Array $attributes = []) : String
+    {
+        return $this->ul($list, $attributes, 'ol');
     }
 
     /**
@@ -440,7 +453,7 @@ class Html
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, '<$type>' . $this->stringOrCallback($html) . '</$type>');
+        return $this->_perm($perm, "<$type>" . $this->stringOrCallback($html) . "</$type>");
     }
 
     /**
