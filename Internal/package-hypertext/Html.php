@@ -428,23 +428,6 @@ class Html
     }
 
     /**
-     * Protected string or callback
-     */
-    protected function stringOrCallback($content)
-    {
-        if( is_scalar($content) )
-        {
-            return $content;
-        }
-        elseif( is_callable($content) )
-        {
-            return Buffering\Callback::do($content);
-        }
-
-        throw new InvalidArgumentException('1.($content) parameter must be [scalar] or [callable] type!');
-    }
-
-    /**
      * Protected Content
      */
     protected function _content($html, $type)

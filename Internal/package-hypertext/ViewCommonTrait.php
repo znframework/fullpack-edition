@@ -10,16 +10,15 @@
  */
 
 use ZN\Base;
-use ZN\Classes;
 use ZN\Datatype;
+use ZN\Buffering;
 use ZN\Inclusion;
 use ZN\Authorization;
-use ZN\DataTypes\Arrays;
 use ZN\Hypertext\Exception\PermissionRoleIdException;
 
 trait ViewCommonTrait
 {
-    use FormElementsTrait, HtmlElementsTrait;
+    use CallableElements, FormElementsTrait, HtmlElementsTrait;
 
     /**
      * Keeps settings
@@ -27,133 +26,6 @@ trait ViewCommonTrait
      * @var array
      */
     protected $settings = [];
-
-    /**
-     * Keeps use elements
-     * 
-     * @var array
-     */
-    protected $useElements =
-    [
-        'addclass' => 'class'
-    ];
-
-    /**
-     * Magic Call
-     * 
-     * @param string $method
-     * @param array  $parameters
-     * 
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        $realMethod = $method;
-        $method     = strtolower($method);
-        $className  = Classes::onlyName(__CLASS__);
-
-        if( $className === 'Html')
-        {
-            $multiElement = $this->elements['multiElement'];
-
-            # Bootstrap Gridsystem
-            if( $this->isBootstrapColumn($method, $match) )
-            {
-                $this->bootstrapColumn($parameters[0] ?? '', $match);
-
-                return $this;
-            }
-            
-            # Bootstrap Alert
-            elseif( strpos($method, 'alert') === 0 )
-            {
-                return $this->alert(Base::removePrefix($method, 'alert'), $parameters[0] ?? '');
-            }
-
-            # Multiple Element
-            elseif( array_key_exists($method, $multiElement) )
-            {
-                $realMethod = $multiElement[$method];
-
-                return $this->_multiElement($realMethod, ...$parameters);
-            }
-            elseif( in_array($method, $multiElement) )
-            {
-                return $this->_multiElement($realMethod, ...$parameters);
-            }
-
-            # Single Element
-            elseif( in_array($method, $this->elements['singleElement']) )
-            {
-                return $this->_singleElement($realMethod, ...$parameters);
-            }
-
-            # Media Content
-            elseif( in_array($method, $this->elements['mediaContent']) )
-            {
-                return $this->_mediaContent($parameters[0], $parameters[1] ?? NULL, $parameters[2] ?? [], $realMethod);
-            }
-
-            # Media
-            elseif( in_array($method, $this->elements['media']) )
-            {
-                return $this->_media($parameters[0], $parameters[1] ?? [], $realMethod);
-            }
-
-            # Content Attribute
-            elseif( in_array($method, $this->elements['contentAttribute']) )
-            {
-                return $this->_contentAttribute($parameters[0], $parameters[1] ?? [], $realMethod);
-            }
-
-            # Content
-            elseif( in_array($method, $this->elements['content']) )
-            {
-                return $this->_content($parameters[0], $realMethod);
-            }
-        }
-        elseif( $className === 'Form' )
-        {
-            if( in_array($method, $this->elements['input']) )
-            {
-                return $this->_input($parameters[0] ?? '', $parameters[1] ?? '', $parameters[2] ?? [], $realMethod);
-            }
-        }
-
-        if( empty($parameters) )
-        {
-            $parameters[0] = $method;
-        }
-        else
-        {
-            if( $parameters[0] === false )
-            {
-                return $this;
-            }
-
-            if( $parameters[0] === true )
-            {
-                $parameters[0] = $method;
-            }
-        }
-
-        if( isset($this->useElements[$method]) )
-        {
-            $method = $this->useElements[$method];
-        }
-
-        # Convert exampleData to example-data [4.6.1]
-        if( ! ctype_lower($realMethod) )
-        {
-            $newMethod = NULL;
-            $split     = Datatype::splitUpperCase($realMethod);
-            $method    = implode('-', Arrays\Casing::lower($split));
-        }
-
-        $this->_element($method, ...$parameters);
-
-        return $this;
-    }
 
     /**
      * Sets attributes
@@ -300,6 +172,39 @@ trait ViewCommonTrait
     }
 
     /**
+     * On event
+     * 
+     * @param string   $parameter
+     * @param callable $callback
+     * 
+     * @return this
+     */
+    public function on(String $parameter, $callback)
+    {
+        $this->settings['attr']['on']         = $parameter;
+        $this->settings['attr']['onCallback'] = $this->stringOrCallback($callback);
+
+        return $this;
+    }
+
+    /**
+     * Protected string or callback
+     */
+    protected function stringOrCallback($content)
+    {
+        if( is_scalar($content) )
+        {
+            return $content;
+        }
+        elseif( is_callable($content) )
+        {
+            return Buffering\Callback::do($content);
+        }
+
+        throw new InvalidArgumentException('1.($content) parameter must be [scalar] or [callable] type!');
+    }
+
+    /**
      * Protected class resolution
      */
     protected function bootstrapClassResolution($type, $class)
@@ -380,6 +285,14 @@ trait ViewCommonTrait
     protected function getAjaxResource(String $resources = 'serializer', $data)
     {
         return $this->getModalResource($resources, $data, 'Ajax');
+    }
+
+    /**
+     * Protected get carousel resource
+     */
+    protected function getCarouselResource(String $resources = 'standart', $data)
+    {
+        return $this->getModalResource($resources, $data, 'Carousels');
     }
 
     /**

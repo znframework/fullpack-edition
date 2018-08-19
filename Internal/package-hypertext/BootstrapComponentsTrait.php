@@ -17,6 +17,45 @@ use ZN\Request\URI;
 trait BootstrapComponentsTrait
 {
     /**
+     * Bootstrap carousel
+     * 
+     * @param string ...$images
+     * 
+     * @return string
+     */
+    public function carousel(String $id = NULL, Array $images = [])
+    {
+        $images = $this->transferAttributesAndUnset('attr', 'images') ?: $images;
+
+        if( ! empty($images) )
+        {
+            $data = 
+            [
+                'carouselId'        => $id ?? ('Carousel' . md5(uniqid())),
+                'carouselImages'    => $images,
+                'carouseIndicators' => $this->transferAttributesAndUnset('attr', 'indicators'),
+                'carouselPrevName'  => $this->transferAttributesAndUnset('attr', 'prev') ?: 'Previous',
+                'carouselNextName'  => $this->transferAttributesAndUnset('attr', 'next') ?: 'Next' 
+            ];
+    
+            return $this->getCarouselResource('standart', $data);
+        }
+        else
+        {
+            $this->addBootstrapOption('interval', $this->transferAttributesAndUnset('attr', 'interval'), $options);
+            
+            $cycle = $this->transferAttributesAndUnset('attr', 'cycle');
+
+            $this->isBootstrapAttribute('on', function($return)
+            {
+                $this->settings['attr']['on'] = Base::suffix($return, '.bs.carousel');
+            });
+
+            return $this->bootstrapObjectOptions($id, $cycle ?? $options, 'carousel');
+        }
+    }
+
+    /**
      * Bootstrap alert component
      * 
      * @param string $type
@@ -34,9 +73,9 @@ trait BootstrapComponentsTrait
             $type .= ' alert-dismissible fade show';
         });
 
-        $this->isBootstrapAttribute('dismiss-button', function() use(&$content)
+        $this->isBootstrapAttribute('dismiss-button', function($attribute) use(&$content)
         {
-            $content .= $this->buttonDismissButton($this->spanDismissButton());  
+            $content .= $this->buttonDismissButton($this->spanDismissButton($attribute));  
         });
 
         return $this->role('alert')->class('alert alert-' . $type)->div($content);
@@ -47,12 +86,52 @@ trait BootstrapComponentsTrait
      * 
      * @param string $uri = NULL
      */
-    public function breadcrumb(String $uri = NULL, Int $segmentCount = -1 ) 
+    public function breadcrumb(String $uri = NULL, Int $segmentCount = -1) 
     {
+        $this->isBootstrapAttribute('dismiss-fade', function() use(&$type)
+        {
+            $type .= ' alert-dismissible fade show';
+        });
+        
         $uris = $this->getURIsegments($uri, $segmentCount);
         $list = $this->breadcrumbOlList($uris);
 
         return $this->breadcrumbNav($list);
+    }
+
+    /**
+     * Protected object options
+     */
+    protected function bootstrapObjectOptions(String $id, $options, $type)
+    {
+        $return  = '<script>$("' . Base::prefix($id, '#') . '")';
+        
+        if( $options )
+        {
+            $output = true;
+            $return .= '.' . $type . '(' . json_encode($options) . ')';
+        }
+        
+        if( $parameter = $this->transferAttributesAndUnset('attr', 'on') )
+        {
+            $output = true;
+            $return .= '.on(\'' . $parameter . '\', function(){' . $this->transferAttributesAndUnset('attr', 'onCallback') . '})';
+        }
+
+        $return .= ';</script>';
+        
+        return isset($output) ? $return : NULL;
+    }
+    
+    /**
+     * Protected add bootstrap option
+     */
+    protected function addBootstrapOption($key, $value, &$options)
+    {
+        if( ! empty($value) )
+        {
+            $options[$key] = $value;
+        }
     }
 
     /**
@@ -127,18 +206,25 @@ trait BootstrapComponentsTrait
     {
         if( isset($this->settings['attr'][$attr]) )
         {
+            $attribute = $this->settings['attr'][$attr];
+
+            if( $attribute === str_replace('-', '', $attr) )
+            {
+                $attribute = NULL;
+            }
+
             unset($this->settings['attr'][$attr]);
 
-            $callback();
+            $callback($attribute);
         }
     }
 
     /**
      * Protected close button
      */
-    protected function spanDismissButton()
+    protected function spanDismissButton($attribute)
     {
-        return $this->ariaHidden('true')->span('&times;');
+        return $this->ariaHidden('true')->span($attribute ?? '&times;');
     }
 
     /**
