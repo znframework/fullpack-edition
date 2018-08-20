@@ -10,16 +10,15 @@
  */
 
 use ZN\Base;
-use ZN\Classes;
 use ZN\Datatype;
+use ZN\Buffering;
 use ZN\Inclusion;
 use ZN\Authorization;
-use ZN\DataTypes\Arrays;
 use ZN\Hypertext\Exception\PermissionRoleIdException;
 
 trait ViewCommonTrait
 {
-    use FormElementsTrait, HtmlElementsTrait;
+    use CallableElements, FormElementsTrait, HtmlElementsTrait;
 
     /**
      * Keeps settings
@@ -27,119 +26,6 @@ trait ViewCommonTrait
      * @var array
      */
     protected $settings = [];
-
-    /**
-     * Keeps use elements
-     * 
-     * @var array
-     */
-    protected $useElements =
-    [
-        'addclass' => 'class'
-    ];
-
-    /**
-     * Magic Call
-     * 
-     * @param string $method
-     * @param array  $parameters
-     * 
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        $realMethod = $method;
-        $method     = strtolower($method);
-        $className  = Classes::onlyName(__CLASS__);
-
-        if( $className === 'Html')
-        {
-            $multiElement = $this->elements['multiElement'];
-
-            # Multiple Element
-            if( array_key_exists($method, $multiElement) )
-            {
-                $realMethod = $multiElement[$method];
-
-                return $this->_multiElement($realMethod, ...$parameters);
-            }
-            elseif( in_array($method, $multiElement) )
-            {
-                return $this->_multiElement($realMethod, ...$parameters);
-            }
-
-            # Single Element
-            elseif( in_array($method, $this->elements['singleElement']) )
-            {
-                return $this->_singleElement($realMethod, ...$parameters);
-            }
-
-            # Media Content
-            elseif( in_array($method, $this->elements['mediaContent']) )
-            {
-                return $this->_mediaContent($parameters[0], $parameters[1] ?? NULL, $parameters[2] ?? [], $realMethod);
-            }
-
-            # Media
-            elseif( in_array($method, $this->elements['media']) )
-            {
-                return $this->_media($parameters[0], $parameters[1] ?? [], $realMethod);
-            }
-
-            # Content Attribute
-            elseif( in_array($method, $this->elements['contentAttribute']) )
-            {
-                return $this->_contentAttribute($parameters[0], $parameters[1] ?? [], $realMethod);
-            }
-
-            # Content
-            elseif( in_array($method, $this->elements['content']) )
-            {
-                return $this->_content($parameters[0], $realMethod);
-            }
-        }
-        elseif( $className === 'Form' )
-        {
-            if( in_array($method, $this->elements['input']) )
-            {
-                return $this->_input($parameters[0] ?? '', $parameters[1] ?? '', $parameters[2] ?? [], $realMethod);
-            }
-        }
-
-        if( empty($parameters) )
-        {
-            $parameters[0] = $method;
-        }
-        else
-        {
-            if( $parameters[0] === false )
-            {
-                return $this;
-            }
-
-            if( $parameters[0] === true )
-            {
-                $parameters[0] = $method;
-            }
-        }
-
-        if( isset($this->useElements[$method]) )
-        {
-            $method = $this->useElements[$method];
-        }
-
-        # Convert exampleData to example-data [4.6.1]
-        if( ! ctype_lower($realMethod) )
-        {
-            $newMethod = NULL;
-            $split     = Datatype::splitUpperCase($realMethod);
-            $method    = implode('-', Arrays\Casing::lower($split));
-        }
-
-        $this->_element($method, ...$parameters);
-
-        return $this;
-    }
 
     /**
      * Sets attributes
@@ -230,11 +116,11 @@ trait ViewCommonTrait
     {
         $data = 
         [
-            'modalId'             => $id,
-            'modalHeader'         => $this->settings['attr']['modal-header'         ] ?? NULL,
-            'modalBody'           => $this->settings['attr']['modal-body'           ] ?? NULL,
-            'modalFooter'         => $this->settings['attr']['modal-footer'         ] ?? NULL,
-            'modalDissmissButton' => $this->settings['attr']['modal-dissmiss-button'] ?? NULL
+            'modalId'            => $id,
+            'modalHeader'        => $this->settings['attr']['modal-header'        ] ?? NULL,
+            'modalBody'          => $this->settings['attr']['modal-body'          ] ?? NULL,
+            'modalFooter'        => $this->settings['attr']['modal-footer'        ] ?? NULL,
+            'modalDismissButton' => $this->settings['attr']['modal-dismiss-button'] ?? NULL
         ];
 
         $this->settings['attr'] = [];
@@ -286,6 +172,79 @@ trait ViewCommonTrait
     }
 
     /**
+     * On event
+     * 
+     * @param string   $parameter
+     * @param callable $callback
+     * 
+     * @return this
+     */
+    public function on(String $parameter, $callback)
+    {
+        $this->settings['attr']['on']         = $parameter;
+        $this->settings['attr']['onCallback'] = $this->stringOrCallback($callback);
+
+        return $this;
+    }
+
+    /**
+     * Protected string or callback
+     */
+    protected function stringOrCallback($content)
+    {
+        if( is_scalar($content) )
+        {
+            return $content;
+        }
+        elseif( is_callable($content) )
+        {
+            return Buffering\Callback::do($content);
+        }
+
+        throw new InvalidArgumentException('1.($content) parameter must be [scalar] or [callable] type!');
+    }
+
+    /**
+     * Protected class resolution
+     */
+    protected function bootstrapClassResolution($type, $class)
+    {
+        $result = $type . ' ';
+
+        $parts = explode(' ', $class);
+
+        foreach( $parts as $part )
+        {
+            if( ! strstr($part, $type) )
+            {
+                $result .= Base::prefix($part, $type . '-');
+            }
+            else
+            {
+                $result .= $part;
+            }
+
+            $result .= ' ';
+        }
+
+        return trim($result);
+    }
+
+    /**
+     * Protected bootstrap class complement
+     */
+    protected function bootstrapClassComplement($class)
+    {
+        return preg_replace
+        ([
+            '/((sm|md|lg|xs|xl)-[0-9]+)/'
+        ],
+        [
+            'col-$1'
+        ], $class);
+    }
+
+    /**
      * Protected convert serializeer data type
      */
     protected function convertSerializerDataType($datatype)
@@ -329,19 +288,21 @@ trait ViewCommonTrait
     }
 
     /**
+     * Protected get carousel resource
+     */
+    protected function getCarouselResource(String $resources = 'standart', $data)
+    {
+        return $this->getModalResource($resources, $data, 'Carousels');
+    }
+
+    /**
      * Protected Input
      */
     protected function _input($name = '', $value = '', $attributes = [], $type = '')
     {
-        if( $name !== '' )
-        {
-            $attributes['name'] = $name;
-        }
+        $this->setNameAttributeWithReference($name, $attributes);
 
-        if( $value !== '' )
-        {
-            $attributes['value'] = $value;
-        }
+        $this->setValueAttributeWithReference($value, $attributes);
 
         if( ! empty($attributes['name']) )
         {
@@ -357,11 +318,239 @@ trait ViewCommonTrait
             $this->_getrow($type, $value, $attributes);
         }
 
-        $perm   = $this->settings['attr']['perm'] ?? NULL;
+        $this->commonMethodsForInputElements($type);
+
+        $this->getPermAttribute($perm);
+
+        $this->createFormInputElementByType($type, $attributes, $return);
         
-        $return = '<input type="'.$type.'"'.$this->attributes($attributes).'>'.EOL;
+        $this->createBootstrapFormInputElementByType($type, $return, $attributes, $return);
 
         return $this->_perm($perm, $return);
+    }
+
+    /**
+     * Protected change form attributes
+     */
+    protected function changeFormAttributes($types)
+    {
+        foreach( $types as $new => $old )
+        {
+            $oldEx = explode(':', $old);
+
+            if( isset($this->settings['attr'][$new]) )
+            {
+                unset($this->settings['attr'][$new]);
+    
+                $this->settings['attr'][$oldEx[0]] = $oldEx[1]; 
+            }
+        } 
+    }
+
+    /**
+     * Protected common methods for input elements
+     */
+    protected function commonMethodsForInputElements($type)
+    {
+        $this->isBootstrapLabelUsage($type);
+        $this->isBootstrapGroupUsage($type);
+    }
+
+    /**
+     * Protected is bootstrap label usage
+     */
+    protected function isBootstrapLabelUsage($type)
+    {
+        if( $for = ($this->settings['label']['for'] ?? NULL) )
+        {   
+            if( ! $this->isCheckboxOrRadio($type) )
+            {
+                $this->settings['attr']['id'] = $for;
+            }
+        }
+    }
+
+    /**
+     * Protected is bootstrap group usage
+     */
+    protected function isBootstrapGroupUsage($type)
+    {
+        if( ($this->settings['group']['class'] ?? NULL) || isset($this->callableGroup) )
+        {   
+            if( ! $this->isCheckboxOrRadio($type) )
+            {
+                if( ! isset($this->settings['attr']['class']) )
+                {
+                    $this->settings['attr']['class'] = 'form-control';
+                }
+                else
+                {
+                    $this->settings['attr']['class'] .= ' form-control';
+                }
+            }
+        }
+    }
+
+    /**
+     * Protected is checkbox or radio
+     */
+    protected function isCheckboxOrRadio($type)
+    {
+        return in_array($type, ['checkbox', 'radio']);
+    }
+
+    /**
+     * Protected set name attribute with reference
+     */
+    protected function setNameAttributeWithReference($name, &$attributes)
+    {
+        if( $name !== '' )
+        {
+            $attributes['name'] = $name;
+        }
+    }
+
+    /**
+     * Protected set value attribute with reference
+     */
+    protected function setValueAttributeWithReference($value, &$attributes)
+    {
+        if( $value !== '' )
+        {
+            $attributes['value'] = $value;
+        }
+    }
+
+    protected function createFormInputElementByType($type, $attributes, &$return)
+    {
+        $return .= '<input type="' . $type . '"' . $this->attributes($attributes) . '>' . EOL;
+    }
+
+    /**
+     * Protected create form input element by type
+     */
+    protected function createBootstrapFormInputElementByType($type, $value, $attributes, &$return)
+    {
+        $return = NULL;
+
+        if( $class = ($this->settings['group']['class'] ?? NULL) )
+        {
+            if( $this->isCheckboxOrRadio($type) )
+            {
+                if( $class === 'form-group' )
+                {
+                    $class = $type;
+                }
+                elseif( $class !== $type )
+                {
+                    $class = Base::prefix($class, $type . ' ');
+                }
+            }
+
+            $return .= '<div class="' . $class . '">' . EOL;
+
+            unset($this->settings['group']);
+        }
+
+        if( $for = ($this->settings['label']['for'] ?? NULL) )
+        {   
+            if( ! $this->isCheckboxOrRadio($type) )
+            {
+                $this->createBootstrapInputLabelElement($for, $return);
+            }
+            else
+            {
+                $this->createBootstrapRadioOrCheckboxOpenLabelElement($type, $radioOrCheckboxLabel, $return);
+            }
+
+            unset($this->settings['label']);
+        }
+
+        $return .= $value;
+
+        $this->isHelpBlockElement($return);
+
+        $this->isBootstrapColumnSize($return);
+
+        if( isset($radioOrCheckboxLabel) )
+        {
+            $this->createBootstrapRadioOrCheckboxCloseLabelElement($for, $radioOrCheckboxLabel, $return);
+        }
+
+        if( $class )
+        {
+            $return .= '</div>' . EOL;
+        }
+    }
+
+    /**
+     * Protected is help block element
+     */
+    protected function isHelpBlockElement(&$return)
+    {
+        $return .= $this->transferAttributesAndUnset('help', 'text');
+    }
+
+    /**
+     * Protected bootstrap column size
+     */
+    protected function isBootstrapColumnSize(&$return)
+    {
+        if( $colsize = $this->transferAttributesAndUnset('col', 'size'))
+        {
+            $return = $this->getHTMLClass()->class(Base::prefix($colsize, 'col-'))->div($return);
+        }
+    }
+
+    /**
+     * Protected create bootstrap input label element
+     */
+    protected function createBootstrapInputLabelElement($for, &$return)
+    {
+        $return .= '<label'.$this->createAttribute('class', $this->settings['label']['class']).' for="' . $for . '">' . 
+                   $this->settings['label']['value'] . 
+                   '</label>' . EOL;
+    }
+
+    /**
+     * Protected create bootstrap radio or checkbox open label element
+     */
+    protected function createBootstrapRadioOrCheckboxOpenLabelElement($type, &$radioOrCheckboxLabel, &$return)
+    {
+        if( $value = $this->settings['label']['value'] )
+        {
+            $this->settings['label']['value'] = Base::prefix($value, $type . '-');
+        }
+        
+        $return .= '<label'.$this->createAttribute('class', $this->settings['label']['value']).'>' . EOL;
+
+        $radioOrCheckboxLabel = true;
+    }
+
+    /**
+     * Protected create bootstrap radio or checkbox close label element
+     */
+    protected function createBootstrapRadioOrCheckboxCloseLabelElement($for, &$radioOrCheckboxLabel, &$return)
+    {
+        $return .= $for . EOL . '</label>' . EOL;
+
+        unset($radioOrCheckboxLabel);
+    }
+
+    /**
+     * Protected craete attribute
+     */
+    protected function createAttribute($type, $value)
+    {
+        return $value ? ' ' . $type . '="' . $value. '"' : NULL;
+    }
+
+    /**
+     * Protected get perm attribute
+     */
+    protected function getPermAttribute(&$perm)
+    {
+        $perm = $this->settings['attr']['perm'] ?? NULL;
     }
 
     /**

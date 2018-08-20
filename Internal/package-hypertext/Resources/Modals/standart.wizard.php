@@ -3,7 +3,7 @@
         <div class="modal-content">
             @if( isset($modalHeader) )
             <div class="modal-header">
-            @if( isset($modalDissmissButton) ) 
+            @if( isset($modalDismissButton) ) 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             @endif
                 <h4 class="modal-title">{{ $modalHeader }}</h4>

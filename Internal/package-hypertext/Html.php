@@ -17,14 +17,14 @@ use ZN\Hypertext\Exception\InvalidArgumentException;
 
 class Html
 {
-    use ViewCommonTrait;
+    use ViewCommonTrait, BootstrapGridsystemTrait, BootstrapComponentsTrait;
 
     protected $elements =
     [
         'multiElement' =>
         [
-            'html'  , 'body', 'head'  , 'title', 'pre',
-            'iframe', 'li'  , 'strong', 'button',
+            'html'  , 'body', 'head'  , 'title' , 'pre' ,
+            'iframe', 'li'  , 'strong', 'button', 'span',
 
             'bold'      => 'b'  , 'italic'   => 'em' , 'parag'     => 'p',
             'overline'  => 'del', 'overtext' => 'sup', 'underline' => 'u',
@@ -68,9 +68,22 @@ class Html
      * 
      * @return string
      */
-    public function ul(Callable $list, Array $attributes = []) : String
+    public function ul(Callable $list, Array $attributes = [], $type = 'ul') : String
     {
-        return $this->_multiElement(__FUNCTION__, Buffering\Callback::do($list, [new $this]), $attributes);
+        return $this->_multiElement($type, Buffering\Callback::do($list, [new $this]), $attributes);
+    }
+
+    /**
+     * Sets ol attributes [5.0.0]
+     * 
+     * @param callable $list
+     * @param array    $attributes = []
+     * 
+     * @return string
+     */
+    public function ol(Callable $list, Array $attributes = []) : String
+    {
+        return $this->ul($list, $attributes, 'ol');
     }
 
     /**
@@ -423,7 +436,7 @@ class Html
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, "<$type>$html</$type>");
+        return $this->_perm($perm, "<$type>" . $this->stringOrCallback($html) . "</$type>");
     }
 
     /**
@@ -431,16 +444,11 @@ class Html
      */
     protected function _contentAttribute($content, $_attributes, $type)
     {
-        if( ! is_scalar($content) )
-        {
-            $content = '';
-        }
-
         $type   = strtolower($type);
 
         $perm   = $this->settings['attr']['perm'] ?? NULL;
         
-        $return = '<'.$type.$this->attributes($_attributes).'>'.$content."</$type>".EOL;
+        $return = '<'.$type.$this->attributes($_attributes).'>'.$this->stringOrCallback($content)."</$type>".EOL;
 
         return $this->_perm($perm, $return);
     }
@@ -464,7 +472,7 @@ class Html
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, '<'.$type.'src="'.$src.'"'.$this->attributes($_attributes).'>'.$content."</$type>".EOL);
+        return $this->_perm($perm, '<'.$type.'src="'.$src.'"'.$this->attributes($_attributes).'>'.$this->stringOrCallback($content)."</$type>".EOL);
     }
 
     /**
@@ -476,7 +484,7 @@ class Html
 
         $perm    = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, '<'.$element.$this->attributes($attributes).'>'.$str.'</'.$element.'>');
+        return $this->_perm($perm, '<'.$element.$this->attributes($attributes).'>'.$this->stringOrCallback($str).'</'.$element.'>');
     }
 
     /**

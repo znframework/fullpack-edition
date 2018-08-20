@@ -12,6 +12,7 @@
 use ZN\Hypertext\Exception\InvalidArgumentException;
 use ZN\DataTypes\Arrays;
 use ZN\Request\Method;
+use ZN\Buffering;
 use ZN\Singleton;
 use ZN\Base;
 
@@ -169,6 +170,8 @@ class Form
             $value = $this->_getrow('textarea', $value, $this->settings['attr']);
         }
 
+        $this->commonMethodsForInputElements('textarea');
+
         $this->getPermAttribute($perm);
 
         $this->createTextareaElementByValueAndAttributes($value, $_attributes, $return);
@@ -219,9 +222,13 @@ class Form
             $selected = $this->_getrow('select', $selected, $_attributes);
         }
 
+        $this->commonMethodsForInputElements('select');
+
         $this->getPermAttribute($perm);
 
         $this->createSelectElement($options, $selected, $_attributes, $return);
+
+        $this->createBootstrapFormInputElementByType('select', $return, $_attributes, $return);
 
         $this->_unsetselect();
 
@@ -263,11 +270,11 @@ class Form
 
         if( is_array($name) ) foreach( $name as $key => $val )
         {
-            $hiddens .= '<input type="hidden" name="'.$key.'" id="'.$key.'" value="'.$val.'">'.EOL;
+            $hiddens .= $this->createHiddenElement($key, $val);
         }
         else
         {
-            $hiddens =  '<input type="hidden" name="'.$name.'" id="'.$name.'" '.$value.'>'.EOL;
+            $hiddens =  $this->createHiddenElement($name, $value);
         }
 
         return $hiddens;
@@ -297,7 +304,104 @@ class Form
             $name = Base::suffix($name, '[]');
         }
 
+        $this->commonMethodsForInputElements('file');
+
         return $this->_input($name, '', $_attributes, 'file');
+    }
+
+    /**
+     * Use of bootstrap group
+     * 
+     * @param string|callable $code  = ''
+     * @param string          $class = ''
+     * 
+     * @return string|this
+     */
+    public function group($code = '', String $class = '')
+    {
+        if( is_string($code) )
+        {
+            $this->settings['group']['class'] = $this->bootstrapClassResolution('form-group', $code);
+
+            return $this;
+        }
+        elseif( is_callable($code) )
+        {
+            $this->callableGroup = true;
+
+            $result = $this->getHTMLClass()
+                           ->class('form-group row' . Base::prefix($class, ' '))
+                           ->div(EOL . Buffering\Callback::do($code));
+
+            unset($this->callableGroup);
+            
+            return $result;
+        }
+    }
+
+    /**
+     * Use of bootstrap label
+     * 
+     * @param string $for   = NULL
+     * @param string $value = NULL
+     * @param string $class = NULL
+     * 
+     * @return this
+     */
+    public function label(String $for = NULL, String $value = NULL, String $class = NULL)
+    {
+        $this->settings['label']['for'  ] = $for;
+        $this->settings['label']['value'] = $value;
+        $this->settings['label']['class'] = $class;
+
+        return $this;
+    }
+
+    /**
+     * Help text
+     * 
+     * @param string $content
+     * @param string $class = NULL
+     * 
+     * @return this
+     */
+    public function helptext(String $content, String $class = '')
+    {
+        $this->settings['help']['text'] = $this->getHTMLClass()
+                                               ->class('help-block' . Base::prefix($class, ' '))
+                                               ->span($content);
+
+        return $this;
+    }   
+
+    /**
+     * Bootstrap col size
+     * 
+     * @param string $size
+     * 
+     * @return this
+     */
+    public function col(String $size)
+    {
+        $this->settings['col']['size'] = $size;
+
+        return $this;
+    }
+
+    /**
+     * Protected getHTMLClass
+     */
+    protected function getHTMLClass()
+    {
+        return Singleton::class('ZN\Hypertext\Html');
+    }
+
+    /**
+     * Protected create hidden element
+     */
+    protected function createHiddenElement($key, $value)
+    {
+        return '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '">' . EOL;
     }
 
     /**
@@ -336,17 +440,6 @@ class Form
         }
 
         $return .= '</select>'.EOL;
-    }
-
-    /**
-     * Protected set name attribute with reference
-     */
-    protected function setNameAttributeWithReference($name, &$_attributes)
-    {
-        if( $name !== '' )
-        {
-            $_attributes['name'] = $name;
-        }
     }
 
     /**
@@ -460,14 +553,6 @@ class Form
     }
 
     /**
-     * Protected get perm attribute
-     */
-    protected function getPermAttribute(&$perm)
-    {
-        $perm = $this->settings['attr']['perm'] ?? NULL;
-    }
-
-    /**
      * Protected create textarea element by value and attributes
      */
     protected function createTextareaElementByValueAndAttributes($value, $_attributes, &$return)
@@ -509,6 +594,12 @@ class Form
      */
     protected function createFormElementByAttributes($_attributes, &$return)
     {
+        $this->changeFormAttributes
+        ([
+            'inline'     => 'class:form-inline',
+            'horizontal' => 'class:form-horizontal'
+        ]);
+
         $return = '<form'.$this->attributes($_attributes).'>' . EOL;
     }
 
