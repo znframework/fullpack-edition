@@ -14,7 +14,7 @@ use ZN\Config;
 use ZN\Datatype;
 use ZN\Request\URI;
 
-trait BootstrapComponentsTrait
+trait BootstrapComponents
 {
     /**
      * Bootstrap carousel
@@ -48,7 +48,7 @@ trait BootstrapComponentsTrait
             $this->settings['attr']['on'] = Base::suffix($return, '.bs.carousel');
         });
 
-        $this->bootstrapObjectOptions($id, $transition ?? $options, 'carousel');
+        $this->bootstrapObjectOptions(Base::prefix($id, '#'), $transition ?? $options, 'carousel');
 
         return $this->getCarouselResource('standart', $data);
     }   
@@ -58,7 +58,7 @@ trait BootstrapComponentsTrait
      */
     public function activeCarouselOptions(String $id)
     {
-        return $this->bootstrapOptions[$id] ?? NULL;
+        return $this->bootstrapOptions['carousel'][Base::prefix($id, '#')] ?? NULL;
     }
 
     /**
@@ -115,30 +115,6 @@ trait BootstrapComponentsTrait
         $list = $this->breadcrumbOlList($uris);
 
         return $this->breadcrumbNav($list);
-    }
-
-    /**
-     * Protected object options
-     */
-    protected function bootstrapObjectOptions(String $id, $options, $type)
-    {
-        $return  = '<script>$("' . Base::prefix($id, '#') . '")';
-        
-        if( $options )
-        {
-            $output = true;
-            $return .= '.' . $type . '(' . json_encode($options) . ')';
-        }
-        
-        if( $parameter = $this->transferAttributesAndUnset('attr', 'on') )
-        {
-            $output = true;
-            $return .= '.on(\'' . $parameter . '\', function(){' . $this->transferAttributesAndUnset('attr', 'onCallback') . '})';
-        }
-
-        $return .= ';</script>';
-
-        $this->bootstrapOptions[$id] = isset($output) ? $return : NULL;
     }
     
     /**
@@ -215,26 +191,6 @@ trait BootstrapComponentsTrait
     protected function breadcrumbItem($link, $content)
     {
         return $this->anchor($link, ucfirst($content));
-    }
-
-    /**
-     * Protected is bootstrap attribute
-     */
-    protected function isBootstrapAttribute($attr, $callback)
-    {
-        if( isset($this->settings['attr'][$attr]) )
-        {
-            $attribute = $this->settings['attr'][$attr];
-
-            if( $attribute === str_replace('-', '', $attr) )
-            {
-                $attribute = NULL;
-            }
-
-            unset($this->settings['attr'][$attr]);
-
-            $callback($attribute);
-        }
     }
 
     /**
