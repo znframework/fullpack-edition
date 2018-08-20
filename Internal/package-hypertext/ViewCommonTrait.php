@@ -18,7 +18,7 @@ use ZN\Hypertext\Exception\PermissionRoleIdException;
 
 trait ViewCommonTrait
 {
-    use CallableElements, FormElementsTrait, HtmlElementsTrait;
+    use CallableElements, FormElementsTrait, HtmlElementsTrait, BootstrapAttributes;
 
     /**
      * Keeps settings
@@ -269,6 +269,50 @@ trait ViewCommonTrait
         unset($this->settings[$type][$attr]);
 
         return $return;
+    }
+
+    /**
+     * Protected object options
+     */
+    protected function bootstrapObjectOptions(String $selector, $options, $type)
+    {
+        if( ! empty($options) )
+        {
+            $optionsEncode = json_encode($options);
+        }
+        
+        $return  = '<script>$("' . $selector . '").' . $type . '(' . ($optionsEncode ?? NULL) . ')';
+        
+        if( $parameter = $this->transferAttributesAndUnset('attr', 'on') )
+        {
+            $return .= '.on(\'' . $parameter . '\', function(){' . $this->transferAttributesAndUnset('attr', 'onCallback') . '})';
+        }
+
+        $return .= ';</script>';
+
+        $this->bootstrapOptions[$type][$selector] = $return;
+
+        return $return;
+    }
+
+    /**
+     * Protected is bootstrap attribute
+     */
+    protected function isBootstrapAttribute($attr, $callback)
+    {
+        if( isset($this->settings['attr'][$attr]) )
+        {
+            $attribute = $this->settings['attr'][$attr];
+
+            if( $attribute === str_replace('-', '', $attr) )
+            {
+                $attribute = NULL;
+            }
+
+            unset($this->settings['attr'][$attr]);
+
+            $callback($attribute);
+        }
     }
 
     /**

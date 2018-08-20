@@ -17,7 +17,7 @@ use ZN\Hypertext\Exception\InvalidArgumentException;
 
 class Html
 {
-    use ViewCommonTrait, BootstrapGridsystemTrait, BootstrapComponentsTrait;
+    use ViewCommonTrait, BootstrapComponents, BootstrapLayouts;
 
     protected $elements =
     [

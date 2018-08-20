@@ -9,7 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-trait BootstrapGridsystemTrait
+trait BootstrapLayouts
 {
     /**
      * Protected bootstrap grid system column
@@ -32,7 +32,7 @@ trait BootstrapGridsystemTrait
      * @var int 
      */
     protected $bootstrapGridsystemColumnCount = 0;
-
+    
     /**
      * Magic to string
      * 
@@ -56,6 +56,56 @@ trait BootstrapGridsystemTrait
         $this->bootstrapContainerDivElementAttributes = 'container-fluid';
 
         return $this;
+    }
+
+    /**
+     * Start container div
+     * 
+     * @return string
+     */
+    public function startContainerDiv()
+    {
+        return $this->createStartDivElement('container');
+    }
+
+    /**
+     * Start fluid container div
+     * 
+     * @return string
+     */
+    public function startFluidContainerDiv()
+    {
+        return $this->createStartDivElement('container-fluid');
+    }
+
+    /**
+     * Start row div
+     * 
+     * @return string
+     */
+    public function startRowDiv()
+    {
+        return $this->createStartDivElement('row');
+    }
+
+    /**
+     * Start column div
+     * 
+     * @return string
+     */
+    public function startColumnDiv($size)
+    {
+        return $this->createStartDivElement('col-' . $size);
+    }
+
+    /**
+     * End div
+     * 
+     * @return string
+     */
+    public function endDiv()
+    {
+        return '</div>' . PHP_EOL;
     }
 
     /**
@@ -121,5 +171,13 @@ trait BootstrapGridsystemTrait
         $this->bootstrapGridsystemRow = '';
 
         return $return;
+    }
+
+    /**
+     * Protected create start div element
+     */
+    protected function createStartDivElement($class)
+    {
+        return '<div class="' . $class . '">' . PHP_EOL;
     }
 }
