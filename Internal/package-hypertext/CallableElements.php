@@ -109,14 +109,9 @@ trait CallableElements
         }
         else
         {
-            if( $parameters[0] === false )
+            if( $parameters[0] === NULL )
             {
                 return $this;
-            }
-
-            if( $parameters[0] === true )
-            {
-                $parameters[0] = $method;
             }
         }
 

@@ -25,34 +25,57 @@ trait BootstrapComponentsTrait
      */
     public function carousel(String $id = NULL, Array $images = [])
     {
-        $images = $this->transferAttributesAndUnset('attr', 'images') ?: $images;
+        $images = $this->transferAttributesAndUnset('attr', 'item') ?: $images;
 
-        if( ! empty($images) )
+        $data = 
+        [
+            'carouselId'        => $id ?? ('Carousel' . md5(uniqid())),
+            'carouselImages'    => $images,
+            'carouseIndicators' => $this->transferAttributesAndUnset('attr', 'indicators'),
+            'carouselPrevName'  => $this->transferAttributesAndUnset('attr', 'prev') ?: 'Previous',
+            'carouselNextName'  => $this->transferAttributesAndUnset('attr', 'next') ?: 'Next' 
+        ];
+
+        foreach( ['interval', 'keyboard', 'ride', 'pause', 'wrap'] as $opt )
         {
-            $data = 
-            [
-                'carouselId'        => $id ?? ('Carousel' . md5(uniqid())),
-                'carouselImages'    => $images,
-                'carouseIndicators' => $this->transferAttributesAndUnset('attr', 'indicators'),
-                'carouselPrevName'  => $this->transferAttributesAndUnset('attr', 'prev') ?: 'Previous',
-                'carouselNextName'  => $this->transferAttributesAndUnset('attr', 'next') ?: 'Next' 
-            ];
-    
-            return $this->getCarouselResource('standart', $data);
+            $this->addBootstrapOption($opt, $this->transferAttributesAndUnset('attr', $opt), $options);
+        }
+
+        $transition = $this->transferAttributesAndUnset('attr', 'transition');
+
+        $this->isBootstrapAttribute('on', function($return)
+        {
+            $this->settings['attr']['on'] = Base::suffix($return, '.bs.carousel');
+        });
+
+        $this->bootstrapObjectOptions($id, $transition ?? $options, 'carousel');
+
+        return $this->getCarouselResource('standart', $data);
+    }   
+
+    /**
+     * Active caroseul options
+     */
+    public function activeCarouselOptions(String $id)
+    {
+        return $this->bootstrapOptions[$id] ?? NULL;
+    }
+
+    /**
+     * P
+     */
+    public function item(String $file, Array $attributes = [])
+    {
+        if( empty($attributes) )
+        {
+            $this->settings['attr']['item'][] = $file;
         }
         else
         {
-            $this->addBootstrapOption('interval', $this->transferAttributesAndUnset('attr', 'interval'), $options);
-            
-            $cycle = $this->transferAttributesAndUnset('attr', 'cycle');
+            $this->settings['attr']['item'][$file] = $attributes;
+        }  
 
-            $this->isBootstrapAttribute('on', function($return)
-            {
-                $this->settings['attr']['on'] = Base::suffix($return, '.bs.carousel');
-            });
-
-            return $this->bootstrapObjectOptions($id, $cycle ?? $options, 'carousel');
-        }
+        return $this;
     }
 
     /**
@@ -88,11 +111,6 @@ trait BootstrapComponentsTrait
      */
     public function breadcrumb(String $uri = NULL, Int $segmentCount = -1) 
     {
-        $this->isBootstrapAttribute('dismiss-fade', function() use(&$type)
-        {
-            $type .= ' alert-dismissible fade show';
-        });
-        
         $uris = $this->getURIsegments($uri, $segmentCount);
         $list = $this->breadcrumbOlList($uris);
 
@@ -119,8 +137,8 @@ trait BootstrapComponentsTrait
         }
 
         $return .= ';</script>';
-        
-        return isset($output) ? $return : NULL;
+
+        $this->bootstrapOptions[$id] = isset($output) ? $return : NULL;
     }
     
     /**
@@ -128,7 +146,7 @@ trait BootstrapComponentsTrait
      */
     protected function addBootstrapOption($key, $value, &$options)
     {
-        if( ! empty($value) )
+        if( isset($value) )
         {
             $options[$key] = $value;
         }
