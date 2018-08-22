@@ -170,6 +170,17 @@ class Wizard
     }
 
     /**
+     * Protected change variables
+     */
+    protected static function changeVariables()
+    {
+        return 
+        [
+            '/\$this(\,|\-\>|\))/' => '$getZNClassInstance$1'
+        ];
+    }
+
+    /**
      * protected symbols header
      * 
      * @param void
@@ -215,17 +226,6 @@ class Wizard
             '/\+\[symbol\?\?static\]\+/' => '::',
             '/\+\[symbol\?\?colon\]\+/'  => ':'
         ]; 
-    }
-
-    /**
-     * Protected change variables
-     */
-    protected static function changeVariables()
-    {
-        return 
-        [
-            '/\$this\-\>/' => '$getZNClassInstance->'
-        ];
     }
 
     /**

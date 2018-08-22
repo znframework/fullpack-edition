@@ -333,7 +333,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     protected static function isWizardOrStandartFileExists(&$file)
     {
-        if( $file !== NULL )
+        if( $file !== NULL && is_string($file) )
         {
             $file = Base::prefix($file, VIEWS_DIR);
 
