@@ -16,7 +16,14 @@ class Wizard
      * 
      * @const string
      */
-    const CRLF = '\s*(\n|' . PHP_EOL . '|\:|$)';
+    const CRLF = '(\s*)((\n|' . PHP_EOL . ')|\:|$)';
+
+    /**
+     * END
+     * 
+     * @const string
+     */
+    const END = '((\s|\n|' . PHP_EOL . ')|\:|$)';
 
     /**
      * Get config
@@ -52,7 +59,11 @@ class Wizard
 
         $code = self::convertWizardContent($string);
 
-        return Buffering::code($code, $data);
+        $code = Buffering::code($code, $data);
+
+        $code = self::phpClean($code);
+
+        return $code;
     }
 
     /**
@@ -62,6 +73,8 @@ class Wizard
     {
         self::textControl($string); # 5.4.6[added]
         
+        $string  = self::encodeParenthesis($string);
+
         $pattern = array_merge
         (
             self::callableJS(),
@@ -77,7 +90,11 @@ class Wizard
             self::html()
         );
 
-        return self::replace($pattern, $string);
+        $string = self::replace($pattern, $string);
+
+        $string = self::decodeParenthesis($string);
+
+        return $string;
     }
 
     /**
@@ -93,8 +110,8 @@ class Wizard
         {
             $array    =
             [
-                '/(function\((.*?)\)\s*)*(use\(.*?\)\s*)*\{\<\s/s' => 'function($2)$3{ ?>',  # Function
-                '/\s\>\}/s'                                        => '<?php }'
+                '/(function\((.*?)\)\s*)*(use\(.*?\)\s*)*\{\<(\s)/s' => 'function($2)$3{$4?>',  # Function
+                '/(\s)\>\}/s'                                        => '$1<?php }'
             ];
 
             return $array;
@@ -116,13 +133,13 @@ class Wizard
         {
             $array =
             [
-                '/\{\{\{\s*(.*?)\s*\}\}\}/s' => '<?php echo htmlentities($1) ?>',
-                '/\{\{\s*/'                  => '<?php echo ',
-                '/\s*\}\}/'                  => ' ?>',
+                '/\{\{\{\s*(.*?)\s*\}\}\}/s'        => '<?php echo htmlentities($1) ?>',
+                '/\{\{\s*/'                         => '<?php echo ',
+                '/\s*\}\}/'                         => ' ?>',
 
-				'/\{\[\=(.*?)\]\}/'          => '<?php echo $1 ?>',
-                '/(\s*\]\}|@endphp\:*)/'     => ' ?>',
-                '/(\{\[\s*|@php\:*)/'        => '<?php ',
+				'/\{\[\=(.*?)\]\}/'                 => '<?php echo $1 ?>',
+                '/(\s*\]\}|@endphp'.self::END.')/'  => ' ?>',
+                '/(\{\[\s*|@php'.self::END.')/'     => '<?php ',
             ];
         }
 
@@ -146,82 +163,6 @@ class Wizard
             [
                 '/\[\{\s*/' => '{{',
                 '/\s*\}\]/' => '}}'
-            ];
-        }
-
-        return $array;
-    }
-
-    /**
-     * protected functions
-     * 
-     * @param void
-     * 
-     * @return array
-     */
-    protected static function functions()
-    {
-        $array = [];
-
-        if( self::$config['functions'] ?? true )
-        {
-            $function = '(\w+.*?(\)|\}|\]|\-\>\w+))'.self::CRLF.'/sm';
-            $array    =
-            [
-                '/((\W)@|^@)' . $function => '$2<?php echo $3; ?>'  # Function
-            ];
-        }
-
-        return $array;
-    }
-
-    /**
-     * protected comments
-     * 
-     * @param void
-     * 
-     * @return array
-     */
-    protected static function comments()
-    {
-        $array = [];
-
-        if( self::$config['comments'] ?? true )
-        {
-            $array =
-            [
-                '/\{\-\-\s*/' => '<!-- ',
-                '/\s*\-\-\}/' => ' -->'
-            ];
-        }
-
-        return $array;
-    }
-
-    /**
-     * protected html
-     * 
-     * @param void
-     * 
-     * @return array
-     */
-    protected static function html()
-    {
-        $array             = [];
-        $htmlAttributesTag = '(^|\s)\#(!*\w+)\s*(\[(.*?)\])*';
-
-        if( self::$config['html'] ?? true )
-        {
-            $array =
-            [
-                '/\/#/'                                         => '+[symbol??dies]+',
-                '/\s+\#\#(\w+)/'                                => '</$1>',
-                '/'.$htmlAttributesTag.self::CRLF.'/m'          => '<$2 $4>',
-                '/'.$htmlAttributesTag.'\s+/'                   => '<$2 $4>',
-                '/'.$htmlAttributesTag.'\s*\(\s*(.*?)\s*\)'.self::CRLF.'/sm' => '<$2 $4>$5</$2>',
-                '/'.$htmlAttributesTag.'\s*/'                   => '<$2 $4>',
-                '/\<(\w+)\s+\>/'                                => '<$1>',
-                '/\+\[symbol\?\?dies\]\+/'                      => '#'
             ];
         }
 
@@ -302,28 +243,28 @@ class Wizard
         {
             $array =
             [
-                '/@(cview|view|script|style|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>',
-                '/@endform'.self::CRLF.'/sm'                                                     => '<?php echo Form::close() ?>',
-                '/@form\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php echo Form::open($1) ?>',
-                '/@(hidden|textarea|text|checkbox|radio|file|email|submit|button|multiselect|select|password)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php echo Form::$1($2) ?>',
-                '/@(anchor|mailto|image)\s*\((.*?)\)'.self::CRLF.'/sm'                           => '<?php echo Html::$1($2) ?>',
-                '/@container'.self::CRLF.'/sm'                                                   => '<?php echo Html::startContainerDiv() ?>',
-                '/@containerFluid'.self::CRLF.'/sm'                                              => '<?php echo Html::startFluidContainerDiv() ?>',
-                '/@row'.self::CRLF.'/sm'                                                         => '<?php echo Html::startRowDiv() ?>',
-                '/@col(([a-zA-Z]{2})([0-9]{1,2}))'.self::CRLF.'/sm'                              => '<?php echo Html::startColumnDiv("$2-$3") ?>',
-                '/@end(col|row|container)'.self::CRLF.'/sm'                                      => '<?php echo Html::endDiv() ?>',
-                '/@endperm'.self::CRLF.'/sm'                                                     => '<?php Permission::end() ?>',
-                '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php Permission::start($1) ?>',  
-                '/@login\s*\((.*?)\)'.self::CRLF.'/sm'                                           => '<?php if( User::isLogin() ): ?>', 
-                '/@view'.self::CRLF.'/sm'                                                        => '<?php echo $view ?>',  
-                '/@(endforelse|endlogin)'.self::CRLF.'*/m'                                       => '<?php endif; ?>',                                       
-                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'                       => '<?php if( ! empty($2) ): foreach($1): ?>',
-                '/@empty'.self::CRLF.'/m'                                                        => '<?php endforeach; else: ?>',     
-                '/@loop\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php foreach($1 as $key => $value): ?>',    
-                '/@endloop'.self::CRLF.'/m'                                                      => '<?php endforeach; ?>',         
-                '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'*/m'           => '<?php $1 ?>',
-                '/@(elseif|if|foreach|for|while)\s*(.*?)'.self::CRLF.'/sm'                       => '<?php $1$2: ?>',
-                '/@(else|not)'.self::CRLF.'*/m'                                                  => '<?php else: ?>',
+                '/@(cview|view|script|style|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>$3$5',
+                '/@endform'.self::CRLF.'/sm'                                                     => '<?php echo Form::close() ?>$1$3',
+                '/@form\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php echo Form::open($1) ?>$2$4',
+                '/@(hidden|textarea|text|checkbox|radio|file|email|submit|button|multiselect|select|password)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php echo Form::$1($2) ?>$3$5',
+                '/@(anchor|mailto|image)\s*\((.*?)\)'.self::CRLF.'/sm'                           => '<?php echo Html::$1($2) ?>$3$5',
+                '/@container'.self::END.'/sm'                                                    => '<?php echo Html::startContainerDiv() ?>$2',
+                '/@containerFluid'.self::END.'/sm'                                               => '<?php echo Html::startFluidContainerDiv() ?>$2',
+                '/@row'.self::END.'/sm'                                                          => '<?php echo Html::startRowDiv() ?>$2',
+                '/@col(([a-zA-Z]{2})([0-9]{1,2}))'.self::END.'/sm'                               => '<?php echo Html::startColumnDiv("$2-$3") ?>$5',
+                '/@end(col|row|container)'.self::END.'/sm'                                       => '<?php echo Html::endDiv() ?>$3',
+                '/@endperm'.self::CRLF.'/sm'                                                     => '<?php Permission::end() ?>$1$3',
+                '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php Permission::start($1)?>$2$4',  
+                '/@login\s*\((.*?)\)'.self::CRLF.'/sm'                                           => '<?php if( User::isLogin() ):?>$2$4', 
+                '/@view'.self::CRLF.'/sm'                                                        => '<?php echo $view ?>$1$3',  
+                '/@(endforelse|endlogin)'.self::CRLF.'*/m'                                       => '<?php endif; ?>$2$4',                                       
+                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'                       => '<?php if( ! empty($2) ):foreach($1):?>$4$6',
+                '/@empty'.self::CRLF.'/m'                                                        => '<?php endforeach; else:?>$1$3',     
+                '/@loop\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php foreach($1 as $key => $value):?>$2$4',    
+                '/@endloop'.self::CRLF.'/m'                                                      => '<?php endforeach; ?>$1$3',         
+                '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'*/m'           => '<?php $1 ?>$2$4',
+                '/@(elseif|if|foreach|for|while)\s*\((.*?)\)'.self::CRLF.'/sm'                   => '<?php $1($2):?>$3$5',
+                '/@(else|not)'.self::CRLF.'*/m'                                                  => '<?php else:?>$2$4',
             ];
         }
 
@@ -349,11 +290,11 @@ class Wizard
             $variable = '/@\$(\w+.*?)';
             $start    = '((\W)@|^@)';
             
-            $outputVariableCoalesce = '<?php echo $$1 ?? NULL ?>';
-            $outputVariable         = '<?php echo $$1 ?>';
+            $outputVariableCoalesce = '<?php echo $$1 ?? NULL ?>$2';
+            $outputVariable         = '<?php echo $$1 ?>$2';
 
-            $outputCosntantCoalesce = '$2<?php echo defined("$4") ? ($3 ?? NULL) : NULL ?>';
-            $outputCosntant         = '$2<?php echo $3 ?>';
+            $outputCosntantCoalesce = '$2<?php echo defined("$4") ? ($3 ?? NULL) : NULL ?>$7';
+            $outputCosntant         = '$2<?php echo $3 ?>$7';
             
             $array    =
             [
@@ -361,6 +302,83 @@ class Wizard
                 $variable                            . $suffix  => $outputVariable,         # Variable
                 '/' . $start . $constant . $coalesce . $suffix  => $outputCosntantCoalesce, # Constant
                 '/' . $start . $constant . $suffix              => $outputCosntant          # Constant
+            ];
+        }
+
+        return $array;
+    }
+
+    /**
+     * protected functions
+     * 
+     * @param void
+     * 
+     * @return array
+     */
+    protected static function functions()
+    {
+        $array = [];
+
+        if( self::$config['functions'] ?? true )
+        {
+            $array    =
+            [   
+                '/((\W)@|^@)(\w+)/'                                   => '$2<?php echo $3',
+                '/\)\:(\"|\'|\<|\s|\n|'.PHP_EOL.'|$)/sm'              => ')?>$1',
+                '/\)\s*(?!\s*(\-\>|\)|\{|\?\>))(\n|'.PHP_EOL.'|$)/sm' => ')?>$1$2$3'
+            ];
+        }
+
+        return $array;
+    }
+
+    /**
+     * protected comments
+     * 
+     * @param void
+     * 
+     * @return array
+     */
+    protected static function comments()
+    {
+        $array = [];
+
+        if( self::$config['comments'] ?? true )
+        {
+            $array =
+            [
+                '/\{\-\-\s*/' => '<!-- ',
+                '/\s*\-\-\}/' => ' -->'
+            ];
+        }
+
+        return $array;
+    }
+
+    /**
+     * protected html
+     * 
+     * @param void
+     * 
+     * @return array
+     */
+    protected static function html()
+    {
+        $array             = [];
+        $htmlAttributesTag = '(^|\s)\#(!*\w+)\s*(\[(.*?)\])*';
+
+        if( self::$config['html'] ?? true )
+        {
+            $array =
+            [
+                '/\/#/'                                         => '+[symbol??dies]+',
+                '/\s+\#\#(\w+)/'                                => '</$1>',
+                '/'.$htmlAttributesTag.self::CRLF.'/m'          => '<$2 $4>',
+                '/'.$htmlAttributesTag.'\s+/'                   => '<$2 $4>',
+                '/'.$htmlAttributesTag.'\s*\(\s*(.*?)\s*\)'.self::CRLF.'/sm' => '$1<$2 $4>$5</$2>$6$8',
+                '/'.$htmlAttributesTag.'\s*/'                   => '<$2 $4>',
+                '/\<(\w+)\s+\>/'                                => '<$1>',
+                '/\+\[symbol\?\?dies\]\+/'                      => '#'
             ];
         }
 
@@ -422,5 +440,32 @@ class Wizard
     protected static function replace($pattern, $string)
     {
         return preg_replace(array_keys($pattern), array_values($pattern), $string);
+    }
+
+    /**
+     * Protected php clean
+     */
+    protected static function phpClean($string)
+    {
+        return str_replace('?>', NULL, $string);
+    }
+
+    /**
+     * Protected encode parenthesis
+     */
+    protected static function encodeParenthesis($string)
+    {
+        return preg_replace_callback('/(?<open>\{\-\-|@php'.self::END.'|\{\{|\{\[|\[\{)(?<content>.*?)(?<close>\}\}|\]\}|@endphp'.self::END.'|\}\]|\-\-\})/s', function($data)
+        {
+            return $data['open'] . preg_replace('/\)\s*(\n|'.PHP_EOL.'|$)/m', '+[symbol??parenthesis]+', $data['content']) . $data['close'];
+        }, $string);
+    }
+
+    /**
+     * Protected decode parenthesis
+     */
+    protected static function decodeParenthesis($string)
+    {
+        return preg_replace('/\+\[symbol\?\?parenthesis\]\+/', ')' . PHP_EOL, $string);
     }
 }
