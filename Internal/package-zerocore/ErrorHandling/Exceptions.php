@@ -319,6 +319,11 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         $file = $file ?? $trace[0] ?? NULL;
 
+        if( ! is_string($file) )
+        {
+            $file = VIEWS_DIR . CURRENT_CONTROLLER . '/' . CURRENT_CFUNCTION . '.wizard.php';
+        }
+
         self::isWizardOrStandartFileExists($file);
 
         return (object)
