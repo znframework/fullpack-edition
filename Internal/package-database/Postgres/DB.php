@@ -102,11 +102,9 @@ class DB extends DriverMappingAbstract
             $dsn = $this->config['dsn'];
         }
 
-        $dsn = rtrim($dsn);
+        $connectMethod = $this->config['pconnect'] === true ? 'pg_pconnect' : 'pg_connect';
 
-        $this->connect = ( $this->config['pconnect'] === true )
-                         ? @pg_pconnect($dsn)
-                         : @pg_connect($dsn);
+        $this->connect = $connectMethod(rtrim($dsn));
 
         if( empty($this->connect) )
         {

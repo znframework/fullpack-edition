@@ -11,6 +11,7 @@
 
 
 use stdClass;
+use ZN\Base;
 use ZN\Support;
 use ZN\Security;
 use ZN\ErrorHandling\Errors;
@@ -92,14 +93,13 @@ class DB extends DriverMappingAbstract
     {
         $this->config = $config;
 
-        $dsn =  ( ! empty($this->config['dsn']) )
+        $dsn =  ! empty($this->config['dsn'])
                 ? $this->config['dsn']
-                : 'DRIVER='.$this->config['host'].';SERVER='.$this->config['server'].';DATABASE='.$this->config['database'];
+                : 'DRIVER='.Base::suffix(Base::prefix($this->config['host'], '{'), '}').';SERVER='.$this->config['server'].';DATABASE='.$this->config['database'];
 
+        $connectMethod = $this->config['pconnect'] === true ? 'odbc_pconnect' : 'odbc_connect';
 
-        $this->connect =    ( $this->config['pconnect'] === true )
-                            ? @odbc_pconnect($dsn , $this->config['user'], $this->config['password'])
-                            : @odbc_connect($dsn , $this->config['user'], $this->config['password']);
+        $this->connect = $connectMethod($dsn, $this->config['user'], $this->config['password']);
 
         if( empty($this->connect) )
         {
