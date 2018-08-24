@@ -22,7 +22,7 @@ use ZN\Remote\Exception\FileRemoteUploadException;
 use ZN\Remote\Exception\FileRemoteDownloadException;
 
 
-class FTP implements FTPInterface, RemoteInterface
+class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
 {
     /**
      * Connect
@@ -359,17 +359,5 @@ class FTP implements FTPInterface, RemoteInterface
         {
             return ftp_close($this->connect);
         }
-    }
-
-    /**
-     * Different Connection
-     * 
-     * @param array $config
-     * 
-     * @return Connection
-     */
-    public function differentConnection(Array $config) : FTP
-    {
-        return new self($config);
     }
 }
