@@ -18,7 +18,7 @@ use ZN\Hypertext\Exception\PermissionRoleIdException;
 
 trait ViewCommonTrait
 {
-    use CallableElements, FormElementsTrait, HtmlElementsTrait, BootstrapAttributes;
+    use OutputElements, CallableElements, FormElementsTrait, HtmlElementsTrait, BootstrapAttributes;
 
     /**
      * Keeps settings
@@ -370,7 +370,9 @@ trait ViewCommonTrait
         
         $this->createBootstrapFormInputElementByType($type, $return, $attributes, $return);
 
-        return $this->_perm($perm, $return);
+        $this->outputElement .= $this->_perm($perm, $return);
+
+        return $this;
     }
 
     /**

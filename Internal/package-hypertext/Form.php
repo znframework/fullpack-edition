@@ -62,9 +62,9 @@ class Form
      * 2. application => application/x-www-form-urlencoded
      * 3. text        => text/plain
      * 
-     * @return string
+     * @return string|object
      */
-    public function open(String $name = NULL, Array $_attributes = []) : String
+    public function open(String $name = NULL, Array $_attributes = [])
     {
         $this->setFormName($name, $_attributes);
 
@@ -86,7 +86,9 @@ class Form
 
         $this->_unsetopen();
 
-        return $return;
+        $this->outputElement .= $return;
+
+        return $this;
     }
 
     /**
@@ -118,13 +120,15 @@ class Form
      * 
      * @param void
      * 
-     * @return string
+     * @return string|object
      */
-    public function close() : String
+    public function close()
     {
         unset($this->settings['getrow']);
 
-        return '</form>'.EOL;
+        $this->outputElement .= '</form>' . EOL;
+
+        return $this;
     }
 
     /**
@@ -134,9 +138,9 @@ class Form
      * @param string $value       = NULL
      * @param array  $_attributes = []
      * 
-     * @return string
+     * @return string|object
      */
-    public function datetimeLocal(String $name = NULL, String $value = NULL, Array $_attributes = []) : String
+    public function datetimeLocal(String $name = NULL, String $value = NULL, Array $_attributes = [])
     {
         return $this->_input($name, $value, $_attributes, 'datetime-local');
     }
@@ -148,9 +152,9 @@ class Form
      * @param string $value       = NULL
      * @param array  $_attributes = []
      * 
-     * @return string
+     * @return string|object
      */
-    public function textarea(String $name = NULL, String $value = NULL, Array $_attributes = []) : String
+    public function textarea(String $name = NULL, String $value = NULL, Array $_attributes = [])
     {
         $this->setNameAttribute($name);
 
@@ -176,7 +180,11 @@ class Form
 
         $this->createTextareaElementByValueAndAttributes($value, $_attributes, $return);
 
-        return $this->_perm($perm, $return);
+        $this->createBootstrapFormInputElementByType('textarea', $return, $_attributes, $return);
+
+        $this->outputElement .= $this->_perm($perm, $return);
+
+        return $this;
     }
 
     /**
@@ -188,9 +196,9 @@ class Form
      * @param array  $_attributes = []
      * @param bool   $multiple    = false
      * 
-     * @return string
+     * @return string|object
      */
-    public function select(String $name = NULL, Array $options = [], $selected = NULL, Array $_attributes = [], Bool $multiple = false) : String
+    public function select(String $name = NULL, Array $options = [], $selected = NULL, Array $_attributes = [], Bool $multiple = false)
     {
         $this->isTableOrQueryData($options);
 
@@ -232,7 +240,9 @@ class Form
 
         $this->_unsetselect();
 
-        return $this->_perm($perm, $return);
+        $this->outputElement .= $this->_perm($perm, $return);
+
+        return $this;
     }
 
     /**
@@ -243,9 +253,9 @@ class Form
      * @param mixed  $selected    = NULL
      * @param array  $_attributes = []
      * 
-     * @return string
+     * @return string|object
      */
-    public function multiselect(String $name = NULL, Array $options = [], $selected = NULL, Array $_attributes = []) : String
+    public function multiselect(String $name = NULL, Array $options = [], $selected = NULL, Array $_attributes = [])
     {
         return $this->select($name, $options, $selected, $_attributes, true);
     }
@@ -258,7 +268,7 @@ class Form
      * 
      * @return string
      */
-    public function hidden($name = NULL, String $value = NULL) : String
+    public function hidden($name = NULL, String $value = NULL)
     {
         $name  = $this->settings['attr']['name' ] ?? $name ;
         $value = $this->settings['attr']['value'] ?? $value;
@@ -276,7 +286,9 @@ class Form
             $hiddens =  $this->createHiddenElement($name, $value);
         }
 
-        return $hiddens;
+        $this->outputElement .= $hiddens;
+
+        return $this;
     }
 
     /**
@@ -286,9 +298,9 @@ class Form
      * @param string $value       = NULL
      * @param array  $_attributes = []
      * 
-     * @return string
+     * @return string|object
      */
-    public function file(String $name = NULL, Bool $multiple = false, Array $_attributes = []) : String
+    public function file(String $name = NULL, Bool $multiple = false, Array $_attributes = [])
     {
         if( ! empty($this->settings['attr']['multiple']) )
         {
