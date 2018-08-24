@@ -12,6 +12,15 @@
 interface RemoteInterface
 {
     /**
+     * Alias different connection
+     * 
+     * @param array $config
+     * 
+     * @return Connection
+     */
+    public function new(Array $config);
+
+    /**
      * Different Connection
      * 
      * @param array $config

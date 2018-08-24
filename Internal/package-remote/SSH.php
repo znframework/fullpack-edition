@@ -20,7 +20,7 @@ use ZN\Remote\Exception\FolderNotFoundException;
 use ZN\Remote\Exception\FolderAllreadyException;
 use ZN\Remote\Exception\InvalidArgumentException;
 
-class SSH implements SSHInterface, RemoteInterface
+class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
 {
     /**
      * Connect
@@ -281,18 +281,6 @@ class SSH implements SSHInterface, RemoteInterface
         {
             throw new InvalidArgumentException(NULL, '$this->connect');
         }
-    }
-
-    /**
-     * Different Connection
-     * 
-     * @param array $config
-     * 
-     * @return SSH
-     */
-    public function differentConnection(Array $config) : SSH
-    {
-        return new self($config);
     }
 
     /**

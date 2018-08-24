@@ -154,6 +154,18 @@ class Connection
     }
 
     /**
+     * Alias different connection
+     * 
+     * @param mixed $connectName = NULL
+     * 
+     * @return Connection
+     */
+    public function new($connectName = NULL) : Connection
+    {
+        return $this->differentConnection($connectName);
+    }
+
+    /**
      * Creates different connection
      * 
      * @param mixed $connectName = NULL
