@@ -25,26 +25,12 @@ trait BootstrapLayouts
      */
     protected $bootstrapGridsystemRow = NULL;
 
-
     /**
      * Protected bootstrap grid sytem column count
      * 
      * @var int 
      */
     protected $bootstrapGridsystemColumnCount = 0;
-    
-    /**
-     * Magic to string
-     * 
-     * @return string
-     */
-    public function __toString()
-    {
-        if( $this->getBootstrapGridsystem() )
-        {
-            return $this->createBootstrapGridsystem();
-        }
-    }
 
     /**
      * Container fluid

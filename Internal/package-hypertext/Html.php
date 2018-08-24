@@ -408,11 +408,11 @@ class Html
      * 
      * @return string
      */
-    public function meta($name, String $content = NULL) : String
+    public function meta($name, String $content = NULL)
     {
         if( ! is_array($name) )
         {
-            return $this->_singleMeta($name, $content);
+            $this->outputElement .= $this->_singleMeta($name, $content);
         }
         else
         {
@@ -423,8 +423,10 @@ class Html
                 $metas .= $this->_singleMeta($key, $val);
             }
 
-            return $metas;
+            $this->outputElement .= $metas;
         }
+
+        return $this;
     }
 
     /**
@@ -436,7 +438,9 @@ class Html
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, "<$type>" . $this->stringOrCallback($html) . "</$type>");
+        $this->outputElement .= $this->_perm($perm, "<$type>" . $this->stringOrCallback($html) . "</$type>");
+
+        return $this;
     }
 
     /**
@@ -450,7 +454,9 @@ class Html
         
         $return = '<'.$type.$this->attributes($_attributes).'>'.$this->stringOrCallback($content)."</$type>".EOL;
 
-        return $this->_perm($perm, $return);
+        $this->outputElement .= $this->_perm($perm, $return);
+
+        return $this;
     }
 
     /**
@@ -460,7 +466,9 @@ class Html
     {
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, '<'.strtolower($type).'src="'.$src.'"'.$this->attributes($_attributes).'>'.EOL);
+        $this->outputElement .= $this->_perm($perm, '<'.strtolower($type).'src="'.$src.'"'.$this->attributes($_attributes).'>'.EOL);
+
+        return $this;
     }
 
     /**
@@ -472,7 +480,9 @@ class Html
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, '<'.$type.'src="'.$src.'"'.$this->attributes($_attributes).'>'.$this->stringOrCallback($content)."</$type>".EOL);
+        $this->outputElement .= $this->_perm($perm, '<'.$type.'src="'.$src.'"'.$this->attributes($_attributes).'>'.$this->stringOrCallback($content)."</$type>".EOL);
+    
+        return $this;
     }
 
     /**
@@ -484,7 +494,9 @@ class Html
 
         $perm    = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, '<'.$element.$this->attributes($attributes).'>'.$this->stringOrCallback($str).'</'.$element.'>');
+        $this->outputElement .= $this->_perm($perm, '<'.$element.$this->attributes($attributes).'>'.$this->stringOrCallback($str).'</'.$element.'>');
+
+        return $this;
     }
 
     /**
@@ -494,7 +506,9 @@ class Html
     {
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        return $this->_perm($perm, '<'.strtolower($element).$this->attributes($attributes).'>');
+        $this->outputElement .= $this->_perm($perm, '<'.strtolower($element).$this->attributes($attributes).'>');
+
+        return $this;
     }
 
     /**
@@ -524,6 +538,6 @@ class Html
             $content = '';
         }
 
-        return '<meta'.$name.$content.' />'."\n";
+        return '<meta' . $name . $content . ' />' . EOL;
     }
 }
