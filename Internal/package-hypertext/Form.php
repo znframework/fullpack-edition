@@ -258,7 +258,7 @@ class Form
      * 
      * @return string
      */
-    public function hidden(String $name = NULL, String $value = NULL) : String
+    public function hidden($name = NULL, String $value = NULL) : String
     {
         $name  = $this->settings['attr']['name' ] ?? $name ;
         $value = $this->settings['attr']['value'] ?? $value;
@@ -266,8 +266,7 @@ class Form
         $this->settings['attr'] = [];
 
         $hiddens = NULL;
-        $value   = ! empty($value) ? 'value="'.$value.'"' : '';
-
+        
         if( is_array($name) ) foreach( $name as $key => $val )
         {
             $hiddens .= $this->createHiddenElement($key, $val);
