@@ -9,7 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-
 trait OutputElements
 {
     /**
