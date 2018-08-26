@@ -26,7 +26,7 @@ trait OutputElements
      */
     public function __toString()
     {
-        if( $outputElement = ($this->outputElement ?? NULL) )
+        if( $outputElement = $this->outputElement )
         {
             $this->outputElement = NULL;
 
@@ -34,7 +34,12 @@ trait OutputElements
         }
         elseif( $this->getBootstrapGridsystem() )
         {
-            return $this->createBootstrapGridsystem();
+            if( is_string($return = $this->createBootstrapGridsystem()) )
+            {
+                return $return;
+            } 
         }
+
+        return '';
     }
 }
