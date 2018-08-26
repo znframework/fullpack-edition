@@ -125,7 +125,7 @@ class Kernel
         # running on the other layer before this layer.
         Base::layer('Middle');
         
-        $parameters   = CURRENT_CPARAMETERS;
+        $parameters   = CURRENT_CFPARAMETERS;
         $function     = CURRENT_CFUNCTION;
         $openFunction = CURRENT_COPEN_PAGE;
         $page         = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
@@ -157,13 +157,16 @@ class Kernel
                 Autoloader::restart();
             } 
         }
+
+        # Define real current parameters.
+        define('CURRENT_CPARAMETERS', $parameters);
         
         # The view path is being controlled so that the view can be loaded automatically.
         self::viewPathFinder($function, $viewPath, $wizardPath);
 
         # Resolving dependency injections.
         # The controller is being called.
-        self::callController($page, $function, $parameters);
+        self::callController($page, $function, CURRENT_CPARAMETERS);
         
         # The view is automatically loading.
         self::viewAutoload($wizardPath, $viewPath);          

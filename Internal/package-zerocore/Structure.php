@@ -48,13 +48,7 @@ class Structure
         {
             $function = $segments[1];
 
-            unset($segments[1]);
-        }
-
-        # The segments information in the URL to be executed is captured.
-        if( isset($segments[2]) )
-        {
-            $parameters = $segments;
+            unset($segments[1]);    
         }
 
         return
@@ -64,7 +58,7 @@ class Structure
             'function'     => $function,
             'namespace'    => $namespace,
             'openFunction' => $openFunction,
-            'parameters'   => array_values($parameters)
+            'parameters'   => array_values($segments ?? [])
         ];
     }
 
@@ -77,20 +71,20 @@ class Structure
      */
     public static function defines()
     {
-        define('STRUCTURE_DATA'     , self::data());
-        define('CURRENT_COPEN_PAGE' , STRUCTURE_DATA['openFunction']);
-        define('CURRENT_CPARAMETERS', STRUCTURE_DATA['parameters']);
-        define('CURRENT_CFILE'      , STRUCTURE_DATA['file']);
-        define('CURRENT_CFUNCTION'  , STRUCTURE_DATA['function']);
-        define('CURRENT_CPAGE'      , ($page = STRUCTURE_DATA['page']) . '.php');
-        define('CURRENT_CONTROLLER' , $page);
-        define('CURRENT_CNAMESPACE' , $namespace = STRUCTURE_DATA['namespace'] );
-        define('CURRENT_CCLASS'     , $namespace . CURRENT_CONTROLLER);
-        define('CURRENT_CFPATH'     , str_replace
+        define('STRUCTURE_DATA'      , self::data());
+        define('CURRENT_COPEN_PAGE'  , STRUCTURE_DATA['openFunction']);
+        define('CURRENT_CFPARAMETERS', STRUCTURE_DATA['parameters']);
+        define('CURRENT_CFILE'       , STRUCTURE_DATA['file']);
+        define('CURRENT_CFUNCTION'   , STRUCTURE_DATA['function']);
+        define('CURRENT_CPAGE'       , ($page = STRUCTURE_DATA['page']) . '.php');
+        define('CURRENT_CONTROLLER'  , $page);
+        define('CURRENT_CNAMESPACE'  , $namespace = STRUCTURE_DATA['namespace'] );
+        define('CURRENT_CCLASS'      , $namespace . CURRENT_CONTROLLER);
+        define('CURRENT_CFPATH'      , str_replace
         (
             CONTROLLERS_DIR, '', CURRENT_CONTROLLER) . '/' . CURRENT_CFUNCTION
         );
-        define('CURRENT_CFURI'      , strtolower(CURRENT_CFPATH));
-        define('CURRENT_CFURL'      , Request::getSiteURL() . CURRENT_CFPATH);
+        define('CURRENT_CFURI'       , strtolower(CURRENT_CFPATH));
+        define('CURRENT_CFURL'       , Request::getSiteURL() . CURRENT_CFPATH);
     }
 }
