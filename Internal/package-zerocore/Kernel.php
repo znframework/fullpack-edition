@@ -129,12 +129,6 @@ class Kernel
         $function     = CURRENT_CFUNCTION;
         $openFunction = CURRENT_COPEN_PAGE;
         $page         = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
-       
-        # The request must be made to a valid controller.
-        if( ! is_file(CURRENT_CFILE) )
-        { 
-            self::invalidControllerPath($page, $function);
-        }
         
         # If an invalid parameter is entered, it will redirect to the opening method.
         if( ! is_callable([$page, $function]) )
@@ -144,18 +138,10 @@ class Kernel
             $function = $openFunction;
       
             # If the request is invalid, it will be redirected.
-            if( get_class_methods($page) )
-            {
-                if( ! is_callable([$page, $function]) )
-                {
-                    throw new Exception(self::getLang('invalidOpenFunction'));  
-                }            
-            }
-            # If the controller is not called when it exists, the class map is rebuilt.
-            else
-            {
-                Autoloader::restart();
-            } 
+            if( ! is_callable([$page, $function]) )
+            {  
+                self::invalidControllerPath($page, $function);
+            }            
         }
 
         # Define real current parameters.
@@ -178,6 +164,23 @@ class Kernel
         
         # The operation of the system core is completes.
         self::end();
+    }
+
+    /**
+     * Protected invalid controller path
+     */
+    protected static function invalidControllerPath($controller, $function)
+    {
+        if( $show404 = Config::get('Routing', 'show404') )
+        {
+            Helper::report('InvalidRequest', "Invalid request made to {$controller}/{$function} page!");
+
+            Response::redirect($show404);
+        }
+        else
+        {
+            throw new Exception(self::getLang('invalidOpenFunction'));  
+        }     
     }
 
     /**
@@ -334,16 +337,6 @@ class Kernel
     protected static function getLang(String $type)
     {
         return Lang::default('ZN\CoreDefaultLanguage')::select('Kernel')['kernel:'.$type];
-    }
-
-    /**
-     * Protected invalid controller path
-     */
-    protected static function invalidControllerPath($controller, $function)
-    {
-        Helper::report('InvalidRequest', "Invalid request made to {$controller}/{$function} page!");
-
-        Response::redirect(Config::get('Routing', 'show404'));
     }
 
     /**

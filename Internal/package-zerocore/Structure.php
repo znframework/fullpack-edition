@@ -29,19 +29,17 @@ class Structure
         $segments     = explode('/', $url[0]);
 
         # The controller information in the URL to be executed is captured.
-        if( isset($segments[0]) )
+        $page = $segments[0];
+
+        $classInfo = Autoloader::getClassFileInfo($namespace . $page);
+
+        # Virtual Controller - Added[5.6.0]
+        if( ! empty($isFile = $classInfo['path']) )
         {
-            $page   = $segments[0];
-            $isFile = CONTROLLERS_DIR . ($suffixExtension = Base::suffix($page, '.php'));
-
-            # Virtual Controller - Added[5.6.0]
-            if( ! is_file($isFile) )
-            {
-                $isFile = EXTERNAL_CONTROLLERS_DIR . $suffixExtension;
-            }
-
-            unset($segments[0]);
+            $page = pathinfo($isFile, PATHINFO_FILENAME);
         }
+
+        unset($segments[0]);
 
         # The method information in the URL to be executed is captured.
         if( isset($segments[1]) )
