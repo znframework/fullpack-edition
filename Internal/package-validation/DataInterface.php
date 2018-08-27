@@ -18,7 +18,7 @@ interface DataInterface
      * 
      * @return bool
      */
-    public function check(String $submit = NULL) : Bool;
+    public function check(String $submit = 'all') : Bool;
 
     /**
      * Defines rules for control of the grant.
