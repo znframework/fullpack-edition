@@ -149,7 +149,7 @@ class Data implements DataInterface
      * 
      * @return bool
      */
-    public function check(String $submit = NULL) : Bool
+    public function check(String $submit = 'all') : Bool
     {
         $session = Singleton::class('ZN\Storage\Session');
 
