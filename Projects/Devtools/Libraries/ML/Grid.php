@@ -177,7 +177,7 @@ class Grid extends MLExtends
         $formObjects = '';
 
         $languages   = implode(',', $arrayKeys = array_keys($data));
-        $mlLanguages = $formClass->hidden('ML_LANGUAGES', $languages);
+        $mlLanguages = (string) $formClass->hidden('ML_LANGUAGES', $languages);
 
         foreach( $data as $lang => $values )
         {
