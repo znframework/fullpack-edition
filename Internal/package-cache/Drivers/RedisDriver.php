@@ -61,7 +61,7 @@ class RedisDriver extends DriverMappingAbstract
         {
             if( $config['socketType'] === 'unix' )
             {
-                $success = $this->redis->connect($config['socket']);
+                $success = $this->redis->connect($config['host']);
             }
             else
             {
