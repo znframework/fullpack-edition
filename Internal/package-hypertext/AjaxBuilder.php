@@ -11,31 +11,16 @@
 
 use ZN\IS;
 use ZN\Request;
-use ZN\Singleton;
 use ZN\Buffering;
 
-class AjaxBuilder
+class AjaxBuilder extends BuilderExtends
 {
-    /**
-     * Protected keeps builder
-     * 
-     * @var string
-     */
-    protected $builder = NULL;
-
     /**
      * Protected keeps queue builder
      * 
      * @var string
      */
     protected $queueBuilder = NULL;
-
-    /**
-     * Protected script open tag
-     * 
-     * @var bool 
-     */
-    protected $tag = false;
 
     /**
      * Protected keeps ajax functions
@@ -73,7 +58,7 @@ class AjaxBuilder
      */
     public function __call($method, $parameter)
     {
-        $value = $parameter[0];
+        $value = $parameter[0] ?? '';
 
         if( $method === 'url' )
         {
@@ -109,36 +94,6 @@ class AjaxBuilder
     }
 
     /**
-     * Magic to string
-     * 
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->build($this->builder);
-    }
-
-    /**
-     * Open script tag
-     * 
-     * @param bool $status
-     */
-    public function tag(Bool $status)
-    {
-        $this->tag = $status;
-
-        return $this;
-    }
-
-    /**
-     * Protected get script class
-     */
-    protected function getScriptClass()
-    {
-        return Singleton::class('ZN\Hypertext\Script'); 
-    }
-
-    /**
      * Protected build
      */
     protected function build(String $content)
@@ -151,23 +106,6 @@ class AjaxBuilder
         $this->queueBuilder = NULL;
 
         return $this->openCloseTag($string);
-    }
-
-    /**
-     * Protected script open close tag
-     */
-    protected function openCloseTag($string)
-    {
-        if( $this->tag === true )
-        {
-            $script = $this->getScriptClass();
-
-            $string = $script->open() . $string . $script->close();
-        }
-
-        $this->tag = false;
-
-        return $string;
     }
 
     /**
@@ -194,16 +132,4 @@ class AjaxBuilder
 
         return $value;
     }   
-
-    /**
-     * Protected is callable option
-     */
-    protected function isCallableOption($callback, $parameter)
-    {
-        $option  = 'function(' . $parameter . '){' . PHP_EOL;
-        $option .= Buffering\Callback::do($callback);
-        $option .= '}';
-
-        return $option;
-    }
 }
