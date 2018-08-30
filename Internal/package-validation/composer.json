@@ -12,10 +12,10 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "5.8.*",
-        "znframework/package-captcha": "5.8.*",
-        "znframework/package-storage": "5.8.*",
-        "znframework/package-security": "5.8.*"
+        "znframework/package-zerocore": "5.9.*",
+        "znframework/package-captcha": "5.9.*",
+        "znframework/package-storage": "5.9.*",
+        "znframework/package-security": "5.9.*"
 	},
     "autoload": {
         "psr-4": {

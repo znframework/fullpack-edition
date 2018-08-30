@@ -243,6 +243,8 @@ class Wizard
         {
             $array =
             [
+                '/@selector\s*\((.*?)\)'.self::CRLF.'/sm'                                        => '<?php echo ZN\Singleton::class(\'ZN\Hypertext\JQueryBuilder\')->selector($1) ?>$2$4',
+                '/@ajax\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php echo Ajax::url($1) ?>$2$4',
                 '/@(cview|view|script|style|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>$3$5',
                 '/@endform'.self::CRLF.'/sm'                                                     => '<?php echo Form::close() ?>$1$3',
                 '/@form\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php echo Form::open($1) ?>$2$4',

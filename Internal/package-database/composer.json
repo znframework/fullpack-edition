@@ -12,16 +12,16 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "5.8.*",
-        "znframework/package-security": "5.8.*",
-        "znframework/package-datatypes": "5.8.*",
-        "znframework/package-request": "5.8.*",
-        "znframework/package-response": "5.8.*",
-        "znframework/package-filesystem": "5.8.*",
-        "znframework/package-cache": "5.8.*",
-        "znframework/package-pagination": "5.8.*",
-        "znframework/package-helpers": "5.8.*",
-        "znframework/package-hypertext": "5.8.*"
+        "znframework/package-zerocore": "5.9.*",
+        "znframework/package-security": "5.9.*",
+        "znframework/package-datatypes": "5.9.*",
+        "znframework/package-request": "5.9.*",
+        "znframework/package-response": "5.9.*",
+        "znframework/package-filesystem": "5.9.*",
+        "znframework/package-cache": "5.9.*",
+        "znframework/package-pagination": "5.9.*",
+        "znframework/package-helpers": "5.9.*",
+        "znframework/package-hypertext": "5.9.*"
 	},
     "autoload": {
         "psr-4": {

@@ -35,8 +35,11 @@ class UserExtends
     public function __construct()
     {
         # If no configuration file is found, predefined settings will be enabled.
-        $this->getConfig  = Config::default('ZN\Authentication\AuthenticationDefaultConfiguration')
-                                  ::get('Authentication');
+        $this->getConfig  = array_merge
+        (
+            Config::default('ZN\Authentication\AuthenticationDefaultConfiguration')::get('Authentication') ?: [],
+            Config::get('Auth') ?: []
+        );
         
         # When the user is registered in, 
         # the algorithm to encrypt the password is set.
