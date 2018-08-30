@@ -9,9 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\IS;
-use ZN\Request;
-use ZN\Singleton;
 use ZN\Buffering;
 
 class JQueryBuilder extends BuilderExtends
@@ -87,6 +84,6 @@ class JQueryBuilder extends BuilderExtends
 
         $this->builder = NULL;
 
-        return $this->openCloseTag($string);
+        return $string;
     }
 }

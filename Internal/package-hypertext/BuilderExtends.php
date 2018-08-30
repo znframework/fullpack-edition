@@ -35,7 +35,7 @@ class BuilderExtends
      */
     public function __toString()
     {
-        return $this->build($this->builder);
+        return $this->openCloseTag($this->build($this->builder));
     }
 
     /**

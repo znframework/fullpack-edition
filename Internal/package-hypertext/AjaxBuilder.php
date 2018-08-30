@@ -105,7 +105,7 @@ class AjaxBuilder extends BuilderExtends
         $this->builder = NULL;
         $this->queueBuilder = NULL;
 
-        return $this->openCloseTag($string);
+        return $string;
     }
 
     /**
