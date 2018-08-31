@@ -17,5 +17,18 @@
     "require": 
     {
         "php": ">=7.0.0"
+    },
+    "scripts": 
+    {
+        "post-install-cmd": ["@docker", "@zerocore"],
+        "post-create-project-cmd": ["@docker", "@zerocore"],
+        "docker": 
+        [
+            "docker-compose up -d --build znframework"
+        ],
+        "zerocore": 
+        [
+            "php zerocore generate-project-key"
+        ]
     }
 }
