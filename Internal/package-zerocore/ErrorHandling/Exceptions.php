@@ -183,14 +183,14 @@ class Exceptions extends \Exception implements ExceptionsInterface
             return false;
         }
 
-        $wizardErrorData = self::getTemplateWizardErrorData();
+        $wizardErrorData = self::getTemplateWizardErrorData($file, $line);
 
         $exceptionData =
         [
             'type'    => self::$errorCodes[$no] ?? 'ERROR',
             'message' => $msg,
-            'file'    => $wizardErrorData->file ?: $file,
-            'line'    => $wizardErrorData->line ?: $line,
+            'file'    => $wizardErrorData->file,
+            'line'    => $wizardErrorData->line,
             'trace'   => $trace
         ];
 
@@ -292,20 +292,39 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return string|null
      */
-    protected static function getTemplateWizardErrorData()
+    protected static function getTemplateWizardErrorData($file, $line)
     {
-        $trace = debug_backtrace()[6]['args']    ?? [NULL];
-        $args  = debug_backtrace()[1]['args'][4] ?? [];
+        if( strstr($file, DS . 'Buffering.php') )
+        {
+            $trace = debug_backtrace()[6]['args']    ?? [NULL];
+            $args  = debug_backtrace()[1]['args'][4] ?? [];
+            
+            self::searchErrorWizardFile($args, $file, $line);
 
+            self::isWizardOrStandartFileExists($file, $trace);
+        }
+
+        return (object)
+        [ 
+            'file' => $file,
+            'line' => $line
+        ];
+    }
+
+    /**
+     * Protected search error wizard file
+     */
+    protected static function searchErrorWizardFile($args, &$file, &$line)
+    {
         foreach( $args as $key => $value )
         {
-            if( ! isset($line) && isset($value['file']) && stristr($value['file'], DS . 'Buffering.php') )
-            {
-                $line = $value['line'] ?? NULL;
-            }
-
             if( is_array($value) )
             {
+                if( ! isset($line) && isset($value['file']) && stristr($value['file'], DS . 'Buffering.php') )
+                {
+                    $line = $value['line'] ?? NULL;
+                }
+
                 $find = $value['args'][0] ?? NULL;
 
                 if( is_string($find) && preg_match('/(Views\/)*.*?\.\wizard(\.php)*/', $find) )
@@ -316,29 +335,14 @@ class Exceptions extends \Exception implements ExceptionsInterface
                 }
             }
         }
-
-        $file = $file ?? $trace[0] ?? NULL;
-
-        if( is_object($file) )
-        {
-            $file = VIEWS_DIR . CURRENT_CONTROLLER . '/' . CURRENT_CFUNCTION . '.wizard.php';
-        }
-
-        self::isWizardOrStandartFileExists($file);
-
-        return (object)
-        [ 
-            'file' => $file,
-            'line' => $line ?? NULL
-        ];
     }
 
     /**
      * Protected is wizard or standart file exists
      */
-    protected static function isWizardOrStandartFileExists(&$file)
+    protected static function isWizardOrStandartFileExists(&$file, $trace)
     {
-        if( $file !== NULL && is_string($file) )
+        if( ! is_file($file) )
         {
             $file = Base::prefix($file, VIEWS_DIR);
 
@@ -348,7 +352,17 @@ class Exceptions extends \Exception implements ExceptionsInterface
                 {
                     if( ! is_file($rfile = $file . '.wizard.php') )
                     {
-                        $file = NULL;
+                        if( isset($trace[0]) && is_file($rfile = Base::suffix(Base::prefix($trace[0], VIEWS_DIR), '.php')) )
+                        {
+                            $file = $rfile;
+                        }
+                        else
+                        {
+                            if( ! is_file($rfile) )
+                            {
+                                $file = VIEWS_DIR . CURRENT_CONTROLLER . '/' . CURRENT_CFUNCTION . '.wizard.php';
+                            }
+                        }          
                     }
                     else
                     {
