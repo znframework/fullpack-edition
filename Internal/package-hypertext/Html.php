@@ -466,7 +466,7 @@ class Html
     {
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        $this->outputElement .= $this->_perm($perm, '<'.strtolower($type).'src="'.$src.'"'.$this->attributes($_attributes).'>'.EOL);
+        $this->outputElement .= $this->_perm($perm, '<'.strtolower($type).' src="'.$src.'"'.$this->attributes($_attributes).'>'.EOL);
 
         return $this;
     }
@@ -480,7 +480,7 @@ class Html
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        $this->outputElement .= $this->_perm($perm, '<'.$type.'src="'.$src.'"'.$this->attributes($_attributes).'>'.$this->stringOrCallback($content)."</$type>".EOL);
+        $this->outputElement .= $this->_perm($perm, '<'.$type.' src="'.$src.'"'.$this->attributes($_attributes).'>'.$this->stringOrCallback($content)."</$type>".EOL);
     
         return $this;
     }
