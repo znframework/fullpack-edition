@@ -358,10 +358,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
                         }
                         else
                         {
-                            if( ! is_file($rfile) )
-                            {
-                                $file = VIEWS_DIR . CURRENT_CONTROLLER . '/' . CURRENT_CFUNCTION . '.wizard.php';
-                            }
+                            $file = VIEWS_DIR . CURRENT_CONTROLLER . '/' . CURRENT_CFUNCTION . '.wizard.php';
                         }          
                     }
                     else
