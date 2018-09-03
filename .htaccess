@@ -51,6 +51,10 @@
 	Options -Indexes
 </IfModule>
 
+<FilesMatch "^(?i:docker\-compose\.yml|Dockerfile)$">
+	deny from all
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase /
