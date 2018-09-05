@@ -158,32 +158,29 @@ class File
      */
     protected function write($name, $type, $controller) : Bool
     {
-        if( ! empty($this->settings['path']) )
+        if( ! empty($name) )
         {
-            $filePath = Base::suffix($this->settings['path'], '/') . $name;
-        }
-        else
-        {
-            $filePath = $name;
-        }
-
-        $file = $this->path($filePath, $type);;
-
-        if( ! is_file($file) )
-        {
-            if( file_put_contents($file, $controller) )
+            if( ! empty($this->settings['path']) )
             {
-                return true;
+                $filePath = Base::suffix($this->settings['path'], '/') . $name;
             }
             else
             {
-                return false;
+                $filePath = $name;
+            }
+    
+            $file = $this->path($filePath, $type);
+    
+            if( ! is_file($file) )
+            {
+                if( file_put_contents($file, $controller) )
+                {
+                    return true;
+                }
             }
         }
-        else
-        {
-            return false;
-        }
+        
+        return false;
     }
 
     /**
