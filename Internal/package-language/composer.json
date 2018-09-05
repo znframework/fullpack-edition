@@ -12,10 +12,10 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "5.9.*",
-        "znframework/package-hypertext": "5.9.*",
-        "znframework/package-pagination": "5.9.*",
-        "znframework/package-request": "5.9.*"
+        "znframework/package-zerocore": "6.0.*",
+        "znframework/package-hypertext": "6.0.*",
+        "znframework/package-pagination": "6.0.*",
+        "znframework/package-request": "6.0.*"
 	},
     "autoload": {
         "psr-4": {
