@@ -18,7 +18,7 @@ unset($trace['params']);
             <div class="list-group">
                 <?php
                 $i = 0;
-                foreach( $trace as $key => $debug )
+                if( is_array($trace) ) foreach( $trace as $key => $debug )
                 {
                     if
                     (   
