@@ -15,6 +15,7 @@ use ZN\Support;
 use ZN\Datatype;
 use ZN\Singleton;
 use ZN\Exception;
+use ZN\DataTypes\Arrays;
 
 class GrandModel
 {
@@ -118,7 +119,7 @@ class GrandModel
      */
     public function __destruct()
     {
-        if( ! in_array(($table = $this->prefix . $this->grandTable), (array) $this->tables) && $this->status !== 'create' )
+        if( ! Arrays::valueExistsInsensitive((array) $this->tables, ($table = $this->prefix . $this->grandTable)) && $this->status !== 'create' )
         {
             try
             {
