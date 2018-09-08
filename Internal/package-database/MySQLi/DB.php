@@ -131,7 +131,7 @@ class DB extends DriverMappingAbstract
 
             $this->connect = new MySQLi
             (
-                $this->config['host'], 
+                ($this->config['pconnect'] === true ? 'p:' : NULL) . $this->config['host'], 
                 $this->config['user'],
                 $this->config['password'], 
                 $this->config['database']
@@ -145,6 +145,17 @@ class DB extends DriverMappingAbstract
         if( ! empty($this->config['charset']  ) ) $this->query("SET NAMES '".$this->config['charset']."'");  
         if( ! empty($this->config['charset']  ) ) $this->query('SET CHARACTER SET '.$this->config['charset']);  
         if( ! empty($this->config['collation']) ) $this->query('SET COLLATION_CONNECTION = "'.$this->config['collation'].'"');
+    }
+
+    /**
+     * Protected persistent connect
+     */
+    protected function persistentConnect(&$options)
+    {
+        if( $this->config['pconnect'] === true )
+        {
+            $options[PDO::ATTR_PERSISTENT] = true;
+        }
     }
 
     /**

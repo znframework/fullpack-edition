@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use PDO;
+use PDOException;
 use ZN\Support;
 use ZN\Security;
 use ZN\Database\DriverMappingAbstract;
@@ -88,17 +90,25 @@ class DB extends DriverMappingAbstract
     public function connect($config = [])
     {
         $this->config = $config;
+        
+        $options = [];
+
+        if( $this->config['pconnect'] === true )
+        {
+            $options[PDO::ATTR_PERSISTENT] = true;
+        }
 
         try
         {
-            $this->connect = new \PDO
+            $this->connect = new PDO
             (
                 $this->config['dsn'] ?: $this->_dsn($this->config), 
                 $this->config['user'], 
-                $this->config['password']
+                $this->config['password'],
+                $options
             );
         }
-        catch( \PDOException $e )
+        catch( PDOException $e )
         {
             throw new ConnectionErrorException($e);
         }
@@ -346,7 +356,7 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->query) )
         {
-            return $this->query->fetch(\PDO::FETCH_BOTH);
+            return $this->query->fetch(PDO::FETCH_BOTH);
         }
         else
         {
@@ -363,7 +373,7 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->query) )
         {
-            return $this->query->fetch(\PDO::FETCH_ASSOC);
+            return $this->query->fetch(PDO::FETCH_ASSOC);
         }
         else
         {
@@ -427,7 +437,7 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->connect) )
         {
-            return $this->connect->getAttribute(\PDO::ATTR_SERVER_VERSION);
+            return $this->connect->getAttribute(PDO::ATTR_SERVER_VERSION);
         }
         else
         {
