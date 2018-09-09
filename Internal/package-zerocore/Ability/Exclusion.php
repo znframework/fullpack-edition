@@ -42,7 +42,7 @@ trait Exclusion
         {
             # If the parameters are set as Lang::select(), 
             # this method is enabled.
-            if( $data = Lang::select($file, $message, $changed) )
+            if( is_scalar($data = Lang::select($file, $message, $changed)) )
             {
                 $message = $data;
             }

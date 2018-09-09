@@ -107,7 +107,31 @@ class GrandModel
             $grandTable = Datatype::divide(str_ireplace([INTERNAL_ACCESS, 'Grand'], '', get_called_class()), '\\', -1);
         }
 
-        $this->grandTable = strtolower($grandTable);
+        $this->grandTable = $grandTable;
+    }
+
+    /**
+     * Magic destruct
+     * 
+     * @param void
+     * 
+     * @return void
+     */
+    public function __destruct()
+    {
+        if( ! Arrays::valueExistsInsensitive((array) $this->tables, ($table = $this->prefix . $this->grandTable)) && $this->status !== 'create' )
+        {
+            try
+            {
+                throw new Exception(Lang::select('Database', 'tableNotExistsError', 'Grand: '.$table));
+            }
+            catch( Exception $e )
+            {
+                $e->continue();
+            }
+        }
+
+        $this->status = NULL;
     }
 
     /**
@@ -132,50 +156,6 @@ class GrandModel
         }
 
         Support::classMethod(get_called_class(), $method);
-    }
-
-    /**
-     * Protected is call column process
-     */
-    protected function isCallColumnTransaction($method, &$selectTransaction)
-    {
-        $transactions = ['row', 'result', 'update', 'delete'];
-
-        foreach( $transactions as $transaction )
-        {
-            if( stripos($method, $transaction) === 0 )
-            {
-                $selectTransaction = $transaction;
-
-                break;
-            }
-        }
-
-        return $selectTransaction ?? NULL;
-    }
-
-    /**
-     * Magic destruct
-     * 
-     * @param void
-     * 
-     * @return void
-     */
-    public function __destruct()
-    {
-        if( ! Arrays::valueExistsInsensitive($this->tables, ($table = $this->prefix . $this->grandTable)) && $this->status !== 'create' )
-        {
-            try
-            {
-                throw new Exception(Lang::select('Database', 'tableNotExistsError', 'Grand: '.$table));
-            }
-            catch( Exception $e )
-            {
-                $e->continue();
-            }
-        }
-
-        $this->status = NULL;
     }
 
     /**
@@ -916,5 +896,25 @@ class GrandModel
         }
 
         return $this;
+    }
+
+    /**
+     * Protected is call column process
+     */
+    protected function isCallColumnTransaction($method, &$selectTransaction)
+    {
+        $transactions = ['row', 'result', 'update', 'delete'];
+
+        foreach( $transactions as $transaction )
+        {
+            if( stripos($method, $transaction) === 0 )
+            {
+                $selectTransaction = $transaction;
+
+                break;
+            }
+        }
+
+        return $selectTransaction ?? NULL;
     }
 }
