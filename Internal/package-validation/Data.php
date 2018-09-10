@@ -27,6 +27,13 @@ class Data implements DataInterface
     protected $options   = ['post', 'get', 'request', 'data'];
 
     /**
+     * Keeps match method
+     * 
+     * @var array
+     */
+    protected $matchMethods = ['match', 'matchpassword'];
+
+    /**
      * Keeps errors
      * 
      * @var array
@@ -289,9 +296,22 @@ class Data implements DataInterface
     {
         $data = $this->setMethodType($name, $this->method);
      
+        $this->isMatchMethods($key, $check);
+
         if( ! Validator::$key($data, ...$check) )
         {
             $this->setMessages($key, $name, $this->replaceParameters($check, $viewName));
+        }
+    }
+
+    /**
+     * Protected is match methods
+     */
+    protected function isMatchMethods($key, &$check)
+    {
+        if( in_array(strtolower($key), $this->matchMethods) && isset($check[0]) )
+        {
+            $check[0] = Method::{$this->method}($check[0]);
         }
     }
 
