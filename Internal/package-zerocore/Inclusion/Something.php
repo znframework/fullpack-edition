@@ -44,15 +44,10 @@ class Something
 
         $eol = EOL;
 
-        $randomPageVariableExtension = Filesystem::getExtension($randomPageVariable);
+        $randomPageVariableExtension = Filesystem::getExtension($randomPageVariable) ?: NULL;
         $randomPageVariableBaseUrl   = Request::getBaseURL($randomPageVariable);
 
         $return = '';
-
-        if( ! is_file($randomPageVariable) )
-        {
-            throw new InvalidArgumentException('Error', 'fileParameter', '1.($randomPageVariable)');
-        }
 
         if( $randomPageVariableExtension === 'js' )
         {
