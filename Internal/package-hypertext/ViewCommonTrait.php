@@ -119,6 +119,7 @@ trait ViewCommonTrait
             'modalHeader'        => $this->settings['attr']['modal-header'        ] ?? NULL,
             'modalBody'          => $this->settings['attr']['modal-body'          ] ?? NULL,
             'modalFooter'        => $this->settings['attr']['modal-footer'        ] ?? NULL,
+            'modalSize'          => $this->settings['attr']['modal-size'          ] ?? NULL,
             'modalDismissButton' => $this->settings['attr']['modal-dismiss-button'] ?? NULL
         ];
 

@@ -1,5 +1,5 @@
 <div id="{{ $modalId }}" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog{{ isset($modalSize) ? ' ' . ZN\Base::prefix($modalSize, 'modal-') : NULL }}">
         <div class="modal-content">
             @if( isset($modalHeader) )
             <div class="modal-header">
