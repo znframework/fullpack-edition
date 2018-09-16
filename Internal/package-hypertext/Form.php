@@ -14,6 +14,7 @@ use ZN\DataTypes\Arrays;
 use ZN\Request\Method;
 use ZN\Buffering;
 use ZN\Singleton;
+use ZN\Inclusion;
 use ZN\Base;
 
 class Form
@@ -127,6 +128,13 @@ class Form
         unset($this->settings['getrow']);
 
         $this->outputElement .= '</form>' . EOL;
+
+        if( isset($this->getJavascriptValidationFunction) )
+        {
+            echo Inclusion\View::use('JavascriptValidationFunctions', $this->getJavascriptValidationFunction, true, __DIR__ . '/');
+
+            $this->getJavascriptValidationFunction = NULL;
+        }
 
         return $this;
     }
