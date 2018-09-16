@@ -13,7 +13,6 @@ use ZN\IS;
 use ZN\Base;
 use ZN\Lang;
 use ZN\Request;
-use ZN\Inclusion;
 use ZN\Singleton;
 use ZN\Protection\Json;
 
@@ -51,17 +50,6 @@ trait FormElementsTrait
      * @var string
      */
     protected $vMethodMessages = NULL;
-
-    /**
-     * Magic destruct
-     */
-    public function __destruct()
-    {
-        if( isset($this->getJavascriptValidationFunction) )
-        {
-            echo Inclusion\View::use('JavascriptValidationFunctions', $this->getJavascriptValidationFunction, true, __DIR__ . '/');
-        }
-    }
 
     /**
      * Email control
