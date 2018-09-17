@@ -127,14 +127,14 @@ class Form
     {
         unset($this->settings['getrow']);
 
-        $this->outputElement .= '</form>' . EOL;
-
         if( isset($this->getJavascriptValidationFunction) )
         {
-            echo Inclusion\View::use('JavascriptValidationFunctions', $this->getJavascriptValidationFunction, true, __DIR__ . '/');
+            $this->outputElement .= Inclusion\View::use('JavascriptValidationFunctions', $this->getJavascriptValidationFunction, true, __DIR__ . '/');
 
             $this->getJavascriptValidationFunction = NULL;
         }
+
+        $this->outputElement .= '</form>' . EOL;
 
         return $this;
     }
