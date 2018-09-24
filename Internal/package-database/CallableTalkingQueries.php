@@ -90,7 +90,7 @@ trait CallableTalkingQueries
         }
         else
         {
-            return $this->callResultMethodsTalkingQuery($method, $split, $parameters);
+            return $this->callResultMethodsTalkingQuery($originMethodName, $split, $parameters);
         }
     }
 
