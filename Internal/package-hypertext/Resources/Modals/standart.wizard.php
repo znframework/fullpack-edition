@@ -1,5 +1,5 @@
 <div id="{{ $modalId }}" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog {{$modalSize ?? 'modal-lg'}}">
         <div class="modal-content">
             @if( isset($modalHeader) )
             <div class="modal-header">
