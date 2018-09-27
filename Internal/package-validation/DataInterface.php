@@ -15,10 +15,11 @@ interface DataInterface
      * It checks the data.
      * 
      * @param string $submit = NULL
+     * @param string &$error = NULL
      * 
      * @return bool
      */
-    public function check(String $submit = 'all') : Bool;
+    public function check(String $submit = 'all', &$error = NULL) : Bool;
 
     /**
      * Defines rules for control of the grant.
