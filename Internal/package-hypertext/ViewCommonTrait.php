@@ -14,7 +14,6 @@ use ZN\Datatype;
 use ZN\Buffering;
 use ZN\Inclusion;
 use ZN\Authorization;
-use ZN\Hypertext\Exception\PermissionRoleIdException;
 
 trait ViewCommonTrait
 {
@@ -120,6 +119,7 @@ trait ViewCommonTrait
             'modalHeader'        => $this->settings['attr']['modal-header'        ] ?? NULL,
             'modalBody'          => $this->settings['attr']['modal-body'          ] ?? NULL,
             'modalFooter'        => $this->settings['attr']['modal-footer'        ] ?? NULL,
+            'modalSize'          => $this->settings['attr']['modal-size'          ] ?? NULL,
             'modalDismissButton' => $this->settings['attr']['modal-dismiss-button'] ?? NULL
         ];
 
@@ -201,7 +201,7 @@ trait ViewCommonTrait
             return Buffering\Callback::do($content);
         }
 
-        throw new InvalidArgumentException('1.($content) parameter must be [scalar] or [callable] type!');
+        throw new Exception\InvalidArgumentException('1.($content) parameter must be [scalar] or [callable] type!');
     }
 
     /**
@@ -608,7 +608,7 @@ trait ViewCommonTrait
         {
             if( Authorization\PermissionExtends::$roleId === NULL )
             {
-                throw new PermissionRoleIdException();
+                throw new Exception\PermissionRoleIdException();
             }
 
             return Authorization\Process::use($perm, $return);
