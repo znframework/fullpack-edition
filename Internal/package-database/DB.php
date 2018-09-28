@@ -1201,9 +1201,7 @@ class DB extends Connection
      */
     public function basicQuery(String $query, Array $secure = []) : DB
     {
-        $this->_query($query, $secure);
-
-        return $this;
+        return $this->_query($query, $secure);
     }
 
     /**
@@ -1216,9 +1214,7 @@ class DB extends Connection
      */
     public function transQuery(String $query, Array $secure = []) : DB
     {
-        $this->_query($query, $secure);
-
-        return $this;
+        return $this->_query($query, $secure);
     }
 
     /**
