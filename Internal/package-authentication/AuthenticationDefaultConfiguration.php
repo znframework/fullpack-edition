@@ -37,8 +37,9 @@ class AuthenticationDefaultConfiguration
     |
     */
 
-    public $encode   = 'md5';
-    public $matching =
+    public $encode    = 'md5';
+    public $spectator = '';
+    public $matching  =
     [
         'table'   => '',
         'columns' =>
