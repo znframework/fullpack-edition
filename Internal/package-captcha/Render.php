@@ -78,6 +78,20 @@ class Render implements RenderInterface
     }
 
     /**
+     * Sets the character type.
+     * 
+     * @param string $type = 'alnum' - options[alnum|numeric|]
+     * 
+     * @return Captcha
+     */
+    public function type(String $type = 'alnum') : Render
+    {
+        $this->sets['text']['type'] = $param;
+
+        return $this;
+    }
+
+    /**
      * Sets the character width.
      * 
      * @param int $param
