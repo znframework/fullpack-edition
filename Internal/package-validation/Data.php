@@ -175,13 +175,16 @@ class Data implements DataInterface
         {
             foreach( $rules as $name => $rule )
             {
-                $value = $rule['value'] ?? $name;
+                if( isset($method::all()[$name]) )
+                {
+                    $value = $rule['value'] ?? $name;
                 
-                unset($rule['value']);
-
-                $rule = Arrays\Unidimensional::do($rule);
-         
-                $this->rules($name, $rule, $value, $method);
+                    unset($rule['value']);
+    
+                    $rule = Arrays\Unidimensional::do($rule);
+             
+                    $this->rules($name, $rule, $value, $method);
+                } 
             } 
         }
 
