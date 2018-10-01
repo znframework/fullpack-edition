@@ -340,9 +340,7 @@ class Render implements RenderInterface
             $this->sets
         );
 
-        $textLengthC = (int) $this->sets['text']['length'];
-
-        $this->session->insert($this->key, substr(md5(rand(0, 999999999)), -($textLengthC)));
+        $this->session->insert($this->key, Encode\RandomPassword::create((int) $this->sets['text']['length'], $this->sets['text']['type'] ?? 'alnum'));
     }
 
     /**
