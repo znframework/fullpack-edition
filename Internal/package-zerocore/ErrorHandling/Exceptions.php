@@ -188,14 +188,14 @@ class Exceptions extends \Exception implements ExceptionsInterface
         $exceptionData =
         [
             'type'    => self::$errorCodes[$no] ?? 'ERROR',
-            'message' => $msg,
+            'msg'     => $msg,
             'file'    => $wizardErrorData->file,
             'line'    => $wizardErrorData->line,
             'trace'   => $trace
         ];
 
         ob_end_clean();
-
+        
         return Inclusion\View::use('Table', $exceptionData, true, __DIR__ . '/Resources/');
     }
 
@@ -358,7 +358,10 @@ class Exceptions extends \Exception implements ExceptionsInterface
                         }
                         else
                         {
-                            $file = VIEWS_DIR . CURRENT_CONTROLLER . '/' . CURRENT_CFUNCTION . '.wizard.php';
+                            if( ! is_file($rfile) )
+                            {
+                                $file = VIEWS_DIR . CURRENT_CONTROLLER . '/' . CURRENT_CFUNCTION . '.wizard.php';
+                            }
                         }          
                     }
                     else
