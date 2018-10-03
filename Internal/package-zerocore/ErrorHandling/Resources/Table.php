@@ -11,7 +11,7 @@ unset($trace['params']);
             <h3 class="panel-title panel-text h-panel-header">
             <i class="fa fa-exclamation-triangle fa-fw"></i> 
             <?php echo '<span class="text-color">'.($type ?? 'ERROR').'</span> &raquo; ' ?>
-            <?php echo $message ?? NULL; ?></h3>
+            <?php echo $msg ?? NULL; ?></h3>
         </div>
 
         <div class="panel-body" style="margin-bottom:-17px;">
