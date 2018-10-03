@@ -25,7 +25,7 @@ class Session implements StorageInterface
     {
         $this->encodeNameValue($name, $value);
 
-        $_SESSION[$name] = $value;
+        $this->addType($_SESSION, $name, $value);
 
         if( $_SESSION[$name] )
         {

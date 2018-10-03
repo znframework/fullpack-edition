@@ -136,6 +136,8 @@ class Cookie implements CookieInterface, StorageInterface
 
         $this->encodeNameValue($name, $value);
 
+        $this->addType($_COOKIE, $name, $value);
+
         $this->setParameters();
 
         if( ! is_scalar($value) )

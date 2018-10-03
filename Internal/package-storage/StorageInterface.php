@@ -12,6 +12,20 @@
 interface StorageInterface
 {
     /**
+     * Inserts at the beginning of the data.
+     * 
+     * @return this
+     */
+    public function first();
+
+    /**
+     * Inserts at the lasting of the data.
+     * 
+     * @return this
+     */
+    public function last();
+
+    /**
      * Encode session key & value
      * 
      * @param string $nameAlgo  = NULL
