@@ -79,7 +79,7 @@ class View
             $inData = [];
         }
 
-        $data = array_merge((array) $data, $inData, Views::$data);
+        $data = array_merge($inData, Views::$data, (array) $data);
 
         if( is_file($randomPageDir . Base::suffix($page, '.php')) && ! strstr($page, self::$templateWizardExtension) )
         {
