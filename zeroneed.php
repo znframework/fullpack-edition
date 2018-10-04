@@ -30,4 +30,4 @@ require __DIR__ . '/Internal/autoload.php';
 |
 */
 
-ZN\ZN::run('FE', '5.9.6', 'Elon Musk');
+ZN\ZN::run('FE', '5.9.7', 'Elon Musk');
