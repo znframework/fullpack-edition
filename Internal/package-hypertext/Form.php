@@ -67,8 +67,6 @@ class Form
      */
     public function open(String $name = NULL, Array $_attributes = [])
     {
-        $this->clearValidationSessions();
-
         $this->setFormName($name, $_attributes);
 
         $this->isEnctypeAttribute($_attributes);
@@ -92,17 +90,6 @@ class Form
         $this->outputElement .= $return;
 
         return $this;
-    }
-
-    /**
-     * Protected clear validation sessions
-     */
-    protected function clearValidationSessions()
-    {
-        $session = Singleton::class('ZN\Storage\Session');
-
-        $session->delete('FormValidationRules');
-        $session->delete('FormValidationMethod');
     }
 
     /**
@@ -146,6 +133,20 @@ class Form
 
             $this->getJavascriptValidationFunction = NULL;
         }
+
+        $session = Singleton::class('ZN\Storage\Session');
+
+        $rules  = $session->FormValidationRules();
+        $method = $session->FormValidationMethod();
+
+        $hidden  = md5(serialize($rules));
+
+        $session->$hidden([$method, $rules]);
+
+        $session->delete('FormValidationRules');
+        $session->delete('FormValidationMethod');
+
+        $this->hidden('KeepValidationRules', $hidden);
 
         $this->outputElement .= '</form>' . EOL;
 
