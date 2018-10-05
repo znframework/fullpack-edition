@@ -153,18 +153,23 @@ class Data implements DataInterface
      * It checks the data.
      * 
      * @param string $submit = NULL
-     * @param string &$error = NULL
      * 
      * @return bool
      */
-    public function check(String $submit = 'all', &$error = NULL) : Bool
+    public function check(String $submit = 'all') : Bool
     {
         $session = Singleton::class('ZN\Storage\Session');
-        
-        $rules  = $session->FormValidationRules();
-        $method = $session->FormValidationMethod() ?: 'post';
+        $hidden  = Method::request('KeepValidationRules');
+        $rules   = (array) $session->$hidden();
+        $method  = empty($rules[0]) ? 'post' : $rules[0];
+        $rules   = $rules[1] ?? [];
 
-        if( ($submit !== NULL && ! $method::$submit()) || empty($rules) ) 
+        if( $submit !== NULL && ! $method::$submit() ) 
+        {
+            return false;
+        }
+
+        if( empty($rules) )
         {
             $this->errors[] = ['Rule check error!'];
 
@@ -175,20 +180,17 @@ class Data implements DataInterface
         {
             foreach( $rules as $name => $rule )
             {
-                if( isset($method::all()[$name]) )
-                {
-                    $value = $rule['value'] ?? $name;
-                
-                    unset($rule['value']);
-    
-                    $rule = Arrays\Unidimensional::do($rule);
-             
-                    $this->rules($name, $rule, $value, $method);
-                } 
+                $value = $rule['value'] ?? $name;
+            
+                unset($rule['value']);
+
+                $rule = Arrays\Unidimensional::do($rule);
+            
+                $this->rules($name, $rule, $value, $method);
             } 
         }
 
-        return ! (Bool) ($error = $this->error('string'));
+        return ! (Bool) $this->error('string');
     }
 
     /**
