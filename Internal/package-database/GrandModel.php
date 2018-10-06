@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Lang;
 use ZN\Config;
 use ZN\Support;
@@ -104,7 +105,15 @@ class GrandModel
         }
         else
         {
-            $grandTable = Datatype::divide(str_ireplace([INTERNAL_ACCESS, 'Grand'], '', get_called_class()), '\\', -1);
+            $grandTable = Base::removeSuffix
+            (
+                Base::removeSuffix
+                (
+                    Base::removePrefix(Datatype::divide(get_called_class(), '\\', -1), INTERNAL_ACCESS), 
+                    'Grand'
+                ), 
+                'Vision'
+            );
         }
 
         $this->grandTable = $grandTable;
@@ -119,6 +128,7 @@ class GrandModel
      */
     public function __destruct()
     {
+        echo $this->grandTable; exit;
         if( ! Arrays::valueExistsInsensitive((array) $this->tables, ($table = $this->prefix . $this->grandTable)) && $this->status !== 'create' )
         {
             try
