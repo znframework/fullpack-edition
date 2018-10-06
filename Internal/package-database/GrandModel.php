@@ -128,7 +128,6 @@ class GrandModel
      */
     public function __destruct()
     {
-        echo $this->grandTable; exit;
         if( ! Arrays::valueExistsInsensitive((array) $this->tables, ($table = $this->prefix . $this->grandTable)) && $this->status !== 'create' )
         {
             try
