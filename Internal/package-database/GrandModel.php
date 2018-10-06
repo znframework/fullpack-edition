@@ -92,18 +92,11 @@ class GrandModel
      */
     public function __construct()
     {
+        # Get database connections
         $this->getDatabaseConnections();
 
-        if( defined('static::table') )
-        {
-            $grandTable = static::table;
-        }
-        else
-        {
-            $grandTable = $this->getGrandTableName();
-        }
-
-        $this->grandTable = $grandTable;
+        # Get active table name
+        $this->setGrandTableName();
     }
 
     /**
@@ -810,6 +803,21 @@ class GrandModel
         $this->connectForge  = Singleton::class('ZN\Database\DBForge')->differentConnection($staticConnection);
         $this->tables        = $this->connectTool->listTables();
         $this->prefix        = $staticConnection['prefix'] ?? Config::database('database')['prefix'];
+    }
+
+    /**
+     * Protected set grand table name
+     */
+    protected function setGrandTableName()
+    {
+        if( defined('static::table') )
+        {
+            $this->grandTable = static::table;
+        }
+        else
+        {
+            $this->grandTable = $this->getGrandTableName();
+        }
     }
 
     /**
