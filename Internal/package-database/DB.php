@@ -1369,6 +1369,8 @@ class DB extends Connection
                 $isExp = true;
             }
 
+            $this->isNonscalarValueEncodeJson($value);
+
             $data .= Base::suffix($key, ',');
 
             if( ! empty($this->duplicateCheck) )
@@ -1451,9 +1453,11 @@ class DB extends Connection
 
         $set  = $this->_p($set, 'column');
         $data = NULL;
-
+        
         foreach( $set as $key => $value )
         {
+            $this->isNonscalarValueEncodeJson($value);
+
             $value = $this->nailEncode($value);
 
             if( $this->_exp($key) )
@@ -2158,6 +2162,17 @@ class DB extends Connection
         }
 
         return rtrim($query, ',') . ')';
+    }
+
+    /**
+     * Protected is nonscalar value encode json
+     */
+    protected function isNonscalarValueEncodeJson(&$value)
+    {
+        if( ! is_scalar($value) )
+        {
+            $value = json_encode($value);
+        }
     }
 
     /**
