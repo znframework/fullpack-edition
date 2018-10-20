@@ -683,30 +683,13 @@ class Sender implements SenderInterface
             }
         }
 
-        if( ! empty($subject) )
-        {
-            $this->subject($subject);
-        }
+        if( ! empty($subject) ) $this->subject($subject);
+        if( ! empty($message) ) $this->message($message);
 
-        if( ! empty($message) )
-        {
-            $this->message($message);
-        }
-
-        if( ! empty($this->to) )
-        {
-            $this->addHeader('To', $this->toString($this->to));
-        }
-
-        if( ! empty($this->cc) )
-        {
-            $this->addHeader('Cc', $this->toString($this->cc));
-        }
-
-        if( ! empty($this->bcc) )
-        {
-            $this->addHeader('Bcc', $this->toString($this->bcc));
-        }
+        if( ! empty($this->to)      ) $this->addHeader('To'      , $this->toString($this->to)     );
+        if( ! empty($this->replyTo) ) $this->addHeader('Reply-To', $this->toString($this->replyTo));
+        if( ! empty($this->cc)      ) $this->addHeader('Cc'      , $this->toString($this->cc)     );
+        if( ! empty($this->bcc)     ) $this->addHeader('Bcc'     , $this->toString($this->bcc)    );
 
         $this->buildContent();
 
