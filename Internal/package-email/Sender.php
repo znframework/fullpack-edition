@@ -729,7 +729,7 @@ class Sender implements SenderInterface
             'mailPath'   => $this->mailPath,
             'returnPath' => $this->headers['Return-Path']
         ];
-        
+
         $send = $this->driver->send(key($this->to), $this->subject, $this->message, $this->header, $settings);
 
         if( empty($send) )
@@ -945,29 +945,11 @@ class Sender implements SenderInterface
         $this->headers      = [];
         $this->addHeader('Date', $this->getDate());
         $this->attachments  = [];
-        $this->senderMail   = '';
-        $this->senderName   = '';
-        $this->charset      = 'UTF-8';
-        $this->contentType  = 'plain';
         $this->cc           = NULL;
         $this->bcc          = NULL;
-        $this->smtpHost     = '';
-        $this->smtpUser     = '';
-        $this->smtpPassword = '';
-        $this->smtpEncode   = '';
-        $this->smtpPort     = 587;
-        $this->smtpTimeout  = 10;
-        $this->smtpAuth     = true;
-        $this->smtpDsn      = false;
-        $this->smtpKeepAlive = false;
-        $this->mimeVersion  = '1.0';
         $this->boundary     = '';
-        $this->multiPart    = 'mixed';
-        $this->priority     = 3;
-        $this->encodingType = '8bit';
         $this->to           = [];
         $this->replyTo      = [];
         $this->from         = NULL;
-        $this->driver       = NULL;
     }
 }
