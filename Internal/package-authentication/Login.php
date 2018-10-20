@@ -50,7 +50,8 @@ class Login extends UserExtends
      * 
      * @return bool
      */
-    public function do(String $username = NULL, String $password = NULL, $rememberMe = false) : Bool
+    
+    public function do(String $username = NULL, String $password = NULL, $rememberMe = false,$passwordMd5=false) : Bool
     {
         $this->controlPropertiesParameters($username, $password, $rememberMe);
 
@@ -58,8 +59,18 @@ class Login extends UserExtends
         {
             $rememberMe = false;
         }
-
-        $password = $this->getEncryptionPassword($password);
+        
+        
+        if($passwordMd5){
+			
+			$password = $password; 
+			 
+		}else{
+			
+			$password = $this->getEncryptionPassword($password);      
+		}
+        
+       
 
         $this->_multiUsernameColumns($username);
 
