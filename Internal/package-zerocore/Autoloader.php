@@ -153,7 +153,7 @@ class Autoloader
 
         # Directory information for class scanning is being retrieved.
         # Settings/Autoloader.php -> classMap key.
-        $classMap = $configAutoloader['classMap'];
+        $classMap = array_reverse($configAutoloader['classMap']);
         
         # The classes are scanned in the specified directories.
         if( ! empty($classMap) ) foreach( $classMap as $directory )
