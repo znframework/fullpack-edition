@@ -31,6 +31,15 @@ interface RenderInterface
     public function size(Int $width, Int $height) : Render;
 
     /**
+     * Sets the character type.
+     * 
+     * @param string $type = 'alnum' - options[alnum|numeric|]
+     * 
+     * @return Captcha
+     */
+    public function type(String $type = 'alnum') : Render;
+
+    /**
      * Sets the character width.
      * 
      * @param int $param

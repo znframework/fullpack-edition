@@ -10,6 +10,7 @@
  */
 
 use ZN\IS;
+use ZN\DataTypes\Arrays;
 use ZN\Cryptography\Encode;
 
 trait StorageCommonMethods
@@ -29,6 +30,37 @@ trait StorageCommonMethods
      * @var array
      */
     protected $encode = [];
+
+    /**
+     * Keeps storage parameters
+     * 
+     * @var array
+     */
+    protected $param = NULL;
+
+    /**
+     * Inserts at the beginning of the data.
+     * 
+     * @return this
+     */
+    public function first()
+    {
+        $this->param['addType'] = 'first';
+
+        return $this;
+    }
+
+    /**
+     * Inserts at the lasting of the data.
+     * 
+     * @return this
+     */
+    public function last()
+    {
+        $this->param['addType'] = 'last';
+
+        return $this;
+    }
 
     /**
      * Session start
@@ -97,6 +129,23 @@ trait StorageCommonMethods
         if( $this->regenerate === true )
         {
             session_regenerate_id();
+        }
+    }
+
+    /**
+     * Protected add type
+     */
+    protected function addType(&$type, $name, $value)
+    {
+        if( $addType = ($this->param['addType'] ?? NULL) )
+        {
+            $type[$name] = Arrays\AddElement::$addType((array) $type[$name], $value);
+
+            $this->param['addType'] = NULL;
+        }
+        else
+        {
+            $type[$name] = $value;
         }
     }
 

@@ -92,31 +92,11 @@ class GrandModel
      */
     public function __construct()
     {
-        $staticConnection    = defined('static::connection') ? static::connection : NULL;
-        $this->connect       = Singleton::class('ZN\Database\DB')->differentConnection($staticConnection);
-        $this->connectTool   = Singleton::class('ZN\Database\DBTool')->differentConnection($staticConnection);
-        $this->connectForge  = Singleton::class('ZN\Database\DBForge')->differentConnection($staticConnection);
-        $this->tables        = $this->connectTool->listTables();
-        $this->prefix        = $staticConnection['prefix'] ?? Config::database('database')['prefix'];
+        # Get database connections
+        $this->getDatabaseConnections();
 
-        if( defined('static::table') )
-        {
-            $grandTable = static::table;
-        }
-        else
-        {
-            $grandTable = Base::removeSuffix
-            (
-                Base::removeSuffix
-                (
-                    Base::removePrefix(Datatype::divide(get_called_class(), '\\', -1), INTERNAL_ACCESS), 
-                    'Grand'
-                ), 
-                'Vision'
-            );
-        }
-
-        $this->grandTable = $grandTable;
+        # Get active table name
+        $this->setGrandTableName();
     }
 
     /**
@@ -810,6 +790,50 @@ class GrandModel
         {
             return false;
         }
+    }
+
+    /**
+     * Protected get database connections
+     */
+    protected function getDatabaseConnections()
+    {
+        $staticConnection    = defined('static::connection') ? static::connection : NULL;
+        $this->connect       = Singleton::class('ZN\Database\DB')->differentConnection($staticConnection);
+        $this->connectTool   = Singleton::class('ZN\Database\DBTool')->differentConnection($staticConnection);
+        $this->connectForge  = Singleton::class('ZN\Database\DBForge')->differentConnection($staticConnection);
+        $this->tables        = $this->connectTool->listTables();
+        $this->prefix        = $staticConnection['prefix'] ?? Config::database('database')['prefix'];
+    }
+
+    /**
+     * Protected set grand table name
+     */
+    protected function setGrandTableName()
+    {
+        if( defined('static::table') )
+        {
+            $this->grandTable = static::table;
+        }
+        else
+        {
+            $this->grandTable = $this->getGrandTableName();
+        }
+    }
+
+    /**
+     * Protected get grand table name
+     */
+    protected function getGrandTableName()
+    {
+        return Base::removeSuffix
+        (
+            Base::removeSuffix
+            (
+                Base::removePrefix(Datatype::divide(get_called_class(), '\\', -1), INTERNAL_ACCESS), 
+                'Grand'
+            ), 
+            'Vision'
+        );
     }
 
     /**

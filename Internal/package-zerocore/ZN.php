@@ -686,7 +686,7 @@ class ZN
         )
         {
             # All requests are directed to the home.
-            defined('CONSOLE_PROJECT_NAME') ?: Response::redirect();
+            defined('CONSOLE_PROJECT_NAME') ?: Response::redirect(! empty($isHost) ? Base::prefix($isHost, SSL_STATUS) : '');
         }
 
         # If there is no valid Projects/ directory, it returns an error.

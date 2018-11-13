@@ -136,14 +136,14 @@ class DB extends Connection
      * Defines SQL WHERE 
      * 
      * @param mixed  $column
-     * @param string $value   = ''
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function where($column, String $value = '', String $logical = NULL) : DB
+    public function where($column, String $value = NULL, String $logical = NULL) : DB
     {
-        $this->_wh($column, $value, $logical, __FUNCTION__);
+        $this->_wh($column, (string) $value, $logical, __FUNCTION__);
 
         return $this;
     }
@@ -152,11 +152,11 @@ class DB extends Connection
      * Defines SQL WHERE 
      * 
      * @param mixed  $column
-     * @param string $value   = ''
+     * @param string $value   = NULL
      * 
      * @return DB
      */
-    public function whereAnd($column, String $value = '') : DB
+    public function whereAnd($column, String $value = NULL) : DB
     {
         $this->where($column, $value, 'AND');
 
@@ -167,11 +167,11 @@ class DB extends Connection
      * Defines SQL WHERE 
      * 
      * @param mixed  $column
-     * @param string $value   = ''
+     * @param string $value   = NULL
      * 
      * @return DB
      */
-    public function whereOr($column, String $value = '') : DB
+    public function whereOr($column, String $value = NULL) : DB
     {
         $this->where($column, $value, 'OR');
 
@@ -182,12 +182,12 @@ class DB extends Connection
      * Defines SQL WHERE 
      * 
      * @param mixed  $column
-     * @param string $value   = ''
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereNot($column, String $value = '', String $logical = NULL) : DB
+    public function whereNot($column, String $value = NULL, String $logical = NULL) : DB
     {
         $this->where($column . ' != ', $value, $logical);
 
@@ -198,12 +198,12 @@ class DB extends Connection
      * Defines SQL WHERE JSON_SEARCH IS NOT NULL
      * 
      * @param mixed  $column
-     * @param string $value   = ''
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereJson($column, String $value = '', String $logical = NULL) : DB
+    public function whereJson($column, String $value = NULL, String $logical = NULL) : DB
     {
         $this->specialDefinedWhere($column, $value, $logical, __FUNCTION__);
 
@@ -214,12 +214,12 @@ class DB extends Connection
      * Defines SQL WHERE JSON_SEARCH IS NULL
      * 
      * @param mixed  $column
-     * @param string $value   = ''
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereNotJson($column, String $value = '', String $logical = NULL) : DB
+    public function whereNotJson($column, String $value = NULL, String $logical = NULL) : DB
     {
         $this->specialDefinedWhere($column, $value, $logical, __FUNCTION__);
 
@@ -237,7 +237,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function whereFullText($column, String $value = '', String $type = NULL, String $logical = NULL) : DB
+    public function whereFullText($column, String $value = NULL, String $type = NULL, String $logical = NULL) : DB
     {
         $this->where('exp:' . $this->db->fullText($column, $this->_escapeStringAddNail($value), $type), '', $logical);
 
@@ -248,13 +248,13 @@ class DB extends Connection
      * Defines SQL WHERE BETWEEN value1 and value2
      * 
      * @param mixed  $column
-     * @param string $value1
-     * @param string $value2
+     * @param string $value1  = NULL
+     * @param string $value2  = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereBetween($column, String $value1, String $value2, String $logical = NULL) : DB
+    public function whereBetween($column, String $value1 = NULL, String $value2 = NULL, String $logical = NULL) : DB
     {
         $this->where($column . ' between', $this->between($value1, $value2), $logical);
 
@@ -265,12 +265,12 @@ class DB extends Connection
      * Defines SQL WHERE LIKE %value%
      * 
      * @param mixed  $column
-     * @param string $value
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereLike($column, String $value, String $logical = NULL) : DB
+    public function whereLike($column, String $value = NULL, String $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'inside'), $logical);
 
@@ -281,12 +281,12 @@ class DB extends Connection
      * Defines SQL WHERE LIKE value%
      * 
      * @param mixed  $column
-     * @param string $value
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereStartLike($column, String $value, String $logical = NULL) : DB
+    public function whereStartLike($column, String $value = NULL, String $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'starting'), $logical);
 
@@ -297,12 +297,12 @@ class DB extends Connection
      * Defines SQL WHERE LIKE %value
      * 
      * @param mixed  $column
-     * @param string $value
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereEndLike($column, String $value, String $logical = NULL) : DB
+    public function whereEndLike($column, String $value = NULL, String $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'ending'), $logical);
 
@@ -313,12 +313,12 @@ class DB extends Connection
      * Defines SQL WHERE IN(...$values)
      * 
      * @param mixed  $column
-     * @param array  $values
+     * @param array  $values  = []
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereIn($column, Array $values, String $logical = NULL) : DB
+    public function whereIn($column, Array $values = [], String $logical = NULL) : DB
     {
         $this->where($column . ' in', $this->in(...$values), $logical);
 
@@ -329,12 +329,12 @@ class DB extends Connection
      * Defines SQL WHERE NOT IN(...$values)
      * 
      * @param mixed  $column
-     * @param array  $values
+     * @param array  $values  = []
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function whereNotIn($column, Array $values, String $logical = NULL) : DB
+    public function whereNotIn($column, Array $values = [], String $logical = NULL) : DB
     {
         $this->where($column . ' not in', $this->notIn(...$values), $logical);
 
@@ -405,14 +405,14 @@ class DB extends Connection
      * Defines SQL HAVING 
      * 
      * @param mixed  $column
-     * @param string $value   = ''
+     * @param string $value   = NULL
      * @param string $logical = NULL
      * 
      * @return DB
      */
-    public function having($column, String $value = '', String $logical = NULL) : DB
+    public function having($column, String $value = NULL, String $logical = NULL) : DB
     {
-        $this->_wh($column, $value, $logical, __FUNCTION__);
+        $this->_wh($column, (string) $value, $logical, __FUNCTION__);
 
         return $this;
     }
@@ -1201,9 +1201,7 @@ class DB extends Connection
      */
     public function basicQuery(String $query, Array $secure = []) : DB
     {
-        $this->_query($query, $secure);
-
-        return $this;
+        return $this->_query($query, $secure);
     }
 
     /**
@@ -1216,9 +1214,7 @@ class DB extends Connection
      */
     public function transQuery(String $query, Array $secure = []) : DB
     {
-        $this->_query($query, $secure);
-
-        return $this;
+        return $this->_query($query, $secure);
     }
 
     /**
@@ -1373,6 +1369,8 @@ class DB extends Connection
                 $isExp = true;
             }
 
+            $this->isNonscalarValueEncodeJson($value);
+
             $data .= Base::suffix($key, ',');
 
             if( ! empty($this->duplicateCheck) )
@@ -1455,9 +1453,11 @@ class DB extends Connection
 
         $set  = $this->_p($set, 'column');
         $data = NULL;
-
+        
         foreach( $set as $key => $value )
         {
+            $this->isNonscalarValueEncodeJson($value);
+
             $value = $this->nailEncode($value);
 
             if( $this->_exp($key) )
@@ -2125,9 +2125,9 @@ class DB extends Connection
     /**
      * Protected special defined where
      */
-    protected function specialDefinedWhere($column, String $value = '', String $logical = NULL, $type = 'whereJson')
+    protected function specialDefinedWhere($column, String $value = NULL, String $logical = NULL, $type = 'whereJson')
     {
-        $this->where('exp:' . $this->db->$type($column, $this->_escapeStringAddNail($value)), '', $logical, 'where');
+        $this->where('exp:' . $this->db->$type($column, $this->_escapeStringAddNail((string) $value)), '', $logical, 'where');
     }
 
     /**
@@ -2162,6 +2162,17 @@ class DB extends Connection
         }
 
         return rtrim($query, ',') . ')';
+    }
+
+    /**
+     * Protected is nonscalar value encode json
+     */
+    protected function isNonscalarValueEncodeJson(&$value)
+    {
+        if( ! is_scalar($value) )
+        {
+            $value = json_encode($value);
+        }
     }
 
     /**
@@ -2397,7 +2408,7 @@ class DB extends Connection
     {
         if( $value !== '' )
         {
-            $value  = $this->_whereKeyControl($column, $value);
+            $value = $this->_whereKeyControl($column, $value);
         }
 
         $this->_convertType($column, $value);
@@ -2461,8 +2472,8 @@ class DB extends Connection
 
         if( isset($conditions[0][0]) && is_array($conditions[0][0]) )
         {
-            $con         = Arrays\GetElement::last($conditions);
-            $conditions  = $conditions[0];
+            $con        = Arrays\GetElement::last($conditions);
+            $conditions = $conditions[0];
         }
 
         $getLast = Arrays\GetElement::last($conditions);

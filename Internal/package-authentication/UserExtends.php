@@ -45,6 +45,9 @@ class UserExtends
         # the algorithm to encrypt the password is set.
         $this->encodeType = $this->getConfig['encode'];
 
+        # Spectator for users profile
+        $this->spectator = $this->getConfig['spectator'] ?: NULL;
+
         # Table name where user information will be stored.
         $this->tableName  = $this->getConfig['matching']['table'];
 

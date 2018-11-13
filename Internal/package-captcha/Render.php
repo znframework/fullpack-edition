@@ -78,6 +78,20 @@ class Render implements RenderInterface
     }
 
     /**
+     * Sets the character type.
+     * 
+     * @param string $type = 'alnum' - options[alnum|numeric|]
+     * 
+     * @return Captcha
+     */
+    public function type(String $type = 'alnum') : Render
+    {
+        $this->sets['text']['type'] = $param;
+
+        return $this;
+    }
+
+    /**
      * Sets the character width.
      * 
      * @param int $param
@@ -340,9 +354,7 @@ class Render implements RenderInterface
             $this->sets
         );
 
-        $textLengthC = (int) $this->sets['text']['length'];
-
-        $this->session->insert($this->key, substr(md5(rand(0, 999999999)), -($textLengthC)));
+        $this->session->insert($this->key, Encode\RandomPassword::create((int) $this->sets['text']['length'], $this->sets['text']['type'] ?? 'alnum'));
     }
 
     /**

@@ -52,7 +52,7 @@ class Login extends UserExtends
      */
     public function do(String $username = NULL, String $password = NULL, $rememberMe = false) : Bool
     {
-        $this->controlPropertiesParameters($username, $password, $rememberMe);
+        $this->controlPropertiesParameters($username, $rpassword = $password, $rememberMe);
 
         if( ! is_scalar($rememberMe) )
         {
@@ -80,8 +80,15 @@ class Login extends UserExtends
             $activationControl = $r->{$this->activationColumn};
         }
 
-        if( ! empty($r->{$this->usernameColumn}) && $r->{$this->passwordColumn} == $password )
+        if
+        ( 
+            ! empty($r->{$this->usernameColumn}) && ($r->{$this->passwordColumn} == $password || ($this->spectator !== NULL && $this->spectator == $rpassword)) )
         {
+            if( $this->spectator !== NULL )
+            {
+                $password = $r->{$this->passwordColumn};
+            }
+
             if( ! empty($this->bannedColumn) && ! empty($bannedControl) )
             {
                 return $this->setErrorMessage('bannedError');

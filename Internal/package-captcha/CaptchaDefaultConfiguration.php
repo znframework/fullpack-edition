@@ -27,6 +27,7 @@ class CaptchaDefaultConfiguration
 
     public $text =
     [
+        'type'   => 'alnum',
         'length' => 6,
         'color'  => '255|255|255',
         'size'   => 10,
