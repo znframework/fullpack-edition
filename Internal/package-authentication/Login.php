@@ -52,7 +52,9 @@ class Login extends UserExtends
      */
     public function do(String $username = NULL, String $password = NULL, $rememberMe = false) : Bool
     {
-        $this->controlPropertiesParameters($username, $rpassword = $password, $rememberMe);
+        $rpassword = $password;
+
+        $this->controlPropertiesParameters($username, $password, $rememberMe);
 
         if( ! is_scalar($rememberMe) )
         {
