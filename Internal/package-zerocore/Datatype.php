@@ -97,7 +97,7 @@ class Datatype
         }
         else
         {
-            $return = NULL;
+            $return = '';
 
             if( $count === 'all' )
             {

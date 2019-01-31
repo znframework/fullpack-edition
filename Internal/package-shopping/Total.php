@@ -36,9 +36,9 @@ class Total extends CartExtends
      * 
      * @param void
      * 
-     * @return int
+     * @return float
      */
-    public function prices() : Int
+    public function prices() : Float
     {
         $total = 0;
 
