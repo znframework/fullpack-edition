@@ -25,7 +25,7 @@ class Folder extends Factory
             'freespace'   => 'Info::freeSpace',
             'disk'        => 'Info::disk',
             'create'      => 'Forge::createFolder',
-            'rename'      => 'Forge::renameFolder',
+            'rename'      => 'Forge::rename',
             'deleteempty' => 'Forge::deleteEmptyFolder',
             'delete'      => 'Forge::deleteFolder',
             'copy'        => 'Forge::copy',
