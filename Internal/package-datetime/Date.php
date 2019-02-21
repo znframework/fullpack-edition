@@ -79,6 +79,16 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
+     * Gets current datetime.
+     * 
+     * @return string
+     */
+    public function now()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    /**
      * Date check
      * 
      * @param string $date

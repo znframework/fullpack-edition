@@ -500,16 +500,19 @@ class ZN
         # Gets internal directories according to the active project.
         $getProjectContainerDirectory = PROJECT_DIR . $path;
 
-        # If the requested project is a sub-project, the project containing this project is called.
-        if( ! empty($containers) && REQUESTED_CURRENT_PROJECT !== NULL )
-        {
-            # If a project is being repaired, the project will be used with the 'Restore' prefix.
-            $restoreFix = 'Restore';
+        # If a project is being repaired, the project will be used with the 'Restore' prefix.
+        $restoreFix = 'Restore';
 
+        # Does the project name have a 'restore' prefix?
+        $isRestorePrefix = strpos(REQUESTED_CURRENT_PROJECT, $restoreFix) === 0;
+
+        # If the requested project is a sub-project, the project containing this project is called.
+        if( ( ! empty($containers) || $isRestorePrefix ) && REQUESTED_CURRENT_PROJECT !== NULL )
+        {
             # 5.3.8[added]
             # If there is a restore operation related to the desired project, 
             # the project request is reshaped according to the restore directory.
-            if( strpos(REQUESTED_CURRENT_PROJECT, $restoreFix) === 0 && is_dir(PROJECTS_DIR . ($restoreDirectory = ltrim(REQUESTED_CURRENT_PROJECT, $restoreFix))) )
+            if( $isRestorePrefix && is_dir(PROJECTS_DIR . ($restoreDirectory = ltrim(REQUESTED_CURRENT_PROJECT, $restoreFix))) )
             {
                 # If the project being repaired is within the scope of another upstream project, 
                 # then the project directory is enabled.

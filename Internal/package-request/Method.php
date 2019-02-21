@@ -94,7 +94,7 @@ class Method implements MethodInterface
      */
     public static function files(String $fileName = NULL, String $type = 'name')
     {
-        return $_FILES[$fileName][$type];
+        return $_FILES[$fileName][$type] ?? false;
     }
 
     /**
