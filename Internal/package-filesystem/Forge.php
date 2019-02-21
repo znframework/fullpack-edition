@@ -64,7 +64,7 @@ class Forge
 
         if( ! is_file($file))
         {
-            throw new Exception\FileNotFoundException(NULL, $name);
+            throw new Exception\FileNotFoundException(NULL, $file);
         }
 
         $contents        = file_get_contents($file);
