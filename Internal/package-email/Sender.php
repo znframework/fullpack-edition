@@ -604,14 +604,14 @@ class Sender implements SenderInterface
             $fileContent =& $file;
         }
 
+        if( strpos($file, '://') === false && ! file_exists($file) )
+        {
+            $this->error[] = $this->getLang('email:attachmentMissing', $file);
+        }
+
         if( empty($mime) )
         {
-            if( strpos($file, '://') === false && ! file_exists($file) )
-            {
-                $this->error[] = $this->getLang('email:attachmentMissing', $file);
-            }
-
-            if( ! $fp = @fopen($file, 'rb') )
+            if( ! ($fp = @fopen($file, 'rb')) )
             {
                 $this->error[] = $this->getLang('email:attachmentUnreadable', $file);
             }
@@ -619,6 +619,13 @@ class Sender implements SenderInterface
             $fileContent = stream_get_contents($fp);
 
             fclose($fp);
+        }
+        else
+        {
+            if( ! ($fileContent = file_get_contents($file)) )
+            {
+                $this->error[] = $this->getLang('email:attachmentUnreadable', $file);
+            }
         }
 
         $this->attachments[] =
