@@ -102,6 +102,13 @@ class Upload implements UploadInterface
      */
     public function isFile(String $name) : Bool
     {
+        $file = Method::files($name);
+
+        if( is_array($file) )
+        {
+            return (bool) $file[0];
+        }
+
         return (bool) Method::files($name);
     }
 
