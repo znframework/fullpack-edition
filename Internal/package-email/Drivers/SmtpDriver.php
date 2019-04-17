@@ -104,7 +104,7 @@ class SmtpDriver extends DriverMappingAbstract
             return true;
         }
 
-        $this->socketSSLConnection($errno, $errstr) ?: $this->socketSSLWithoutConnection($errno, $errstr);
+        $this->socketSSLConnection($errno, $errstr);
 
         stream_set_timeout($this->connect, $this->timeout);
 
@@ -138,25 +138,22 @@ class SmtpDriver extends DriverMappingAbstract
      */
     protected function socketSSLConnection(&$errno, &$errstr)
     {
-        if( $this->encode === 'ssl' )
+        $context = stream_context_create
+        ([
+            'ssl' => 
+            [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ]
+        ]);
+
+        $ssl = $this->encode === 'ssl' ? 'ssl://' : '';
+        
+        $this->connect = stream_socket_client($ssl . $this->host . ":" . $this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
+
+        if( is_resource($this->connect) )
         {
-            $context = stream_context_create
-            ([
-                'ssl' => 
-                [
-                    'verify_peer'      => false,
-                    'verify_peer_name' => false
-                ]
-            ]);
-
-            $ssl = $this->encode === 'ssl' ? 'ssl://' : '';
-            
-            $this->connect = stream_socket_client($ssl . $this->host . ":" . $this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context);
-
-            if( is_resource($this->connect) )
-            {
-                return true;
-            }
+            return true;
         }
 
         return false;

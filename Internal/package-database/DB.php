@@ -1679,7 +1679,9 @@ class DB extends Connection
 
         if( $printable < 0 )
         {
-            return isset($result[count($result) + $printable]) ? (object) $result[count($result) + $printable] : false;
+            $index = count($result) + $printable;
+
+            return isset($result[$index]) ? (object) $result[$index] : false;
         }
         else
         {
