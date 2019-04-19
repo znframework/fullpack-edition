@@ -659,7 +659,10 @@ trait FormElementsTrait
                 }
                 else
                 {
-                    $attributes['checked'] = 'checked';
+                    if( ! empty($rowval) )
+                    {
+                        $attributes['checked'] = 'checked';
+                    }            
                 }
             }
         }
