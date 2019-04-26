@@ -747,12 +747,14 @@ class Paginator implements PaginatorInterface
      */
     protected function generatePaginationBar(...$numberLinks)
     {
+        $links = $this->implodeLinks(...$numberLinks);
+        
         if( $this->output === 'bootstrap' )
         {
-            return '<ul class="pagination">' . $this->implodeLinks(...$numberLinks) . '</ul>';
+            return '<ul class="pagination">' . $links . '</ul>';
         }
 
-        return $numberLinks;
+        return $links;
     }
 
     /**
