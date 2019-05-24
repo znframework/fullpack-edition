@@ -344,10 +344,15 @@ class In
      * 
      * [5.7.7]added
      */
-    public static function resolvingDependencyInjections($reflector, $page, $function)
+    public static function resolvingDependencyInjections($reflector, $page, $function, &$getReturnType = NULL)
     {
         # The parameter reflection of the active controller method is being taken.
-        $getReflectionParameters = $reflector->getMethod($function)->getParameters();
+        $getReflectionParameters = ($getMethod = $reflector->getMethod($function))->getParameters();
+   
+        if( $getMethod->hasReturnType() )
+        {
+            $getReturnType = (string) $getMethod->getReturnType();
+        }
 
         $getExportParameters = [];
 

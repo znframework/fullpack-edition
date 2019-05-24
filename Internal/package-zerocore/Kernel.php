@@ -195,9 +195,19 @@ class Kernel
 
         # The active controller's construct method is being resolved.
         $controller = new $page(...In::resolvingDependencyInjections($reflector, $page, '__construct'));
+        
+        # The active controller's current method is being resolved.
+        $parameters = (In::resolvingDependencyInjections($reflector, $page, $function, $getReturnType) ?: $parameters);
+
+        # If the return value of the controller method is set to void, 
+        # ajax control is performed.
+        if( $getReturnType === 'void' )
+        {
+            Request::isAjax() or exit;
+        }
 
         # The parameters of the active controller method are being resolved.
-        $controller->$function(...(In::resolvingDependencyInjections($reflector, $page, $function) ?: $parameters));
+        $controller->$function(...$parameters);
     }
 
     /**
