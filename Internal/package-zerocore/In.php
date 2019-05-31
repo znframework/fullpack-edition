@@ -346,6 +346,14 @@ class In
      */
     public static function resolvingDependencyInjections($reflector, $page, $function, &$getReturnType = NULL)
     {
+        $getExportParameters = [];
+
+        # If the constructor method is not available, it skips this step.
+        if( $function === '__construct' && ! method_exists($page, $function) )
+        {
+            return $getExportParameters;
+        }
+
         # The parameter reflection of the active controller method is being taken.
         $getReflectionParameters = ($getMethod = $reflector->getMethod($function))->getParameters();
    
@@ -353,8 +361,6 @@ class In
         {
             $getReturnType = (string) $getMethod->getReturnType();
         }
-
-        $getExportParameters = [];
 
         # Resolving is started in case of the current match.
         foreach( $getReflectionParameters as $parameter )
