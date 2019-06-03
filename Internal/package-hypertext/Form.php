@@ -440,7 +440,7 @@ class Form
      */
     protected function getHTMLClass()
     {
-        return Singleton::class('ZN\Hypertext\Html');
+        return new Html;
     }
 
     /**
