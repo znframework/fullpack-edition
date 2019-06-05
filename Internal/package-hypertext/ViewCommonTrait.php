@@ -116,11 +116,11 @@ trait ViewCommonTrait
         $data = 
         [
             'modalId'            => $id,
-            'modalHeader'        => $this->settings['attr']['modal-header'        ] ?? NULL,
-            'modalBody'          => $this->settings['attr']['modal-body'          ] ?? NULL,
-            'modalFooter'        => $this->settings['attr']['modal-footer'        ] ?? NULL,
-            'modalSize'          => $this->settings['attr']['modal-size'          ] ?? NULL,
-            'modalDismissButton' => $this->settings['attr']['modal-dismiss-button'] ?? NULL
+            'modalHeader'        => $this->stringOrCallback($this->settings['attr']['modal-header'] ?? ''),
+            'modalBody'          => $this->stringOrCallback($this->settings['attr']['modal-body'] ?? ''),
+            'modalFooter'        => $this->stringOrCallback($this->settings['attr']['modal-footer'] ?? ''),
+            'modalSize'          => $this->stringOrCallback($this->settings['attr']['modal-size'] ?? ''),
+            'modalDismissButton' => $this->stringOrCallback($this->settings['attr']['modal-dismiss-button'] ?? '')
         ];
 
         $this->settings['attr'] = [];
