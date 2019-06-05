@@ -120,7 +120,7 @@ trait ViewCommonTrait
             'modalBody'          => $this->stringOrCallback($this->settings['attr']['modal-body'] ?? ''),
             'modalFooter'        => $this->stringOrCallback($this->settings['attr']['modal-footer'] ?? ''),
             'modalSize'          => $this->stringOrCallback($this->settings['attr']['modal-size'] ?? ''),
-            'modalDismissButton' => $this->stringOrCallback($this->settings['attr']['modal-dismiss-button'] ?? '')
+            'modalDismissButton' => $this->settings['attr']['modal-dismiss-button'] ?? ''
         ];
 
         $this->settings['attr'] = [];
