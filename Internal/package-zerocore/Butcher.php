@@ -587,7 +587,7 @@ class Butcher
 
                 $this->generator()->controller($controller,
                 [
-                    'application' => $this->application ?? CURRENT_PROJECT,
+                    'application' => $this->application ?? DEFINED_CURRENT_PROJECT,
                     'namespace'   => $this->getControllerNamespace(),
                     'functions'   => [$this->routeConfig()['openFunction']],
                     'extends'     => 'Controller'
