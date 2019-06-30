@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Base;
-
 class Server
 {
     /**
@@ -34,7 +32,7 @@ class Server
     /**
      * OS
      * 
-     * @param string
+     * @return string
      */
     public static function os() : String
     {

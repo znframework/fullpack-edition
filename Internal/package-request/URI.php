@@ -13,7 +13,6 @@ use ZN\In;
 use ZN\IS;
 use ZN\Lang;
 use ZN\Base;
-use ZN\Config;
 use ZN\Request;
 use ZN\Security;
 use ZN\DataTypes\Arrays;
@@ -167,7 +166,7 @@ class URI implements URIInterface
 
                 for( $i = 1; $i <= $index; $i++ )
                 {
-                    $return .= $segArr[$segVal + $i]."/";
+                    $return .= $segArr[$segVal + $i] . '/';
                 }
 
                 $return = substr($return,0,-1);
@@ -177,7 +176,7 @@ class URI implements URIInterface
 
             # 2. the parameter is all-in
             # It gives all segments from parameter 1.
-            if( $index === "count" )
+            if( $index === 'count' )
             {
                 return self::getNameCount($get);
             }
@@ -237,7 +236,7 @@ class URI implements URIInterface
 
             for( $i = 1; $i < count($segArr) - $segVal; $i++ )
             {
-                $return .= $segArr[$segVal + $i]."/";
+                $return .= $segArr[$segVal + $i] . '/';
             }
 
             $return = substr($return, 0, -1);
@@ -320,7 +319,7 @@ class URI implements URIInterface
 
         for( $i = $getVal; $i <= $indexVal; $i++ )
         {
-            $return .= $segArr[$i]."/";
+            $return .= $segArr[$i] . '/';
         }
 
         return substr($return, 0, -1);
@@ -341,11 +340,11 @@ class URI implements URIInterface
     /**
      * Get Total Segments
      * 
-     * @param int
+     * @return int
      */
     public static function totalSegments() : Int
     {
-        $segmentEx     = array_diff(self::segmentArray(), ["", " "]);
+        $segmentEx     = array_diff(self::segmentArray(), ['', ' ']);
         $totalSegments = count($segmentEx);
 
         return $totalSegments;

@@ -44,45 +44,43 @@ class Font extends BootstrapExtends
 
             $f = self::_fontName($font);
 
-            $projectFontDirectory  = THEMES_DIR . Theme::$active;
-            $externalFontDirectory = EXTERNAL_THEMES_DIR . Theme::$active;
+            $allFontExtensions = array_merge(Config::expressions('differentFontExtensions'), ['svg', 'woff', 'otf', 'ttf', 'eot']);
 
-            $fontFile = $projectFontDirectory . $font;
-
-            if( ! is_file($fontFile) && is_dir($fontFile) ) $fontFile = $externalFontDirectory . $font;
-        
-            $baseUrl = Request::getBaseURL($fontFile);
-
-            if( is_file(Base::suffix($fontFile, '.svg')) ) $str .= self::_face($f, $baseUrl, 'svg');
-            if( is_file(Base::suffix($fontFile, '.woff'))) $str .= self::_face($f, $baseUrl, 'woff');
-            if( is_file(Base::suffix($fontFile, '.otf')) ) $str .= self::_face($f, $baseUrl, 'otf');
-            if( is_file(Base::suffix($fontFile, '.ttf')) ) $str .= self::_face($f, $baseUrl, 'ttf');
-
-            $cndFont = isset($links[strtolower($font)]) ? $links[strtolower($font)] : NULL;
-
-            if( ! empty($cndFont) ) $str .= self::_face(self::_fontName($cndFont), $cndFont);
-        
-            $differentSet = Config::expressions('differentFontExtensions');
-
-            if( ! empty($differentSet) )
+            if( ! empty($allFontExtensions) )
             {
-                foreach( $differentSet as $of )
-                {
-                    if( is_file($fontFile.Base::prefix($of, '.')) )
+                foreach( $allFontExtensions as $of )
+                {  
+                    $fontFile   = THEMES_DIR . Theme::$active . $font;  
+                    $baseUrl    = Request::getBaseURL($fontFile);
+                    $isFontFile = $fontFile . ( $fontExtension = Base::prefix($of, '.') );
+
+                    if( ! is_file($isFontFile) )
                     {
-                        $str .= self::_face($f, $baseUrl . Base::prefix($of, '.'));
+                        $fontFile   = EXTERNAL_THEMES_DIR . Theme::$active . $font;
+                        $baseUrl    = Request::getBaseURL($fontFile);
+                        $isFontFile = $fontFile . $fontExtension;
+                    }
+
+                    if( is_file($isFontFile) )
+                    {
+                        if( $of === 'eot' )
+                        {
+                            $str .= '<!--[if IE]>' . $eol;
+                            $str .= self::_face($f, $baseUrl, 'eot');
+                            $str .= '<![endif]-->';
+                            $str .= $eol;
+                        }
+                        else
+                        {
+                            $str .= self::_face($f, $baseUrl . $fontExtension);
+                        }
                     }
                 }
             }
 
-            // EOT IE DESTEKLIYOR
-            if( is_file(Base::suffix($fontFile, '.eot')) )
-            {
-                $str .= '<!--[if IE]>';
-                $str .= self::_face($f, $baseUrl, 'eot');
-                $str .= '<![endif]-->';
-                $str .= $eol;
-            }
+            $cndFont = isset($links[strtolower($font)]) ? $links[strtolower($font)] : NULL;
+
+            if( ! empty($cndFont) ) $str .= self::_face(self::_fontName($cndFont), $cndFont);
         }
 
         $str .= '</style>'.$eol;
