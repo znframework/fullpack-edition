@@ -116,7 +116,7 @@ class Package
 
         if( is_dir($packages) )
         {
-            $packageFiles = Filesystem::getFiles(Base::suffix($packages), $recursive);
+            $packageFiles = Filesystem::getFiles(Base::suffix($packages), $recursive, true);
 
             if( ! empty($packageFiles) )
             {
