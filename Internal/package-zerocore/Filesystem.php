@@ -303,11 +303,11 @@ class Filesystem
 
         if( $allFiles === true )
         {
-            static $classes;
+            static $getRecursiveFiles;
 
             if( is_dir($pattern) )
             {
-                $pattern = Base::suffix($pattern).'*';
+                $pattern = Base::suffix($pattern) . '*';
             }
 
             $files = glob($pattern);
@@ -316,9 +316,7 @@ class Filesystem
             {
                 if( is_file($v) )
                 {
-                    $classEx = explode(DS, $v);
-
-                    $classes[] = $v;
+                    $getRecursiveFiles[] = $v;
                 }
                 elseif( is_dir($v) )
                 {
@@ -326,17 +324,17 @@ class Filesystem
                 }
             }
 
-            return (array) $classes;
+            return (array) $getRecursiveFiles;
         }
 
-        if( strstr($pattern, DS) && strstr($pattern, '*') === false )
+        if( ($cond = preg_match('/.*?\/$/', $pattern)) && strstr($pattern, '*') === false )
         {
             $pattern .= "*";
         }
 
-        if( strstr($pattern, DS) === false && strstr($pattern, '*') === false )
+        if( ! $cond && strstr($pattern, '*') === false )
         {
-            $pattern .= DS . "*";
+            $pattern .= "/*";
         }
 
         return glob($pattern);
