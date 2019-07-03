@@ -37,7 +37,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @var array
      */
-    protected $route = [], $routes = [], $status = [];
+    protected $route = [], $routes = [], $status = [], $setFilters = [];
 
     /**
      * Magic Constructor
@@ -101,7 +101,7 @@ class Route extends FilterProperties implements RouteInterface
     {
         foreach( $this->getFilters() as $filter )
         {
-            new Filter($filter, $this->filters, $this->getConfig);
+            new Filter($filter, $this->setFilters, $this->getConfig);
         }
     }
 
@@ -283,7 +283,7 @@ class Route extends FilterProperties implements RouteInterface
     {
         foreach( $this->getFilters() as $type ) if( isset($this->filters[$type]) )
         {
-            $this->filters[$type . 's'][$lowerPath][$type] = $this->filters[$type];
+            $this->setFilters[$type . 's'][$lowerPath][$type] = $this->filters[$type];
 
             $this->isContainer($this->filters[$type]);
         }
