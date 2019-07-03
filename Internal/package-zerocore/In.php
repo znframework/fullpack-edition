@@ -421,6 +421,8 @@ class In
 
         if( ! empty($files)  )
         {
+            Storage::start();
+
             foreach( $files as $file )
             {
                 require $file;
