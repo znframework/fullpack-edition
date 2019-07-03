@@ -216,7 +216,7 @@ class Route extends FilterProperties implements RouteInterface
                 $count   = array_search($match[0], $routeSegment);
                 $decoder = $match['separator'] ?? NULL;
                 $value   = $val = URI::segment($count + 1);
-                $column  = $match['column'];
+                $column  = $select = $match['column'];
                 $dbClass = Singleton::class('ZN\Database\DB');
 
                 // Json, Serial or Separator
@@ -226,7 +226,7 @@ class Route extends FilterProperties implements RouteInterface
                     $value   = $dbClass->like($value, 'inside');
                 }
 
-                $return = $dbClass->select($column)->where($column, $value)->get($match['table'])->value();
+                $return = $dbClass->select($select)->where($column, $value)->get($match['table'])->value();
 
                 // Json, Serial or Separator
                 if( $decoder !== NULL )
