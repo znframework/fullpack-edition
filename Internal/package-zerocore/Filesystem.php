@@ -293,7 +293,7 @@ class Filesystem
      * 
      * @return array
      */
-    public static function getRecursiveFiles(String $pattern = '*', Bool $allFiles = false) : Array
+    public static function getRecursiveFiles(String $pattern = '*', Bool $allFiles = false, &$getRecursiveFiles = []) : Array
     {
         // 5.3.36[added]
         if( $pattern === '/' )
@@ -303,8 +303,6 @@ class Filesystem
 
         if( $allFiles === true )
         {
-            static $getRecursiveFiles;
-
             if( is_dir($pattern) )
             {
                 $pattern = Base::suffix($pattern) . '*';
@@ -320,7 +318,7 @@ class Filesystem
                 }
                 elseif( is_dir($v) )
                 {
-                    self::getRecursiveFiles($v, $allFiles);
+                    self::getRecursiveFiles($v, $allFiles, $getRecursiveFiles);
                 }
             }
 
