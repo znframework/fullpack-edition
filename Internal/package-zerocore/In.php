@@ -49,7 +49,7 @@ class In
             # All faults are off.
             # It is recommended to use this mode after the completion of the project.
             case 'publication' :
-                Errors::report(0);
+                error_reporting(0);
             break;
             
             # Restoration Repair Mode
