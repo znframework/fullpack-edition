@@ -369,20 +369,19 @@ class Wizard
     protected static function html()
     {
         $array             = [];
-        $htmlAttributesTag = '(^|\s)\#(!*\w+)\s*(\[(.*?)\])*';
+        $htmlAttributesTag = '(^|\s)(>*)\#(!*\w+)\s*(\[(.*?)\])*';
 
         if( self::$config['html'] ?? true )
         {
             $array =
             [
-                '/\/#/'                                         => '+[symbol??dies]+',
-                '/\s+\#\#(\w+)/'                                => '</$1>',
-                '/'.$htmlAttributesTag.self::CRLF.'/m'          => '<$2 $4>',
-                '/'.$htmlAttributesTag.'\s+/'                   => '<$2 $4>',
-                '/'.$htmlAttributesTag.'\s*\(\s*(.*?)\s*\)'.self::CRLF.'/sm' => '$1<$2 $4>$5</$2>$6$8',
-                '/'.$htmlAttributesTag.'\s*/'                   => '<$2 $4>',
-                '/\<(\w+)\s+\>/'                                => '<$1>',
-                '/\+\[symbol\?\?dies\]\+/'                      => '#'
+                '/\/#/'                                => '+[symbol??dies]+',
+                '/\s+\#\#(\w+)/'                       => '</$1>',
+                '/'.$htmlAttributesTag.self::CRLF.'/m' => '$2<$3 $5>',
+                '/'.$htmlAttributesTag.'\s+/'          => '$2<$3 $5>',
+                '/'.$htmlAttributesTag.'\s*/'          => '$2<$3 $5>',
+                '/\<(\w+)\s+\>/'                       => '<$1>',
+                '/\+\[symbol\?\?dies\]\+/'             => '#'
             ];
         }
 
