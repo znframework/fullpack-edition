@@ -297,8 +297,8 @@ class Wizard
             $outputVariableCoalesce = '<?php echo $$1 ?? NULL ?>$2';
             $outputVariable         = '<?php echo $$1 ?>$2';
 
-            $outputCosntantCoalesce = '$2<?php echo defined("$4") ? ($3 ?? NULL) : NULL ?>$7';
-            $outputCosntant         = '$2<?php echo $3 ?>$7';
+            $outputCosntantCoalesce = '$2<?php echo defined("$4") ? ($3 ?? NULL) : NULL ?>$8';
+            $outputCosntant         = '$2<?php echo $3 ?>$8';
             
             $array    =
             [
