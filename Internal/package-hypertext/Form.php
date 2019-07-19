@@ -168,6 +168,8 @@ class Form
             $this->outputElement .= Buffering\Callback::do(function(){ return $this->hidden('ValidationFormName', $this->getValidationFormName); });
 
             $this->getValidationFormName = NULL;
+
+            $this->validateUsageThisForm = false;
         }
         
         $this->outputElement .= '</form>' . EOL;
