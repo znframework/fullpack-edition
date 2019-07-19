@@ -604,6 +604,11 @@ trait FormElementsTrait
         }
     }
 
+    protected function validationNameFormPrefix($name)
+    {
+        return $this->getFormName . $name;
+    }
+
     /**
      * Protected Validate
      */
@@ -611,13 +616,17 @@ trait FormElementsTrait
     {
         if( ! empty($this->validate) )
         {
+            $this->validateUsageThisForm = true;
+            
+            $session = Singleton::class('ZN\Storage\Session');
+
             $validate[$name]           = $this->validate;
             $validate[$name]['value']  = $this->settings['attr']['alias'] ?? $attrName;
 
-            $session = Singleton::class('ZN\Storage\Session');
+            $rules = array_merge($session->select('FormValidationRules' . $this->getValidationFormName) ?: [], $validate);
 
-            $session->insert('FormValidationMethod', $this->method);
-            $session->insert('FormValidationRules' , array_merge($session->select('FormValidationRules') ?: $validate, $validate));
+            $session->insert('FormValidationMethod' . $this->getValidationFormName, $this->method);
+            $session->insert('FormValidationRules' . $this->getValidationFormName, $rules);
  
             $this->validate = [];
         }

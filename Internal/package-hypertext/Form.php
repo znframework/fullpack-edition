@@ -22,6 +22,20 @@ class Form
     use ViewCommonTrait;
 
     /**
+     * Keeps validation usage this form info.
+     * 
+     * @var bool
+     */
+    protected $validateUsageThisForm = false;
+
+    /**
+     * Keeps form name.
+     * 
+     * @var string
+     */
+    protected $getValidationFormName = NULL;
+
+    /**
      * Keeps form input objects.
      * 
      * @var array
@@ -82,8 +96,6 @@ class Form
      */
     public function open(String $name = NULL, Array $_attributes = [])
     {
-        $this->clearValidationSessions();
-
         $this->setFormName($name, $_attributes);
 
         $this->isEnctypeAttribute($_attributes);
@@ -107,17 +119,6 @@ class Form
         $this->outputElement .= $return;
 
         return $this;
-    }
-
-    /**
-     * Protected clear validation sessions
-     */
-    protected function clearValidationSessions()
-    {
-        $session = Singleton::class('ZN\Storage\Session');
-
-        $session->delete('FormValidationRules');
-        $session->delete('FormValidationMethod');
     }
 
     /**
@@ -162,7 +163,15 @@ class Form
             $this->getJavascriptValidationFunction = NULL;
         }
 
+        if( $this->validateUsageThisForm === true )
+        {
+            $this->outputElement .= Buffering\Callback::do(function(){ return $this->hidden('ValidationFormName', $this->getValidationFormName); });
+
+            $this->getValidationFormName = NULL;
+        }
+        
         $this->outputElement .= '</form>' . EOL;
+        
 
         return $this;
     }
@@ -631,7 +640,7 @@ class Form
      */
     protected function setFormName(&$name, &$_attributes)
     {
-        $name = $this->settings['attr']['name'] ?? $name;
+        $this->getValidationFormName = $name = $this->settings['attr']['name'] ?? $name;
   
         $_attributes['name'] = $name;
     }
@@ -773,7 +782,7 @@ class Form
                 }
             }
 
-            return $this->hidden('FormProcessValue', 'FormProcessValue');
+            return Buffering\Callback::do(function(){ return $this->hidden('FormProcessValue', 'FormProcessValue'); });
         }
     }
 

@@ -161,8 +161,10 @@ class Data implements DataInterface
     {
         $session = Singleton::class('ZN\Storage\Session');
         
-        $rules  = $session->FormValidationRules();
-        $method = $session->FormValidationMethod() ?: 'post';
+        $getValidationFormName = Method::request('ValidationFormName');
+
+        $rules  = $session->select('FormValidationRules'  . $getValidationFormName);
+        $method = $session->select('FormValidationMethod' . $getValidationFormName) ?: 'post';
 
         if( ($submit !== NULL && ! $method::$submit()) || empty($rules) ) 
         {
