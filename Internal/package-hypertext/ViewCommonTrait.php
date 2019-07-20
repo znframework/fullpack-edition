@@ -113,17 +113,19 @@ trait ViewCommonTrait
      */
     public function modalbox(String $id, Array $data = [])
     {
+        $attr = $this->settings['attr'];
+        
+        $this->settings['attr'] = [];
+
         $data = 
         [
             'modalId'            => $id,
-            'modalHeader'        => $this->stringOrCallback($this->settings['attr']['modal-header'] ?? ''),
-            'modalBody'          => $this->stringOrCallback($this->settings['attr']['modal-body'] ?? ''),
-            'modalFooter'        => $this->stringOrCallback($this->settings['attr']['modal-footer'] ?? ''),
-            'modalSize'          => $this->settings['attr']['modal-size'] ?? '',
-            'modalDismissButton' => $this->settings['attr']['modal-dismiss-button'] ?? ''
+            'modalHeader'        => $this->stringOrCallback($attr['modal-header'] ?? ''),
+            'modalBody'          => $this->stringOrCallback($attr['modal-body'] ?? ''),
+            'modalFooter'        => $this->stringOrCallback($attr['modal-footer'] ?? ''),
+            'modalSize'          => $attr['modal-size'] ?? '',
+            'modalDismissButton' => $attr['modal-dismiss-button'] ?? ''
         ];
-
-        $this->settings['attr'] = [];
 
         return $this->getModalResource('standart', $data);
     }
