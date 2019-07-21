@@ -162,13 +162,13 @@ class Html
      * Creates label element
      * 
      * @param string $for
-     * @param string $value      = NULL
+     * @param mixed  $value      = NULL
      * @param string $form       = NULL
      * @param array  $attributes = []
      * 
      * @return string
      */
-    public function label(String $for, String $value = NULL, String $form = NULL, Array $attributes = []) : String
+    public function label(String $for, $value = NULL, String $form = NULL, Array $attributes = []) : String
     {
         if( ! empty($for) )
         {
@@ -187,12 +187,12 @@ class Html
      * Creates anchor
      * 
      * @param string $url
-     * @param string $value      = NULL
+     * @param mixed  $value      = NULL
      * @param array  $attributes = []
      * 
      * @return string
      */
-    public function anchor(String $url, String $value = NULL, Array $attributes = []) : String
+    public function anchor(String $url, $value = NULL, Array $attributes = []) : String
     {
         if( ! IS::url($url) && strpos($url, '#') !== 0 )
         {
@@ -228,7 +228,7 @@ class Html
     /**
      * Creates font elements
      * 
-     * @param string $str
+     * @param mixed  $str
      * @param string $size       = NULL
      * @param string $color      = NULL
      * @param string $face       = NULL
@@ -236,7 +236,7 @@ class Html
      * 
      * @return string
      */
-    public function font(String $str, String $size = NULL, String $color = NULL, String $face = NULL, Array $attributes = []) : String
+    public function font($str, String $size = NULL, String $color = NULL, String $face = NULL, Array $attributes = []) : String
     {
         if( ! empty($size) )
         {
@@ -324,13 +324,13 @@ class Html
     /**
      * Gets head element
      * 
-     * @param string $str
+     * @param mixed  $str
      * @param int    $type       = 3
      * @param array  $attributes = []
      * 
      * @return string
      */
-    public function heading(String $str, Int $type = 3, Array $attributes = []) : String
+    public function heading($str, Int $type = 3, Array $attributes = []) : String
     {
         return $this->_multiElement('h'.$type, $str, $attributes);
     }
@@ -339,12 +339,12 @@ class Html
      * Gets multiple element
      * 
      * @param string $element
-     * @param string $str        = NULL
+     * @param mixed  $str        = NULL
      * @param array  $attributes = []
      * 
      * @return string
      */
-    public function element(String $element, String $str = NULL, Array $attributes = []) : String
+    public function element(String $element, $str = NULL, Array $attributes = []) : String
     {
         return $this->_multiElement($element, $str, $attributes);
     }
@@ -352,12 +352,12 @@ class Html
     /**
      * Gets multiple attributes
      * 
-     * @param string $str
-     * @param array  $array = []
+     * @param mixed $str
+     * @param array $array = []
      * 
      * @return string
      */
-    public function multiAttr(String $str, Array $array = []) : String
+    public function multiAttr($str, Array $array = []) : String
     {
         $perm  = $this->settings['attr']['perm'] ?? NULL;
 
