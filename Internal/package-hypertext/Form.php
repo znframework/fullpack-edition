@@ -165,7 +165,7 @@ class Form
 
         if( $this->validateUsageThisForm === true )
         {
-            $this->outputElement .= Buffering\Callback::do(function(){ return $this->hidden('ValidationFormName', $this->getValidationFormName); });
+            $this->outputElement .= (string) $this->hidden('ValidationFormName', $this->getValidationFormName);
 
             $this->getValidationFormName = NULL;
 
@@ -784,7 +784,7 @@ class Form
                 }
             }
 
-            return Buffering\Callback::do(function(){ return $this->hidden('FormProcessValue', 'FormProcessValue'); });
+            return (string) $this->hidden('FormProcessValue', 'FormProcessValue');
         }
     }
 
