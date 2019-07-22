@@ -76,6 +76,57 @@ class Restful implements RestfulInterface
     }
 
     /**
+     * Get request headers
+     * 
+     * @return array
+     */
+    public function getRequestHeaders() : Array
+    {
+        return apache_request_headers();
+    }
+
+    /**
+     * Get raw data
+     * 
+     * @param string $type
+     * 
+     * @return string|array|object
+     */
+    public function getRawData(String $type = 'string')
+    {
+        $rawData = file_get_contents('php://input');
+
+        switch( $type )
+        {
+            case 'string' : return $rawData; break;
+            case 'object' : return Json::decodeObject($rawData);
+            case 'array'  : return Json::decodeArray($rawData);
+        }
+
+        return false;
+    }
+
+    /**
+     * Get raw data object
+     * 
+     * @return object
+     */
+    public function getRawDataObject()
+    {
+        return $this->getRawData('object');
+    }
+
+    /**
+     * Get raw data array
+     * 
+     * @return array
+     */
+    public function getRawDataArray()
+    {
+        return $this->getRawData('array');
+    }
+
+    /**
      * Content Type
      * 
      * @param string $type    = 'json'

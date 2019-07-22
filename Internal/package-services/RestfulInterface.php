@@ -12,6 +12,36 @@
 interface RestfulInterface
 {
     /**
+     * Get request headers
+     * 
+     * @return array
+     */
+    public function getRequestHeaders() : Array;
+    
+    /**
+     * Get raw data
+     * 
+     * @param string $type
+     * 
+     * @return string|array|object
+     */
+    public function getRawData(String $type = 'string');
+
+    /**
+     * Get raw data object
+     * 
+     * @return object
+     */
+    public function getRawDataObject();
+
+    /**
+     * Get raw data array
+     * 
+     * @return array
+     */
+    public function getRawDataArray();
+
+    /**
      * Content Type
      * 
      * @param string $type    = 'json'
