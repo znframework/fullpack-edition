@@ -109,7 +109,12 @@ class FileDriver extends DriverMappingAbstract
      */
     public function delete($key)
     {
-        return unlink($this->path . $key);
+        if( is_file($path = $this->path . $key) )
+        {
+            return unlink($path);
+        }
+        
+        return false;
     }
 
     /**
