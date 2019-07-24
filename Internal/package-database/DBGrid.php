@@ -491,21 +491,21 @@ class DBGrid
             
         if( ! empty($this->search) || ! empty($this->select) )
         {
-            $table .= $this->_hideButton($this->form->open('addForm').
-            $this->form->placeholder($this->getLang['searchHolder'])
+            $table .= $this->_hideButton((string) $this->form->open('addForm').
+            (string) $this->form->placeholder($this->getLang['searchHolder'])
                 ->id('datagridSearch')
                 ->attr($this->getConfig['attributes']['search'])
                 ->text('search').
-            $this->form->close(), 'search');
+            (string) $this->form->close(), 'search');
         }
         
         $table .= '</td><td colspan="'.($countColumns - 1).'">'.$this->add.'</td><td align="right" colspan="2">';
         
-        $table .= $this->_hideButton($this->form->action(CURRENT_CFPATH . URI::manipulation(['process' => 'add', 'order', 'type', 'page'], 'left'))
+        $table .= $this->_hideButton((string) $this->form->action(CURRENT_CFPATH . URI::manipulation(['process' => 'add', 'order', 'type', 'page'], 'left'))
                       ->open('addForm').
-                  $this->form->attr($this->getConfig['attributes']['add'])
+                  (string) $this->form->attr($this->getConfig['attributes']['add'])
                       ->submit('addButton', $this->getLang['addButton']).
-                  $this->form->close(), 'addButton');
+                  (string) $this->form->close(), 'addButton');
         $table .= '</tr><tr'.$this->html->attributes($this->getConfig['attributes']['columns']).'>';
         $table .= '<td width="20">#</td>';
         
@@ -517,7 +517,7 @@ class DBGrid
             $table .= '<td>'.$this->html->anchor
             (
                 CURRENT_CFPATH . URI::manipulation(['column', 'process', 'order' => $orderRealColumn, 'type' => (URI::get('type') === 'asc' ? 'desc' : 'asc'), 'page'], 'left'),
-                $this->html->strong($column), $this->getConfig['attributes']['columns']
+                (string) $this->html->strong($column), $this->getConfig['attributes']['columns']
             ).'</td>';
         }
 
@@ -556,11 +556,11 @@ class DBGrid
 
             $value       = array_change_key_case($combine);
             $hiddenValue = $value[strtolower($this->processColumn)] ?? NULL;
-            $hiddenId    = $this->form->hidden('id', $hiddenValue);
+            $hiddenId    = (string) $this->form->hidden('id', $hiddenValue);
      
             if( ! empty( $this->joins ) )
             {
-                $hiddenJoins = $this->form->hidden('joinsId', $this->_encode($joinsData));
+                $hiddenJoins = (string) $this->form->hidden('joinsId', $this->_encode($joinsData));
             }
 
             $table .= '<tr><td>'.($key + 1).'</td><td>'.
@@ -576,22 +576,22 @@ class DBGrid
                         return Limiter::word((string) $data, 20);            
                     })).
                     '</td>'.$this->_hideButton('<td align="right">'. 
-                    $this->form->action(CURRENT_CFPATH . URI::manipulation(['column' => $hiddenValue, 'process' => 'edit', 'order', 'type', 'page'], 'left'))
+                    (string) $this->form->action(CURRENT_CFPATH . URI::manipulation(['column' => $hiddenValue, 'process' => 'edit', 'order', 'type', 'page'], 'left'))
                         ->open('editButtonForm').
                     $hiddenId.
                     $hiddenJoins.
-                    $this->form->attr($this->getConfig['attributes']['edit'])
+                    (string) $this->form->attr($this->getConfig['attributes']['edit'])
                         ->submit('editButton', $this->getLang['editButton']).
-                    $this->form->close().
+                    (string) $this->form->close().
                     '</td>', 'editButton').
                     $this->_hideButton('<td width="60" align="right">'.
-                    $this->form->onsubmit($this->confirm)
+                    (string) $this->form->onsubmit($this->confirm)
                         ->open('addButtonForm').
                     $hiddenId.
                     $hiddenJoins.
-                    $this->form->attr($this->getConfig['attributes']['delete'])
+                    (string) $this->form->attr($this->getConfig['attributes']['delete'])
                         ->submit('deleteButton', $this->getLang['deleteButton']).
-                    $this->form->close().
+                    (string) $this->form->close().
 
                     '</td>', 'deleteButton').'</tr>'.
                     PHP_EOL;
@@ -620,7 +620,7 @@ class DBGrid
      */
     protected function _addEditTable($joinsData)
     {
-        $table  = $this->form->open('saveForm');
+        $table  = (string) $this->form->open('saveForm');
 
         $table .= '<table type="DBGRID_ADD_EDIT_TABLE"'.$this->html->attributes($this->getConfig['attributes']['table']).'>'.PHP_EOL;
         $table .= '<tr>';
@@ -664,15 +664,15 @@ class DBGrid
         }
 
         $table .= '<tr><td colspan="'.count($joinsData).'">'.
-        $this->_hideButton($this->form->attr($this->getConfig['attributes']['save'])->submit('saveButton', $this->getLang['saveButton']), 'saveButton').
-        $this->_hideButton($this->html->style('text-decoration:none')->anchor
+        $this->_hideButton((string) $this->form->attr($this->getConfig['attributes']['save'])->submit('saveButton', $this->getLang['saveButton']), 'saveButton').
+        $this->_hideButton((string) $this->html->style('text-decoration:none')->anchor
                        (
                             CURRENT_CFPATH . URI::manipulation(['order', 'type', 'page'], 'left'),
-                            $this->form->attr($this->getConfig['attributes']['save'])->button('closeButton', $this->getLang['closeButton'] ?? 'Close')
+                            (string) $this->form->attr($this->getConfig['attributes']['save'])->button('closeButton', $this->getLang['closeButton'] ?? 'Close')
                        ), 'closeButton').
                       '</td></tr>';
         $table .= '</tr></table>';
-        $table .= $this->form->close();
+        $table .= (string) $this->form->close();
 
         return $table;
     }
