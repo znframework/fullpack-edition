@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Config;
 
 class Mime
@@ -19,10 +20,17 @@ class Mime
      * @param string $method
      * @param array  $parameters
      * 
-     * @return array|string|false
+     * @return array|string|bool|false
      */
     public function __call($method, $parameters)
     {
+        if( strpos($method, 'is') === 0 )
+        {
+            $type = Base::removePrefix($method, 'is');
+
+            return (bool) stristr($this->type(...$parameters), $type);
+        }
+
         return $this->mimeTypes[$method] ?? false;
     }
 
