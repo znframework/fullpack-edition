@@ -71,7 +71,7 @@ class Wizard
      */
     protected static function convertWizardContent($string)
     {
-        self::textControl($string); # 5.4.6[added]
+        self::textControl($string, $jsData); # 5.4.6[added]
         
         $string  = self::encodeParenthesis($string);
 
@@ -79,7 +79,7 @@ class Wizard
         (
             self::callableJS(),
             self::tags(),
-            self::jsdata(),
+            $jsData,
             self::changeVariables(),
             self::symbolsHeader(),
             self::keywords(),
@@ -398,10 +398,19 @@ class Wizard
      * 
      * @return void
      */
-    protected static function textControl(&$string)
+    protected static function textControl(&$string, &$jsData)
     {   
         self::internalTextControl('style' , ['#' => '/#', '@' => '/@', ':' => '/:'], $string);
-        self::internalTextControl('script', ['#' => '/#'], $string);
+
+        $convertScriptChars['#'] = '/#';
+
+        if( $jsData = self::jsdata() )
+        {
+            $convertScriptChars['[{'] = '[ {';
+            $convertScriptChars['}]'] = '} ]';
+        }
+
+        self::internalTextControl('script', $convertScriptChars, $string);
     }
     
     /**
