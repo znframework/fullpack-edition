@@ -312,7 +312,7 @@ class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
         $methods   = $config['methods'];
         $callbacks = $config['callbacks'];
         
-        if(  ! empty($methods) && ! empty($callbacks))
+        if( ! empty($methods) && ! empty($callbacks) )
         {
             $this->connect = ssh2_connect($host, $port, $methods, $callbacks);
         }

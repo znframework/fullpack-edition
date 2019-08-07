@@ -252,6 +252,16 @@ class GrandModel
     }
 
     /**
+     * Get table object. It is like using DB::get($table)
+     * 
+     * @return object
+     */
+    public function get()
+    {
+        return $this->connect->get($this->grandTable);
+    }
+
+    /**
      * protected db get
      * 
      * @param void
@@ -260,7 +270,7 @@ class GrandModel
      */
     protected function _get()
     {
-        return $this->get = $this->connect->get($this->grandTable);
+        return $this->get = $this->get();
     }
 
     /**
