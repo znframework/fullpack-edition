@@ -12,6 +12,47 @@
 class Search
 {
     /**
+     * Finds the expression between two statements.
+     * 
+     * @param string $str
+     * @param string $start
+     * @param string $end
+     * @param bool   $case = true  [optional]
+     * @param bool   $both = false [optional]
+     * 
+     * @return string|bool
+     */
+    public static function between(String $str, String $start, String $end, Bool $case = true, Bool $both = false)
+    {
+        if( preg_match('/(?<start>' . preg_quote($start, '/') . ')(?<search>.*?)(?<end>' . preg_quote($end, '/') . ')/' . ( $case === true ? NULL : 'i' ), $str, $match) )
+        {
+            if( $both === false )
+            {
+                return $match['search'];
+            }
+    
+            return $match['start'] . $match['search'] . $match['end'];
+        }
+        
+        return false;
+    }
+
+   /**
+     * Finds the expression between two expressions, including parameters.
+     * 
+     * @param string $str
+     * @param string $start
+     * @param string $end
+     * @param bool   $case = true  [optional]
+     * 
+     * @return string|bool
+     */
+    public static function betweenBoth(String $str, String $start, String $end, Bool $case = true) 
+    {
+        return self::between($str, $start, $end, $case, true);
+    }
+
+    /**
      * Search 
      * 
      * @param string $str

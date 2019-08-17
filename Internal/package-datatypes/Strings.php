@@ -39,6 +39,8 @@ class Strings extends Factory
             'search'           => 'Strings\Search::use',
             'searchposition'   => 'Strings\Search::position',
             'searchstring'     => 'Strings\Search::string',
+            'searchbetween'    => 'Strings\Search::between',
+            'searchbetweenboth'=> 'Strings\Search::betweenBoth',
             'reshuffle'        => 'Strings\Substitution::reshuffle',
             'placement'        => 'Strings\Substitution::placement',
             'replace'          => 'Strings\Substitution::replace',
