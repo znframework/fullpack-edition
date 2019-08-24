@@ -348,11 +348,13 @@ trait ViewCommonTrait
     {
         $this->setNameAttributeWithReference($name, $attributes);
 
+        $value = htmlspecialchars($value);
+
         $this->setValueAttributeWithReference($value, $attributes);
 
         if( ! empty($attributes['name']) )
         {
-            $this->_postback($attributes['name'], $attributes['value'], $type);
+            $this->_postback($attributes['name'], htmlspecialchars($attributes['value']), $type);
 
             # 5.8.2.8[added]
             $this->getVMethodMessages();
