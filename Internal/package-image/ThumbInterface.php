@@ -12,6 +12,18 @@
 interface ThumbInterface
 {
     /**
+     * Sets fill background
+     * 
+     * @param int $x
+     * @param int $y
+     * @param string $color = 'white'
+     * @param string $align = 'center'
+     * 
+     * @return Thumb
+     */
+    public function background(Int $x, Int $y, String $color = 'white', String $align = 'center') : Thumb;
+
+    /**
      * Watermark.
      * 
      * @return Thumb

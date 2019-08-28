@@ -85,7 +85,10 @@ class Render implements RenderInterface
      * @return string
      */
     public function thumb(String $fpath, Array $set) : String
-    {
+    {   
+        # Image origin (x, y).
+        $origin = [0, 0];
+
         # If the image file is not found, an exception is thrown.
         $this->throwExceptionImageFileIfNotExists($filePath = $this->cleanURLFix($fpath));
        
@@ -111,18 +114,33 @@ class Render implements RenderInterface
             return $this->getThumbFileURL($getThumbFilePath);
         }
         
-        # Create a new true color image.
-        $createNewImage = imagecreatetruecolor($width, $height);
-
-        # If the extension of the image file is png, the background is transparent.
-        if( $this->isPNGExtension($filePath) )
+        # Fill background with color.
+        if( isset($set['backgroundColor']) )
         {
-            $this->applyBackgroundTransparency($createNewImage, $width, $height);
+            $createNewImage = imagecreatetruecolor($set['backgroundOriginX'], $set['backgroundOriginY']);
+
+            $allocateParameters = explode('|', $set['backgroundColor']);
+            $imageColorAllocate = count($allocateParameters) === 3 ? 'imagecolorallocate' : 'imagecolorallocatealpha';
+            $color              = $imageColorAllocate($createNewImage, ...$allocateParameters);  
+    
+            imagefill($createNewImage, 0, 0, $color);
+            
+            $origin = WatermarkImageAligner::align($set['backgroundAlign'], $width, $height, $set['backgroundOriginX'], $set['backgroundOriginY'], 0);
         }
+        else
+        {
+            # Create a new true color image.
+            $createNewImage = imagecreatetruecolor($width, $height);
 
-        # The image is being resized according to the settings made.
-        imagecopyresampled($createNewImage, $createNewImageByType = ImageTypeCreator::from($filePath),  0, 0, $x, $y, $width, $height, $rWidth, $rHeight);
-
+            # If the extension of the image file is png, the background is transparent.
+            if( $this->isPNGExtension($filePath) )
+            {
+                $this->applyBackgroundTransparency($createNewImage, $width, $height);
+            }
+        }
+        
+        imagecopyresampled($createNewImage, $createNewImageByType = ImageTypeCreator::from($filePath),  $origin[0], $origin[1], $x, $y, $width, $height, $rWidth, $rHeight);
+        
         # Creating a new image based on the file type.
         ImageTypeCreator::create($createNewImage, $getThumbFilePath, $quality);
  
@@ -262,6 +280,19 @@ class Render implements RenderInterface
         return Filesystem::getExtension($file) === 'png';
     }
 
+    protected function fillBackgroundWithColorReturnOrigin($file, $set)
+    {
+        $allocateParameters = explode('|', $set['backgroundColor']);
+        $imageColorAllocate = count($allocateParameters) === 3 ? 'imagecolorallocate' : 'imagecolorallocatealpha';
+        $color              = $imageColorAllocate($file, ...$allocateParameters); 
+
+        $file = imagecreatetruecolor($set['backgroundOriginX'], $set['backgroundOriginY']);
+
+        imagefill($file, 0, 0, $color);
+        
+        return WatermarkImageAligner::align($set['backgroundAlign'], $width, $height, $set['backgroundOriginX'], $set['backgroundOriginY'], 0);
+    }
+
     /**
      * Protected apply bacground transparency
      */
@@ -368,13 +399,15 @@ class Render implements RenderInterface
 
         list($currentWidth, $currentHeight) = getimagesize($file);
 
-        $variables['x']         = $settings['x']         ?? 0;
-        $variables['y']         = $settings['y']         ?? 0;
-        $variables['quality']   = $settings['quality']   ?? 0;
-        $variables['prowidth']  = $settings['prowidth']  ?? NULL;
-        $variables['proheight'] = $settings['proheight'] ?? NULL;
-        $rewidth                = $settings['width']     ?? $currentWidth;
-        $reheight               = $settings['height']    ?? $currentHeight;
+        $variables['currentWidth']  = $currentWidth;
+        $variables['currentHeight'] = $currentHeight;
+        $variables['x']             = $settings['x']         ?? 0;
+        $variables['y']             = $settings['y']         ?? 0;
+        $variables['quality']       = $settings['quality']   ?? 0;
+        $variables['prowidth']      = $settings['prowidth']  ?? NULL;
+        $variables['proheight']     = $settings['proheight'] ?? NULL;
+        $rewidth                    = $settings['width']     ?? $currentWidth;
+        $reheight                   = $settings['height']    ?? $currentHeight;
 
         # Resizes the height value.
         if( ! empty($settings['reheight' ]) ) 

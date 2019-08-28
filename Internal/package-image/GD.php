@@ -621,7 +621,7 @@ class GD implements GDInterface
      */
     public function set(Int $index, String $rgb = NULL) : GD
     {
-        $rgb = $index . '|' . ($this->getColors($this->color ?? $rgb));
+        $rgb = $index . '|' . (ColorConverter::run($this->color ?? $rgb));
 
         $this->getImageColor($rgb, 'imagecolorset');
 
@@ -1264,30 +1264,11 @@ class GD implements GDInterface
     }
 
     /**
-     * Protected Colors
-     */
-    protected function getColors($rgb)
-    {
-        // Renkler küçük isimlerle yazılmıştır.
-        $rgb    = strtolower($rgb);
-        $colors = Properties::$colors;
-
-        if( isset($colors[$rgb]) )
-        {
-            return $colors[$rgb];
-        }
-        else
-        {
-            return $rgb ?? '0|0|0|127';
-        }
-    }
-
-    /**
      * Protected Allocate
      */
     protected function allocate($rgb)
     {
-        $rgb = explode('|', $this->getColors($rgb));
+        $rgb = explode('|', ColorConverter::run($rgb));
 
         $red   = $rgb[0] ?? 0;
         $green = $rgb[1] ?? 0;

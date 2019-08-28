@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
+use ZN\Request;
 use ZN\Singleton;
 
 class Thumb implements ThumbInterface
@@ -37,7 +39,27 @@ class Thumb implements ThumbInterface
      */
     public function watermark(String $source, String $align = NULL, $margin = 0) : Thumb
     {
-        $this->sets['watermark'] = [$source, $align, $margin]; 
+        $this->sets['watermark'] = [Base::removePrefix($source, Request::getBaseURL()), $align, $margin]; 
+
+        return $this;
+    }
+
+    /**
+     * Sets fill background
+     * 
+     * @param int $x
+     * @param int $y
+     * @param string $color = 'white'
+     * @param string $align = 'center'
+     * 
+     * @return Thumb
+     */
+    public function background(Int $x, Int $y, String $color = 'white', String $align = 'center') : Thumb
+    {
+        $this->sets['backgroundOriginX'] = $x;
+        $this->sets['backgroundOriginY'] = $y;
+        $this->sets['backgroundColor']   = ColorConverter::run($color);
+        $this->sets['backgroundAlign']   = $align;
 
         return $this;
     }
