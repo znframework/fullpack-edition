@@ -210,4 +210,15 @@ class Thumb implements ThumbInterface
 
         return $this->image->getProsize($this->sets['filePath'], $width, $height);
     }
+
+    /**
+     * Clean thumb files
+     * 
+     * @param string $ile
+     * @param bool   $origin = false
+     */
+    public function clean(String $path, Bool $origin = false)
+    {
+        $this->image->cleaner($path, $origin);
+    }
 }

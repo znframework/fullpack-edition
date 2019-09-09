@@ -113,4 +113,12 @@ interface ThumbInterface
      * @return object|false
      */
     public function getProsize(Int $width, Int $height);
+
+    /**
+     * Clean thumb files
+     * 
+     * @param string $ile
+     * @param bool   $origin = false
+     */
+    public function clean(String $path, Bool $origin = false);
 }

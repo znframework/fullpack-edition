@@ -43,6 +43,17 @@ class Render implements RenderInterface
     protected $validMimes = ['jpeg', 'png', 'gif'];
 
     /**
+     * Clean thumb files
+     * 
+     * @param string $ile
+     * @param bool   $origin = false
+     */
+    public function cleaner(String $path, Bool $origin = false)
+    {
+        ThumbCleaner::clean($this->cleanURLFix($path), $origin, $this->dirName);
+    }
+
+    /**
      * Get prosize
      * 
      * @param string $path

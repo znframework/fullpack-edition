@@ -14,6 +14,14 @@ use stdClass;
 interface RenderInterface
 {
     /**
+     * Clean thumb files
+     * 
+     * @param string $ile
+     * @param bool   $origin = false
+     */
+    public function cleaner(String $path, Bool $origin = false);
+    
+    /**
      * Get prosize
      * 
      * @param string $path
