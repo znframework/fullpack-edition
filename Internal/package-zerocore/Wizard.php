@@ -16,7 +16,7 @@ class Wizard
      * 
      * @const string
      */
-    const CRLF = '(\s*)((\n|' . PHP_EOL . ')|\:|$)';
+    const CRLF = '(((\s*)(\n|' . PHP_EOL . '))|\:|\s*$)';
 
     /**
      * END
@@ -245,30 +245,30 @@ class Wizard
             [
                 '/@selector\s*\((.*?)\)/'                                                        => '<?php echo ZN\Singleton::class(\'ZN\Hypertext\JQueryBuilder\')->selector($1)',
                 '/@ajax\s*\((.*?)\)/'                                                            => '<?php echo Ajax::url($1)',
-                '/@(cview|view|script|style|font|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>$3$5',
-                '/@endform'.self::CRLF.'/sm'                                                     => '<?php echo Form::close() ?>$1$3',
-                '/@form\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php echo Form::open($1) ?>$2$4',
-                '/@(hidden|textarea|text|checkbox|radio|file|email|submit|button|multiselect|select|password)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php echo Form::$1($2) ?>$3$5',
-                '/@(anchor|mailto|image)\s*\((.*?)\)'.self::CRLF.'/sm'                           => '<?php echo Html::$1($2) ?>$3$5',
+                '/@(cview|view|script|style|font|template|theme|plugin)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php Import::$1($2) ?>$4',
+                '/@endform'.self::CRLF.'/sm'                                                     => '<?php echo Form::close() ?>$2',
+                '/@form\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php echo Form::open($1) ?>$3',
+                '/@(hidden|textarea|text|checkbox|radio|file|email|submit|button|multiselect|select|password)\s*\((.*?)\)'.self::CRLF.'/sm' => '<?php echo Form::$1($2) ?>$4',
+                '/@(anchor|mailto|image)\s*\((.*?)\)'.self::CRLF.'/sm'                           => '<?php echo Html::$1($2) ?>$4',
                 '/@container'.self::END.'/sm'                                                    => '<?php echo Html::startContainerDiv() ?>$2',
                 '/@containerFluid'.self::END.'/sm'                                               => '<?php echo Html::startFluidContainerDiv() ?>$2',
                 '/@row'.self::END.'/sm'                                                          => '<?php echo Html::startRowDiv() ?>$2',
                 '/@col(([a-zA-Z]{2})([0-9]{1,2}))'.self::END.'/sm'                               => '<?php echo Html::startColumnDiv("$2-$3") ?>$5',
                 '/@end(col|row|container)'.self::END.'/sm'                                       => '<?php echo Html::endDiv() ?>$3',
-                '/@endperm'.self::CRLF.'/sm'                                                     => '<?php Permission::end() ?>$1$3',
-                '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php Permission::start($1)?>$2$4',  
-                '/@login\s*\((.*?)\)'.self::CRLF.'/sm'                                           => '<?php if( User::isLogin() ):?>$2$4',           
-                '/@view'.self::CRLF.'/sm'                                                        => '<?php echo $view ?>$1$3',  
-                '/@(endforelse|endlogin|endvalid)'.self::CRLF.'*/m'                              => '<?php endif; ?>$2$4',      
-                '/@invalid\s*\((.*?)\)'.self::CRLF.'/sm'                                         => '<?php elseif( $1 = Validation::error(\'string\') ):?>$2$4', 
-                '/@valid\s*\((.*?)\)'.self::CRLF.'/sm'                                           => '<?php if( Validation::check($1) ):?>$2$4',                                   
-                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'                       => '<?php if( ! empty($2) ):foreach($1):?>$4$6',
-                '/@empty'.self::CRLF.'/m'                                                        => '<?php endforeach; else:?>$1$3',     
-                '/@loop\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php foreach($1 as $key => $value):?>$2$4',    
-                '/@endloop'.self::CRLF.'/m'                                                      => '<?php endforeach; ?>$1$3',         
-                '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'*/m'           => '<?php $1 ?>$2$4',
-                '/@(elseif|if|foreach|for|while)\s*\((.*?)\)'.self::CRLF.'/sm'                   => '<?php $1($2):?>$3$5',
-                '/@(else|not)'.self::CRLF.'*/m'                                                  => '<?php else:?>$2$4',
+                '/@endperm'.self::CRLF.'/sm'                                                     => '<?php Permission::end() ?>$2',
+                '/@perm\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php Permission::start($1)?>$3',  
+                '/@login\s*\((.*?)\)'.self::CRLF.'/sm'                                           => '<?php if( User::isLogin() ):?>$3',           
+                '/@view'.self::CRLF.'/sm'                                                        => '<?php echo $view ?>$2',  
+                '/@(endforelse|endlogin|endvalid)'.self::CRLF.'*/m'                              => '<?php endif; ?>$3',      
+                '/@invalid\s*\((.*?)\)'.self::CRLF.'/sm'                                         => '<?php elseif( $1 = Validation::error(\'string\') ):?>$3', 
+                '/@valid\s*\((.*?)\)'.self::CRLF.'/sm'                                           => '<?php if( Validation::check($1) ):?>$3',                                   
+                '/@forelse\s*\((\s*(.*?)\s+as\s+(.*?))\)'.self::CRLF.'/sm'                       => '<?php if( ! empty($2) ):foreach($1):?>$5',
+                '/@empty'.self::CRLF.'/m'                                                        => '<?php endforeach; else:?>$2',     
+                '/@loop\s*\((.*?)\)'.self::CRLF.'/sm'                                            => '<?php foreach($1 as $key => $value):?>$3',    
+                '/@endloop'.self::CRLF.'/m'                                                      => '<?php endforeach; ?>$2',         
+                '/@(endif|endforeach|endfor|endwhile|break|continue)'.self::CRLF.'*/m'           => '<?php $1 ?>$3',
+                '/@(elseif|if|foreach|for|while)\s*\((.*?)\)'.self::CRLF.'/sm'                   => '<?php $1($2):?>$4',
+                '/@(else|not)'.self::CRLF.'*/m'                                                  => '<?php else:?>$3',
             ];
         }
 
@@ -294,11 +294,11 @@ class Wizard
             $variable = '/@\$(\w+.*?)';
             $start    = '((\W)@|^@)';
             
-            $outputVariableCoalesce = '<?php echo $$1 ?? NULL ?>$2';
-            $outputVariable         = '<?php echo $$1 ?>$2';
+            $outputVariableCoalesce = '<?php echo $$1 ?? NULL ?>$4';
+            $outputVariable         = '<?php echo $$1 ?>$4';
 
-            $outputCosntantCoalesce = '$2<?php echo defined("$4") ? ($3 ?? NULL) : NULL ?>$8';
-            $outputCosntant         = '$2<?php echo $3 ?>$8';
+            $outputCosntantCoalesce = '$2<?php echo defined("$4") ? ($3 ?? NULL) : NULL ?>$10';
+            $outputCosntant         = '$2<?php echo $3 ?>$10';
             
             $array    =
             [

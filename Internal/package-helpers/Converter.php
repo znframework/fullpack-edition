@@ -333,7 +333,7 @@ class Converter
     {
         return preg_replace
         (
-            '/(((https?|ftp)\:\/\/)(\w+\.)*(\w+)\.\w+\/*\S*)/xi',
+            '/(((https?|ftp)\:\/\/)(\w+\.)*(\w+)\.[^<>\s]+)/xi',
             '<a href="$1"'.Singleton::class('ZN\Hypertext\Html')->attributes((array) $attributes).'>'.( $type === 'short' ? '$5' : '$1').'</a>',
             $data
         );

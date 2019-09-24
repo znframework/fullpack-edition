@@ -575,6 +575,15 @@ class Form
         {
             $key     = key($options);
             $current = current($options);
+
+            if( is_callable($current) )
+            {
+                $selectedColumns = ['*'];
+            }
+            else
+            {
+                $selectedColumns = [$key, $current];
+            }
             
             array_shift($options);
 
@@ -591,11 +600,11 @@ class Form
                     $db      = $tableEx[0];
 
                     $db     = $dbClass->differentConnection($db);
-                    $result = $db->select($current, $key)->get($table)->result();
+                    $result = $db->select(...$selectedColumns)->get($table)->result();
                 }
                 else
                 {
-                    $result = $dbClass->select($current, $key)->get($table)->result();
+                    $result = $dbClass->select(...$selectedColumns)->get($table)->result();
                 }
             }
             else
@@ -605,7 +614,14 @@ class Form
 
             foreach( $result as $row )
             {
-                $options[$row->$key] = $row->$current;
+                if( is_callable($current) )
+                {
+                    $options[$row->$key] = $current($row);
+                }
+                else
+                {
+                    $options[$row->$key] = $row->$current;
+                }
             }
         }
     }

@@ -440,11 +440,20 @@ class Exceptions extends \Exception implements ExceptionsInterface
     }
 
     /**
+     * Protected important fields
+     */
+    protected static function hiddenImportantFields(&$content)
+    {
+        $content = preg_replace('/\'(user|password|port|database|host|dsn|key)\'(\s+=>\s+)\'(.*?)\'(,*\s*(\n\r|\n))/', '\'$1\'$2\'********\'$4', $content);
+    }
+
+    /**
      * Protected display highlight error content
      */
     protected static function displayHighlightErrorContent($content)
     {
         self::convertPHPTagToWizardTag($content);
+        self::hiddenImportantFields($content);
         
         $errorBlock = '<div class="error-block col-lg-12"></div>';
 
