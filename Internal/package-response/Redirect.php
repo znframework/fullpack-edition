@@ -81,6 +81,20 @@ class Redirect implements RedirectInterface
     }
 
     /**
+     * Redirect code
+     * 
+     * @param int $code
+     * 
+     * @return Redirect
+     */
+    public function code(Int $code) : Redirect
+    {
+        header('HTTP/1.1 ' . $code . ' Moved Permanently');
+
+        return $this;
+    }
+
+    /**
      * Page refresh.
      * 
      * @param string $url  = NULL

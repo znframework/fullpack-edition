@@ -33,6 +33,15 @@ interface RedirectInterface
     public static function queryString() : String;
 
     /**
+     * Redirect code
+     * 
+     * @param int $code
+     * 
+     * @return Redirect
+     */
+    public function code(Int $code) : Redirect;
+
+    /**
      * Page refresh.
      * 
      * @param string $url  = NULL
