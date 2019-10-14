@@ -10,6 +10,7 @@
  */
 
 use ZN\Inclusion;
+use ZN\Buffering\Callback;
 
 class Script implements TextInterface
 {
@@ -19,6 +20,23 @@ class Script implements TextInterface
      * @var string
      */
     protected $type = 'text/javascript';
+
+    /**
+     * Compress Javascript codes
+     * 
+     * @param callback $script
+     * @param string   $encoding     = 'normal' - [none|numeric|normal|ascii]
+     * @param bool     $fastDecode   = true
+     * @param bool     $specialChars = false
+     */
+    public function compress(Callable $callback, String $encoding = 'normal', Bool $fastDecode = true, Bool $specialChars = false)
+    {
+        $output = Callback::do($callback);
+
+        $packer = new ScriptPacker($output, $encoding, $fastDecode, $specialChars);
+    
+        return $packer->pack();
+    }
 
     /**
      * Sets the [type] property of the [script] tag.
