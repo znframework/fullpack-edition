@@ -37,7 +37,6 @@ class Import extends Factory
             'font'       => 'Inclusion\Font::use',
             'style'      => 'Inclusion\Style::use',
             'script'     => 'Inclusion\Script::use',
-            'wscript'    => 'Inclusion\Script::wizard',
             'something'  => 'Inclusion\Something::use',
             'package'    => 'Inclusion\Package::use',
             'theme'      => 'Inclusion\Package::theme',
