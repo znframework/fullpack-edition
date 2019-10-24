@@ -453,7 +453,7 @@ class ZN
             # For EIP edition
             if( PROJECT_TYPE === 'EIP' ) 
             {
-                define($key, self::getProjectContainerDir($value));
+                define($key, $value[0] === '!' ? substr($value, 1) : self::getProjectContainerDir($value));
             }
             # For SE edition
             else 
