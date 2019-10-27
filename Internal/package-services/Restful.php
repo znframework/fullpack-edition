@@ -260,7 +260,7 @@ class Restful implements RestfulInterface
      */
     public function put(String $url = NULL, $data = NULL)
     {
-        return $this->_customRequest($url, URL::buildQuery($this->data ?? $data), __FUNCTION__);
+        return $this->_customRequest($url, http_build_query($this->data ?? $data, NULL, '&', PHP_QUERY_RFC1738), __FUNCTION__);
     }
 
     /**
@@ -287,7 +287,7 @@ class Restful implements RestfulInterface
      */
     public function patch(String $url = NULL, $data = NULL)
     {
-        return $this->_customRequest($url, URL::buildQuery($this->data ?? $data), __FUNCTION__);
+        return $this->_customRequest($url, http_build_query($this->data ?? $data, NULL, '&', PHP_QUERY_RFC1738), __FUNCTION__);
     }
 
     /**
