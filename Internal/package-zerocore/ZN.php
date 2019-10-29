@@ -448,7 +448,7 @@ class ZN
         foreach( $externalDirectories as $key => $value )
         {
             # Define EXTERNAL_EXAMPLE_DIR
-            define('EXTERNAL_' . $key, EXTERNAL_DIR . $value);
+            define('EXTERNAL_' . $key, EXTERNAL_DIR . ($value[0] === '!' ? substr($value, 1) : $value));
 
             # For EIP edition
             if( PROJECT_TYPE === 'EIP' ) 
