@@ -86,24 +86,30 @@ class ImapDriver extends DriverMappingAbstract
      */
     public function mail(Int $mailId)
     {
-        $message   = imap_fetchbody($this->connect, $mailId, 1, FT_UID);
         $overview  = imap_fetch_overview($this->connect, $mailId, FT_UID);
         $structure = imap_fetchstructure($this->connect, $mailId, FT_UID);
         $header    = imap_headerinfo($this->connect, $overview[0]->msgno);
 
         $from = $header->from[0]->mailbox . '@' . $header->from[0]->host;
 
-        if( isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1]) ) 
+        $section = 1;
+
+        if( isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[0]) ) 
         {
-            $part = $structure->parts[1];
-            
-            $message = $this->contentDecoder($part->encoding, $message);
+            $part = $structure->parts[0];
+
+            if( $part->subtype === 'ALTERNATIVE' )
+            {
+                $section = 1.1;
+            }
         }
+
+        $message = $this->contentDecoder($part->encoding ?? $structure->encoding, imap_fetchbody($this->connect, $mailId, $section, FT_UID));
 
         return (object)
         [
             'subject'       => utf8_decode(imap_utf8($overview[0]->subject)),
-            'body'          => $message,
+            'body'          => imap_qprint($message),
             'from'          => $this->cc($header->from ?? NULL),
             'replyTo'       => $this->cc($header->reply_to ?? NULL),
             'cc'            => $this->cc($header->cc ?? NULL),
@@ -281,7 +287,7 @@ class ImapDriver extends DriverMappingAbstract
 
             $body = $this->contentDecoder($part->encoding, $body);
             
-            if( $body && $part->dparameters )
+            if( $body && ! empty($part->dparameters) )
             {
                 $attachments[] =
                 [
