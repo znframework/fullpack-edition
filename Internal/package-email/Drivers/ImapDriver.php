@@ -86,7 +86,7 @@ class ImapDriver extends DriverMappingAbstract
      */
     public function mail(Int $mailId)
     {
-        $message   = imap_fetchbody($this->connect, $mailId, 2, FT_UID);
+        $message   = imap_fetchbody($this->connect, $mailId, 1, FT_UID);
         $overview  = imap_fetch_overview($this->connect, $mailId, FT_UID);
         $structure = imap_fetchstructure($this->connect, $mailId, FT_UID);
         $header    = imap_headerinfo($this->connect, $overview[0]->msgno);
@@ -316,15 +316,15 @@ class ImapDriver extends DriverMappingAbstract
     protected function cc($cc)
     {
         $addresses = [];
-
+        
         if( is_array($cc) )
         {       
-            foreach( $cc as $cc )
+            foreach( $cc as $c )
             {
                 $addresses[] = 
                 [
-                    'mail' => $cc->mailbox . '@' . $cc->host,
-                    'name' => iconv_mime_decode($cc->personal)
+                    'mail' => $c->mailbox . '@' . $c->host,
+                    'name' => iconv_mime_decode($c->personal ?? '')
                 ];
             }
         }
