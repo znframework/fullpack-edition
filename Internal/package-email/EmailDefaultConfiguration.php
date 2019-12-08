@@ -42,6 +42,15 @@ class EmailDefaultConfiguration
         'dsn'       => false,
         'auth'      => true
     ];
+    public $imap   =
+    [
+        'host'      => '',
+        'user'      => '',
+        'password'  => '',
+        'port'      => 993,
+        'flags'     => [],
+        'mailbox'   => 'INBOX'
+    ];
     public $general =
     [
         'senderMail'    => '',                  # Default Sender E-mail Address.

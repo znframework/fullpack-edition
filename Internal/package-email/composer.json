@@ -15,7 +15,8 @@
         "znframework/package-zerocore": "6.0.*",
         "znframework/package-helpers": "6.0.*",
         "znframework/package-security": "6.0.*",
-        "znframework/package-datatypes": "6.0.*"
+        "znframework/package-datatypes": "6.0.*",
+        "znframework/package-datetime": "6.0.*"
 
 	},
     "autoload": {
