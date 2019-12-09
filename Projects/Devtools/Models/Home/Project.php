@@ -21,7 +21,7 @@ use ZN\Model;
 
 class Project extends Model
 {
-    public function select($project)
+    public static function select($project)
     {
         Session::insert('project', $project);
     }
