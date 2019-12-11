@@ -77,16 +77,16 @@ class MDB
     {
         if( $config !== NULL )
         {
-            $this->config   = $config;
+            $config = $config ?: Config::get('Database')['mongodb'] ?? [];
 
             $this->manager  = new Manager
             (
-                'mongodb://' . ($config['host'] ?? $this->host) . ( isset($config['port']) ? ':' . $config['port'] : '' ) . '/', 
+                'mongodb://' . $config['dns'] . '/', 
                 $config['options'] ?? []
             );
 
             $this->database = $config['database'] ?? 'test';
-        }    
+        }   
     }
 
     /**
