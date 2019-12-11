@@ -210,11 +210,11 @@ class MDB
      * Option
      * 
      * @param string $key
-     * @param string $value
+     * @param scalar $value
      * 
      * @return self
      */
-    public function option(String $key, String $value)
+    public function option(String $key, $value)
     {
         $this->options[$key] = $value;
 
