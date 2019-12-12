@@ -86,22 +86,22 @@ interface MDBInterface
      * Where Regex
      * 
      * @param string $key
-     * @param string $value
+     * @param scalar $value
      * @param string $flags = ''
      * 
      * @return self
      */
-    public function whereRegex(String $key, String $value, String $flags = '');
+    public function whereRegex(String $key, $value, String $flags = '');
     
     /**
      * Where
      * 
      * @param string $key
-     * @param string $value
+     * @param scalar $value
      * 
      * @return self
      */
-    public function where(String $key, String $value);
+    public function where(String $key, $value);
 
     /**
      * Upsert
@@ -119,6 +119,16 @@ interface MDBInterface
      * @return self
      */
     public function option(String $key, $value);
+
+    /**
+     * Filter
+     * 
+     * @param string $key
+     * @param scalar $value
+     * 
+     * @return self
+     */
+    public function filter(String $key, $value);
 
     /**
      * Total Rows

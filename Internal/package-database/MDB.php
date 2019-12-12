@@ -229,31 +229,27 @@ class MDB implements MDBInterface
      * Where Regex
      * 
      * @param string $key
-     * @param string $value
+     * @param scalar $value
      * @param string $flags = ''
      * 
      * @return self
      */
-    public function whereRegex(String $key, String $value, String $flags = '')
+    public function whereRegex(String $key, $value, String $flags = '')
     {
-        $this->filters[$key] = new Regex($value, $flags);
-
-        return $this;
+        return $this->filter($key, new Regex($value, $flags));
     }
 
     /**
      * Where
      * 
      * @param string $key
-     * @param string $value
+     * @param scalar $value
      * 
      * @return self
      */
-    public function where(String $key, String $value)
+    public function where(String $key, $value)
     {
-        $this->filters[$key] = $value;
-
-        return $this;
+        return $this->filter($key, $value);
     }
 
     /**
@@ -277,6 +273,21 @@ class MDB implements MDBInterface
     public function option(String $key, $value)
     {
         $this->options[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Option
+     * 
+     * @param string $key
+     * @param scalar $value
+     * 
+     * @return self
+     */
+    public function filter(String $key, $value)
+    {
+        $this->filters[$key] = $value;
 
         return $this;
     }
