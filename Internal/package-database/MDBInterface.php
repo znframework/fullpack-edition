@@ -209,6 +209,24 @@ interface MDBInterface
     public function dropIndex(String $table, String $indexName) : Bool;
 
     /**
+     * Create
+     * 
+     * @param string $table
+     * @param array  $options = []
+     * 
+     * @return bool
+     */
+    public function create(String $table, Array $options = []) : Bool;
+
+    /**
+     * Create Auto Increment
+     * 
+     * @param string $table
+     * @param string $column
+     */
+    public function createAutoIncrement(String $table, String $column);
+
+    /**
      * Drop/Truncate
      * 
      * @param string $table

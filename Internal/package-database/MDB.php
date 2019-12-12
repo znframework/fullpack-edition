@@ -78,7 +78,7 @@ class MDB implements MDBInterface
      * 
      * @var string
      */
-    protected $error;
+    protected $error = '';
 
     /**
      * Magic constructor method.
@@ -179,11 +179,15 @@ class MDB implements MDBInterface
         {
             foreach( $datas as $data )
             {
+                $this->setAutoIncrement($table, $data);
+
                 $bulk->insert($data);
             }
         }
         else
         {
+            $this->setAutoIncrement($table, $datas);
+
             $bulk->insert($datas);
         }
 
@@ -365,7 +369,7 @@ class MDB implements MDBInterface
     {
         $execute = $this->execute($table);
 
-        return (new self(NULL))->complete($execute);
+        return (new self(NULL))->complete($execute->toArray());
     }
 
     /**
@@ -375,7 +379,7 @@ class MDB implements MDBInterface
      */
     public function result()
     {
-        return $this->result->toArray() ?? [];
+        return $this->result ?? [];
     }
 
     /**
@@ -465,6 +469,74 @@ class MDB implements MDBInterface
     }
 
     /**
+     * Create
+     * 
+     * @param string $table
+     * @param array  $options = []
+     * 
+     * @return bool
+     */
+    public function create(String $table, Array $options = []) : Bool
+    {
+        try 
+        {
+            $command = ['create' => $table];
+
+            foreach( ['autoIndexId', 'capped', 'flags', 'max', 'maxTimeMS', 'size', 'validationAction', 'validationLevel'] as $option ) 
+            {
+                if( isset($options[$option]) ) 
+                {
+                    $command[$option] = $options[$option];
+                }
+            }
+
+            foreach( ['collation', 'indexOptionDefaults', 'storageEngine', 'validator'] as $option ) 
+            {
+                if( isset($options[$option]) ) 
+                {
+                    $command[$option] = (object) $options[$option];
+                }
+            }
+
+            $drop = $this->executeWriteCommand($command);
+
+            return true;
+        }
+        catch( RuntimeException $e )
+        {
+            $this->error = $e->getMessage();
+
+            return false;
+        }   
+    }
+
+    /**
+     * Create Auto Increment
+     * 
+     * @param string $table
+     * @param string $column
+     */
+    public function createAutoIncrement(String $table, String $column)
+    {
+        $table = $this->getIndexCollectionName($table);
+
+        if( ! $this->get($table)->row() )
+        {
+            return $this->insert($table, [$column => 1]);
+        }
+
+        return false;   
+    }
+
+    /**
+     * protected index get index collection name
+     */
+    protected function getIndexCollectionName(String $table)
+    {
+        return $table . 'Indexes';
+    }
+
+    /**
      * Truncate/Drop
      * 
      * @param string $table
@@ -476,6 +548,11 @@ class MDB implements MDBInterface
         try 
         {
             $drop = $this->executeWriteCommand(['drop' => $table]);
+
+            if( $this->isAutoIncrement($table) )
+            {
+                $this->executeWriteCommand(['drop' => $table]);
+            }
 
             return true;
         }
@@ -568,6 +645,33 @@ class MDB implements MDBInterface
     public function error() : String
     {
         return $this->error;
+    }
+
+    /**
+     * protected is auto increment
+     */
+    protected function isAutoIncrement(String &$table)
+    {
+        return in_array($table = $this->getIndexCollectionName($table), $this->collections());
+    }
+
+    /**
+     * protected set auto increment
+     */
+    protected function setAutoIncrement(String $table, &$data)
+    {
+        if( $this->isAutoIncrement($table) )
+        {
+            $get = $this->get($table);
+            
+            $row = $get->row();
+            
+            $id  = key(array_reverse((array) $row));
+
+            $data = array_merge([$id => $get->totalRows()], $data);
+
+            $this->insert($table, [$id => 1]);
+        }
     }
 
     /**
