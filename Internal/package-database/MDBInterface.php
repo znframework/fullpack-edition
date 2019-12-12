@@ -14,9 +14,9 @@ interface MDBInterface
    /**
      * Executable
      * 
-     * @param array $option
+     * @param array $options
      */
-    public function executable(Array $option);
+    public function executable($options);
 
     /**
      * MongoDB\Driver\WriteConcern

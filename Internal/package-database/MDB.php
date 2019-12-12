@@ -104,9 +104,9 @@ class MDB implements MDBInterface
     /**
      * Executable
      * 
-     * @param array $option
+     * @param array $options
      */
-    public function executable(Array $option)
+    public function executable($options)
     {
         $this->executable = $config;
 
