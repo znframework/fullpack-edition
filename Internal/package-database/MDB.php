@@ -9,15 +9,20 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Config;
 use MongoDB\BSON\Regex;
 use MongoDB\Driver\Query;
+use MongoDB\Driver\Session;
 use MongoDB\Driver\Manager;
 use MongoDB\Driver\Command;
 use MongoDB\Driver\BulkWrite;
+use MongoDB\Driver\ReadConcern;
+use MongoDB\Driver\WriteConcern;
+use MongoDB\Driver\ReadPreference;
 use MongoDB\Driver\Exception\RuntimeException;
 use ZN\Database\Exception\OrderByInvalidSecondArgumentException;
 
-class MDB
+class MDB implements MDBInterface
 {
     /**
      * Keeps manager
@@ -39,6 +44,13 @@ class MDB
      * @var array
      */
     protected $options = [];
+
+    /**
+     * Keeps executable
+     * 
+     * @var array
+     */
+    protected $executable = [];
 
     /**
      * Keeps filters
@@ -87,6 +99,58 @@ class MDB
 
             $this->database = $config['database'] ?? 'test';
         }   
+    }
+
+    /**
+     * Executable
+     * 
+     * @param array $option
+     */
+    public function executable(Array $option)
+    {
+        $this->executable = $config;
+
+        return $this;
+    }
+
+    /**
+     * MongoDB\Driver\WriteConcern
+     * 
+     * @return WriteConcern
+     */
+    public static function writeConcern(...$parameters)
+    {
+        return new WriteConcern(...$parameters);
+    }
+
+    /**
+     * MongoDB\Driver\ReadPreference
+     * 
+     * @return ReadPreference
+     */
+    public static function readPreference(...$parameters)
+    {
+        return new ReadPreference(...$parameters);
+    }
+
+    /**
+     * MongoDB\Driver\ReadConcern
+     * 
+     * @return ReadConcern
+     */
+    public static function readConcern(...$parameters)
+    {
+        return new ReadConcern(...$parameters);
+    }
+
+    /**
+     * MongoDB\Driver\Session
+     * 
+     * @return Session
+     */
+    public static function session(...$parameters)
+    {
+        return new Session(...$parameters);
     }
 
     /**
@@ -139,8 +203,6 @@ class MDB
 
         $bulk->delete($this->filters);
 
-        $this->default();
-
         return (bool) $this->operation($table, $bulk)->getDeletedCount();
     }
 
@@ -159,8 +221,6 @@ class MDB
         $this->options['multi'] = true;
 
         $bulk->update($this->filters, ['$set' => $datas], $this->options);
-
-        $this->default();
 
         return (bool) $this->operation($table, $bulk)->getModifiedCount();
     }
@@ -514,9 +574,11 @@ class MDB
      */
     protected function executeReadCommand(String $database, Array $command)
     {
-        $query = $this->manager->executeReadCommand($database, new Command($command));
+        $query = $this->manager->executeReadCommand($database, new Command($command), $this->executable);
 
         $query->setTypeMap(['root' => 'array', 'document' => 'array']);
+
+        $this->defaultExecuteReadCommand();
 
         return $query;
     }
@@ -526,10 +588,10 @@ class MDB
      */
     protected function executeWriteCommand(Array $command)
     {
-        $return = $this->manager->executeWriteCommand($this->database, new Command($command), $this->options);
+        $return = $this->manager->executeWriteCommand($this->database, new Command($command), $this->executable);
 
-        $this->options = [];
-
+        $this->defaultExecuteWriteCommand();
+        
         return $return;
     }
 
@@ -538,7 +600,11 @@ class MDB
      */
     protected function operation(String $table, $bulk)
     {
-        return $this->manager->executeBulkWrite($this->collect($table), $bulk);
+        $return = $this->manager->executeBulkWrite($this->collect($table), $bulk, $this->executable);
+
+        $this->defaultExecute();
+
+        return $return;
     }
 
     /**
@@ -546,9 +612,9 @@ class MDB
      */
     protected function execute(String $table)
     {
-        $return = $this->manager->executeQuery($this->collect($table), new Query($this->filters, $this->options));
+        $return = $this->manager->executeQuery($this->collect($table), new Query($this->filters, $this->options), $this->executable);
 
-        $this->default();
+        $this->defaultExecute();
 
         return $return;
     }
@@ -562,11 +628,29 @@ class MDB
     }
 
     /**
+     * protected default execute read command
+     */
+    protected function defaultExecuteReadCommand()
+    {
+        $this->executable = [];
+    }
+
+    /**
+     * protected default execute write command
+     */
+    protected function defaultExecuteWriteCommand()
+    {
+        $this->options    = [];
+        $this->executable = [];
+    }
+
+    /**
      * protected default
      */
-    protected function default()
+    protected function defaultExecute()
     {
-        $this->filters = [];
-        $this->options = [];
+        $this->filters    = [];
+        $this->options    = [];
+        $this->executable = [];
     }
 }
