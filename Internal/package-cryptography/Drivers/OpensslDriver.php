@@ -9,9 +9,11 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Support;
 use ZN\Datatype;
 use ZN\Cryptography\CryptoMapping;
+use ZN\Cryptography\Exception\InvalidCipherMethodException;
 
 class OpensslDriver extends CryptoMapping
 {
@@ -33,14 +35,17 @@ class OpensslDriver extends CryptoMapping
      * It encrypts the data.
      * 
      * @param string $data
-     * @param array  $settings
+     * @param string|array  $settings
      * 
      * @return string
      */
 	public function encrypt($data, $settings)
 	{
-		$set    = $this->_settings($settings);
-		$encode = trim(openssl_encrypt($data, strtolower($set->cipher), $set->key, 1, $set->iv));
+		$this->stringParameter($settings);
+
+		$set = $this->_settings($settings);
+
+		$encode = trim(openssl_encrypt($data, $set->cipher, $set->key, 0, $set->iv));
 
 		return base64_encode($encode);
 	}
@@ -55,10 +60,12 @@ class OpensslDriver extends CryptoMapping
      */
 	public function decrypt($data, $settings)
 	{
+		$this->stringParameter($settings);
+
 		$set  = $this->_settings($settings);
 		$data = base64_decode($data);
 
-		return trim(openssl_decrypt(trim($data), $set->cipher, $set->key, 1, $set->iv));
+		return trim(openssl_decrypt(trim($data), $set->cipher, $set->key, 0, $set->iv));
 	}
 
 	/**
@@ -74,54 +81,18 @@ class OpensslDriver extends CryptoMapping
 	}
 
 	/**
-     * private keysize
-     * 
-     * @param string $cipher
-     * 
-     * @return string
-     */
-	private function keySize($cipher)
-	{
-		$cipher  = strtolower($cipher);
-		$ciphers =
-		[
-			'aes-128' 	=> 16,
-		];
-
-		$ciphers = Datatype::multikey($ciphers);
-
-		return mb_substr(hash('md5', $this->key), 0, $ciphers[$cipher] ?? 16);
-	}
-
-	/**
      * protected vector size
      * 
-     * @param string $mode
      * @param string $cipher
+	 * @param string $key
      * 
      * @return string
      */
-	protected function vectorSize($mode, $cipher)
+	protected function vectorSize($cipher, $key)
 	{
-		$mode   = strtolower($mode);
-		$cipher = strtolower($cipher);
+		$iv = openssl_cipher_iv_length($cipher);
 
-		$modes =
-		[
-			'cbc' 	=> 16,
-			'rc2'   => 8,
-			'ecb'   => 0
-		];
-
-		$modes = Datatype::multikey($modes);
-		$mode  = $modes[$mode] ?? 16;
-
-		if( ! empty($cipher) )
-		{
-			$mode = $modes[$cipher] ?? $mode;
-		}
-
-		return mb_substr(hash('sha1', $this->key), 0, $mode);
+		return mb_substr(hash('sha1', $key), 0, $iv);
 	}
 
 	/**
@@ -134,16 +105,42 @@ class OpensslDriver extends CryptoMapping
     protected function _settings($settings)
     {
 		$cipher = $settings['cipher'] ?? 'aes-128';
-	 	$key    = $settings['key']    ?? $this->keySize($cipher);
+	 	$key    = $settings['key']    ?? $this->key;
 		$mode   = $settings['mode']   ?? 'cbc';
-		$iv     = $settings['vector'] ?? $this->vectorSize($mode, $cipher);
-		$cipher = $cipher . '-' . $mode;
+		$cipher = strtolower(Base::suffix($cipher, '-' . $mode));
 
+		if( ! in_array($cipher, openssl_get_cipher_methods()) )
+		{
+			throw new InvalidCipherMethodException(NULL, $cipher);
+		}
+
+		$iv = $this->vectorSize($cipher, $key);
+		
         return (object)
         [
             'key'    => $key,
             'iv'     => $iv,
             'cipher' => $cipher
         ];
-    }
+	}
+	
+	/**
+	 * protected string parameters
+	 */
+	protected function stringParameter(&$parameters)
+	{
+		if( is_string($parameters) )
+		{
+			$ex = explode('-', $parameters);
+
+			$mode = $ex[count($ex) - 1] ?? '';
+
+			array_pop($ex);
+
+			$settings['mode']   = $mode;
+			$settings['cipher'] = implode('-', $ex);
+
+			$parameters = $settings;
+		}
+	}
 }

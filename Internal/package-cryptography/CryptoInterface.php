@@ -15,21 +15,21 @@ interface CryptoInterface
      * It encrypts the data.
      * 
      * @param string $data
-     * @param array  $settings
+     * @param string|array  $settings
      * 
      * @return string
      */
-    public function encrypt(String $data,  Array $settings = []) : String;
+    public function encrypt(String $data, $settings = []) : String;
 
     /**
      * It decrypts the data.
      * 
      * @param string $data
-     * @param array  $settings
+     * @param string|array  $settings
      * 
      * @return string
      */
-    public function decrypt(String $data, Array $settings = []) : String;
+    public function decrypt(String $data, $settings = []) : String;
 
     /**
      * Generates a random password.

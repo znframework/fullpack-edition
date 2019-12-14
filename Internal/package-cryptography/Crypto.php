@@ -22,7 +22,7 @@ class Crypto implements CryptoInterface
      */
     const driver =
     [
-        'options'   => ['openssl', 'mhash', 'phash', 'hash', 'mcrypt'],
+        'options'   => ['openssl', 'mhash', 'phash', 'hash'],
         'namespace' => 'ZN\Cryptography\Drivers',
         'config'    => 'Cryptography',
         'default'   => 'ZN\Cryptography\CryptographyDefaultConfiguration'
@@ -32,11 +32,11 @@ class Crypto implements CryptoInterface
      * It encrypts the data.
      * 
      * @param string $data
-     * @param array  $settings
+     * @param string|array  $settings
      * 
      * @return string
      */
-    public function encrypt(String $data,  Array $settings = []) : String
+    public function encrypt(String $data, $settings = []) : String
     {
         return $this->driver->encrypt($data, $settings);
     }
@@ -45,11 +45,11 @@ class Crypto implements CryptoInterface
      * It decrypts the data.
      * 
      * @param string $data
-     * @param array  $settings
+     * @param string|array  $settings
      * 
      * @return string
      */
-    public function decrypt(String $data, Array $settings = []) : String
+    public function decrypt(String $data, $settings = []) : String
     {
         return $this->driver->decrypt($data, $settings);
     }
