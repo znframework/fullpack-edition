@@ -13,6 +13,7 @@ use ZN\IS;
 use ZN\Request;
 use ZN\Response;
 use ZN\Singleton;
+use ZN\Request\Http;
 
 class Redirect implements RedirectInterface
 {
@@ -89,7 +90,7 @@ class Redirect implements RedirectInterface
      */
     public function code(Int $code) : Redirect
     {
-        header('HTTP/1.1 ' . $code . ' Moved Permanently');
+        Http::reponse($code);
 
         return $this;
     }

@@ -12,6 +12,14 @@
 interface HttpInterface
 {
     /**
+     * Response
+     * 
+     * @param int    $code
+     * @param string $version = '1.1'
+     */
+    public static function response(Int $code, String $version = '1.1');
+
+    /**
      * Fix
      * 
      * @param bool $security = false

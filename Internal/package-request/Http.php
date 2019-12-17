@@ -99,6 +99,17 @@ class Http implements HttpInterface
         '505|versionNotSupported'   => '505 HTTP Version Not Supported',
         '511|authRequired'          => '511 Network Authentication Required'
     ];
+    
+    /**
+     * Response
+     * 
+     * @param int    $code
+     * @param string $version = '1.1'
+     */
+    public static function response(Int $code, String $version = '1.1')
+    {
+        header("HTTP/$version " . self::code($code));
+    }
 
     /**
      * Fix

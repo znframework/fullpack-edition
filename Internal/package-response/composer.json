@@ -12,6 +12,7 @@
     ],
     "require": {
         "php": ">=7.0.0",
+        "znframework/package-request": "6.0.*",
         "znframework/package-zerocore": "6.0.*"
 	},
     "autoload": {
