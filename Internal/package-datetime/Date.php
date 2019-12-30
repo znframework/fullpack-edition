@@ -117,7 +117,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function current(String $date = 'd.m.o') : String
+    public function current(String $date = 'd.m.Y') : String
     {
         return $this->_datetime($date);
     }
@@ -154,7 +154,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function standart() : String
     {
-        return $this->_datetime("d.F.o l, H:i:s");
+        return $this->_datetime("d F Y l, H:i:s");
     }
 
     /**
