@@ -176,8 +176,8 @@ class Login extends UserExtends
      */
     protected function rememberUsernameAndPassword(&$username, &$password)
     {
-        $username = $this->cookieClass->select($this->usernameColumn);
-        $password = $this->cookieClass->select($this->passwordColumn);
+        $username = $this->cookieClass->select($this->getUniqueUsernameKey());
+        $password = $this->cookieClass->select($this->getUniquePasswordKey());
     }
 
      /**
@@ -194,8 +194,8 @@ class Login extends UserExtends
      */
     protected function startUserSession($username, $password)
     {
-        $this->sessionClass->insert($this->usernameColumn, $username);
-        $this->sessionClass->insert($this->passwordColumn, $password);
+        $this->sessionClass->insert($this->getUniqueUsernameKey(), $username);
+        $this->sessionClass->insert($this->getUniquePasswordKey(), $password);
 
         return true;
     }
@@ -205,10 +205,10 @@ class Login extends UserExtends
      */
     protected function startPermanentUserSessionWithCookie($username, $password)
     {
-        if( $this->cookieClass->select($this->usernameColumn) !== $username )
+        if( $this->cookieClass->select($uniqueUsernameKey = $this->getUniqueUsernameKey()) !== $username )
         {
-            $this->cookieClass->insert($this->usernameColumn, $username);
-            $this->cookieClass->insert($this->passwordColumn, $password);
+            $this->cookieClass->insert($uniqueUsernameKey, $username);
+            $this->cookieClass->insert($this->getUniquePasswordKey(), $password);
         }
     }
 

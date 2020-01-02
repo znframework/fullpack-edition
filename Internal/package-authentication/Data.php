@@ -120,7 +120,7 @@ class Data extends UserExtends
      */
     protected function getUsernameSessionCookie()
     {
-        return $this->sessionClass->select($this->usernameColumn) ?: $this->cookieClass ->select($this->usernameColumn);
+        return $this->sessionClass->select($uniqueUsernameKey = $this->getUniqueUsernameKey()) ?: $this->cookieClass->select($uniqueUsernameKey);
     }
 
     /**
@@ -128,6 +128,6 @@ class Data extends UserExtends
      */
     protected function getPasswordSessionCookie()
     {
-        return $this->sessionClass->select($this->passwordColumn) ?: $this->cookieClass ->select($this->passwordColumn);
+        return $this->sessionClass->select($uniquePasswordKey = $this->getUniquePasswordKey()) ?: $this->cookieClass->select($uniquePasswordKey);
     }
 }

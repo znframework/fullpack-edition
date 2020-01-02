@@ -56,9 +56,9 @@ class Logout extends UserExtends
      */
     protected function endUserProcessAndRedirect($redirectUrl, $time)
     {
-        $this->cookieClass ->delete($this->usernameColumn);
-        $this->cookieClass ->delete($this->passwordColumn);
-        $this->sessionClass->delete($this->usernameColumn);
+        $this->cookieClass ->delete($uniqueUsernameKey = $this->getUniqueUsernameKey());
+        $this->cookieClass ->delete($this->getUniquePasswordKey());
+        $this->sessionClass->delete($uniqueUsernameKey);
 
         new Redirect((string) $redirectUrl, $time);
     }

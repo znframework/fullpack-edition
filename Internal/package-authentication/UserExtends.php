@@ -90,6 +90,26 @@ class UserExtends
     }
 
     /**
+     * Get unique username key
+     * 
+     * @return string
+     */
+    public function getUniqueUsernameKey()
+    {
+        return CONTAINER_PROJECT . $this->usernameColumn;
+    }
+
+    /**
+     * Get unique password key
+     * 
+     * @return string
+     */
+    public function getUniquePasswordKey()
+    {
+        return CONTAINER_PROJECT . $this->passwordColumn;
+    }
+
+    /**
      * Set column 
      * 
      * @param string $column
