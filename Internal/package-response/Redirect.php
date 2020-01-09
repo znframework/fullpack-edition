@@ -90,7 +90,7 @@ class Redirect implements RedirectInterface
      */
     public function code(Int $code) : Redirect
     {
-        Http::reponse($code);
+        Http::response($code);
 
         return $this;
     }
