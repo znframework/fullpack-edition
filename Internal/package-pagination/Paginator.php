@@ -517,7 +517,7 @@ class Paginator implements PaginatorInterface
 
         if( empty($start) && ! is_numeric($start) )
         {
-            return ! is_numeric($segment = URI::segment(-1)) ? 0 : $segment;
+            return ! is_numeric($segment = explode('?', URI::segment(-1))[0]) ? 0 : $segment;
         }
         
         return ! is_numeric($start) ? 0 : $start;
