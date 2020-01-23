@@ -37,7 +37,7 @@ class Including
 
         foreach( $array as $key => $val )
         {
-            if( in_array($val, $including) || in_array(Excluding::keyControl($key), $including) )
+            if( in_array($val, $including) || in_array($key, $including) )
             {
                 $newArray[$key] = $val;
             }

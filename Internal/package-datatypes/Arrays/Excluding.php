@@ -37,7 +37,7 @@ class Excluding
 
         foreach( $array as $key => $val )
         {
-            if( ! in_array($val, $excluding) && ! in_array(self::keyControl($key), $excluding) )
+            if( ! in_array($val, $excluding) && ! in_array($key, $excluding) )
             {
                 $newArray[$key] = $val;
             }
@@ -55,6 +55,6 @@ class Excluding
      */
     public static function keyControl($key)
     {
-        return ! is_numeric($key) ? $key : '-'.$key;
+        return ! is_numeric($key) ? $key : '-' . $key;
     }
 }
