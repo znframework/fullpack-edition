@@ -11,6 +11,7 @@
 
 use ZN\Hypertext\Exception\InvalidArgumentException;
 use ZN\DataTypes\Arrays;
+use ZN\Protection\Json;
 use ZN\Request\Method;
 use ZN\Buffering;
 use ZN\Singleton;
@@ -468,6 +469,11 @@ class Form
     protected function createSelectElement($options, $selected, $_attributes, &$return)
     {
         $return = '<select'.$this->attributes($_attributes).'>';
+
+        if( is_string($selected) && Json::check($selected) )
+        {
+            $selected = Json::decodeArray($selected);
+        }
 
         if( is_array($options) ) foreach( $options as $key => $value )
         {
