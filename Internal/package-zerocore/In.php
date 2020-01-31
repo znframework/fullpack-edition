@@ -368,21 +368,41 @@ class In
             # Class and variable names are obtained.
             # [varname] for variable name.
             # [vartype] for variable type.
-            preg_match
-            (
-                '/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s\$(?<varname>\w+)/', 
-                ReflectionParameter::export([$page, $function], $parameter->name, true), 
-                $match
-            );
+            if( IS::phpVersion('7.1') )
+            {
+                $parameterName = $parameter->getName();
+                $parameterType = $parameter->getType();
 
+                $parameterType instanceof ReflectionNamedType;
+    
+                $parameterType = $parameterType->getName();    
+                
+                if( ! ctype_upper($parameterType[0]) )
+                {
+                    $parameterType = NULL;
+                } 
+            }
+            else
+            {
+                preg_match
+                (
+                    '/<required>\s(?<vartype>([A-Z]\w+(\\\\)*){1,})\s\$(?<varname>\w+)/', 
+                    ReflectionParameter::export([$page, $function], $parameter->name, true), 
+                    $match
+                );
+
+                $parameterName = $match['varname'] ?? NULL;
+                $parameterType = $match['vartype'] ?? NULL;
+            }
+            
             # If a valid class is found, the resolving continues.
-            if( isset($match['vartype']) )
+            if( isset($parameterType) )
             {
                 # The name of the class instance is obtained.
-                $varname = $match['varname'];
+                $varname = $parameterName;
 
                 # Generated instances are being sent for use in views.
-                View::$varname($class = Singleton::class($match['vartype']));
+                View::$varname($class = Singleton::class($parameterType));
 
                 # The controller is creating injections of the corresponding method.
                 $getExportParameters[] = $class;
