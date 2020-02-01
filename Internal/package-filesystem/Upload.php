@@ -437,7 +437,7 @@ class Upload implements UploadInterface
     {
         if( $set = ($this->settings[$key] ?? NULL) )
         {
-            return explode('|', $set);
+            return explode('|', strtolower($set));
         }
 
         return [];
@@ -503,7 +503,7 @@ class Upload implements UploadInterface
             $this->path       = $target;
         }
 
-        if( ! empty($extensions) && ! in_array(pathinfo($nm, PATHINFO_EXTENSION), $extensions) )
+        if( ! empty($extensions) && ! in_array(strtolower(pathinfo($nm, PATHINFO_EXTENSION)), $extensions) )
         {
             return $this->extensionControl = $this->getLang['upload:extensionError'];
         }
