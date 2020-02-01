@@ -54,7 +54,7 @@ trait CallableElements
             }
 
             # Multiple Element
-            elseif( array_key_exists($method, $multiElement) )
+            elseif( isset($multiElement[$method]) )
             {
                 $realMethod = $multiElement[$method];
 

@@ -171,7 +171,7 @@ class Arrays extends Factory
      */
     public static function keyExists(Array $array, $key) : Bool
     {
-        return array_key_exists($key, $array);
+        return isset($array[$key]);
     }
 
     /**

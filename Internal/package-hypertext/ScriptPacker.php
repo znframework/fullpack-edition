@@ -85,7 +85,7 @@ class ScriptPacker
 	{
         $this->script = $script . "\n";
         
-        if( array_key_exists($encoding, $this->literalEncoding) )
+        if( isset($this->literalEncoding[$encoding]) )
         {
             $encoding = $this->literalEncoding[$encoding];
         }

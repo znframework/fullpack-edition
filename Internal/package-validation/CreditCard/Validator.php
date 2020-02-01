@@ -28,7 +28,7 @@ class Validator implements ValidatorInterface
             $type = self::creditCardType($number);
         }
 
-        if( array_key_exists($type, self::getCardFormats()) && self::validCard($number, $type) ) 
+        if( (self::getCardFormats()[$type] ?? NULL) && self::validCard($number, $type) ) 
         {
             return true;
         }
@@ -44,7 +44,7 @@ class Validator implements ValidatorInterface
      */
     public static function cvc(Int $cvc, String $type = NULL) : Bool
     {
-        return ctype_digit($cvc) && array_key_exists($type, self::getCardFormats()) && self::validCvcLength($cvc, $type);
+        return ctype_digit($cvc) && (self::getCardFormats()[$type] ?? NULL) && self::validCvcLength($cvc, $type);
     }
 
     /**

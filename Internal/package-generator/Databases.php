@@ -138,7 +138,7 @@ class Databases extends DatabaseDefinitions
      */
     protected function addIdColumnToActiveTableIfNotExists(&$activeTable)
     {
-        if( ! array_key_exists('id', $activeTable) )
+        if( ! isset($activeTable['id']) )
         {
             $activeTable = array_merge
             ([
