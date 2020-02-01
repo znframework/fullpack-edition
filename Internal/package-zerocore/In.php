@@ -372,15 +372,11 @@ class In
             {
                 $parameterName = $parameter->getName();
                 $parameterType = $parameter->getType();
-
-                $parameterType instanceof ReflectionNamedType;
-    
-                $parameterType = $parameterType->getName();    
-                
-                if( ! ctype_upper($parameterType[0]) )
+                                
+                if( ! preg_match('/^[A-Z]/', $parameterType) )
                 {
                     $parameterType = NULL;
-                } 
+                }
             }
             else
             {
