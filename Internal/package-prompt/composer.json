@@ -12,9 +12,9 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "6.0.*",
-        "znframework/package-buffering": "6.0.*",
-        "znframework/package-remote": "6.0.*"
+        "znframework/package-zerocore": "6.*",
+        "znframework/package-buffering": "6.*",
+        "znframework/package-remote": "6.*"
 	},
     "autoload": {
         "psr-4": {

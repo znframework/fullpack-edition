@@ -12,11 +12,11 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "6.0.*",
-        "znframework/package-request": "6.0.*",
-        "znframework/package-protection": "6.0.*",
-        "znframework/package-response": "6.0.*",
-        "znframework/package-xml": "6.0.*"
+        "znframework/package-zerocore": "6.*",
+        "znframework/package-request": "6.*",
+        "znframework/package-protection": "6.*",
+        "znframework/package-response": "6.*",
+        "znframework/package-xml": "6.*"
 	},
     "autoload": {
         "psr-4": {

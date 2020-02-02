@@ -12,8 +12,8 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "znframework/package-zerocore": "6.0.*",
-        "znframework/package-helpers": "6.0.*"
+        "znframework/package-zerocore": "6.*",
+        "znframework/package-helpers": "6.*"
 	},
     "autoload": {
         "psr-4": {
