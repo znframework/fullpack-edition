@@ -179,6 +179,82 @@ class DB extends Connection
     }
 
     /**
+     * WHERE NULL OR EMPTY
+     * 
+     * @param mixed  $column
+     * @param string $logical = NULL
+     * 
+     * @return DB
+     */
+    public function whereEmpty($column, String $logical = NULL) : DB
+    {
+        $group[] = ['exp:' . $column, '""', 'or'];
+        $group[] = ['exp:' . $column . ' is', 'null'];
+
+        if( $logical !== NULL )
+        {
+            $group[] = $logical;
+        }
+
+        $this->whereGroup(...$group);
+
+        return $this;
+    }
+
+    /**
+     * WHERE NOT [NULL AND EMPTY]
+     * 
+     * @param mixed  $column
+     * @param string $logical = NULL
+     * 
+     * @return DB
+     */
+    public function whereNotEmpty($column, String $logical = NULL) : DB
+    {
+        $group[] = ['exp:' . $column . '!=', '""', 'and'];
+        $group[] = ['exp:' . $column . ' is not', 'null'];
+
+        if( $logical !== NULL )
+        {
+            $group[] = $logical;
+        }
+
+        $this->whereGroup(...$group);
+
+        return $this;
+    }
+
+    /**
+     * WHERE NULL
+     * 
+     * @param mixed  $column
+     * @param string $logical = NULL
+     * 
+     * @return DB
+     */
+    public function whereNull($column, String $logical = NULL) : DB
+    {
+        $this->where('exp:' . $column . ' is', 'null', $logical);
+
+        return $this;
+    }
+
+    /**
+     * WHERE NOT NULL
+     * 
+     * @param mixed  $column
+     * @param string $logical = NULL
+     * 
+     * @return DB
+     */
+    public function whereNotNull($column, String $logical = NULL) : DB
+    {
+        $this->where('exp:' . $column . ' is', 'not null', $logical);
+
+        return $this;
+    }
+
+     /**
      * Defines SQL WHERE 
      * 
      * @param mixed  $column
