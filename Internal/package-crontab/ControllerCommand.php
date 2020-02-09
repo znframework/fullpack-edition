@@ -28,13 +28,6 @@ class ControllerCommand
         $parameters = $datas['parameters'];
         $class      = $namespace . $controller;
         $file       = str_replace('\\', '\\\\', $datas['file']);
-        $command    = '(new \\'.$class.')->'.$function.
-        '('. 
-            implode(',', array_map(function($data)
-            { 
-                return '"'.$data.'"';
-
-            }, $parameters)).
-        ')';
+        $command    = '(new \\'.$class.')->' . $function . '(' . Parameters::convert((array) $parameters) . ')';
     }
 }

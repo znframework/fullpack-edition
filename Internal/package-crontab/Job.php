@@ -92,6 +92,11 @@ class Job implements JobInterface, CrontabIntervalInterface
     protected $command;
 
     /**
+     * @var array
+     */
+    protected $parameters = [];
+
+    /**
      * @var string
      */
     protected $limitFile = 'Limit.json';
@@ -122,6 +127,19 @@ class Job implements JobInterface, CrontabIntervalInterface
 
         $this->path       = $this->getConfig['path'];
         $this->crontabDir = Filesystem\Info::originpath(STORAGE_DIR.'Crontab'.DS);
+    }
+
+
+    /**
+     * Send parameters
+     * 
+     * @param mixed ...$arguments
+     */
+    public function parameters(...$parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
     }
 
     /**
@@ -253,8 +271,15 @@ class Job implements JobInterface, CrontabIntervalInterface
         }
         else
         {
-            $this->removeJobFromExecFile($key);
-
+            if( is_numeric($key) )
+            {
+                $this->removeJobFromExecFile($key);
+            }
+            else
+            {
+                $this->removeJobFromExecFileWithTerm($key);
+            }
+            
             $this->executeCommand();
         }
     }
@@ -310,7 +335,9 @@ class Job implements JobInterface, CrontabIntervalInterface
         $command  = $pathEx[0];
         $method   = $pathEx[1] ?? Config::get('Routing', 'openFunction') ?: 'main';
 
-        $code = ' -r \'' . $this->directoryIndexCommand . '(new \\'.$type.'\Commands\\'.$command.')->'.$method.'();\'';
+        $code = ' -r \'' . $this->directoryIndexCommand . '(new \\'.$type.'\Commands\\'.$command.')->'.$method.'(' . Parameters::convert($this->parameters) . ');\'';
+
+        $this->parameters = [];
 
         $this->run($code);
     }
@@ -413,6 +440,24 @@ class Job implements JobInterface, CrontabIntervalInterface
     }
 
     /**
+     * Protected remove job from exec file with term
+     */
+    protected function removeJobFromExecFileWithTerm($cmd)
+    {
+        $jobs = [];
+
+        foreach( $this->listArray() as $key => $job )
+        {
+            if( ! stristr($job, $cmd) )
+            {
+                $jobs[$key] = $job;
+            }
+        }
+
+        file_put_contents($this->crontabCommands, implode(EOL, $jobs) . EOL);
+    }
+
+    /**
      * Protected Zerocore
      */
     protected function getDirectoryIndexCommand()
@@ -491,10 +536,10 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     protected function defaultCommandVariables()
     {
-        $this->type     = NULL;
-        $this->path     = NULL;
-        $this->command  = NULL;
-        $this->debug    = false;
+        $this->type       = NULL;
+        $this->path       = NULL;
+        $this->command    = NULL;
+        $this->debug      = false;
     }
 
     /**
