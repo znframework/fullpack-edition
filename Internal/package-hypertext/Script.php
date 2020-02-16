@@ -15,11 +15,28 @@ use ZN\Buffering\Callback;
 class Script implements TextInterface
 {
     /**
+     * tag
+     * 
+     * @var bool
+     */
+    protected $tag = false;
+
+    /**
      * type
      * 
      * @var string
      */
     protected $type = 'text/javascript';
+
+    /**
+     * Tag
+     */
+    public function tag()
+    {
+        $this->tag = true;
+
+        return $this;
+    }
 
     /**
      * Compress Javascript codes
@@ -28,6 +45,8 @@ class Script implements TextInterface
      * @param string   $encoding     = 'normal' - [none|numeric|normal|ascii]
      * @param bool     $fastDecode   = true
      * @param bool     $specialChars = false
+     * 
+     * @return string
      */
     public function compress(Callable $callback, String $encoding = 'normal', Bool $fastDecode = true, Bool $specialChars = false)
     {
@@ -35,7 +54,16 @@ class Script implements TextInterface
 
         $packer = new ScriptPacker($output, $encoding, $fastDecode, $specialChars);
     
-        return $packer->pack();
+        $pack = $packer->pack();
+
+        if( $this->tag )
+        {
+            $pack = $this->open() . $pack . $this->close();
+
+            $this->tag = false;
+        }
+
+        return $pack;
     }
 
     /**
