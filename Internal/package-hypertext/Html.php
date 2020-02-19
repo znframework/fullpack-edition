@@ -24,7 +24,7 @@ class Html
         'multiElement' =>
         [
             'html'  , 'body', 'head'  , 'title' , 'pre' ,
-            'iframe', 'li'  , 'strong', 'button', 'span',
+            'iframe', 'li'  , 'strong', 'span',
 
             'bold'      => 'b'  , 'italic'   => 'em' , 'parag'     => 'p',
             'overline'  => 'del', 'overtext' => 'sup', 'underline' => 'u',
@@ -194,7 +194,11 @@ class Html
      */
     public function anchor(String $url, $value = NULL, Array $attributes = []) : String
     {
-        if( ! IS::url($url) && strpos($url, '#') !== 0 )
+        if( $url === ':void' )
+        {
+            $url = 'javascript:void(0);';
+        }
+        elseif( ! IS::url($url) && strpos($url, '#') !== 0 )
         {
             $url = Request::getSiteURL($url);
         }
@@ -202,6 +206,21 @@ class Html
         $attributes['href'] = $url;
 
         return $this->_multiElement('a', $value ?? $url, $attributes);
+    }
+
+    /**
+     * Creates button
+     * 
+     * @param mixed  $value      = NULL
+     * @param array  $attributes = []
+     * 
+     * @return string
+     */
+    public function button($value = NULL, Array $attributes = []) : String
+    {
+        $this->settings['attr']['type'] = $this->settings['attr']['type'] ?? 'button';
+
+        return $this->_multiElement('button', $value ?? $url, $attributes);
     }
 
     /**
@@ -492,7 +511,7 @@ class Html
     {
         $element = strtolower($element);
 
-        $perm    = $this->settings['attr']['perm'] ?? NULL;
+        $perm = $this->settings['attr']['perm'] ?? NULL;
 
         $this->outputElement .= $this->_perm($perm, '<'.$element.$this->attributes($attributes).'>'.$this->stringOrCallback($str).'</'.$element.'>');
 
