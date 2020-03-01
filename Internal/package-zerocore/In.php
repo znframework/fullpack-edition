@@ -371,8 +371,8 @@ class In
             if( IS::phpVersion('7.1') )
             {
                 $parameterName = $parameter->getName();
-                $parameterType = $parameter->getType();
-                                
+                $parameterType = $parameter->getType()->getName();
+                
                 if( ! preg_match('/^[A-Z]/', $parameterType) )
                 {
                     $parameterType = NULL;
