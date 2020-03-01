@@ -363,11 +363,11 @@ class Kernel
 
         # The files to be automatically loaded are merged at startup.
         # External & Project Files
-        $startingAutoload  = array_merge
+        $startingAutoload  = (array_merge
         (
             Filesystem::getRecursiveFiles(AUTOLOAD_DIR         , $autoloadRecursive), 
             Filesystem::getRecursiveFiles(EXTERNAL_AUTOLOAD_DIR, $autoloadRecursive)
-        );
+        ));
 
         # The file upload process is starting.
         if( ! empty($startingAutoload) ) foreach( $startingAutoload as $file )
@@ -376,7 +376,7 @@ class Kernel
             {
                 if( is_file($file) )
                 {
-                    require $file;
+                    Base::import($file);
                 }
             }
         }
