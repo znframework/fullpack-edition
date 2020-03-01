@@ -413,7 +413,7 @@ class ZN
 
         # Preserves project information to be run as predefined.
         # This value is set to Frontend by default.
-        define('DEFAULT_PROJECT', PROJECTS_CONFIG['directory']['default']);
+        define('DEFAULT_PROJECT', PROJECTS_CONFIG['directory']['default'] ?? NULL);
         
         # Defines constants to hide active project information.
         # If a request is made to a project, it will alert the screen.
@@ -495,7 +495,7 @@ class ZN
     protected static function getProjectContainerDir($path = NULL) : String
     {
         # Container projects are being called.
-        $containers = PROJECTS_CONFIG['containers'];
+        $containers = PROJECTS_CONFIG['containers'] ?? [];
 
         # Gets internal directories according to the active project.
         $getProjectContainerDirectory = PROJECT_DIR . $path;
@@ -584,7 +584,7 @@ class ZN
         }
 
         # It gets other defined subprojects.
-        $getOtherDirectories = PROJECTS_CONFIG['directory']['others'];
+        $getOtherDirectories = PROJECTS_CONFIG['directory']['others'] ?? [];
 
         if( defined('CONSOLE_PROJECT_NAME') )
         {
