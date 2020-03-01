@@ -102,7 +102,7 @@ class ZN
     public static function run(String $type = NULL, String $version = NULL, String $dedicate = NULL)
     {
         # PHP shows code errors.
-        ini_set('display_errors', true);
+        ini_set('display_errors', true); error_reporting(1);
         
         # The system starts the load time.
         define('START_BENCHMARK', microtime(true));
