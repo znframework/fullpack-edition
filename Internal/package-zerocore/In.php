@@ -368,7 +368,7 @@ class In
             # Class and variable names are obtained.
             # [varname] for variable name.
             # [vartype] for variable type.
-            if( IS::phpVersion('7.1') )
+            if( IS::phpVersion('7.4') )
             {
                 $parameterName = $parameter->getName();
                 $parameterType = $parameter->getType()->getName();
