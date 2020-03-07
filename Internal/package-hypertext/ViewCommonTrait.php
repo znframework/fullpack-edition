@@ -194,7 +194,7 @@ trait ViewCommonTrait
      */
     protected function stringOrCallback($content)
     {
-        if( is_scalar($content) )
+        if( is_scalar($content) || is_null($content) )
         {
             return $content;
         }
@@ -203,7 +203,7 @@ trait ViewCommonTrait
             return Buffering\Callback::do($content);
         }
 
-        throw new Exception\InvalidArgumentException('1.($content) parameter must be [scalar] or [callable] type!');
+        throw new Exception\InvalidArgumentException('[$content] parameter must be [scalar] or [callable] type!');
     }
 
     /**
