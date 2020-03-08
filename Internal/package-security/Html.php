@@ -44,11 +44,12 @@ class Html
      * Clean HTML Tag
      * 
      * @param string $string 
+     * @param mixed  $allowable = ''
      * 
      * @return string
      */
-    public static function tagClean(String $string) : String
+    public static function tagClean(String $string, $allowable = '') : String
     {
-        return strip_tags($string);
+        return strip_tags(self::decode($string), $allowable);
     }
 }
