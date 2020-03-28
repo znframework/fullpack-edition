@@ -149,6 +149,7 @@ class Forge
      */
     public static function createZip(String $path, Array $data) : Bool
     {
+        $opath   = $path;
         $path    = Info::rpath($path);
         $zip     = new ZipArchive;
         $zipPath = Base::suffix($path, ".zip");
@@ -189,7 +190,7 @@ class Forge
 
                 foreach( $allFiles as $f )
                 {
-                    $status = $zip->addFile($f, $f);
+                    $status = $zip->addFile($f, Base::removePrefix($f, Base::suffix($opath)));
                 }
             }
             else
