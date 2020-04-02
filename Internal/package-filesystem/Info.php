@@ -9,9 +9,10 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use stdClass;
 use ZN\Base;
+use stdClass;
 use ZN\Config;
+use ZipArchive;
 
 class Info
 {
@@ -133,6 +134,33 @@ class Info
         }
 
         return false;
+    }
+
+    /**
+     * Read Zip
+     * 
+     * @param string $file
+     * 
+     * @return array
+     */
+    public static function readZip(String $file) : Array
+    {
+        $file = self::rpath(Base::suffix($file, '.zip'));
+
+        $archive = new ZipArchive($file); 
+
+        $archive->open($file); 
+
+        $returnFiles = [];
+
+        for( $i = 0; $i < $archive->numFiles; $i++ )
+        { 
+            $stat = $archive->statIndex($i); 
+
+            $returnFiles[] = $stat['name']; 
+        }
+
+        return $returnFiles;
     }
 
     /**

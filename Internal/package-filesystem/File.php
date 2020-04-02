@@ -52,6 +52,7 @@ class File extends Factory
             'replace'         => 'Forge::replace',
             'reglace'         => 'Forge::reglace',
             'delete'          => 'Forge::delete',
+            'readzip'         => 'Info::readZip',
             'zipextract'      => 'Forge::zipExtract',
             'createzip'       => 'Forge::createZip',
             'rename'          => 'Forge::rename',
