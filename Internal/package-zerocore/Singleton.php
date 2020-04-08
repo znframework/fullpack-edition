@@ -48,7 +48,7 @@ class Singleton
         {
             $classInfo = Autoloader::getClassFileInfo($class);
 
-            $class = $classInfo['namespace'];
+            $class = $classInfo['namespace'] ?: $class;
         }
 
         return new $class;
