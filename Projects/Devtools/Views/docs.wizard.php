@@ -16,25 +16,27 @@
 <div class="row">
 
     <div class="col-lg-12">
+        {[ $lang = strtoupper(Lang::get()) ]}
 
         @if( ! empty($docs) ) foreach( $docs as $key => $doc )
 
-            @if( ! empty($title = Separator::decode($doc->title ?? $doc->meta_keyword)->{Lang::get()}) )
+            @if( ! empty($title = $doc->{'Title' . $lang} ?? $doc->{'Keywords' . $lang} ?? '') )
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 style="cursor:pointer" data-toggle="collapse" data-target="#id{{$key}}" class="panel-title">
                         <i class="fa fa-book fa-fw"></i>
-                        {{$title}}
+                        {{ $title }}
                         <span><i class="fa fa-angle-down fa-fw"></i></span>
                     </h3>
                 </div>
                 <div id="id{{$key}}" class="collapse panel-body">
                     <div class="list-group">
-                        {{specialWord(Separator::decode($doc->content)->{Lang::get()})}}
+                        {{ specialWord($doc->{'Content' . $lang}) }}
                     </div>
                 </div>
             </div>
             @endif
+
         @endforeach
     </div>
 
