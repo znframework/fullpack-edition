@@ -30,4 +30,4 @@ require __DIR__ . '/Internal/autoload.php';
 |
 */
 
-ZN\ZN::run('FE', '6.97.42', 'Mustafa Kemal Atatürk');
+ZN\ZN::run('FE', '6.97.45', 'Mustafa Kemal Atatürk');

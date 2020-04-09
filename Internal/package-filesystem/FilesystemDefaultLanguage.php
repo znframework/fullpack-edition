@@ -36,7 +36,7 @@ class FilesystemDefaultLanguage
         'upload:3'               => 'File partially uploaded!',
         'upload:4'               => 'Upload file does not exist!',
         'upload:6'               => 'files to install a temporary directory not found!',
-        'upload:7'               => 'File perpendicular to write on!',
+        'upload:7'               => 'Failed to write file to disk!',
         'upload:8'               => 'File upload does not support the extension!',
         'upload:9'               => 'File installation path is not valid!',
         'upload:10'              => 'Determine the maximum file size has been exceeded!'
@@ -53,7 +53,7 @@ class FilesystemDefaultLanguage
         'upload:3'               => 'Dosya kısmen yüklendi!',
         'upload:4'               => 'Yüklenecek dosya yok!',
         'upload:6'               => 'Dosyaların geçici olarak yükleneceği dizin bulunamadı!',
-        'upload:7'               => 'Dosya dik üzerine yazılamadı!',
+        'upload:7'               => 'Dosya diske yazılamadı!',
         'upload:8'               => 'Dosya yükleme uzantı desteği yok!',
         'upload:9'               => 'Dosya yükleme yolu geçerli değil!',
         'upload:10'              => 'Belirlenen maksimum dosya boyutu aşıldı!'
