@@ -359,7 +359,14 @@ class In
    
         if( $getMethod->hasReturnType() )
         {
-            $getReturnType = (string) $getMethod->getReturnType();
+            if( IS::phpVersion('7.4') )
+            {
+                $getReturnType = $getMethod->getReturnType()->getName();
+            }
+            else
+            {
+                $getReturnType = (string) $getMethod->getReturnType();
+            }         
         }
 
         # Resolving is started in case of the current match.
