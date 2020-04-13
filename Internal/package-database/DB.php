@@ -2344,6 +2344,11 @@ class DB extends Connection
 
                 $columns = array_flip($this->_query('SELECT * FROM ' . $table)->columns());
                 $data    = array_intersect_key($data, $columns);
+
+                if( $find = preg_grep('/(^id$)/i', array_keys($data)) )
+                {
+                    $current = current($find); unset($data[$current]);
+                }
             }
         }
     }
