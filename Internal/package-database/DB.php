@@ -659,6 +659,26 @@ class DB extends Connection
     }
 
     /**
+     * Order By Field
+     * 
+     * @param string $field
+     * @param array  $values
+     * 
+     * @return DB
+     */
+    public function orderByField(String $field, Array $values)
+    {
+        $revalues = [];
+
+        foreach( $values as $value )
+        {
+            $revalues[] = $this->_escapeStringAddNail($value, true);
+        }
+
+        return $this->orderBy('FIELD(' . $field . ', ' . implode(', ', $revalues) . ')');
+    }
+
+    /**
      * Limit
      * 
      * @param int $start = NULL
