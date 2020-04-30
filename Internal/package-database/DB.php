@@ -666,16 +666,26 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function orderByField(String $field, Array $values)
+    public function orderByField(String $field, Array $values) : DB
     {
         $revalues = [];
 
         foreach( $values as $value )
         {
-            $revalues[] = $this->_escapeStringAddNail($value, true);
+            $revalues[] = $this->_escapeStringAddNail($value ?? '', true);
         }
 
         return $this->orderBy('FIELD(' . $field . ', ' . implode(', ', $revalues) . ')');
+    }
+
+    /**
+     * Order By Random
+     * 
+     * @return DB
+     */
+    public function orderByRandom() : DB
+    {
+        return $this->orderBy('rand()');
     }
 
     /**
