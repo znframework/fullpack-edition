@@ -64,9 +64,9 @@ class DatabaseDefaultConfiguration
     public $port        = '';
     public $ssl         =
     [
-        'key'     => '', 
-        'cert'    => '', 
-        'ca'      => '',
+        'key'     => NULL, 
+        'cert'    => NULL, 
+        'ca'      => NULL,
         'capath'  => NULL,
         'cipher'  => NULL
     ];
