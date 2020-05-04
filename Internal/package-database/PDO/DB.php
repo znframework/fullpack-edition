@@ -100,6 +100,14 @@ class DB extends DriverMappingAbstract
 
         try
         {
+            $ssl = $this->config['ssl'] ?? NULL;
+
+            if( ! empty($ssl['key'   ]) ) $options[PDO::MYSQL_ATTR_SSL_KEY]    = $ssl['key'   ];
+            if( ! empty($ssl['cert'  ]) ) $options[PDO::MYSQL_ATTR_SSL_CERT]   = $ssl['cert'  ];
+            if( ! empty($ssl['ca'    ]) ) $options[PDO::MYSQL_ATTR_SSL_CA]     = $ssl['ca'    ];
+            if( ! empty($ssl['capath']) ) $options[PDO::MYSQL_ATTR_SSL_CAPATH] = $ssl['capath'];
+            if( ! empty($ssl['cipher']) ) $options[PDO::MYSQL_ATTR_SSL_CIPHER] = $ssl['cipher'];
+
             $this->connect = new PDO
             (
                 $this->config['dsn'] ?: $this->_dsn($this->config), 
@@ -465,7 +473,7 @@ class DB extends DriverMappingAbstract
                 : '';
 
         $dsn .= ( ! empty($config['port']) )
-                ? 'PORT='.$config['port'].';'
+                ? 'port='.$config['port'].';'
                 : '';
 
         $dsn .= ( ! empty($config['charset']) )

@@ -36,6 +36,8 @@ class DatabaseDefaultConfiguration
     |              Using Database: ODBC, SQLServer
     | port       : Sets the port.
     |              Using Database: Postgres, SQLServer, PDO:MySQL
+    | ssl        : SSL connection.
+    |              Using Database: PDO, MySQLi   
     | cacheDriver: Sets the cache driver.
     |              Options: get, apcu, apc, memcache, wincache, file, redis
     | queryLog   : Sets the loging of queries.
@@ -60,6 +62,14 @@ class DatabaseDefaultConfiguration
     public $dsn         = '';
     public $server      = '';
     public $port        = '';
+    public $ssl         =
+    [
+        'key'     => '', 
+        'cert'    => '', 
+        'ca'      => '',
+        'capath'  => NULL,
+        'cipher'  => NULL
+    ];
     public $cacheDriver = 'file';
     public $queryLog    = false;
     public $pconnect    = false;

@@ -94,7 +94,8 @@ class MDB implements MDBInterface
             $this->manager  = new Manager
             (
                 'mongodb://' . $config['dns'] . '/', 
-                $config['options'] ?? []
+                $config['options'] ?? [],
+                $config['driverOptions'] ?? []
             );
 
             $this->database = $config['database'] ?? 'test';

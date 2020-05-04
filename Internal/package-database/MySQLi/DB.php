@@ -127,15 +127,25 @@ class DB extends DriverMappingAbstract
         
         try
         {
-            mysqli_report(MYSQLI_REPORT_STRICT);
+            $host = ($this->config['pconnect'] === true ? 'p:' : NULL) . $this->config['host'];
+            $user = $this->config['user'];
+            $pass = $this->config['password'];
+            $db   = $this->config['database'];
+            $port = $this->config['port'] ?: 3306;
+            $ssl  = $this->config['ssl'] ?? NULL;
 
-            $this->connect = new MySQLi
-            (
-                ($this->config['pconnect'] === true ? 'p:' : NULL) . $this->config['host'], 
-                $this->config['user'],
-                $this->config['password'], 
-                $this->config['database']
-            );
+            if( ! empty($ssl['key']) || ! empty($ssl['cert']) || ! empty($ssl['ca']) || ! empty($ssl['capath']) || ! empty($ssl['cipher']) )
+            {
+                $this->connect = new MySQLi;
+
+                $this->connect->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, true);
+                $this->connect->ssl_set($ssl['key'], $ssl['cert'], $ssl['ca'], $ssl['capath'], $ssl['cipher']);      
+                $this->connect->real_connect($host, $user, $pass, $db, $port, NULL, MYSQLI_CLIENT_SSL);
+            }  
+            else
+            {
+                $this->connect = new MySQLi($host, $user, $pass, $db, $port);
+            }
         }
         catch( Exception $e )
         {
@@ -145,17 +155,6 @@ class DB extends DriverMappingAbstract
         if( ! empty($this->config['charset']  ) ) $this->query("SET NAMES '".$this->config['charset']."'");  
         if( ! empty($this->config['charset']  ) ) $this->query('SET CHARACTER SET '.$this->config['charset']);  
         if( ! empty($this->config['collation']) ) $this->query('SET COLLATION_CONNECTION = "'.$this->config['collation'].'"');
-    }
-
-    /**
-     * Protected persistent connect
-     */
-    protected function persistentConnect(&$options)
-    {
-        if( $this->config['pconnect'] === true )
-        {
-            $options[PDO::ATTR_PERSISTENT] = true;
-        }
     }
 
     /**

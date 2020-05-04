@@ -166,7 +166,7 @@ class Form
 
         if( $this->validateUsageThisForm === true )
         {
-            $this->outputElement .= (string) $this->hidden('ValidationFormName', $this->getValidationFormName);
+            $this->outputElement .= '<input type="hidden" name="ValidationFormName" value="' . $this->getValidationFormName . '">';
 
             $this->getValidationFormName = NULL;
 
