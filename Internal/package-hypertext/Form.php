@@ -490,7 +490,7 @@ class Form
             }
             else
             {
-                if( $selected == $key )
+                if( $selected === $key || ( is_numeric($selected) && $selected == $key ) )
                 {
                     $select = ' selected="selected"';
                 }
