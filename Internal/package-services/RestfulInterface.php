@@ -126,16 +126,6 @@ interface RestfulInterface
     public function postJson(String $url = NULL, $data = NULL);
 
     /**
-     * Post Query
-     * 
-     * @param string $url  = NULL
-     * @param mixed  $data = NULL
-     * 
-     * @return object
-     */
-    public function postQuery(String $url = NULL, $data = NULL);
-
-    /**
      * Put 
      * 
      * @param string $url  = NULL

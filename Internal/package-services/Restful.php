@@ -244,7 +244,7 @@ class Restful implements RestfulInterface
                          ->option('returntransfer', true)
                          ->option('post', true)
                          ->option('ssl_verifypeer', $this->sslVerifyPeer)
-                         ->option('postfields', $this->data ?? $data)
+                         ->option('postfields', $this->buildQuery($data))
                          ->exec();
 
         return $this->_result($response);
@@ -261,19 +261,6 @@ class Restful implements RestfulInterface
     public function postJson(String $url = NULL, $data = NULL)
     {
         return $this->post($url, json_encode($this->data ?? $data));
-    }
-
-    /**
-     * Post Query
-     * 
-     * @param string $url  = NULL
-     * @param mixed  $data = NULL
-     * 
-     * @return object
-     */
-    public function postQuery(String $url = NULL, $data = NULL)
-    {
-        return $this->post($url, $this->buildQuery($data));
     }
 
     /**
