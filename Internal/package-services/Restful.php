@@ -251,6 +251,32 @@ class Restful implements RestfulInterface
     }
 
     /**
+     * Post Json
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function postJson(String $url = NULL, $data = NULL)
+    {
+        return $this->post($url, json_encode($this->data ?? $data));
+    }
+
+    /**
+     * Post Query
+     * 
+     * @param string $url  = NULL
+     * @param mixed  $data = NULL
+     * 
+     * @return object
+     */
+    public function postQuery(String $url = NULL, $data = NULL)
+    {
+        return $this->post($url, $this->buildQuery($data));
+    }
+
+    /**
      * Put 
      * 
      * @param string $url  = NULL
@@ -260,7 +286,7 @@ class Restful implements RestfulInterface
      */
     public function put(String $url = NULL, $data = NULL)
     {
-        return $this->_customRequest($url, http_build_query($this->data ?? $data, NULL, '&', PHP_QUERY_RFC1738), __FUNCTION__);
+        return $this->_customRequest($url, $this->buildQuery($data), __FUNCTION__);
     }
 
     /**
@@ -287,7 +313,7 @@ class Restful implements RestfulInterface
      */
     public function patch(String $url = NULL, $data = NULL)
     {
-        return $this->_customRequest($url, http_build_query($this->data ?? $data, NULL, '&', PHP_QUERY_RFC1738), __FUNCTION__);
+        return $this->_customRequest($url, $this->buildQuery($data), __FUNCTION__);
     }
 
     /**
@@ -331,6 +357,14 @@ class Restful implements RestfulInterface
         }
 
         return $callback();
+    }
+
+    /**
+     * Protected build query
+     */
+    protected function buildQuery($data)
+    {
+        return http_build_query($this->data ?? $data, NULL, '&', PHP_QUERY_RFC1738);
     }
 
     /**

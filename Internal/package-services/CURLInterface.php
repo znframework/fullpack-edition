@@ -12,6 +12,15 @@
 interface CURLInterface
 {
     /**
+     * Multiple
+     * 
+     * @param callback $callback
+     * 
+     * @return mixed
+     */
+    public function multiple();
+
+    /**
      * Init
      * 
      * @param string $url = NULL

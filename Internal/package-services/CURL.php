@@ -18,6 +18,13 @@ use ZN\Services\Exception\InvalidArgumentException;
 class CURL implements CURLInterface
 {
     /**
+     * Multiple
+     * 
+     * @var bool
+     */
+    protected $multiple;
+
+    /**
      * Init
      * 
      * @var resource
@@ -65,6 +72,20 @@ class CURL implements CURLInterface
     }
 
     /**
+     * Multiple
+     * 
+     * @param callback $callback
+     * 
+     * @return mixed
+     */
+    public function multiple()
+    {
+        $this->multiple = true;
+
+        return $this;
+    }
+
+    /**
      * Init
      * 
      * @param string $url = NULL
@@ -78,7 +99,14 @@ class CURL implements CURLInterface
             $url = Request::getSiteURL($url);
         }
 
-        $this->init = curl_init($url);
+        if( $this->multiple )
+        {
+            $this->multipleInitialize($url);
+        }
+        else
+        {
+            $this->init = curl_init($url);
+        }
 
         return $this;
     }
@@ -90,21 +118,14 @@ class CURL implements CURLInterface
      */
     public function exec()
     {
-        if( ! is_resource($this->init) )
+        if( $this->multiple )
         {
-            return false;
+            return $this->multipleExecute();
         }
-
-        curl_setopt_array($this->init, $this->options);
-
-        $this->options = [];
-
-        if( is_resource($this->init) )
+        else
         {
-            return curl_exec($this->init);
-        }
-
-        return false;
+            return $this->singleExecute();
+        }   
     }
 
     /**
@@ -150,17 +171,12 @@ class CURL implements CURLInterface
      */
     public function info(String $opt = NULL)
     {
-        if( ! is_resource($this->init) )
+        if( isset($this->multipleInformations) )
         {
-            throw new InvalidArgumentException(NULL, '$this->init');
+            return $this->multipleInformations();
         }
 
-        if( $opt === NULL )
-        {
-            return curl_getinfo($this->init);
-        }
-
-        return curl_getinfo($this->init, Helper::toConstant($opt, 'CURLINFO_'));
+        return $this->singleInformations($opt);
     }
 
     /**
@@ -294,5 +310,105 @@ class CURL implements CURLInterface
         {
             return $version[$data] ?? false;
         }
+    }
+
+    /**
+     * Protected single execute
+     */
+    protected function singleExecute()
+    {
+        if( ! is_resource($this->init) )
+        {
+            throw new InvalidArgumentException(NULL, '$this->init');
+        }
+
+        curl_setopt_array($this->init, $this->options);
+
+        $this->options = [];
+
+        return curl_exec($this->init);
+    }
+
+    /**
+     * Protected multiple execute
+     */
+    protected function multipleExecute()
+    {
+        $multiInit = curl_multi_init();
+
+        foreach( $this->inits as $key => $init )
+        {
+            curl_multi_add_handle($multiInit, $this->inits[$key]);
+        }
+
+        do 
+        {
+            curl_multi_exec($multiInit, $running);
+            curl_multi_select($multiInit);
+        } 
+        while( $running > 0 );
+        
+        $return = [];
+
+        foreach( $this->inits as $key => $init )
+        {
+            $this->multipleInformations[] = curl_multi_info_read($multiInit);
+
+            $result[] = curl_multi_getcontent($this->inits[$key]);
+
+            curl_multi_remove_handle($multiInit, $this->inits[$key]);
+        }
+        
+        curl_multi_close($multiInit);
+
+        $this->multiple = NULL;
+        $this->inits    = [];
+
+        return $result;
+    }
+
+    /**
+     * Protected multiple initialize
+     */
+    protected function multipleInitialize($url)
+    {
+        $this->inits[$url] = curl_init($url);
+
+        if( $this->options )
+        {
+            curl_setopt_array($this->inits[$url], $this->options);
+
+            $this->options = [];
+        }
+    }
+
+    /**
+     * Protected multiple informations
+     */
+    protected function multipleInformations()
+    {
+        $return = $this->multipleInformations;
+
+        $this->multipleInformations = NULL;
+
+        return $return;
+    }
+
+    /**
+     * Protected single informations
+     */
+    protected function singleInformations($opt)
+    {
+        if( ! is_resource($this->init) )
+        {
+            throw new InvalidArgumentException(NULL, '$this->init');
+        }
+
+        if( $opt === NULL )
+        {
+            return curl_getinfo($this->init);
+        }
+
+        return curl_getinfo($this->init, Helper::toConstant($opt, 'CURLINFO_'));
     }
 }
