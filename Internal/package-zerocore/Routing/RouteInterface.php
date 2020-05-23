@@ -98,14 +98,7 @@ interface RouteInterface
      * @return Route
      */
     public function redirect(String $redirect);
-
-    /**
-     * Get Filters
-     * 
-     * @return array
-     */
-    public function getFilters() : Array;
-
+    
     /**
      * Sets old URI
      * 
