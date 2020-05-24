@@ -752,9 +752,11 @@ class DB extends Connection
         
         $secureFinalQuery = $this->_querySecurity($finalQuery);
 
-        if( $this->string === true || $return === 'string' )
+        if( $this->string === true || $this->transaction === true || $return === 'string' )
         {
             $this->string = NULL;
+
+            $this->transactionQueries[] = $secureFinalQuery;
 
             return $secureFinalQuery;
         }
@@ -1372,6 +1374,33 @@ class DB extends Connection
         $this->transError = NULL;
 
         return $status;
+    }
+
+    /**
+     * Transaction queryies builder
+     * 
+     * @param callback $callback
+     * 
+     * @return bool
+     */
+    public function transaction($callback) : Bool
+    {
+        $this->transStart();
+
+        $this->transaction = true;
+
+        $callback();
+
+        foreach( $this->transactionQueries as $query )
+        {
+            $this->transQuery($query);
+        }
+
+        $this->transactionQueries = [];
+
+        $this->transaction = false;
+
+        return $this->transEnd();
     }
 
     /**
@@ -2821,8 +2850,10 @@ class DB extends Connection
 
         $this->where = NULL;
 
-        if( $this->string === true )
+        if( $this->string === true || $this->transaction === true )
         {
+            $this->transactionQueries[] = $updateQuery;
+
             return $updateQuery;
         }
 

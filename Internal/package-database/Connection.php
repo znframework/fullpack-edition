@@ -127,6 +127,20 @@ class Connection
     protected $string;
 
     /**
+     * Transaction queries
+     * 
+     * @var bool
+     */
+    protected $transaction;
+
+    /**
+     * Keeps transaction queries
+     * 
+     * @var array
+     */
+    protected $transactionQueries;
+
+    /**
      * Magic construtor
      * 
      * @param array $config
@@ -615,9 +629,12 @@ class Connection
      */
     protected function _runQuery($query, $type = 'query')
     {
-        if( $this->string === true )
+        if( $this->string === true || $this->transaction === true )
         {
             $this->string = NULL;
+
+            $this->transactionQueries[] = $query;
+
             return $query;
         }
 
