@@ -752,13 +752,18 @@ class DB extends Connection
         
         $secureFinalQuery = $this->_querySecurity($finalQuery);
 
-        if( $this->string === true || $this->transaction === true || $return === 'string' )
+        if( $this->string === true || $return === 'string' )
         {
             $this->string = NULL;
 
+            return $secureFinalQuery;
+        }
+
+        if( $this->transaction === true )
+        {
             $this->transactionQueries[] = $secureFinalQuery;
 
-            return $secureFinalQuery;
+            return $this;
         }
 
         return $this->$returnQuery($secureFinalQuery, $this->secure);
@@ -1349,6 +1354,8 @@ class DB extends Connection
     {
         $this->transStart = $this->db->transStart();
 
+        $this->transaction = true;
+
         return $this;
     }
 
@@ -1359,6 +1366,8 @@ class DB extends Connection
      */
     public function transEnd()
     {
+        $this->runTransactionQueries();
+
         if( ! empty($this->transError) )
         {
             $this->db->transRollback();
@@ -1370,8 +1379,7 @@ class DB extends Connection
 
         $status = ! (bool) $this->transError;
 
-        $this->transStart = NULL;
-        $this->transError = NULL;
+        $this->defaultTransactionVariables();
 
         return $status;
     }
@@ -1391,14 +1399,7 @@ class DB extends Connection
 
         $callback();
 
-        foreach( $this->transactionQueries as $query )
-        {
-            $this->transQuery($query);
-        }
-
-        $this->transactionQueries = [];
-
-        $this->transaction = false;
+        $this->runTransactionQueries();
 
         return $this->transEnd();
     }
@@ -2259,6 +2260,31 @@ class DB extends Connection
         return $this->_in(__FUNCTION__, ...$value);
     }
 
+     /**
+     * Protected default transaction variables
+     */
+    protected function defaultTransactionVariables()
+    {
+        $this->transStart         = NULL;
+        $this->transError         = NULL;
+        $this->transaction        = false;
+        $this->transactionQueries = [];
+    }
+
+    /**
+     * Protected run transaction queries
+     */
+    protected function runTransactionQueries()
+    {
+        if( $this->transactionQueries )
+        {
+            foreach( $this->transactionQueries as $query )
+            {
+                $this->transQuery($query);
+            }
+        }
+    }
+
     /**
      * Protected special defined where
      */
@@ -2850,11 +2876,16 @@ class DB extends Connection
 
         $this->where = NULL;
 
-        if( $this->string === true || $this->transaction === true )
+        if( $this->string === true )
+        {
+            return $updateQuery;
+        }
+
+        if( $this->transaction === true )
         {
             $this->transactionQueries[] = $updateQuery;
 
-            return $updateQuery;
+            return $this;
         }
 
         return $this->db->query($updateQuery);

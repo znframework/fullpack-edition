@@ -629,13 +629,18 @@ class Connection
      */
     protected function _runQuery($query, $type = 'query')
     {
-        if( $this->string === true || $this->transaction === true )
+        if( $this->string === true )
         {
             $this->string = NULL;
 
+            return $query;
+        }
+
+        if( $this->transaction === true )
+        {
             $this->transactionQueries[] = $query;
 
-            return $query;
+            return $this;
         }
 
         $this->db->$type($this->_querySecurity($query), $this->secure);
