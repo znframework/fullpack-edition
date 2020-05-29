@@ -50,7 +50,8 @@ class User extends Factory
             'attachment'            => 'SendEmail::attachment:this',
             'sendemailall'          => 'SendEmail::send',
             'ipv4'                  => 'IP::v4',
-            'ip'                    => 'IP::v4'
+            'ip'                    => 'IP::v4',
+            'agent'                 => 'Agent::get'
         ]
     ];
 }

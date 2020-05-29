@@ -9,9 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Request\Request;
-
-class IP
+class Agent
 {
     /**
      * IP v4
@@ -20,8 +18,8 @@ class IP
      * 
      * @return string
      */
-    public static function v4() : String
+    public static function get() : String
     {
-        return Request::ipv4();
+        return $_SERVER['HTTP_USER_AGENT'];
     }
 }
