@@ -142,13 +142,14 @@ class Converter
     /**
      * Calculate byte
      * 
-     * @param float $bytes
-     * @param int   $precision = 1
-     * @param bool  $unit      = true
+     * @param float  $bytes
+     * @param int    $precision = 1
+     * @param bool   $unit      = true
+     * @param string $fix      = ''
      * 
      * @return string
      */
-    public static function byte(Float $bytes, Int $precision = 1, Bool $unit = true) : String
+    public static function byte(Float $bytes, Int $precision = 1, Bool $unit = true, String $fix = '') : String
     {
         $byte   = 1024;
         $kb     = 1024 * $byte;
@@ -199,7 +200,7 @@ class Converter
             $return = str_replace(",", ".", number_format($bytes));
         }
 
-        return $return . ( ! empty($unit) ? $un : NULL );
+        return $return . ( ! empty($unit) ? $fix . $un : NULL );
     }
 
     /**
