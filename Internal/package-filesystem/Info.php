@@ -111,7 +111,7 @@ class Info
 
         if( $config['realPath'] === true )
         {
-            $file = Base::prefix(self::originpath($file), REAL_BASE_DIR);
+            $file = Base::prefix(self::originpath($file), self::originpath(REAL_BASE_DIR));
         }
 
         return $file;
