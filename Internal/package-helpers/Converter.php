@@ -206,13 +206,13 @@ class Converter
     /**
      * Convert Money
      * 
-     * @param int    $money = 0
+     * @param float  $money = 0
      * @param string $type  = NULL
      * @param bool   $float = true 
      * 
      * @return string
      */
-    public static function money(Int $money = 0, String $type = NULL, Bool $float = true) : String
+    public static function money(Float $money = 0, String $type = NULL, Bool $float = true) : String
     {
         $moneyFormat = '';
         $money       = round($money, 2);
