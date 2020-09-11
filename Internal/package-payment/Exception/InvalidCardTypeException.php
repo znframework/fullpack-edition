@@ -15,7 +15,7 @@ class InvalidCardTypeException extends Exception
 {
     const lang = 
     [
-        'tr' => '[%] bilgisi geçerli bir kart türü değildir!', 
-        'en' => '[%] information is not a valid card type!'
+        'tr' => '[%] bilgisi geçerli bir kart türü değildir! Kullanılabilir Seçenekler:[visa, mastercard]', 
+        'en' => '[%] information is not a valid card type! Available Options[visa, mastercard]'
     ];
 }

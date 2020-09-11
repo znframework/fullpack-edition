@@ -28,7 +28,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @var array
      */
-    protected $cardTypes = [1 => 'Visa', 2 => 'Mastercard'];
+    protected $cardTypes = [1 => 1, 2 => 2, 'visa' => 1, 'mastercard' => 2];
 
     /**
      * Protected required
@@ -66,18 +66,18 @@ class Request extends GatewayRequestAbstract
     /**
      * Sets card type.
      * 
-     * @param int $type
+     * @param int|string $type
      * 
      * @return $this
      */
-    public function cardType(Int $type)
+    public function cardType($type)
     {
         if( ! isset($this->cardTypes[$type]) )
         {
             throw new Exception\InvalidCardTypeException(NULL, $type);
         }
 
-        $this->settings['cardType'] = $type;
+        $this->settings['cardType'] = $this->cardTypes[$type];
 
         return $this;
     }
