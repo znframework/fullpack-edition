@@ -111,7 +111,7 @@ trait ViewCommonTrait
      * 
      * @return string
      */
-    public function modalbox(String $id, Array $data = [])
+    public function modalbox(String $id, Array $data = [], $template = 'standart')
     {
         $attr = $this->settings['attr'];
         
@@ -127,7 +127,46 @@ trait ViewCommonTrait
             'modalDismissButton' => $attr['modal-dismiss-button'] ?? ''
         ];
 
-        return $this->getModalResource('standart', $data);
+        return $this->getModalResource($template, $data);
+    }
+    
+    /**
+     * Generate modal box bootstrap 4
+     * 
+     * @param string $id
+     * @param array  $data
+     * 
+     * @return string
+     */
+    public function modalbox4(String $id, Array $data = [])
+    {
+        return $this->modalbox($id, $data, 'standart4');
+    }
+
+    /**
+     * Generate toast bootstrap 4
+     * 
+     * @param string $id
+     * @param array  $data
+     * 
+     * @return string
+     */
+    public function toast(String $id, Array $data = [], $template = 'standart')
+    {
+        $attr = $this->settings['attr'];
+        
+        $this->settings['attr'] = [];
+
+        $data = 
+        [
+            'toastId'            => $id,
+            'toastHeader'        => $this->stringOrCallback($attr['toast-header'] ?? ''),
+            'toastBody'          => $this->stringOrCallback($attr['toast-body'] ?? ''),
+            'toastDismissButton' => $attr['toast-dismiss-button'] ?? '',
+            'toastAutoHide'      => $attr['toast-auto-hide'] ?? 'true'
+        ];
+
+        return $this->getToastResource($template, $data);
     }
 
     /**
@@ -323,6 +362,14 @@ trait ViewCommonTrait
     protected function getModalResource(String $resources = 'standart', $data, $directory = 'Modals')
     {
         return Inclusion\View::use($resources, $data, true, __DIR__ . '/Resources/' . $directory . '/');
+    }
+
+    /**
+     * Protected get toast resource
+     */
+    protected function getToastResource(String $resources = 'standart', $data)
+    {
+        return $this->getModalResource($resources, $data, 'Toasts');
     }
 
     /**
