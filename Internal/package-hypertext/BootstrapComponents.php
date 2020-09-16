@@ -17,6 +17,163 @@ use ZN\Request\URI;
 trait BootstrapComponents
 {
     /**
+     * Open modal
+     * 
+     * @param string $selector
+     * 
+     * @return this
+     */
+    public function modal(String $selector)
+    {
+        $this->settings['attr']['data-toggle'] = 'modal';
+        $this->settings['attr']['data-target'] = Base::prefix($selector, '#');
+
+        return $this;
+    }
+
+    /**
+     * Generate modal box
+     * 
+     * @param string $id
+     * @param array  $data
+     * 
+     * @return string
+     */
+    public function modalbox(String $id, Array $data = [], $template = 'standart')
+    {
+        $attr = $this->settings['attr'] ?? [];
+        
+        $this->settings['attr'] = [];
+
+        $data = 
+        [
+            'modalId'            => $id,
+            'modalHeader'        => $this->stringOrCallback($attr['modal-header'] ?? ''),
+            'modalBody'          => $this->stringOrCallback($attr['modal-body'] ?? ''),
+            'modalFooter'        => $this->stringOrCallback($attr['modal-footer'] ?? ''),
+            'modalSize'          => $attr['modal-size'] ?? '',
+            'modalDismissButton' => $attr['modal-dismiss-button'] ?? ''
+        ];
+
+        return $this->getModalResource($template, $data);
+    }
+    
+    /**
+     * Generate modal box bootstrap 4
+     * 
+     * @param string $id
+     * @param array  $data
+     * 
+     * @return string
+     */
+    public function modalbox4(String $id, Array $data = [])
+    {
+        return $this->modalbox($id, $data, 'standart4');
+    }
+
+    /**
+     * Generate toast bootstrap 4
+     * 
+     * @param string $id
+     * @param array  $data
+     * 
+     * @return string
+     */
+    public function toast(String $id, Array $data = [], $template = 'standart')
+    {
+        $attr = $this->settings['attr'] ?? [];
+        
+        $this->settings['attr'] = [];
+
+        $data = 
+        [
+            'toastId'            => $id,
+            'toastHeader'        => $this->stringOrCallback($attr['toast-header'] ?? ''),
+            'toastBody'          => $this->stringOrCallback($attr['toast-body'] ?? ''),
+            'toastDismissButton' => $attr['toast-dismiss-button'] ?? '',
+            'toastAutoHide'      => $attr['toast-auto-hide'] ?? 'true'
+        ];
+
+        return $this->getToastResource($template, $data);
+    }
+
+    /**
+     * Toast event
+     * 
+     * @param string $selector
+     * @param string|callback $content = ''
+     * 
+     * @return string
+     */
+    public function toastEvent(String $selector, $content = '')
+    {
+        return $this->usePropertyScripts($selector, $content, 'toast');
+    }
+
+    /**
+     * Bootstrap opover attribute
+     * 
+     * @param string $placement
+     * @param string $content
+     * 
+     * @return this
+     */
+    public function popover(String $placement, $content = NULL)
+    {
+        if( is_string($content) )
+        {
+            return $this->dataContainer('body')->dataToggle('popover')->dataPlacement($placement)->dataContent($content);
+        }
+
+        return $this->usePropertyOptions($placement, $content, __FUNCTION__);
+    }
+    
+    /**
+     * Popover event
+     * 
+     * @param string $selector
+     * @param string|callback $content = ''
+     * 
+     * @return string
+     */
+    public function popoverEvent(String $selector, $content = NULL)
+    {
+        return $this->usePropertyOptions($selector, $content, 'popover');
+    }
+
+    /**
+     * Bootstrap opover attribute
+     * 
+     * @param string $placement
+     * @param string $content
+     * @param bool   $html = NULL
+     * 
+     * @return this
+     */
+    public function tooltip(String $placement, $content = NULL, Bool $html = NULL)
+    {
+        if( is_string($content) )
+        {
+            return $this->title($content)->dataHtml($html === true ? 'true' : $html)->dataToggle('tooltip')->dataPlacement($placement);
+        }
+        
+        return $this->usePropertyOptions($placement, $content, __FUNCTION__);
+    }
+
+    /**
+     * Tooltip event
+     * 
+     * @param string $selector
+     * @param string|callback $content = ''
+     * 
+     * @return string
+     */
+    public function tooltipEvent(String $selector, $content = NULL)
+    {
+        return $this->usePropertyOptions($selector, $content, 'tooltip');
+    }
+    
+    /**
      * Bootstrap carousel
      * 
      * @param string ...$images
@@ -62,7 +219,12 @@ trait BootstrapComponents
     }
 
     /**
-     * P
+     * Item 
+     * 
+     * @param string $file
+     * @param array  $attributes = []
+     * 
+     * @return self
      */
     public function item(String $file, Array $attributes = [])
     {
@@ -82,7 +244,7 @@ trait BootstrapComponents
      * Bootstrap alert component
      * 
      * @param string $type
-     * @param string|callable $content
+     * @param string|callback $content
      * 
      * @return string
      * 
@@ -102,6 +264,305 @@ trait BootstrapComponents
         });
 
         return $this->role('alert')->class('alert alert-' . $type)->div($content);
+    }
+
+    /**
+     * Bootstrap badge component
+     * 
+     * @param string $type
+     * @param string|callback $content
+     * 
+     * @return string
+     * 
+     */
+    public function badge(String $type, $content)
+    {
+        $content = $this->stringOrCallback($content);
+
+        return $this->class('badge badge-' . $type)->span($content);
+    }
+
+    /**
+     * Bootstrap progress bar animated attribute
+     * 
+     * @return self
+     */
+    public function progressAnimated()
+    {
+        $this->settings['progressAnimated'] = ' progress-bar-striped progress-bar-animated';
+
+        return $this;
+    }
+
+    /**
+     * Bootstrap progress bar striped attribute
+     * 
+     * @return self
+     */
+    public function progressStriped()
+    {
+        $this->settings['progressStriped'] = ' progress-bar-striped';
+
+        return $this;
+    }
+
+    /**
+     * Bootstrap progress bar component
+     * 
+     * @param string $type
+     * @param float  $percent
+     * @param float  $height = NULL
+     * 
+     * @return string
+     * 
+     */
+    public function progress(String $type, Float $percent, Float $height = NULL)
+    {
+        $attr = NULL;
+
+        if( isset($this->settings['progressAnimated']) )
+        {
+            $attr = $this->settings['progressAnimated'];
+
+            unset($this->settings['progressAnimated']);     
+        }
+
+        if( isset($this->settings['progressStriped']) )
+        {
+            $attr = $this->settings['progressStriped'];
+
+            unset($this->settings['progressStriped']);     
+        }
+
+        $content = (string) $this->class('progress-bar bg-' . $type . $attr)->style('width:' . $percent . '%')->div();
+
+        if( $height )
+        {
+            $this->style('height:' . $height . 'px');
+        }
+
+        return $this->class('progress')->div($content);
+    }
+
+    /**
+     * Generate bootstrap filter
+     * 
+     * @param string $source
+     * @param string $target
+     * @param string $event = NULL
+     * 
+     * @return string
+     */
+    public function filterEvent(String $source, String $target, String $event = NULL, $template = 'standart')
+    {
+        $data = 
+        [
+            'filterSource' => $source,
+            'filterTarget' => $target,
+            'filterEvent'  => $event
+        ];
+
+        return $this->getResource($template, $data, 'Filters');
+    }
+
+    /**
+     * Generate bootstrap media object answer
+     * 
+     * @param string|callback $content
+     * 
+     * @return self
+     */
+    public function mediaObjectAnswer($content)
+    {
+        $this->settings['mediaObjectAnswer'] = $this->stringOrCallback($content);
+
+        return $this;
+    }
+
+    /**
+     * Generate bootstrap media object
+     * 
+     * @param string $avatar
+     * @param string $name
+     * @param string $content
+     * @param string $date = NULL
+     * 
+     * @return string
+     */
+    public function mediaObject(String $avatar, String $name, String $content, String $date, $template = 'standart')
+    { 
+        $attr = $this->settings['attr'] ?? [];
+
+        $this->settings['attr'] = [];
+
+        $data = 
+        [
+            'mediaObjectAvatar'         => $avatar,
+            'mediaObjectName'           => $name,
+            'mediaObjectContent'        => $content,
+            'mediaObjectDate'           => $date,
+            'mediaObjectPadding'        => $attr['media-object-padding']        ?? NULL,
+            'mediaObjectAvatarMargin'   => $attr['media-object-avatar-margin']  ?? NULL,
+            'mediaObjectAvatarSize'     => $attr['media-object-avatar-size']    ?? NULL,
+            'mediObjectAvatarType'      => $attr['media-object-avatar-type']    ?? NULL,
+            'mediaObjectAnswer'         => $this->settings['mediaObjectAnswer'] ?? NULL
+        ];
+
+        unset($this->settings['mediaObjectAnswer']);
+
+        return $this->getResource($template, $data, 'MediaObjects');
+    }
+
+    /**
+     * Fontawesome Icon
+     * 
+     * @param string $icon
+     * @param string $size = NULL
+     * @param string $type = '
+     */
+    public function faIcon(String $icon, String $size = NULL, $type = '')
+    {
+        return '<i class="fa' . $type . ' fa-' . $icon . ($size ? ' fa-' . $size : NULL) . '"></i>';
+    }
+
+    /**
+     * Fontawesome Icon
+     * 
+     * @param string $icon
+     * @param string $size = NULL
+     * @param string $type = '
+     */
+    public function falIcon(String $icon, String $size = NULL)
+    {
+        return $this->faIcon($icon, $size, 'l');
+    }
+
+    /**
+     * Fontawesome Icon
+     * 
+     * @param string $icon
+     * @param string $size = NULL
+     * @param string $type = '
+     */
+    public function fasIcon(String $icon, String $size = NULL)
+    {
+        return $this->faIcon($icon, $size, 's');
+    }
+
+    /**
+     * Fontawesome Icon
+     * 
+     * @param string $icon
+     * @param string $size = NULL
+     * @param string $type = '
+     */
+    public function fadIcon(String $icon, String $size = NULL)
+    {
+        return $this->faIcon($icon, $size, 'd');
+    }
+
+    /**
+     * Fontawesome Icon
+     * 
+     * @param string $icon
+     * @param string $size = NULL
+     * @param string $type = '
+     */
+    public function farIcon(String $icon, String $size = NULL)
+    {
+        return $this->faIcon($icon, $size, 'r');
+    }
+
+    /**
+     * Bootstrap flex
+     * 
+     * @param string|callback $content
+     * @param string          $class = NULL
+     * 
+     * @return string
+     * 
+     */
+    public function flex($content, String $class = NULL)
+    {
+        $attr =  $this->settings['attr'] ?? [];
+
+        $this->settings['attr'] = [];
+
+        $content = $this->stringOrCallback($content);
+
+        $size = isset($attr['flex-size']) ? $attr['flex-size'] . '-' : NULL;
+
+        $type = (isset($attr['flex-inline']) ? 'd-' . $size . 'inline-flex' : 'd-' . $size . 'flex') . ' ';
+
+        if( isset($attr['flex-wrap']) )
+        {
+            $param = $this->getFlexParameters($attr['flex-wrap'], 'object');
+
+            switch($param->param)
+            {
+                case 'reverse'   : $class .= ' flex-' . $param->size . 'wrap-reverse'; break;
+                case 'no'        : $class .= ' flex-' . $param->size . 'nowrap'      ; break;
+
+                default          : $class .= ' flex-' . ($param->param ? $param->param . '-' : NULL) . 'wrap';    
+            }
+        }
+
+        if( isset($attr['flex-direction']) )    $class .= ' flex-'            . $this->getFlexParameters($attr['flex-direction']);    
+        if( isset($attr['flex-justify']) )      $class .= ' justify-content-' . $this->getFlexParameters($attr['flex-justify']);    
+        if( isset($attr['flex-align']) )        $class .= ' align-content-'   . $this->getFlexParameters($attr['flex-align']);
+        if( isset($attr['flex-align-items']) )  $class .= ' align-items-'     . $this->getFlexParameters($attr['flex-align-items']);
+
+        return $this->class($type . $class)->div($content);
+    }
+
+    /**
+     * Bootstrap flex item
+     * 
+     * @param string|callback $content
+     * @param string          $class = NULL
+     * 
+     * @return string
+     * 
+     */
+    public function flexItem($content, String $class = NULL)
+    {
+        $attr =  $this->settings['attr'] ?? [];
+
+        $this->settings['attr'] = [];
+
+        $content = $this->stringOrCallback($content);
+   
+        if( isset($attr['flex-fill']) )         $class .= ' flex-'        . ($attr['flex-fill'] === 'flexfill' ? NULL : $attr['flex-fill'] . '-') . 'fill';
+        if( isset($attr['flex-grow']) )         $class .= ' flex-'        . $this->getFlexParameters($attr['flex-grow'], 'grow-');
+        if( isset($attr['flex-shrink']) )       $class .= ' flex-'        . $this->getFlexParameters($attr['flex-shrink'], 'shrink-');
+        if( isset($attr['flex-order']) )        $class .= ' order-'       . $this->getFlexParameters($attr['flex-order']);
+        if( isset($attr['flex-align-self']) )   $class .= ' align-self-'  . $this->getFlexParameters($attr['flex-align-self']);
+
+        switch($attr['flex-push'] ?? NULL)
+        {
+            case 'right' : $class .= ' ml-auto'; break;
+            case 'left'  : $class .= ' mr-auto'; break;
+        }
+
+        return $this->class($class)->div($content);
+    }
+
+    /**
+     * Protected get flex parameters
+     */
+    protected function getFlexParameters($param, $fix = NULL)
+    {
+        $paramEx = explode(',', $param);
+        $param = $paramEx[0];
+        $size  =  trim($paramEx[1] ?? '');
+        $size  = ($size ? $size . '-' : '');
+        
+        if( $fix === 'object' )
+        {
+            return (object)['size' => $size, 'param' => $param];
+        }
+
+        return $size . $fix . $param;
     }
 
     /**

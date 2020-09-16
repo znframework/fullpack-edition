@@ -17,7 +17,7 @@ use ZN\Authorization;
 
 trait ViewCommonTrait
 {
-    use OutputElements, CallableElements, FormElementsTrait, HtmlElementsTrait, BootstrapAttributes;
+    use OutputElements, CallableElements, FormElementsTrait, HtmlElementsTrait, BootstrapAttributes, BootstrapComponents, BootstrapLayouts;
 
     /**
      * Keeps settings
@@ -86,87 +86,6 @@ trait ViewCommonTrait
         $this->settings['attr'] = [];
 
         return $this->_input($name, $value, $attributes, $type);
-    }
-
-    /**
-     * Open modal
-     * 
-     * @param string $selector
-     * 
-     * @return this
-     */
-    public function modal(String $selector)
-    {
-        $this->settings['attr']['data-toggle'] = 'modal';
-        $this->settings['attr']['data-target'] = Base::prefix($selector, '#');
-
-        return $this;
-    }
-
-    /**
-     * Generate modal box
-     * 
-     * @param string $id
-     * @param array  $data
-     * 
-     * @return string
-     */
-    public function modalbox(String $id, Array $data = [], $template = 'standart')
-    {
-        $attr = $this->settings['attr'];
-        
-        $this->settings['attr'] = [];
-
-        $data = 
-        [
-            'modalId'            => $id,
-            'modalHeader'        => $this->stringOrCallback($attr['modal-header'] ?? ''),
-            'modalBody'          => $this->stringOrCallback($attr['modal-body'] ?? ''),
-            'modalFooter'        => $this->stringOrCallback($attr['modal-footer'] ?? ''),
-            'modalSize'          => $attr['modal-size'] ?? '',
-            'modalDismissButton' => $attr['modal-dismiss-button'] ?? ''
-        ];
-
-        return $this->getModalResource($template, $data);
-    }
-    
-    /**
-     * Generate modal box bootstrap 4
-     * 
-     * @param string $id
-     * @param array  $data
-     * 
-     * @return string
-     */
-    public function modalbox4(String $id, Array $data = [])
-    {
-        return $this->modalbox($id, $data, 'standart4');
-    }
-
-    /**
-     * Generate toast bootstrap 4
-     * 
-     * @param string $id
-     * @param array  $data
-     * 
-     * @return string
-     */
-    public function toast(String $id, Array $data = [], $template = 'standart')
-    {
-        $attr = $this->settings['attr'];
-        
-        $this->settings['attr'] = [];
-
-        $data = 
-        [
-            'toastId'            => $id,
-            'toastHeader'        => $this->stringOrCallback($attr['toast-header'] ?? ''),
-            'toastBody'          => $this->stringOrCallback($attr['toast-body'] ?? ''),
-            'toastDismissButton' => $attr['toast-dismiss-button'] ?? '',
-            'toastAutoHide'      => $attr['toast-auto-hide'] ?? 'true'
-        ];
-
-        return $this->getToastResource($template, $data);
     }
 
     /**
@@ -357,35 +276,43 @@ trait ViewCommonTrait
     }
 
     /**
+     * Protected get resource
+     */
+    protected function getResource(String $resource, $data, $directory)
+    {
+        return Inclusion\View::use($resource, $data, true, __DIR__ . '/Resources/' . $directory . '/');
+    }
+
+    /**
      * Protected get modal resource
      */
-    protected function getModalResource(String $resources = 'standart', $data, $directory = 'Modals')
+    protected function getModalResource(String $resource = 'standart', $data)
     {
-        return Inclusion\View::use($resources, $data, true, __DIR__ . '/Resources/' . $directory . '/');
+        return $this->getResource($resource, $data, 'Modals');
     }
 
     /**
      * Protected get toast resource
      */
-    protected function getToastResource(String $resources = 'standart', $data)
+    protected function getToastResource(String $resource = 'standart', $data)
     {
-        return $this->getModalResource($resources, $data, 'Toasts');
+        return $this->getResource($resource, $data, 'Toasts');
     }
 
     /**
      * Protected get modal resource
      */
-    protected function getAjaxResource(String $resources = 'serializer', $data)
+    protected function getAjaxResource(String $resource = 'serializer', $data)
     {
-        return $this->getModalResource($resources, $data, 'Ajax');
+        return $this->getResource($resource, $data, 'Ajax');
     }
 
     /**
      * Protected get carousel resource
      */
-    protected function getCarouselResource(String $resources = 'standart', $data)
+    protected function getCarouselResource(String $resource = 'standart', $data)
     {
-        return $this->getModalResource($resources, $data, 'Carousels');
+        return $this->getResource($resource, $data, 'Carousels');
     }
 
     /**

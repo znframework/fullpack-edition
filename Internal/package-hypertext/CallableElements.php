@@ -53,6 +53,18 @@ trait CallableElements
                 return $this->alert(Base::removePrefix($method, 'alert'), $parameters[0] ?? '');
             }
 
+            # Bootstrap Badge
+            elseif( strpos($method, 'badge') === 0 )
+            {
+                return $this->badge(Base::removePrefix($method, 'badge'), $parameters[0] ?? '');
+            }
+
+            # Bootstrap progress bar
+            elseif( strpos($method, 'progress') === 0 )
+            {
+                return $this->progress(Base::removePrefix($method, 'progress'), $parameters[0] ?? '', $parameters[1] ?? '');
+            }
+
             # Multiple Element
             elseif( isset($multiElement[$method]) )
             {
