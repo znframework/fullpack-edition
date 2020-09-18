@@ -4,8 +4,8 @@
         <h4>{{ $mediaObjectName }} <small><i>{{ $mediaObjectDate }}</i></small></h4>
         <p>{{ $mediaObjectContent }}</p>  
 
-        @if( $mediaObjectAnswer )
-            {{ $mediaObjectAnswer }}
+        @if( $mediaObjectReply )
+            {{ $mediaObjectReply }}
         @endif    
     </div>
 </div>

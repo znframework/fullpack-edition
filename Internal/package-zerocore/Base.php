@@ -172,7 +172,7 @@ class Base
      */
     public static function removeSuffix(String $data = NULL, String $fix = '/') : String
     {
-        if( strpos($data, $fix) === ($start = strlen($data) - strlen($fix)) ) 
+        if( strrpos($data, $fix) === ($start = strlen($data) - strlen($fix)) ) 
         {
             $data = substr($data, 0, $start);
         } 

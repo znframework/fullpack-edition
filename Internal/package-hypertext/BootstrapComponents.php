@@ -366,15 +366,15 @@ trait BootstrapComponents
     }
 
     /**
-     * Generate bootstrap media object answer
+     * Generate bootstrap media object reply
      * 
      * @param string|callback $content
      * 
      * @return self
      */
-    public function mediaObjectAnswer($content)
+    public function mediaObjectReply($content)
     {
-        $this->settings['mediaObjectAnswer'] = $this->stringOrCallback($content);
+        $this->settings['mediaObjectReply'] = $this->stringOrCallback($content);
 
         return $this;
     }
@@ -405,7 +405,7 @@ trait BootstrapComponents
             'mediaObjectAvatarMargin'   => $attr['media-object-avatar-margin']  ?? NULL,
             'mediaObjectAvatarSize'     => $attr['media-object-avatar-size']    ?? NULL,
             'mediObjectAvatarType'      => $attr['media-object-avatar-type']    ?? NULL,
-            'mediaObjectAnswer'         => $this->settings['mediaObjectAnswer'] ?? NULL
+            'mediaObjectReply'          => $this->settings['mediaObjectReply'] ?? NULL
         ];
 
         unset($this->settings['mediaObjectAnswer']);
@@ -548,6 +548,33 @@ trait BootstrapComponents
     }
 
     /**
+     * Bootstrap spinner component
+     * 
+     * @param string $type
+     * @param string $size
+     * 
+     * @return string
+     * 
+     */
+    public function spinner(String $type = 'border', String $size = NULL)
+    {
+        return $this->class('spinner-' . $type . ($size ? ' spinner-' . $type . '-' . $size : NULL) )->div();
+    }
+
+    /**
+     * Bootstrap breadcrumb
+     * 
+     * @param string $uri = NULL
+     */
+    public function breadcrumb(String $uri = NULL, Int $segmentCount = -1) 
+    {
+        $uris = $this->getURIsegments($uri, $segmentCount);
+        $list = $this->breadcrumbOlList($uris);
+
+        return $this->breadcrumbNav($list);
+    }
+
+    /**
      * Protected get flex parameters
      */
     protected function getFlexParameters($param, $fix = NULL)
@@ -563,19 +590,6 @@ trait BootstrapComponents
         }
 
         return $size . $fix . $param;
-    }
-
-    /**
-     * Bootstrap breadcrumb
-     * 
-     * @param string $uri = NULL
-     */
-    public function breadcrumb(String $uri = NULL, Int $segmentCount = -1) 
-    {
-        $uris = $this->getURIsegments($uri, $segmentCount);
-        $list = $this->breadcrumbOlList($uris);
-
-        return $this->breadcrumbNav($list);
     }
     
     /**

@@ -105,7 +105,7 @@ class Datatype
             }
             elseif( $count < 0 )
             {
-                $count = count($arrayEx) + $count;
+                $count = count($arrayEx) + $count + 1;
             }
 
             for( $i = 0; $i < $count; $i++ )
