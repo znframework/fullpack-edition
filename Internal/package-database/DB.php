@@ -2399,7 +2399,7 @@ class DB extends Connection
             }
             else
             {
-                $cache->driver($driver)->insert($this->_cacheQuery(), $this->results = $this->db->result($type), (int) ($this->caching['time'] ?? 0));
+                $cache->driver($driver)->insert($this->_cacheQuery(), $this->results = $this->db->result($type), $this->caching['time'] ?? 0);
             }
         }
     }
