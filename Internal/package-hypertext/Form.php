@@ -500,7 +500,10 @@ class Form
                 }
             }
 
-            $return .= '<option value="'.$key.'"'.$select.'>'.$value.'</option>'.EOL;
+            if( is_numeric($value) || ! empty($value) )
+            {
+                $return .= '<option value="'.$key.'"'.$select.'>'.$value.'</option>'.EOL;
+            }
         }
 
         $return .= '</select>'.EOL;
