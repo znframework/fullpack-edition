@@ -291,7 +291,7 @@ class In
 
             Base::import($controllerFile);
 
-            if( ! is_callable([new $controllerClass, $controllerFunc]) )
+            if( ! class_exists($controllerClass) || ! is_callable([new $controllerClass, $controllerFunc]) )
             {
                 Helper::report('Error', Lang::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
 
@@ -378,7 +378,7 @@ class In
             if( IS::phpVersion('7.4') )
             {
                 $parameterName = $parameter->getName();
-                $parameterType = method_exists($getType = $parameter->getType(), 'getName') ? $getType->getName() : NULL;
+                $parameterType = method_exists($getType = $parameter->getType() ?? '', 'getName') ? $getType->getName() : NULL;
                 
                 if( ! preg_match('/^[A-Z]/', $parameterType) )
                 {
