@@ -414,7 +414,7 @@ class ZN
         # Preserves project information to be run as predefined.
         # This value is set to Frontend by default.
         define('DEFAULT_PROJECT', PROJECTS_CONFIG['directory']['default'] ?? NULL);
-        
+
         # Defines constants to hide active project information.
         # If a request is made to a project, it will alert the screen.
         self::defineCurrentProject();
@@ -441,15 +441,40 @@ class ZN
             'EXTERNAL_DIR',
             'SETTINGS_DIR',
             'PROJECTS_DIR',
-            'VIEWS_DIR',
+            'VIEWS_DIR'
         ]));
 
         # Constants for both project and external directories are being created.
         foreach( $externalDirectories as $key => $value )
         {
-            # Define EXTERNAL_EXAMPLE_DIR
+            # Define External Directory
             define('EXTERNAL_' . $key, EXTERNAL_DIR . ($value[0] === '!' ? substr($value, 1) : $value));
 
+            # Define Project Directory
+            self::directoryDefiner($key, $value);
+        }
+
+        if( ! is_dir(CONTROLLERS_DIR) && self::$projectType !== NULL )
+        {
+            Base::trace
+            (
+                'The [controller directory] for the custom edition must be defined. 
+                To do this, specify the corresponding controller directory in the [index.php] file.'
+            );
+        }
+    }
+
+    /**
+     *  Protected Directory Definer
+     * 
+     * @param string $key
+     * @param string $value
+     * 
+     */
+    protected static function directoryDefiner($key, $value)
+    {
+        if( ! defined($key) )
+        {
             # For EIP edition
             if( PROJECT_TYPE === 'EIP' ) 
             {
@@ -460,15 +485,6 @@ class ZN
             {
                 define($key, $value);
             }
-        }
-
-        if( ! is_dir(CONTROLLERS_DIR) && self::$projectType !== NULL )
-        {
-            Base::trace
-            (
-                'The [controller directory] for the custom edition must be defined. 
-                To do this, specify the corresponding controller directory in the [index.php] file.'
-            );
         }
     }
 
@@ -660,13 +676,16 @@ class ZN
         # The path information of the active project is being defined.
         define('PROJECT_DIR', Base::suffix(PROJECTS_DIR . $getProjectNameFromOthers));
 
+        # Define config directory
+        self::directoryDefiner('CONFIG_DIR', GET_DIRS['CONFIG_DIR']);
+
         # Subdomains or different domains are prevented from opening each other.
         # 5.7.5[added]
         $getOtherDirectory = $getOtherDirectories[$baseHost] ?? NULL;
 
         # Gets container directory name.
         $getContainerDirectory = PROJECTS_CONFIG['containers'][$getProjectNameFromOthers] ?? NULL;
-        
+
         # Subdomains or domains must be defined in the Settings/Projects.php 
         # configuration file in order for this control to work.
         if
@@ -688,6 +707,7 @@ class ZN
             ($isHost = ($flipOthersArray[$getProjectNameFromURI] ?? NULL)) && preg_match('/\w+\.\w+\.\w+/', $isHost)
         )
         {
+            
             # All requests are directed to the home.
             defined('CONSOLE_PROJECT_NAME') ?: Response::redirect(! empty($isHost) ? Base::prefix($isHost, SSL_STATUS) : '');
         }
