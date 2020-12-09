@@ -131,14 +131,14 @@ class Kernel
         $page         = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
         
         # If an invalid parameter is entered, it will redirect to the opening method.
-        if( ! class_exists($page) || ! is_callable([new $page, $function]) )
+        if( ! method_exists($page, $function) )
         { 
             array_unshift($parameters, $function);
             
             $function = $openFunction;
       
             # If the request is invalid, it will be redirected.
-            if( ! class_exists($page) || ! is_callable([new $page, $function]) )
+            if( ! method_exists($page, $function) )
             {  
                 self::invalidControllerPath($page, $function);
             }            

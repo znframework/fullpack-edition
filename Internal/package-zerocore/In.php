@@ -291,7 +291,7 @@ class In
 
             Base::import($controllerFile);
 
-            if( ! class_exists($controllerClass) || ! is_callable([new $controllerClass, $controllerFunc]) )
+            if( ! method_exists($controllerClass, $controllerFunc) )
             {
                 Helper::report('Error', Lang::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
 

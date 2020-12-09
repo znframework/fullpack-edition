@@ -28,7 +28,7 @@ trait Functionalization
         }
 
         # The __call method of the parent class does not lose its functionality.
-        if( method_exists(get_parent_class(), '__call'))
+        if( method_exists(get_parent_class() ?: '', '__call'))
         {
             return parent::__call($method, $parameters);
         }

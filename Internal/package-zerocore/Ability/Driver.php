@@ -42,7 +42,7 @@ trait Driver
     {
         # 5.3.42[added]
         # If the parent has a method of building a class, then that method is introduced.
-        if( method_exists(get_parent_class(), '__construct'))
+        if( method_exists(get_parent_class() ?: '', '__construct'))
         {
             parent::__construct();
         }
