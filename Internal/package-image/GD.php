@@ -601,7 +601,7 @@ class GD implements GDInterface
      */
     public function match($sourceImage) : GD
     {
-        if( ! is_resource($sourceImage) )
+        if( ! Base::isResourceObject($sourceImage) )
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
@@ -697,7 +697,7 @@ class GD implements GDInterface
             $source = $this->createFrom($source);
         }
 
-        if( ! is_resource($source) )
+        if( ! Base::isResourceObject($source) )
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
@@ -733,7 +733,7 @@ class GD implements GDInterface
             $source = $this->createFrom($source);
         }
 
-        if( ! is_resource($source) )
+        if( ! Base::isResourceObject($source) )
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
@@ -785,7 +785,7 @@ class GD implements GDInterface
             $source = $this->createFrom($source);
         }
 
-        if( ! is_resource($source) )
+        if( ! Base::isResourceObject($source) )
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
@@ -1044,7 +1044,7 @@ class GD implements GDInterface
      */
     public function tile($tile) : GD
     {
-        if( ! is_resource($tile) )
+        if( ! Base::isResourceObject($tile) )
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }
@@ -1109,7 +1109,7 @@ class GD implements GDInterface
      */
     public function copyPalette($source)
     {
-        if( ! is_resource($source) )
+        if( ! Base::isResourceObject($source) )
         {
             throw new InvalidArgumentException(NULL, '[resource]');
         }

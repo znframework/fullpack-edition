@@ -10,6 +10,7 @@
  */
 
 use ZN\IS;
+use ZN\Base;
 use ZN\Helper;
 use ZN\Request;
 use ZN\Support;
@@ -137,7 +138,7 @@ class CURL implements CURLInterface
      */
     public function escape(String $str) : String
     {
-        if( ! is_resource($this->init) )
+        if( ! Base::isResourceObject($this->init) )
         {
             throw new InvalidArgumentException(NULL, '$this->init');
         }
@@ -154,7 +155,7 @@ class CURL implements CURLInterface
      */
     public function unescape(String $str) : String
     {
-        if( ! is_resource($this->init) )
+        if( ! Base::isResourceObject($this->init) )
         {
             throw new InvalidArgumentException(NULL, '$this->init');
         }
@@ -186,7 +187,7 @@ class CURL implements CURLInterface
      */
     public function error() : String
     {
-        if( ! is_resource($this->init) )
+        if( ! Base::isResourceObject($this->init) )
         {
             throw new InvalidArgumentException(NULL, '$this->init');
         }
@@ -201,7 +202,7 @@ class CURL implements CURLInterface
      */
     public function errno() : Int
     {
-        if( ! is_resource($this->init) )
+        if( ! Base::isResourceObject($this->init) )
         {
             throw new InvalidArgumentException(NULL, '$this->init');
         }
@@ -267,7 +268,7 @@ class CURL implements CURLInterface
     {
         $init = $this->init;
 
-        if( is_resource($init) )
+        if( Base::isResourceObject($init) )
         {
             $this->init = NULL;
 
@@ -317,7 +318,7 @@ class CURL implements CURLInterface
      */
     protected function singleExecute()
     {
-        if( ! is_resource($this->init) )
+        if( ! Base::isResourceObject($this->init) )
         {
             throw new InvalidArgumentException(NULL, '$this->init');
         }
@@ -399,7 +400,7 @@ class CURL implements CURLInterface
      */
     protected function singleInformations($opt)
     {
-        if( ! is_resource($this->init) )
+        if( ! Base::isResourceObject($this->init) )
         {
             throw new InvalidArgumentException(NULL, '$this->init');
         }

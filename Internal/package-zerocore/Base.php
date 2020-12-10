@@ -12,6 +12,25 @@
 class Base
 {   
     /**
+     * Is resource or object
+     * 
+     * @param resource|object $object;
+     * 
+     * @return bool
+     */
+    public static function isResourceObject($object)
+    {
+        if( IS::phpVersion('8') )
+        {
+            return is_object($object);
+        }
+        else
+        {
+            return is_resource($object);
+        } 
+    }
+    
+    /**
      * Get default project or host name.
      *
      * @param string $default = 'Frontend'
