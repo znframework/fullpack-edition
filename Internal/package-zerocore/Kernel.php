@@ -10,6 +10,7 @@
  */
 
 use ReflectionClass;
+use ReflectionMethod;
 use ZN\ErrorHandling\Errors;
 use ZN\ErrorHandling\Exceptions;
 use ZN\Inclusion\Project\Theme;
@@ -131,14 +132,14 @@ class Kernel
         $page         = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
         
         # If an invalid parameter is entered, it will redirect to the opening method.
-        if( ! method_exists($page, $function) )
+        if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
         { 
             array_unshift($parameters, $function);
             
             $function = $openFunction;
       
             # If the request is invalid, it will be redirected.
-            if( ! method_exists($page, $function) )
+            if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
             {  
                 self::invalidControllerPath($page, $function);
             }            

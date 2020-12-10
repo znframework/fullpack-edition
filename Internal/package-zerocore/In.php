@@ -10,6 +10,7 @@
  */
 
 use ReflectionClass;
+use ReflectionMethod;
 use ReflectionParameter;
 use ZN\ErrorHandling\Errors;
 use ZN\ErrorHandling\Exceptions;
@@ -291,7 +292,7 @@ class In
 
             Base::import($controllerFile);
 
-            if( ! method_exists($controllerClass, $controllerFunc) )
+            if( ! method_exists($controllerClass, $controllerFunc) || ! (new ReflectionMethod($controllerClass, $controllerFunc))->isPublic() )
             {
                 Helper::report('Error', Lang::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
 

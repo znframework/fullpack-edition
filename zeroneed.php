@@ -28,8 +28,8 @@ require __DIR__ . '/Internal/autoload.php';
 |
 | Simplicity is our principle. Enjoy it.
 |
-| Version: 6.71.10.48
+| Version: 6.71.10.50
 |
 */
 
-ZN\ZN::run('FE', '7.21.71', 'Mustafa Kemal Atatürk');
+ZN\ZN::run('FE', '7.21.73', 'Mustafa Kemal Atatürk');
