@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use PHPToken;
+
 class Autoloader
 {
     /**
@@ -216,6 +218,21 @@ class Autoloader
     }
 
     /**
+     * Tokenize
+     */
+    protected static function tokenize($code)
+    {
+        if( IS::phpVersion('8') )
+        {
+            return token_get_all($code);
+        }
+        else
+        {
+            return PhpToken::tokenize($code);
+        } 
+    }
+
+    /**
      * The path holds the class and namespace information of the specified class.
      * 
      * @param string $fileName
@@ -231,7 +248,7 @@ class Autoloader
             return $classInfo;
         }
 
-        $tokens = token_get_all(file_get_contents($fileName));
+        $tokens = self::tokenize(file_get_contents($fileName));
         $i      = 0;
         $ns     = '';
 
@@ -294,7 +311,7 @@ class Autoloader
             return false;
         }
 
-        $tokens = token_get_all(file_get_contents($fileName));
+        $tokens = self::tokenize(file_get_contents($fileName));
         $info   = [];
 
         $i = 0;
