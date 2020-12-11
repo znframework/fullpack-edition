@@ -106,6 +106,12 @@ class Render implements RenderInterface
         # If the file is not a valid image file, an exception is thrown.
         $this->throwExceptionIsNotImageFile($filePath);
 
+        # If the image type cannot be created, it returns empty.
+        if( ! $createNewImageByType = ImageTypeCreator::from($filePath) )
+        {
+            return '';
+        }
+
         # It extracts the settings made on the image as variables.
         extract($this->extractSettingVariables($fpath, $set));
 
@@ -150,7 +156,8 @@ class Render implements RenderInterface
             }
         }
         
-        imagecopyresampled($createNewImage, $createNewImageByType = ImageTypeCreator::from($filePath),  $origin[0], $origin[1], $x, $y, $width, $height, $rWidth, $rHeight);
+        # Copy and resize part of an image with resampling.
+        imagecopyresampled($createNewImage, $createNewImageByType,  $origin[0], $origin[1], $x, $y, $width, $height, $rWidth, $rHeight);
         
         # Creating a new image based on the file type.
         ImageTypeCreator::create($createNewImage, $getThumbFilePath, $quality);
