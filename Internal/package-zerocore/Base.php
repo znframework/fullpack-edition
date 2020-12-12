@@ -160,6 +160,13 @@ class Base
                     '';
         }
 
+        $host = trim($host); $parts = explode('.', $host);
+
+        if( count($parts) === 2 )
+        {
+            $host = self::prefix($host, 'www.');
+        }
+
         return trim($host);
     }
 
