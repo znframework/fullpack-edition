@@ -574,6 +574,34 @@ class ZN
     }
 
     /**
+     * host
+     * 
+     * Returns the system host information.
+     * 
+     * @param void
+     * 
+     * @return string
+     */
+    protected static function host() : String
+    {
+        if( isset($_SERVER['HTTP_X_FORWARDED_HOST']) )
+        {
+            $host     = $_SERVER['HTTP_X_FORWARDED_HOST'];
+            $elements = explode(',', $host);
+            $host     = trim(end($elements));
+        }
+        else
+        {
+            $host = $_SERVER['HTTP_HOST']   ??
+                    $_SERVER['SERVER_NAME'] ??
+                    $_SERVER['SERVER_ADDR'] ??
+                    '';
+        }
+
+        return trim($host);
+    }
+
+    /**
      * Define current project
      * 
      * It arranges some values according to the project which is valid in the system.
@@ -601,7 +629,15 @@ class ZN
 
         # It gets other defined subprojects.
         $getOtherDirectories = PROJECTS_CONFIG['directory']['others'] ?? [];
-
+        
+        if( $getOtherDirectories )
+        {
+            if( ! empty($getOtherDirectories[Base::prefix(self::host(), 'www.')]) )
+            {  
+                define('IS_MAIN_DOMAIN', true);
+            }
+        }
+        
         if( defined('CONSOLE_PROJECT_NAME') )
         {
             # Project name information from the console is kept.

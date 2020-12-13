@@ -160,14 +160,14 @@ class Base
                     '';
         }
 
-        $host = trim($host); $parts = explode('.', $host);
+        $host = trim($host);
 
-        if( count($parts) === 2 )
+        if( defined('IS_MAIN_DOMAIN') )
         {
             $host = self::prefix($host, 'www.');
         }
 
-        return trim($host);
+        return $host;
     }
 
     /**
