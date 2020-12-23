@@ -224,11 +224,11 @@ class Autoloader
     {
         if( IS::phpVersion('8') )
         {
-            return token_get_all($code);
+            return PhpToken::tokenize($code);
         }
         else
         {
-            return PhpToken::tokenize($code);
+            return token_get_all($code);
         } 
     }
 
