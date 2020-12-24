@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use PHPToken;
+
 class Autoloader
 {
     /**
@@ -220,7 +222,14 @@ class Autoloader
      */
     protected static function tokenize($code)
     {
-        return token_get_all($code);
+        if( IS::phpVersion('8') )
+        {
+            return token_get_all($code);
+        }
+        else
+        {
+            return PhpToken::tokenize($code);
+        } 
     }
 
     /**
@@ -365,7 +374,7 @@ class Autoloader
     /**
      * Protected get classes & namespaces output
      */
-    protected static function getClassesAndNamespacesOutput($type = '', $classMaps, &$classMapPage)
+    protected static function getClassesAndNamespacesOutput($type, $classMaps, &$classMapPage)
     {
          # Get the class and namespace array information from the Project/Any/ClassMap.php file
          $configClassMap = self::getClassMapContent();

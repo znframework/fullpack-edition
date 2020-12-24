@@ -286,7 +286,7 @@ trait ViewCommonTrait
     /**
      * Protected get modal resource
      */
-    protected function getModalResource(String $resource = 'standart', $data)
+    protected function getModalResource(String $resource = 'standart', $data = [])
     {
         return $this->getResource($resource, $data, 'Modals');
     }
@@ -294,7 +294,7 @@ trait ViewCommonTrait
     /**
      * Protected get toast resource
      */
-    protected function getToastResource(String $resource = 'standart', $data)
+    protected function getToastResource(String $resource = 'standart', $data = [])
     {
         return $this->getResource($resource, $data, 'Toasts');
     }
@@ -302,7 +302,7 @@ trait ViewCommonTrait
     /**
      * Protected get modal resource
      */
-    protected function getAjaxResource(String $resource = 'serializer', $data)
+    protected function getAjaxResource(String $resource = 'serializer', $data = [])
     {
         return $this->getResource($resource, $data, 'Ajax');
     }
@@ -310,7 +310,7 @@ trait ViewCommonTrait
     /**
      * Protected get carousel resource
      */
-    protected function getCarouselResource(String $resource = 'standart', $data)
+    protected function getCarouselResource(String $resource = 'standart', $data = [])
     {
         return $this->getResource($resource, $data, 'Carousels');
     }

@@ -451,7 +451,7 @@ class Html
     /**
      * Protected Content
      */
-    protected function _content($html = '', $type)
+    protected function _content($html, $type)
     {
         $type = strtolower($type);
 
@@ -465,7 +465,7 @@ class Html
     /**
      * Protected Content Attribute
      */
-    protected function _contentAttribute($content = '', $_attributes, $type)
+    protected function _contentAttribute($content, $_attributes, $type)
     {
         $type   = strtolower($type);
 
@@ -493,7 +493,7 @@ class Html
     /**
      * Protected Media Content
      */
-    protected function _mediaContent($src, $content = '', $_attributes, $type)
+    protected function _mediaContent($src, $content, $_attributes, $type)
     {
         $type = strtolower($type);
 
@@ -507,7 +507,7 @@ class Html
     /**
      * Protected Element
      */
-    protected function _multiElement($element, $str = '', $attributes = [])
+    protected function _multiElement($element, $str, $attributes = [])
     {
         $element = strtolower($element);
 

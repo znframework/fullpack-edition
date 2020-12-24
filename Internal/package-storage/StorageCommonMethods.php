@@ -156,11 +156,11 @@ trait StorageCommonMethods
     {
         if( ! empty($this->encode) )
         {
-            $this->encodeDataByType('name' , $name );
+            $this->encodeDataByType($name, 'name');
 
             if( $value !== NULL )
             {
-                $this->encodeDataByType('value', $value);
+                $this->encodeDataByType($value, 'value');
             }       
         }
 
@@ -190,7 +190,7 @@ trait StorageCommonMethods
     /**
      * Protected encode data by type
      */
-    protected function encodeDataByType($type = 'value', &$data)
+    protected function encodeDataByType(&$data, $type = 'value')
     {
         if( isset($this->encode[$type]) )
         {

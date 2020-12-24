@@ -143,14 +143,14 @@ class PermissionExtends
     /**
      * Permission Common
      * 
-     * @param mixed $roleId  = 6
-     * @param mixed $process
-     * @param mixed $object
-     * @param mixed $function
+     * @param mixed $roleId   = 6
+     * @param mixed $process  = NULL
+     * @param mixed $object   = NULL
+     * @param mixed $function = NULL
      * 
      * @return mixed
      */
-    protected static function common($roleId = 6, $process, $object, $function)
+    protected static function common($roleId = 6, $process = NULL, $object = NULL, $function = NULL)
     {
         self::$permission = self::getConfigByType($function);
 

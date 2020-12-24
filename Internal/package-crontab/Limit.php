@@ -22,7 +22,7 @@ class Limit extends QueueLimitExtends
      * 
      * @param string $path
      */
-    public function __construct(Int $id, Int $getLimit = 1, Job $crontab)
+    public function __construct(Int $id, Int $getLimit, Job $crontab)
     {
         $this->start($id, 1, $key, $getJsonData, $limit, $crontab);
 

@@ -263,7 +263,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function addPrimaryKey(String $table = NULL, String $columns, String $constraint = NULL)
+    public function addPrimaryKey(String $table, String $columns, String $constraint = NULL)
     {
         $query = $this->forge->addPrimaryKey($this->_p($table), $columns, $constraint);
 
@@ -283,7 +283,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function addForeignKey(String $table = NULL, String $columns, String $reftable, String $refcolumn, String $constraint = NULL)
+    public function addForeignKey(String $table, String $columns, String $reftable, String $refcolumn, String $constraint = NULL)
     {
         $query = $this->forge->addForeignKey($this->_p($table), $columns, $reftable, $refcolumn, $constraint);
 
