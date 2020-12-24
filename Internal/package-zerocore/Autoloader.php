@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use PHPToken;
-
 class Autoloader
 {
     /**
@@ -222,14 +220,7 @@ class Autoloader
      */
     protected static function tokenize($code)
     {
-        if( IS::phpVersion('8') )
-        {
-            return token_get_all($code);
-        }
-        else
-        {
-            return PhpToken::tokenize($code);
-        } 
+        return token_get_all($code);
     }
 
     /**
