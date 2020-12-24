@@ -15,6 +15,7 @@ use ZN\Helper;
 use ZN\Singleton;
 use ZN\Ability\Revolving;
 use ZN\Image\Exception\InvalidArgumentException;
+use ZN\Image\Exception\InvalidImageFileException;
 
 class GD implements GDInterface
 {
@@ -78,9 +79,16 @@ class GD implements GDInterface
      */
     public function canvas($width, $height = NULL, $rgb = 'transparent', $real = false) : GD
     {   
-        if( $this->mime->type($width, 0) === 'image' )
+        if( ! is_numeric($width) )
         {
-            $this->createImageCanvas($width);
+            if( $this->mime->type($width, 0) === 'image' )
+            {
+                $this->createImageCanvas($width);
+            }
+            else
+            {
+                throw new InvalidImageFileException(NULL, $width);
+            }
         }
         else
         {
