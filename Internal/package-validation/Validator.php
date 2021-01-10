@@ -94,7 +94,7 @@ class Validator implements ValidatorInterface
      */
     public static function html(String $data) : String
     {
-        return Security\Html::encode($data);
+        return Security\Html::encode(Security\Html::decode($data));
     }
 
     /**
