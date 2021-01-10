@@ -499,7 +499,7 @@ class Connection
                 {
                     $sec = $secure[$i] ?? NULL;
 
-                    $newstr .= $strex[$i].$this->db->realEscapeString($sec);
+                    $newstr .= $strex[$i].$this->_escapeStringAddNail($sec);
                 }
 
                 $query = $newstr;
@@ -510,7 +510,7 @@ class Connection
                 {
                     $this->_convertType($k, $v);
 
-                    $secureParams[$k] = $this->db->realEscapeString($v);
+                    $secureParams[$k] = $this->_escapeStringAddNail($v);
                 }
             }
 
