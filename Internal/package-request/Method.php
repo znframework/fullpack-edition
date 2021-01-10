@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\In;
 use ZN\Protection\Json;
 
 class Method implements MethodInterface
@@ -150,6 +151,11 @@ class Method implements MethodInterface
                 }
                 else
                 {
+                    if( $type === 'get' || ($type === 'request' && isset($_GET[$name])) )
+                    {
+                        $input[$name] = In::cleanInjection($input[$name]);
+                    }
+
                     return htmlspecialchars($input[$name], ENT_QUOTES, "utf-8");
                 }
             }

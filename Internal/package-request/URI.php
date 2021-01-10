@@ -493,7 +493,7 @@ class URI implements URIInterface
      */
     protected static function _cleanPath()
     {
-        $pathInfo = Security\Html::encode(self::active());
+        $pathInfo = Security\Html::encode(In::cleanInjection(self::active()));
 
         return $pathInfo;
     }
