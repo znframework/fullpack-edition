@@ -166,11 +166,14 @@ class Data implements DataInterface
         $rules  = $session->select('FormValidationRules'  . $getValidationFormName);
         $method = $session->select('FormValidationMethod' . $getValidationFormName) ?: 'post';
 
-        if( ($submit !== NULL && ! $method::$submit()) || empty($rules) ) 
+        if( $submit !== NULL && ! $method::$submit() ) 
         {
-            $this->errors[] = ['Rule check error!'];
-
             return false;
+        }
+
+        if( empty($rules) ) 
+        {
+            $this->errors[] = ['Rule check error!']; return false;
         }
         
         if( is_array($rules) )
