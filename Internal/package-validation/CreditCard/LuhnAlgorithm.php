@@ -20,27 +20,19 @@ class LuhnAlgorithm implements LuhnAlgorithmInterface
      */
     public static function check(String $number = NULL)
     {
-        $checksum = 0;
+        $table = 
+        [
+			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+			[0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
+		];
 
-        for( $i = (2 - (strlen($number) % 2)); $i <= strlen($number); $i += 2 ) 
-        {
-            $checksum += (int) ($number{$i-1});
-        }
+		$total = 0; $transform = 0;
 
-        for( $i = (strlen($number) % 2) + 1; $i < strlen($number); $i += 2 ) 
-        {
-            $digit = (int) ($number{$i-1}) * 2;
+		for( $i = strlen($number) - 1; $i >= 0; $i-- )
+		{
+			$total += $table[$transform++ & 0x1][$number[$i]];
+		}
 
-            if( $digit < 10 ) 
-            {
-                $checksum += $digit;
-            } 
-            else 
-            {
-                $checksum += ($digit-9);
-            }
-        }
-
-        return ($checksum % 10) == 0;
+		return $total % 10 === 0;
     }
 }

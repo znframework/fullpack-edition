@@ -58,5 +58,5 @@ interface GenerateInterface
      * 
      * @return bool
      */
-    public function delete(String $name, String $type = 'controller', String $app) : Bool;
+    public function delete(String $name, String $type = 'controller', String $app = NULL) : Bool;
 }
