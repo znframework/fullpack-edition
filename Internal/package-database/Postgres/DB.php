@@ -369,7 +369,7 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->query) )
         {
-            return pg_affected_rows($this->query);
+            return pg_fetch_row($this->query);
         }
         else
         {
