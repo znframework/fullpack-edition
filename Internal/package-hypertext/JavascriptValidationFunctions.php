@@ -34,6 +34,26 @@ function <?php echo $ZNValidationCaptcha ?>(element, message)
 </script>
 <?php endif; ?>
 
+<?php if( $ZNValidationMatch ?? NULL ): ?>
+<script>
+function <?php echo $ZNValidationMatch ?>(element, matchElementName, message) 
+{
+    var value = element.value;
+
+    var matchElementValue = document.getElementsByName(element.form.name)[0].elements[matchElementName].value;
+
+    if( value != matchElementValue ) 
+    {
+        element.setCustomValidity(message);
+    }
+    else
+    {
+        element.setCustomValidity('');
+    }
+}
+</script>
+<?php endif; ?>
+
 <?php if( $ZNValidationPhone ?? NULL ): ?>
 <script>
 function <?php echo $ZNValidationPhone ?>(element, pattern, message) 

@@ -153,6 +153,26 @@ trait FormElementsTrait
     }
 
     /**
+     * Match control
+     * 
+     * @return string
+     */
+    public function vMatch(String $selector)
+    {
+        return $this->setJavascriptValidation('ZNValidationMatch', 'match', ['match' => $selector], [Base::presuffix($selector, '\'')]);
+    }
+
+    /**
+     * Match password control
+     * 
+     * @return string
+     */
+    public function vMatchPassword(String $selector)
+    {
+        return $this->setJavascriptValidation('ZNValidationMatch', 'matchPassword', ['matchPassword' => $selector], [Base::presuffix($selector, '\'')]);
+    }
+
+    /**
      * Phone control
      * 
      * @return string
