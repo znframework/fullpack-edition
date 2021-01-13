@@ -100,16 +100,18 @@ class DB extends DriverMappingAbstract
             $server .= ', '.$this->config['port'];
         }
 
-        $connection = array
-        (
+        $charset = $this->config['charset'] === 'utf8' ? 'utf-8' : $this->config['charset'];
+
+        $connection = 
+        [
             'UID'                   => $this->config['user'],
             'PWD'                   => $this->config['password'],
             'Database'              => $this->config['database'],
             'ConnectionPooling'     => 0,
-            'CharacterSet'          => $this->config['charset'],
+            'CharacterSet'          => $charset,
             'Encrypt'               => $this->config['encode'],
             'ReturnDatesAsStrings'  => 1
-        );
+        ];
 
         $this->connect = @sqlsrv_connect($server, $connection);
 

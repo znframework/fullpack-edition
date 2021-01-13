@@ -113,7 +113,9 @@ class DB extends DriverMappingAbstract
 
         if( ! empty($this->config['charset']) )
         {
-            pg_set_client_encoding($this->connect, $this->config['charset']);
+            $charset = $this->config['charset'] === 'utf8' ? 'UNICODE' : $this->config['charset'];
+
+            pg_set_client_encoding($this->connect, $charset);
         }
     }
 
@@ -367,7 +369,7 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->query) )
         {
-            return pg_fetch_row($this->query);
+            return pg_affected_rows($this->query);
         }
         else
         {
