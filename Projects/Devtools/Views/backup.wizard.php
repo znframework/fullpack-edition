@@ -25,7 +25,7 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label>
-                    {{Form::class('form-control')->checkbox('databaseBackup', true)}}
+                    {{Form::checkbox('databaseBackup', true)}}
                     </label>
                 </div>
             </div>
