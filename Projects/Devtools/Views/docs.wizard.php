@@ -1,4 +1,10 @@
-{{Form::open()}}
+{[ $lang = strtoupper(Lang::get()) ]}
+{[ $titleColumn = 'Title' . $lang ]}
+{[ $keywordsColumn = 'Keywords' . $lang ]}
+{[ $contentColumn = 'Content' . $lang ]}
+
+@Form::open()
+
 <div class="row">
     <div class="col-lg-11">
         <h1 class="page-header">
@@ -16,11 +22,12 @@
 <div class="row">
 
     <div class="col-lg-12">
-        {[ $lang = strtoupper(Lang::get()) ]}
 
         @if( ! empty($docs) ) foreach( $docs as $key => $doc )
 
-            @if( ! empty($title = $doc->{'Title' . $lang} ?? $doc->{'Keywords' . $lang} ?? '') )
+            {[ $title = $doc->$titleColunm ?? $doc->$keywordsColumn ?? NULL ]}
+
+            @if( ! empty($title) )
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 style="cursor:pointer" data-toggle="collapse" data-target="#id{{$key}}" class="panel-title">
@@ -31,12 +38,11 @@
                 </div>
                 <div id="id{{$key}}" class="collapse panel-body">
                     <div class="list-group">
-                        {{ specialWord($doc->{'Content' . $lang}) }}
+                        {{ specialWord($doc->$contentColumn) }}
                     </div>
                 </div>
             </div>
             @endif
-
         @endforeach
     </div>
 
