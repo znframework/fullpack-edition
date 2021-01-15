@@ -1,6 +1,13 @@
 <?php
 function specialWord($data = '')
 {
+	$data = preg_replace('/\[\|\]/', '\\', $data);
+	
+	$data = preg_replace_callback('/\<pre\>\s*\<code\>(?<content>.*?)\<\/code\>\s*\<\/pre\>/s', function($data)
+    {
+        return '<pre><code>' . str_replace(['[|', '|]'], ['&lt;', '&gt;'], $data['content']) . '</code></pre>';
+	}, $data);
+	
 	$data = preg_replace(array('/(v\.[0-9]+\.[0-9]+\.[0-9]+)/i', '/(\#)\s/'), array('<span style="color:#00BFFF">$1</span>', '<span style="color:#00BFFF">$1</span> '), $data);
 	$data = preg_replace('/\{\{\s*(.*?)\s*\}\}/', '<span style="color:#00BFFF">$1</span>', $data);
 	$data = preg_replace(['/\{\[/', '/\]\}/'], ['<span style="color:#fc9b9b">{[</span>', '<span style="color:#fc9b9b">]}</span>'], $data);
@@ -11,7 +18,6 @@ function specialWord($data = '')
 	$data = preg_replace('/(\s|\>|\(|\[|\{)(@*\w+(\[\|\]\w+){0,})\:\:/', '$1<span style="font-family: consolas,monospace;color:#00bbd0">$2</span><span style="font-family: consolas,monospace;">::</span>', $data);
 	$data = preg_replace(['/@php/', '/@endphp/'], ['<span style="color:#fc9b9b">@php</span>', '<span style="color:#fc9b9b">@endphp</span>'], $data);
 	$data = preg_replace('/\[\[\s*(.*?)\s*\]\]/', '<span style="color:#c7254e">$1</span>', $data);
-	$data = preg_replace('/\[\|\]/', '\\', $data);
     $data = preg_replace('/\[php\]/', '&#60;?php', $data);
 	$data = preg_replace('/\[php\-close\]/', '?&#62;', $data);
 	$data = preg_replace(['/\{\|/', '/\|\}/'], ['<span style="color:#fc9b9b">{{</span>', '<span style="color:#fc9b9b">}}</span>'], $data);
@@ -44,10 +50,7 @@ function specialWord($data = '')
 	$data = preg_replace('/(ZN\s(CE|SE|FE|OE))/i', '<span style="color:#00BFFF">$1</span>', $data);
 	$data = preg_replace('/<strong>/', '<strong style="color:#738b9c;">', $data);
 
-	$data = preg_replace_callback('/\<pre\>\s*\<code\>(?<content>.*?)\<\/code\>\s*\<\/pre\>/s', function($data)
-    {
-        return '<pre><code>' . str_replace(['[|', '|]'], ['&lt;', '&gt;'], $data['content']) . '</code></pre>';
-    }, $data);
+	
 
 	$data = str_replace(
 		[

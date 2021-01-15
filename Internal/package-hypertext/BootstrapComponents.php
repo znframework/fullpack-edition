@@ -551,14 +551,43 @@ trait BootstrapComponents
      * Bootstrap spinner component
      * 
      * @param string $type
+     * @param string $color
      * @param string $size
      * 
      * @return string
      * 
      */
-    public function spinner(String $type = 'border', String $size = NULL)
+    public function spinner(String $type = 'border', String $color = NULL, String $size = NULL)
     {
-        return $this->class('spinner-' . $type . ($size ? ' spinner-' . $type . '-' . $size : NULL) )->div();
+        return $this->class('spinner-' . $type . ($color ? ' text-' . $color : NULL) . ($size ? ' spinner-' . $type . '-' . $size : NULL) )->div();
+    }
+
+    /**
+     * Bootstrap spinner border component
+     * 
+     * @param string $color
+     * @param string $size
+     * 
+     * @return string
+     * 
+     */
+    public function spinnerBorder(String $color = NULL, String $size = NULL)
+    {
+        return $this->spinner('border', $color, $size);
+    }
+
+    /**
+     * Bootstrap spinner grow component
+     * 
+     * @param string $color
+     * @param string $size
+     * 
+     * @return string
+     * 
+     */
+    public function spinnerGrow(String $color = NULL, String $size = NULL)
+    {
+        return $this->spinner('grow', $color, $size);
     }
 
     /**
