@@ -411,7 +411,18 @@ class Kernel
      */
     protected static function viewPathCreator($fix)
     {
-        $view = CURRENT_CONTROLLER . $fix;
+        $currentController = CURRENT_CONTROLLER;
+
+        if( $runWithoutRedirect = Config::get('Routing', 'runWithoutRedirect') )
+        {
+            $currentController = explode('/', $runWithoutRedirect)[0];
+
+            $info = Autoloader::getClassFileInfo(PROJECT_CONTROLLER_NAMESPACE . $currentController);
+
+            $currentController = pathinfo($info['path'], PATHINFO_FILENAME);
+        }
+
+        $view = $currentController . $fix;
 
         # If the Theme::active() method is in effect, 
         # the path information is rearranged.
