@@ -26,6 +26,13 @@ class Route extends FilterProperties implements RouteInterface
     use PropertyCreatorTrait;
 
     /**
+     * Run direct show 404 page
+     * 
+     * @var bool
+     */
+    protected $direct = false;
+
+    /**
      * Keeps Container Data
      * 
      * @var bool
@@ -61,12 +68,31 @@ class Route extends FilterProperties implements RouteInterface
     }
 
     /**
+     * Run direct show 404 page
+     * 
+     * @return self
+     */
+    public function direct()
+    {
+        $this->direct = true;
+
+        return $this;
+    }
+
+    /**
      * Route Show404
      * 
      * @param string $controllerAndMethod
      */
     public function show404(String $controllerAndMethod)
     {
+        if( $this->direct === true )
+        {
+            Config::set('Routing', 'runWithoutRedirect', $controllerAndMethod);
+
+            return;
+        }
+
         if( empty( $this->route ) )
         {
             $s404 = '404';

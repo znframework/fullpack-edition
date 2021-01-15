@@ -12,6 +12,13 @@
 interface RouteInterface
 {
     /**
+     * Run direct show 404 page
+     * 
+     * @return self
+     */
+    public function direct();
+    
+    /**
      * Route Show404
      * 
      * @param string $controllerAndMethod

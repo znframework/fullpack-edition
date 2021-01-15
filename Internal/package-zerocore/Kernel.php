@@ -170,14 +170,31 @@ class Kernel
     /**
      * Protected invalid controller path
      */
-    protected static function invalidControllerPath($controller, $function)
+    protected static function invalidControllerPath(&$controller, &$function)
     {
-        if( $show404 = Config::get('Routing', 'show404') )
+        # Run direct show 404 page.
+        if( $runWithoutRedirect = Config::get('Routing', 'runWithoutRedirect') )
+        {
+            $controllerAndMethod = explode('/', $runWithoutRedirect);
+
+            if( ! empty($controllerAndMethod[0]) )
+            {
+                $controller = CURRENT_CNAMESPACE . $controllerAndMethod[0];
+            }
+
+            if( ! empty($controllerAndMethod[1]) )
+            {
+                $function = $controllerAndMethod[1];
+            }
+        }
+        # Redirect show 404 page
+        else if( $show404 = Config::get('Routing', 'show404') )
         {
             Helper::report('InvalidRequest', "Invalid request made to {$controller}/{$function} page!");
 
             Response::redirect($show404);
         }
+        # Invalid operation function
         else
         {
             throw new Exception(self::getLang('invalidOpenFunction'));  
