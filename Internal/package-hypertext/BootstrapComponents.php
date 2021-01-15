@@ -461,7 +461,7 @@ trait BootstrapComponents
     }
 
     /**
-     * Generate bootstrap media object
+     * Generate bootstrap 4 media object
      * 
      * @param string $avatar
      * @param string $name
@@ -470,7 +470,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function mediaObject(String $avatar, String $name, String $content, String $date, $template = 'standart')
+    public function mediaObject4(String $avatar, String $name, String $content, String $date, $template = 'standart')
     { 
         $attr = $this->settings['attr'] ?? [];
 
