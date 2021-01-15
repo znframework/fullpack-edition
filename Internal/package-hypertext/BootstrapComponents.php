@@ -180,7 +180,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function carousel(String $id = NULL, Array $images = [])
+    public function carousel(String $id = NULL, Array $images = [], $view = 'standart')
     {
         $images = $this->transferAttributesAndUnset('attr', 'item') ?: $images;
 
@@ -207,8 +207,20 @@ trait BootstrapComponents
 
         $this->bootstrapObjectOptions(Base::prefix($id, '#'), $transition ?? $options, 'carousel');
 
-        return $this->getCarouselResource('standart', $data);
+        return $this->getCarouselResource($view, $data);
     }   
+    
+    /**
+     * Bootstrap carousel 4
+     * 
+     * @param string ...$images
+     * 
+     * @return string
+     */
+    public function carousel4(String $id = NULL, Array $images = [])
+    {
+        return $this->carousel($id, $images, 'standart4');
+    }
 
     /**
      * Active caroseul options
@@ -267,6 +279,22 @@ trait BootstrapComponents
     }
 
     /**
+     * Bootstrap 4 badge component
+     * 
+     * @param string $type
+     * @param string|callback $content
+     * 
+     * @return string
+     * 
+     */
+    public function badge4(String $type, $content)
+    {
+        $content = $this->stringOrCallback($content);
+
+        return $this->class('badge badge-' . $type)->span($content);
+    }
+
+    /**
      * Bootstrap badge component
      * 
      * @param string $type
@@ -279,7 +307,7 @@ trait BootstrapComponents
     {
         $content = $this->stringOrCallback($content);
 
-        return $this->class('badge badge-' . $type)->span($content);
+        return $this->class('label label-' . $type)->span($content);
     }
 
     /**
@@ -287,9 +315,9 @@ trait BootstrapComponents
      * 
      * @return self
      */
-    public function progressAnimated()
+    public function progressbarAnimated()
     {
-        $this->settings['progressAnimated'] = ' progress-bar-striped progress-bar-animated';
+        $this->settings['progressbarAnimated'] = ' progress-bar-striped progress-bar-animated';
 
         return $this;
     }
@@ -299,15 +327,27 @@ trait BootstrapComponents
      * 
      * @return self
      */
-    public function progressStriped()
+    public function progressbarStriped()
     {
-        $this->settings['progressStriped'] = ' progress-bar-striped';
+        $this->settings['progressbarStriped'] = ' progress-bar-striped';
 
         return $this;
     }
 
     /**
-     * Bootstrap progress bar component
+     * Bootstrap progress bar text attribute
+     * 
+     * @return self
+     */
+    public function progressbarText(String $text)
+    {
+        $this->settings['progressbarText'] = ' ' . $text;
+
+        return $this;
+    }
+
+    /**
+     * Bootstrap 4 progress bar component
      * 
      * @param string $type
      * @param float  $percent
@@ -316,25 +356,66 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function progress(String $type, Float $percent, Float $height = NULL)
+    public function progressbar4(String $type, Float $percent, Float $height = NULL)
     {
         $attr = NULL;
 
-        if( isset($this->settings['progressAnimated']) )
+        if( isset($this->settings['progressbarAnimated']) )
         {
-            $attr = $this->settings['progressAnimated'];
-
-            unset($this->settings['progressAnimated']);     
+            $attr = $this->settings['progressbarAnimated']; unset($this->settings['progressbarAnimated']);     
         }
 
-        if( isset($this->settings['progressStriped']) )
+        if( isset($this->settings['progressbarStriped']) )
         {
-            $attr = $this->settings['progressStriped'];
-
-            unset($this->settings['progressStriped']);     
+            $attr = $this->settings['progressbarStriped']; unset($this->settings['progressbarStriped']);     
         }
 
-        $content = (string) $this->class('progress-bar bg-' . $type . $attr)->style('width:' . $percent . '%')->div();
+        if( isset($this->settings['progressbarText']) )
+        {
+            $text = $this->settings['progressbarText']; unset($this->settings['progressbarText']);     
+        }
+
+
+        $content = (string) $this->class('progress-bar bg-' . $type . $attr)->style('width:' . $percent . '%')->div('%' . $percent . ($text ?? ''));
+
+        if( $height )
+        {
+            $this->style('height:' . $height . 'px');
+        }
+
+        return $this->class('progress')->div($content);
+    }
+
+    /**
+     * Bootstrap 4 progress bar component
+     * 
+     * @param string $type
+     * @param float  $percent
+     * @param float  $height = NULL
+     * 
+     * @return string
+     * 
+     */
+    public function progressbar(String $type, Float $percent, Float $height = NULL)
+    {
+        $attr = NULL;
+
+        if( isset($this->settings['progressbarAnimated']) )
+        {
+            $attr = $this->settings['progressbarAnimated']; unset($this->settings['progressbarAnimated']);     
+        }
+
+        if( isset($this->settings['progressbarStriped']) )
+        {
+            $attr = $this->settings['progressbarStriped']; unset($this->settings['progressbarStriped']);     
+        }
+
+        if( isset($this->settings['progressbarText']) )
+        {
+            $text = $this->settings['progressbarText']; unset($this->settings['progressbarText']);     
+        }
+
+        $content = (string) $this->class('progress-bar progress-bar-' . $type . $attr)->style('width:' . $percent . '%')->div('%' . $percent . ($text ?? ''));
 
         if( $height )
         {

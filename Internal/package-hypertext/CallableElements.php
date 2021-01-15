@@ -54,15 +54,15 @@ trait CallableElements
             }
 
             # Bootstrap Badge
-            elseif( strpos($method, 'badge') === 0 )
+            elseif( preg_match('/^(?<method>badge[0-9]*)/i', $method, $match) )
             {
-                return $this->badge(Base::removePrefix($method, 'badge'), $parameters[0] ?? '');
+                return $this->{$match['method']}(Base::removePrefix($method, $match['method']), $parameters[0] ?? '');
             }
 
             # Bootstrap progress bar
-            elseif( strpos($method, 'progress') === 0 )
+            elseif(preg_match('/^(?<method>progressbar[0-9]*)/i', $method, $match) )
             {
-                return $this->progress(Base::removePrefix($method, 'progress'), $parameters[0] ?? '', $parameters[1] ?? '');
+                return $this->{$match['method']}(Base::removePrefix($method, $match['method']), $parameters[0] ?? NULL, $parameters[1] ?? NULL);
             }
 
             # Multiple Element
