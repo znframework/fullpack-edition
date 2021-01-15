@@ -126,10 +126,11 @@ class Kernel
         # running on the other layer before this layer.
         Base::layer('Middle');
         
-        $parameters   = CURRENT_CFPARAMETERS;
-        $function     = CURRENT_CFUNCTION;
-        $openFunction = CURRENT_COPEN_PAGE;
-        $page         = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
+        $parameters       = CURRENT_CFPARAMETERS;
+        $function         = CURRENT_CFUNCTION;
+        $openFunction     = CURRENT_COPEN_PAGE;
+        $page             = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
+        $directController = NULL;
         
         # If an invalid parameter is entered, it will redirect to the opening method.
         if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
