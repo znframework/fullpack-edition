@@ -204,7 +204,7 @@ class Http implements HttpInterface
      */
     public static function isRequestMethod(...$methods) : Bool
     {
-        return Request::isMethod();
+        return Request::isMethod(...$methods);
     }
 
     /**
