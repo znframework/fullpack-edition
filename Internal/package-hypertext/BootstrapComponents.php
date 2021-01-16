@@ -17,6 +17,110 @@ use ZN\Request\URI;
 trait BootstrapComponents
 {
     /**
+     * Use of bootstrap group
+     * 
+     * @param string|callable $code  = ''
+     * @param string          $class = ''
+     * 
+     * @return string|this
+     */
+    public function group($code = '', String $class = '')
+    {
+        if( is_string($code) )
+        {
+            $this->settings['group']['class'] = $this->bootstrapClassResolution('form-group', $code);
+
+            return $this;
+        }
+        elseif( is_callable($code) )
+        {
+            $this->callableGroup = true;
+
+            $result = $this->getHTMLClass()
+                           ->class('form-group row' . Base::prefix($class, ' '))
+                           ->div(EOL . Buffering\Callback::do($code));
+
+            unset($this->callableGroup);
+            
+            return $result;
+        }
+    }
+
+    /**
+     * Use of bootstrap label
+     * 
+     * @param string $for   = NULL
+     * @param string $value = NULL
+     * @param string $class = NULL
+     * 
+     * @return this
+     */
+    public function label(String $for = NULL, String $value = NULL, String $class = NULL)
+    {
+        $this->settings['label']['for'  ] = $for;
+        $this->settings['label']['value'] = $value;
+        $this->settings['label']['class'] = $class;
+
+        return $this;
+    }
+
+    /**
+     * Bootstrap col size
+     * 
+     * @param string $size
+     * 
+     * @return this
+     */
+    public function col(String $size)
+    {
+        $this->settings['col']['size'] = $size;
+
+        return $this;
+    }
+
+    /**
+     * Protected getHTMLClass
+     */
+    protected function getHTMLClass()
+    {
+        return new Html;
+    }
+    
+    /**
+     * Help text
+     * 
+     * @param string $content
+     * @param string $class = NULL
+     * 
+     * @return this
+     */
+    public function helptext(String $content, String $class = '')
+    {
+        $this->settings['help']['text'] = $this->getHTMLClass()
+                                               ->class('help-block' . Base::prefix($class, ' '))
+                                               ->span($content);
+
+        return $this;
+    }   
+
+    /**
+     * Help text
+     * 
+     * @param string $content
+     * @param string $class = NULL
+     * 
+     * @return this
+     */
+    public function helptext4(String $content, String $class = '')
+    {
+        $this->settings['help']['text'] = $this->getHTMLClass()
+                                               ->class('form-text text-muted' . Base::prefix($class, ' '))
+                                               ->span($content);
+
+        return $this;
+    }  
+
+    /**
      * Open modal
      * 
      * @param string $selector
