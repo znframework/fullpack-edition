@@ -241,14 +241,14 @@ trait ViewCommonTrait
             $optionsEncode = json_encode($options);
         }
         
-        $return  = '<script>$("' . $selector . '").' . $type . '(' . ($optionsEncode ?? NULL) . ')';
+        $return  = '<script>$(document).ready(function(){$(\'' . $selector . '\').' . $type . '(' . ($optionsEncode ?? NULL) . ')';
         
         if( $parameter = $this->transferAttributesAndUnset('attr', 'on') )
         {
             $return .= '.on(\'' . $parameter . '\', function(){' . $this->transferAttributesAndUnset('attr', 'onCallback') . '})';
         }
 
-        $return .= ';</script>';
+        $return .= '});</script>';
 
         $this->bootstrapOptions[$type][$selector] = $return;
 
