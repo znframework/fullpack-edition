@@ -130,7 +130,6 @@ class Kernel
         $function         = CURRENT_CFUNCTION;
         $openFunction     = CURRENT_COPEN_PAGE;
         $page             = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
-        $directController = NULL;
         
         # If an invalid parameter is entered, it will redirect to the opening method.
         if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
@@ -142,7 +141,7 @@ class Kernel
             # If the request is invalid, it will be redirected.
             if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
             {  
-                self::invalidControllerPath($page, $function, $directController);
+                self::invalidControllerPath($page, $function);
             }            
         }
 
@@ -150,7 +149,7 @@ class Kernel
         define('CURRENT_CPARAMETERS', $parameters);
         
         # The view path is being controlled so that the view can be loaded automatically.
-        self::viewPathFinder($function, $viewPath, $wizardPath, $directController);
+        self::viewPathFinder($function, $viewPath, $wizardPath);
 
         # Resolving dependency injections.
         # The controller is being called.
@@ -171,7 +170,7 @@ class Kernel
     /**
      * Protected invalid controller path
      */
-    protected static function invalidControllerPath(&$controller, &$function, &$directController = NULL)
+    protected static function invalidControllerPath(&$controller, &$function)
     {
         # Run direct show 404 page.
         if( $runWithoutRedirect = Config::get('Routing', 'runWithoutRedirect') )
@@ -182,9 +181,9 @@ class Kernel
             {
                 $info = Autoloader::getClassFileInfo(PROJECT_CONTROLLER_NAMESPACE . $controllerAndMethod[0]);
     
-                $directController = pathinfo($info['path'], PATHINFO_FILENAME);
+                define('RUN_WITHOUT_REDIRECT_CONTROLLER', pathinfo($info['path'], PATHINFO_FILENAME));
 
-                $controller = PROJECT_CONTROLLER_NAMESPACE . $directController;
+                $controller = PROJECT_CONTROLLER_NAMESPACE . RUN_WITHOUT_REDIRECT_CONTROLLER;
             }
 
             if( ! empty($controllerAndMethod[1]) )
@@ -242,7 +241,7 @@ class Kernel
      * 
      * @return void
      */
-    public static function viewPathFinder($function, &$viewPath, &$wizardPath, $directController)
+    public static function viewPathFinder($function, &$viewPath, &$wizardPath)
     {
         # Retrieves the automatic upload setting from the configuration file.
         $viewNameType = Config::get('Starting', 'viewNameType') ?: 'directory';
@@ -254,7 +253,7 @@ class Kernel
             $viewFunction = $function === CURRENT_COPEN_PAGE ? NULL : '-' . $function;
 
             # Views/controller-method.php
-            $viewDir = self::viewPathCreator($viewFunction, $directController);
+            $viewDir = self::viewPathCreator($viewFunction);
         }
         # The automatic load type: directory
         else
@@ -263,7 +262,7 @@ class Kernel
             $viewFunction = $function === CURRENT_COPEN_PAGE ? CURRENT_COPEN_PAGE : $function;
 
             # Views/controller/method.php
-            $viewDir = self::viewPathCreator('/' . $viewFunction, $directController);
+            $viewDir = self::viewPathCreator('/' . $viewFunction);
         }
 
         $viewPath   = $viewDir . '.php';
@@ -414,9 +413,11 @@ class Kernel
      * 
      * @return string
      */
-    protected static function viewPathCreator($fix, $directController)
+    protected static function viewPathCreator($fix)
     {
-        $currentController = $directController ?? CURRENT_CONTROLLER;
+        $currentController = defined('RUN_WITHOUT_REDIRECT_CONTROLLER')
+                           ? RUN_WITHOUT_REDIRECT_CONTROLLER
+                           : CURRENT_CONTROLLER;
 
         $view = $currentController . $fix;
 
