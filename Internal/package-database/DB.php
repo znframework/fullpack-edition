@@ -1715,13 +1715,13 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    public function result(String $type = 'object')
+    public function result(String $type = 'object', $usageRow = false)
     {
         $this->_resultCache($type);
 
         if( empty((array) $this->results) )
         {
-            $this->results = $this->db->result($type, $this->config['attr']['jsonDecode'] ?? NULL);
+            $this->results = $this->db->result($type, $this->config['attr']['jsonDecode'] ?? NULL, $usageRow);
 
             unset($this->config['attr']['jsonDecode']);
         }
@@ -1827,7 +1827,7 @@ class DB extends Connection
      */
     public function row($printable = 0)
     {
-        $result = $this->resultArray();
+        $result = $this->result('array', true);
 
         if( $printable < 0 )
         {

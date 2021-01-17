@@ -55,7 +55,7 @@ abstract class DriverMappingAbstract
      * 
      * @return object|array|string
      */
-    public function result($type = 'object', $jsonColumns = NULL)
+    public function result($type = 'object', $jsonColumns = NULL, $usageRow = false)
     {
         if( empty($this->query) )
         {
@@ -68,7 +68,7 @@ abstract class DriverMappingAbstract
         {
             if( $jsonColumns )
             {
-                $data = $this->jsonDecode($jsonColumns, $data, $type);
+                $data = $this->jsonDecode($jsonColumns, $data, $type, $usageRow);
             }
            
             if( $type === 'object' )
@@ -300,7 +300,7 @@ abstract class DriverMappingAbstract
     /**
      * protected json decode
      */
-    protected function jsonDecode($columns, $row, $type)
+    protected function jsonDecode($columns, $row, $type, $usageRow)
     {
         $jsonColumns = array_keys(preg_grep('/^(\{|\[).*(\]|\})$/s', $row));
 
@@ -314,9 +314,7 @@ abstract class DriverMappingAbstract
                 
                 if( Json::check($value) )
                 {
-                    $row[$column] = $type === 'object' 
-                                  ? Json::decodeObject($value) 
-                                  : Json::decodeArray($value);
+                    $row[$column] = ( $type === 'object' || $usageRow === true ) ? Json::decodeObject($value) : Json::decodeArray($value);
                 }
             }
     
