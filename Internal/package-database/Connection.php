@@ -10,9 +10,9 @@
  */
 
 use ZN\Base;
-use ZN\Logger;
 use ZN\Config;
 use ZN\Support;
+use ZN\Helpers\Logger;
 use ZN\DataTypes\Arrays;
 use ZN\Database\Exception\InvalidArgumentException;
 
