@@ -15,6 +15,7 @@ use ZN\Datatype;
 use ZN\Singleton;
 use ZN\Request\URI;
 use ZN\Request\Method;
+use ZN\Protection\Json;
 use ZN\DataTypes\Arrays;
 use ZN\Filesystem\Converter;
 use ZN\Database\Exception\UnconditionalException;
@@ -1728,7 +1729,7 @@ class DB extends Connection
 
         if( $type === 'json' )
         {
-            return json_encode($this->results);
+            return Json::encode($this->results);
         }
 
         return $this->results;
@@ -2350,7 +2351,7 @@ class DB extends Connection
     {
         if( ! is_scalar($value) )
         {
-            $value = json_encode($value);
+            $value = Json::encode($value);
         }
     }
 
@@ -2950,7 +2951,7 @@ class DB extends Connection
      */
     protected function _cacheQuery()
     {
-        return md5(json_encode($this->config) . $this->stringQuery());
+        return md5(Json::encode($this->config) . $this->stringQuery());
     }
 
     /**
