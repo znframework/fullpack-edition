@@ -97,7 +97,7 @@ class DB extends Connection
     private $smallResult, $bigResult , $bufferResult     , $cache       , $calcFoundRows;
     private $groupBy    , $having    , $orderBy          , $limit       , $join         ;
     private $transStart , $transError, $duplicateCheck   , $duplicateCheckUpdate        ;
-    private $joinType   , $joinTable , $unionQuery = NULL, $caching = [];
+    private $joinType   , $joinTable , $unionQuery = NULL, $caching = [], $jsonDecode   ;
 
     /**
      * Callable talking queries.
@@ -1277,7 +1277,7 @@ class DB extends Connection
      */
     public function jsonDecode(...$columns)
     {
-        $this->config['attr']['jsonDecode'] = ! empty($columns) ? $columns : '*';
+        $this->jsonDecode = ! empty($columns) ? $columns : '*';
 
         return $this;
     }
@@ -1292,15 +1292,17 @@ class DB extends Connection
      */
     public function query(String $query, Array $secure = [])
     {
-        $caching = $this->caching;
+        $secure     = $this->secure ?: $secure; $this->secure     = [];    
+        $caching    = $this->caching;           $this->caching    = [];
+        $tableName  = $this->tableName;         $this->tableName  = '';
+        $jsonDecode = $this->jsonDecode;        $this->jsonDecode = [];
 
-        $this->caching = [];
-
-        $secure = $this->secure ?: $secure;
-
-        $this->secure = [];
-
-        return (new self($this->config))->_query($query, $secure, ['caching' => $caching]);
+        return (new self($this->config))->_query($query, $secure, 
+        [
+            'caching'    => $caching, 
+            'tableName'  => $tableName,
+            'jsonDecode' => $jsonDecode
+        ]);
     }
 
     /**
@@ -1721,9 +1723,7 @@ class DB extends Connection
 
         if( empty((array) $this->results) )
         {
-            $this->results = $this->db->result($type, $this->config['attr']['jsonDecode'] ?? NULL, $usageRow);
-
-            unset($this->config['attr']['jsonDecode']);
+            $this->results = $this->db->result($type, $this->jsonDecode ?? NULL, $usageRow);
         }
 
         if( $type === 'json' )
@@ -2919,8 +2919,9 @@ class DB extends Connection
     public function _query(String $query, Array $secure = [], $data = NULL)
     {
         $this->stringQuery = $query;
-
-        $this->caching = $data['caching'] ?? [];
+        $this->caching     = $data['caching']    ?? [];
+        $this->tableName   = $data['tableName']  ?? '';
+        $this->jsonDecode  = $data['jsonDecode'] ?? [];
 
         if( empty($this->caching) || ! Singleton::class('ZN\Cache\Processor')->select($this->_cacheQuery()) )
         {
