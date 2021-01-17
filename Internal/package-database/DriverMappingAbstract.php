@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Protection\Json;
+
 abstract class DriverMappingAbstract
 {
     /**
@@ -53,7 +55,7 @@ abstract class DriverMappingAbstract
      * 
      * @return object|array|string
      */
-    public function result($type = 'object')
+    public function result($type = 'object', $jsonColumns = NULL)
     {
         if( empty($this->query) )
         {
@@ -64,6 +66,11 @@ abstract class DriverMappingAbstract
 
         while( $data = $this->fetchAssoc() )
         {
+            if( $jsonColumns )
+            {
+                $data = $this->jsonDecode($jsonColumns, $data, $type);
+            }
+           
             if( $type === 'object' )
             {
                 $data = (object) $data;
@@ -288,5 +295,34 @@ abstract class DriverMappingAbstract
     {
         $this->query   = NULL;
         $this->connect = NULL;
+    }
+
+    /**
+     * protected json decode
+     */
+    protected function jsonDecode($columns, $row, $type)
+    {
+        $jsonColumns = array_keys(preg_grep('/^(\{|\[).*(\]|\})$/s', $row));
+
+        $columns = $columns === '*' ? $jsonColumns : $columns;
+
+        if( is_array($columns) )
+        {
+            foreach( $columns as $column )
+            {
+                $value = $row[$column] ?? '';
+                
+                if( Json::check($value) )
+                {
+                    $row[$column] = $type === 'object' 
+                                  ? Json::decodeObject($value) 
+                                  : Json::decodeArray($value);
+                }
+            }
+    
+            return $row;
+        }
+        
+        return $row;
     }
 }

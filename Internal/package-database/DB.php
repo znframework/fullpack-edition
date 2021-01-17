@@ -1269,6 +1269,20 @@ class DB extends Connection
     }
 
     /**
+     * Json columns decoder
+     * 
+     * @param variadic $columns
+     * 
+     * @return DB
+     */
+    public function jsonDecode(...$columns)
+    {
+        $this->config['attr']['jsonDecode'] = ! empty($columns) ? $columns : '*';
+
+        return $this;
+    }
+
+    /**
      * Basic Query
      * 
      * @param string $query
@@ -1707,7 +1721,9 @@ class DB extends Connection
 
         if( empty((array) $this->results) )
         {
-            $this->results = $this->db->result($type);
+            $this->results = $this->db->result($type, $this->config['attr']['jsonDecode'] ?? NULL);
+
+            unset($this->config['attr']['jsonDecode']);
         }
 
         if( $type === 'json' )

@@ -21,7 +21,8 @@
         "znframework/package-cache": "6.*",
         "znframework/package-pagination": "6.*",
         "znframework/package-helpers": "6.*",
-        "znframework/package-hypertext": "6.*"
+        "znframework/package-hypertext": "6.*",
+        "znframework/package-protection": "6.*"
 	},
     "autoload": {
         "psr-4": {
