@@ -55,6 +55,8 @@ class Request extends GatewayRequestAbstract
      */
     public function card(String $number, String $month, String $year, String $cvc)
     {
+        $this->yearAndMonthConverter($year, $month);
+
         $this->settings['pan'] = $number;
         $this->settings['Ecom_Payment_Card_ExpDate_Year']  = $year;
         $this->settings['Ecom_Payment_Card_ExpDate_Month'] = $month;

@@ -12,6 +12,7 @@
 use ZN\IS;
 use ZN\Security;
 use ZN\Singleton;
+use ZN\DateTime\Date;
 
 class Validator implements ValidatorInterface
 {
@@ -56,7 +57,11 @@ class Validator implements ValidatorInterface
             return false;
         }
 
-        return CreditCard\Validator::date($dateEx[1], $dateEx[0]);
+        $date   = (new Date)->convert($dateEx[1] . '-' . $dateEx[0] . '-01', '{y}/{mn0}');
+
+        $dateEx = explode('/', $date);
+
+        return CreditCard\Validator::date($dateEx[0], $dateEx[1]);
     }
 
     /**
