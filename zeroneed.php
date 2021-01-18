@@ -28,7 +28,7 @@ require __DIR__ . '/Internal/autoload.php';
 |
 | Simplicity is our principle. Enjoy it.
 |
-| Version: 6.91.9.30
+| Kernel: 6.0.2
 |
 */
 
