@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-authentication",
+    "version": "6.1.2.4",
     "description": "ZN Framework Authentication",
     "license": "MIT",
     "homepage": "https://znframework.com",

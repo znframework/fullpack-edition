@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-services",
+    "version": "6.3.5.20",
     "description": "ZN Framework Services Package",
     "license": "MIT",
     "homepage": "https://znframework.com",

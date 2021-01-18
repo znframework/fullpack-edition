@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-response",
+    "version": "6.0.2.2",
     "description": "ZN Framework Response Package",
     "license": "MIT",
     "homepage": "https://znframework.com",

@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-payment",
+    "version": "6.0.2.3",
     "description": "ZN Framework Payment Gateway Package",
     "license": "MIT",
     "homepage": "https://znframework.com",

@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-pagination",
+    "version": "6.0.2.9",
     "description": "ZN Framework Pagination Package",
     "license": "MIT",
     "homepage": "https://znframework.com",

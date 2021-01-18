@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-buffering",
+    "version": "6.0.1",
     "description": "ZN Framework Buffering Package",
     "license": "MIT",
     "homepage": "https://znframework.com",

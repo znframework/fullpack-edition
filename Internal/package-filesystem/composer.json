@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-filesystem",
+    "version": "6.1.1.7",
     "description": "ZN Framework Filesystem Package",
     "license": "MIT",
     "homepage": "https://znframework.com",
@@ -14,8 +15,9 @@
         "php": ">=7.0.0",
         "znframework/package-zerocore": "6.*",
         "znframework/package-helpers": "6.*",
-        "znframework/package-datatypes": "6.*"
-
+        "znframework/package-datatypes": "6.*",
+        "znframework/package-cryptography": "6.*",
+        "znframework/package-request": "6.*"
 	},
     "autoload": {
         "psr-4": {

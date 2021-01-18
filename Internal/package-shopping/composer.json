@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-shopping",
+    "version": "6.0.2",
     "description": "ZN Framework Shopping Package",
     "license": "MIT",
     "homepage": "https://znframework.com",
