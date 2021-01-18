@@ -1,15 +1,8 @@
 <p align="center">
 	<img src="https://www.znframework.com/Projects/ZNWeb/Resources/Files/logo/gitlogo.png" style="max-width:300px"><br><br>
-	<a title="copy to clipboard" class="copy_on_clip" data-clipboard-target="#latest_stable_version_markdown">
-		<img class="spinned latest_stable_version_img" src="https://poser.pugx.org/znframework/znframework/v/stable" style="display: inline;">
-	</a>
-	<a title="copy to clipboard" class="copy_on_clip" data-clipboard-target="#latest_unstable_version_markdown">
-		<img class="spinned latest_unstable_version_img" src="https://poser.pugx.org/znframework/znframework/v/unstable" style="display: inline;">
-	</a>
-	<a title="copy to clipboard" class="copy_on_clip" data-clipboard-target="#license_markdown">
-		<img class="spinned license_img" src="https://poser.pugx.org/znframework/znframework/license" style="display: inline;">
-	</a>
 </p>
+
+[![License](https://poser.pugx.org/znframework/znframework/license)](//packagist.org/packages/znframework/znframework) [![Latest Stable Version](https://poser.pugx.org/znframework/znframework/v)](//packagist.org/packages/znframework/znframework) [![Total Downloads](https://poser.pugx.org/znframework/znframework/downloads)](//packagist.org/packages/znframework/znframework) [![Monthly Downloads](https://poser.pugx.org/znframework/znframework/d/monthly)](//packagist.org/packages/znframework/znframework) [![Dependents](https://poser.pugx.org/znframework/znframework/dependents)](//packagist.org/packages/znframework/znframework) [![.gitattributes](https://poser.pugx.org/znframework/znframework/gitattributes)](//packagist.org/packages/znframework/znframework) [![Latest Unstable Version](https://poser.pugx.org/znframework/znframework/v/unstable)](//packagist.org/packages/znframework/znframework)
 
 <h2>What is ZN</h2>
 
