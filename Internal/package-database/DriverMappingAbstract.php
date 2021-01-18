@@ -302,9 +302,7 @@ abstract class DriverMappingAbstract
      */
     protected function jsonDecode($columns, $row, $type, $usageRow)
     {
-        $jsonColumns = array_keys(preg_grep('/^(\{|\[).*(\]|\})$/s', $row));
-
-        $columns = $columns === '*' ? $jsonColumns : $columns;
+        $columns = $columns === '*' ? array_keys(preg_grep('/^(\{|\[).*(\]|\})$/s', $row)) : $columns;
 
         if( is_array($columns) )
         {
