@@ -600,6 +600,23 @@ trait ViewCommonTrait
      */
     protected function _element($function, $element)
     {
-        $this->settings['attr'][strtolower($function)] = $element;
+        if( $element === false )
+        {
+            $element = 'false';
+        }
+        else if( $element === true )
+        {
+            $element = 'true';
+        }
+        else if( is_array($element) || is_object($element) )
+        {
+            $element = json_encode($element, JSON_UNESCAPED_UNICODE);
+        }
+        else if( ! is_scalar($element) )
+        {
+            $element = 'nonscalar';
+        }
+
+        $this->settings['attr'][strtolower($function)] = htmlentities($element, ENT_COMPAT);
     }
 }
