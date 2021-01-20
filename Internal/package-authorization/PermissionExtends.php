@@ -241,7 +241,14 @@ class PermissionExtends
      */
     protected static function getConfigByType($type)
     {
-        return (Config::get('Auth')[$type] ?: []) + (Config::default('ZN\Authorization\AuthorizationDefaultConfiguration')::get('Authorization')[$type] ?: []);
+        $config = Config::get('Auth') + Config::default('ZN\Authorization\AuthorizationDefaultConfiguration')::get('Authorization');
+
+        if( $type === NULL )
+        {
+            return $config;
+        }
+
+        return $config[$type] ?? [];
     }
 
     /**
