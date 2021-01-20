@@ -124,7 +124,7 @@ class PermissionExtends
             } 
         }
 
-        Config::set('Authorization', $newRules);
+        Config::set('Auth', $newRules);
     }
 
     /**
@@ -233,7 +233,7 @@ class PermissionExtends
             return Method::$process($page);
         }
 
-        return strpos($currentUrl, $page) > -1;
+        return strpos(strtolower($currentUrl), strtolower($page)) > -1;
     }
 
     /**
@@ -241,7 +241,7 @@ class PermissionExtends
      */
     protected static function getConfigByType($type)
     {
-        $config = Config::get('Auth') + Config::default('ZN\Authorization\AuthorizationDefaultConfiguration')::get('Authorization');
+        $config = Config::default('ZN\Authorization\AuthorizationDefaultConfiguration')::get('Auth');
 
         if( $type === NULL )
         {
