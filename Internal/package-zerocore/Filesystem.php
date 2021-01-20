@@ -106,29 +106,28 @@ class Filesystem
      */
     public static function deleteFolder(String $name) : Bool
     {
-        if( is_file($name) )
+        if( is_dir($name) )
         {
-            return unlink($name);
+            $name = Base::suffix($name, DS); ;
+
+            foreach( self::getFiles($name) as $val )
+            {
+                $path = $name . $val;
+                
+                self::deleteFolder($path);     
+            }        
+                
+            if( ! self::getFiles($name) )
+            {
+                return self::deleteEmptyFolder($name);
+            }       
         }
         else
         {
-            $name = Base::suffix($name, DS);
-
-            $getFiles = self::getFiles($name);
-
-            if( ! empty($getFiles) )
-            {
-                for( $i = 0; $i < count($getFiles); $i++ )
-                {
-                    foreach( $getFiles as $val )
-                    {
-                        self::deleteFolder($name.$val);
-                    }
-                }
-            }
-
-            return self::deleteEmptyFolder($name);
+            return unlink($name);
         }
+
+        return true;
     }
 
     /**
