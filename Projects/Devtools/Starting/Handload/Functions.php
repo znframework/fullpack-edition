@@ -8,6 +8,38 @@ function specialWord($data = '')
         return '<pre><code>' . str_replace(['[|', '|]'], ['&lt;', '&gt;'], $data['content']) . '</code></pre>';
 	}, $data);
 	
+	$data = preg_replace
+	(
+		[
+			'/(\[ADDED\])/',
+			'/(\[CHANGED\])/',
+			'/(\[FIXED\])/',
+			'/(\[REMOVED\])/'
+		], 
+		[
+			'<span style="color:#4f992b;font-family: consolas,monospace;">$1</span>',
+			'<span style="color:#008bb9;font-family: consolas,monospace;">$1</span>',
+			'<span style="color:#fcb307;font-family: consolas,monospace;">$1</span>',
+			'<span style="color:#c7254e;font-family: consolas,monospace;">$1</span>'
+		], 
+		$data
+	);
+
+	$data = preg_replace_callback('/\[((2|3)[0-9]{3}\-[0-9]{2}\-[0-9]{2})\]/', function($change)
+	{
+		$date = $change[1];
+
+		$dateStyle = '<span style="color:#008bb9;font-family:">[' . $date . ']</span>';
+
+		if( Date::diffDayDown($date, Date::now()) <= 30 )
+		{
+			return $dateStyle . ' <span class="label label-danger">new</span>';
+		}
+
+		return $dateStyle;
+		
+	}, $data);
+
 	$data = preg_replace(array('/(v\.[0-9]+\.[0-9]+\.[0-9]+)/i', '/(\#)\s/'), array('<span style="color:#00BFFF">$1</span>', '<span style="color:#00BFFF">$1</span> '), $data);
 	$data = preg_replace('/\{\{\s*(.*?)\s*\}\}/', '<span style="color:#00BFFF">$1</span>', $data);
 	$data = preg_replace(['/\{\[/', '/\]\}/'], ['<span style="color:#fc9b9b">{[</span>', '<span style="color:#fc9b9b">]}</span>'], $data);
