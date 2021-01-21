@@ -380,6 +380,11 @@ class Kernel
      */
     protected static function startingFileLoader($starting)
     {   
+        if( empty(AUTOLOAD_DIR) )
+        {
+            return false;
+        }
+        
         # It is specified whether the subfile scanning can be done or not.
         $autoloadRecursive = $starting['autoload']['recursive'];
 
