@@ -459,7 +459,7 @@ class ZN
             Base::trace
             (
                 'The [controller directory] for the custom edition must be defined. 
-                To do this, specify the corresponding controller directory in the [index.php] file.'
+                To do this, specify the corresponding controller directory in the [zeroneed.php] file.'
             );
         }
     }
