@@ -854,7 +854,7 @@ class ZN
      */
     private static function CE_STRUCTURE_PATHS()
     {
-        self::$defines['DIRECTORY_INDEX'] = self::$defines['DIRECTORY_INDEX'] ?? 'index.php';
+        self::$defines['DIRECTORY_INDEX'] = self::$defines['DIRECTORY_INDEX'] ?? 'zeroneed.php';
         
         $paths = [];
 
