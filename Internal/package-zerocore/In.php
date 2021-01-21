@@ -434,7 +434,7 @@ class In
      */
     protected static function applyRouteAll()
     {
-        if( ROUTES_DIR === NULL )
+        if( empty(ROUTES_DIR) )
         {
             return false;
         }
