@@ -76,7 +76,7 @@ class FileDriver extends DriverMappingAbstract
      * 
      * @return bool
      */
-    public function insert($key, $var, $time, $compressed)
+    public function insert($key, $var, $time, $compressed = false)
     {
         if( $compressed !== false )
         {
