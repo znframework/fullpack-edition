@@ -57,12 +57,12 @@ class ForgotPassword extends UserExtends
      * Forgot Password
      * 
      * @param string $email          = NULL
-     * @param string $returnLinkPath
+     * @param string $returnLinkPath = NULL
      * @param string $changePassword = 'before'
      * 
      * @return bool
      */
-    public function do(String $email = NULL, String $returnLinkPath, String $changePassword = 'before') : Bool
+    public function do(String $email = NULL, String $returnLinkPath = NULL, String $changePassword = 'before') : Bool
     {
         $this->controlPropertiesParameters($email, $verification, $returnLinkPath, $changePassword);
 

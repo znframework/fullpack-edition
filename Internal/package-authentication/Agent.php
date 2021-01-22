@@ -20,6 +20,6 @@ class Agent
      */
     public static function get() : String
     {
-        return $_SERVER['HTTP_USER_AGENT'];
+        return $_SERVER['HTTP_USER_AGENT'] ?? '';
     }
 }
