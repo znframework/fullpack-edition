@@ -447,7 +447,7 @@ class Job implements JobInterface, CrontabIntervalInterface
 
         foreach( $this->listArray() as $key => $job )
         {
-            if( stristr($job, $class) && stristr($job, $method) )
+            if( stristr($job, $class . ')') && stristr($job, $method . '(') )
             {
                 return $key;
             }
