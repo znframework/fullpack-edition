@@ -22,19 +22,28 @@ class Queue extends QueueLimitExtends
      * 
      * @param string $path
      */
-    public function __construct(Int $id, Callable $callable, Int $decrement, Job $crontab)
+    public function __construct(Callable $callable, Int $decrement, Job $crontab)
     {
-        $this->start($id, 0, $key, $getJsonData, $limit, $crontab);
+        $backtrace = (object) debug_backtrace(2)[4];
 
-        if( $callable($limit, $decrement) === false )
+        $id = $crontab->getJobIdFromExecFileWithTerm($backtrace->class, $backtrace->function);
+
+        if( $id !== false )
         {
-            $this->removeKeyFromJsonData($key, $getJsonData);
+            $this->start($id, 0, $key, $getJsonData, $limit, $crontab);
+
+            if( $callable($limit, $decrement) === false )
+            {
+                $this->removeKeyFromJsonData($key, $getJsonData);
+            }
+            else
+            {
+                $limit += $decrement;
+
+                $getJsonData[$key] = $limit;
+            }
+               
+            $this->end($getJsonData);
         }
-        else
-        {
-            $getJsonData[$key] = $limit += $decrement;
-        }
-           
-        $this->end($getJsonData);
     } 
 }

@@ -153,24 +153,22 @@ class Job implements JobInterface, CrontabIntervalInterface
     /**
      * Crontab Queue
      * 
-     * @param int      $id
      * @param callable $callable
      * @param int      $decrement = 1
      */
-    public function queue(Int $id, Callable $callable, Int $decrement = 1)
+    public function queue(Callable $callable, Int $decrement = 1)
     {
-        new Queue($id, $callable, $decrement, $this);
+        new Queue($callable, $decrement, $this);
     }
 
     /**
      * Crontab limit
      * 
-     * @param int $id
      * @param int $getLimit = 1
      */
-    public function limit(Int $id, Int $getLimit = 1)
+    public function limit(Int $getLimit = 1)
     {
-        new Limit($id, $getLimit, $this);
+        new Limit($getLimit, $this);
     }
 
     /**
@@ -308,7 +306,7 @@ class Job implements JobInterface, CrontabIntervalInterface
         
         $code = Base::prefix(Base::suffix($command, ';\''), ' -r \'' . $this->directoryIndexCommand);
 
-        $this->run($code);
+        return $this->run($code);
     }
 
     /**
@@ -319,7 +317,8 @@ class Job implements JobInterface, CrontabIntervalInterface
     public function wget(String $url)
     {
         $this->path('wget');
-        $this->run($url);
+
+        return $this->run($url);
     }
 
     /**
@@ -339,7 +338,7 @@ class Job implements JobInterface, CrontabIntervalInterface
 
         $this->parameters = [];
 
-        $this->run($code);
+        return $this->run($code);
     }
 
     /**
@@ -437,6 +436,24 @@ class Job implements JobInterface, CrontabIntervalInterface
         unset($jobs[$cmd]);
 
         file_put_contents($this->crontabCommands, implode(EOL, $jobs) . EOL);
+    }
+
+    /**
+     * Get job id from exec file with term
+     */
+    public function getJobIdFromExecFileWithTerm($class, $method)
+    {
+        $jobs = [];
+
+        foreach( $this->listArray() as $key => $job )
+        {
+            if( stristr($job, $class) && stristr($job, $method) )
+            {
+                return $key;
+            }
+        }
+
+        return false;
     }
 
     /**

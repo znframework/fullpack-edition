@@ -35,7 +35,7 @@ class QueueLimitExtends
         
         $getJsonData = $this->getJsonDataToFile();
 
-        $limit = (int) ($getJsonData[$key] ?? NULL);
+        $limit = (int) ($getJsonData[$key] ?? 1);
     }
 
     /**

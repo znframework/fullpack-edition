@@ -14,19 +14,17 @@ interface JobInterface
     /**
      * Crontab Queue
      * 
-     * @param int      $id
      * @param callable $callable
      * @param int      $decrement = 1
      */
-    public function queue(Int $id, Callable $callable, Int $decrement = 1);
+    public function queue(Callable $callable, Int $decrement = 1);
 
     /**
      * Crontab limit
      * 
-     * @param int $id
      * @param int $getLimit = 1
      */
-    public function limit(Int $id, Int $getLimit = 1);
+    public function limit(Int $getLimit = 1);
 
     /**
      * Selects project
