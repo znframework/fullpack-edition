@@ -24,8 +24,8 @@ class DeleteMigration
      * 
      * @return void
      */
-    public function __construct($command, $parameters)
+    public function __construct($command, $parameters = [])
     {   
-        new Result(Migration::delete($command, ...$parameters));
+        new Result(Migration::delete($command, $parameters[0] ?? 0));
     }
 }

@@ -25,7 +25,7 @@ class StartRestoration
      * 
      * @return void
      */
-    public function __construct($command, $parameters)
+    public function __construct($command, $parameters = [])
     {   
         new Result(Restoration::start
         (

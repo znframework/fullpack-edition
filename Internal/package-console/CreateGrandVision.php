@@ -25,7 +25,7 @@ class CreateGrandVision
      * 
      * @return void
      */
-    public function __construct($command)
+    public function __construct($command = NULL)
     {   
         new Result(Generate::grandVision($command ?: Config::get('Database', 'database')['database']));
     }
