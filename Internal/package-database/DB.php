@@ -2871,15 +2871,6 @@ class DB extends Connection
             $newColumns = [$columns => "$columns + $incdec"];
         }
 
-        if( ! empty($this->where) )
-        {
-            $where = ' WHERE ';
-        }
-        else
-        {
-            $where = '';
-        }
-
         $data = '';
 
         foreach( $newColumns as $key => $value )
@@ -2889,7 +2880,7 @@ class DB extends Connection
 
         $set = ' SET '.substr($data, 0, -1);
 
-        $updateQuery = 'UPDATE '.$this->prefix.$table.$set.$where.$this->where;
+        $updateQuery = 'UPDATE '.$this->prefix.$table.$set.$this->_where();
 
         $this->where = NULL;
 
