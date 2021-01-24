@@ -314,7 +314,7 @@ class DB extends DriverMappingAbstract
      */
     public function error()
     {
-        if( ! empty($this->connect) )
+        if( ! empty($this->connect) && $this->connect->lastErrorCode() )
         {
             return $this->connect->lastErrorMsg();
         }

@@ -356,7 +356,7 @@ class DB extends DriverMappingAbstract
      */
     public function error()
     {
-        return $this->connect->error ?? false;
+        return $this->connect->error ?: false;
     }
 
     /**

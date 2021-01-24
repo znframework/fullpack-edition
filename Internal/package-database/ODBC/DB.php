@@ -296,7 +296,7 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->connect) )
         {
-            return odbc_error($this->connect);
+            return odbc_error($this->connect) ? (odbc_errormsg($this->connect) ?: false) : false;
         }
         else
         {

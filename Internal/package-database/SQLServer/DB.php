@@ -319,7 +319,8 @@ class DB extends DriverMappingAbstract
         if( ! empty($this->connect) )
         {
             $error = sqlsrv_errors(SQLSRV_ERR_ERRORS);
-            return $error['message'];
+            
+            return ! empty($error['code']) ? ($error['message'] ?: false) : false;
         }
         else
         {

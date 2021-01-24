@@ -347,7 +347,7 @@ class DB extends DriverMappingAbstract
                 $error = $this->connect->errorInfo();
             }
 
-            return $error[2];
+            return $error[2] ?: false;
         }
         else
         {

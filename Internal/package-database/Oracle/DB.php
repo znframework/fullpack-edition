@@ -296,7 +296,9 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->connect) )
         {
-            return  oci_error($this->connect)['message'];
+            $error = oci_error($this->connect);
+
+            return ! empty($error['code']) ? ($error['message'] ?: false) : false;
         }
         else
         {

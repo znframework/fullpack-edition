@@ -318,7 +318,7 @@ class DB extends DriverMappingAbstract
     {
         if( is_resource($this->connect) )
         {
-            return pg_last_error($this->connect);
+            return pg_last_error($this->connect) ?: false;
         }
         else
         {
