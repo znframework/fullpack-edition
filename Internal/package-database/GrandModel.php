@@ -10,13 +10,10 @@
  */
 
 use ZN\Base;
-use ZN\Lang;
 use ZN\Config;
 use ZN\Support;
 use ZN\Datatype;
 use ZN\Singleton;
-use ZN\Exception;
-use ZN\DataTypes\Arrays;
 
 class GrandModel
 {
@@ -84,6 +81,20 @@ class GrandModel
     protected $prefix;
 
     /**
+     * String query
+     * 
+     * @var string
+     */
+    protected $stringQuery;
+
+    /**
+     * Error
+     * 
+     * @var string
+     */
+    protected $error;
+
+    /**
      * Magic constructor
      * 
      * @param void
@@ -97,30 +108,6 @@ class GrandModel
 
         # Get active table name
         $this->setGrandTableName();
-    }
-
-    /**
-     * Magic destruct
-     * 
-     * @param void
-     * 
-     * @return void
-     */
-    public function __destruct()
-    {
-        if( ! Arrays::valueExistsInsensitive((array) $this->tables, ($table = $this->prefix . $this->grandTable)) && $this->status !== 'create' )
-        {
-            try
-            {
-                throw new Exception(Lang::select('Database', 'tableNotExistsError', 'Grand: '.$table));
-            }
-            catch( Exception $e )
-            {
-                $e->continue();
-            }
-        }
-
-        $this->status = NULL;
     }
 
     /**
@@ -158,7 +145,7 @@ class GrandModel
     {
         $this->postGetExpression($table, $data);
 
-        return $this->connect->insert($table, $data);
+        return $this->returnQuery($this->connect->insert($table, $data));
     }
 
     /**
@@ -230,7 +217,7 @@ class GrandModel
             $this->connect->where($column, $value);
         }
 
-        return $this->connect->update($table, $data);
+        return $this->returnQuery($this->connect->update($table, $data));
     }
 
     /**
@@ -248,7 +235,7 @@ class GrandModel
             $this->connect->where($column, $value);
         }
 
-        return $this->connect->delete($this->grandTable);
+        return $this->returnQuery($this->connect->delete($this->grandTable));
     }
 
     /**
@@ -282,7 +269,7 @@ class GrandModel
      */
     public function columns() : Array
     {
-        return $this->_get()->columns();
+        return $this->returnQuery($this->_get()->columns());
     }
 
     /**
@@ -294,7 +281,7 @@ class GrandModel
      */
     public function totalColumns() : Int
     {
-        return $this->_get()->totalColumns();
+        return $this->returnQuery($this->_get()->totalColumns());
     }
 
     /**
@@ -306,7 +293,7 @@ class GrandModel
      */
     public function row($printable = false)
     {
-        return $this->_get()->row($printable);
+        return $this->returnQuery($this->_get()->row($printable));
     }
 
     /**
@@ -316,7 +303,7 @@ class GrandModel
      */
     public function result(String $type = 'object')
     {
-        return $this->_get()->result($type);
+        return $this->returnQuery($this->_get()->result($type));
     }
 
     /**
@@ -329,7 +316,7 @@ class GrandModel
      */
     public function increment($columns, Int $increment = 1) : Bool
     {
-        return $this->connect->increment($this->grandTable, $columns, $increment);
+        return $this->returnQuery($this->connect->increment($this->grandTable, $columns, $increment));
     }
 
      /**
@@ -342,7 +329,7 @@ class GrandModel
      */
     public function decrement($columns, Int $decrement = 1) : Bool
     {
-        return $this->connect->decrement($this->grandTable, $columns, $decrement);
+        return $this->returnQuery($this->connect->decrement($this->grandTable, $columns, $decrement));
     }
 
     /**
@@ -354,7 +341,7 @@ class GrandModel
      */
     public function status(String $type = 'row')
     {
-        return $this->connect->status($this->grandTable)->$type();
+        return $this->returnQuery($this->connect->status($this->grandTable)->$type());
     }
 
     /**
@@ -366,7 +353,7 @@ class GrandModel
      */
     public function totalRows(Bool $status = false) : Int
     {
-        return $this->_get()->totalRows($status);
+        return $this->returnQuery($this->_get()->totalRows($status));
     }
 
     /**
@@ -624,19 +611,7 @@ class GrandModel
             $this->options = [];
         }  
 
-        return $this->connectForge->createTable($this->grandTable, $data, $extra);
-    }
-
-    /**
-     * Drop table
-     * 
-     * @param void
-     * 
-     * @return bool
-     */
-    public function drop() : Bool
-    {
-        return $this->connectForge->dropTable($this->grandTable);
+        return $this->returnQuery($this->connectForge->createTable($this->grandTable, $data, $extra), 'forge');
     }
 
     /**
@@ -648,31 +623,23 @@ class GrandModel
      */
     public function truncate() : Bool
     {
-        return $this->connectForge->truncate($this->grandTable);
-    }
-
-    /**
-     * Rename table
-     * 
-     * @param string $newName
-     * 
-     * @return bool
-     */
-    public function rename(String $newName) : Bool
-    {
-        return $this->connectForge->renameTable($this->grandTable, $newName);
+        return $this->returnQuery($this->connectForge->truncate($this->grandTable), 'forge');
     }
 
     /**
      * Add column
      * 
-     * @param array $column
+     * @param array $columns
      * 
      * @return bool
      */
-    public function addColumn(Array $column) : Bool
+    public function add() : Bool
     {
-        return $this->connectForge->addColumn($this->grandTable, $column);
+        $columns = $this->options;
+
+        $this->options = [];
+
+        return $this->returnQuery($this->connectForge->addColumn($this->grandTable, $columns), 'forge');
     }
 
     /**
@@ -682,21 +649,29 @@ class GrandModel
      * 
      * @return bool
      */
-    public function dropColumn($column) : Bool
+    public function drop() : Bool
     {
-        return $this->connectForge->dropColumn($this->grandTable, $column);
+        $columns = $this->options;
+
+        $this->options = [];
+
+        return $this->returnQuery($this->connectForge->dropColumn($this->grandTable, array_keys($columns)), 'forge');
     }
  
     /**
      * Modify column
      * 
-     * @param array $column
+     * @param array $columns
      * 
      * @return bool
      */
-    public function modifyColumn(Array $column) : Bool
+    public function modify() : Bool
     {
-        return $this->connectForge->modifyColumn($this->grandTable, $column);
+        $columns = $this->options;
+
+        $this->options = [];
+
+        return $this->returnQuery($this->connectForge->modifyColumn($this->grandTable, $columns), 'forge');
     }
 
     /**
@@ -706,9 +681,13 @@ class GrandModel
      * 
      * @return bool
      */
-    public function renameColumn(Array $column) : Bool
+    public function rename() : Bool
     {
-        return $this->connectForge->renameColumn($this->grandTable, $column);
+        $columns = $this->options;
+
+        $this->options = [];
+
+        return $this->returnQuery($this->connectForge->renameColumn($this->grandTable, $columns), 'forge');
     }
 
      /**
@@ -720,7 +699,7 @@ class GrandModel
      */
     public function optimize() : String
     {
-        return $this->connectTool->optimizeTables($this->grandTable);
+        return $this->returnQuery($this->connectTool->optimizeTables($this->grandTable), 'tool');
     }
 
     /**
@@ -732,7 +711,7 @@ class GrandModel
      */
     public function repair() : String
     {
-        return $this->connectTool->repairTables($this->grandTable);
+        return $this->returnQuery($this->connectTool->repairTables($this->grandTable), 'tool');
     }
 
     /**
@@ -745,7 +724,7 @@ class GrandModel
      */
     public function backup(String $fileName = NULL, String $path = STORAGE_DIR) : String
     {
-        return $this->connectTool->backup($this->grandTable, $fileName, $path);
+        return $this->returnQuery($this->connectTool->backup($this->grandTable, $fileName, $path), 'tool');
     }
 
     /**
@@ -757,22 +736,11 @@ class GrandModel
      */
     public function error()
     {
-        if( $error = $this->connectForge->error() )
-        {
-            return $error;
-        }
-        elseif( $error = $this->connectTool->error() )
-        {
-            return $error;
-        }
-        elseif( $error = $this->connect->error() )
-        {
-            return $error;
-        }
-        else
-        {
-            return false;
-        }
+        $error = $this->error ?: false;
+
+        $this->error = NULL;
+
+        return $error;
     }
 
     /**
@@ -784,22 +752,11 @@ class GrandModel
      */
     public function stringQuery()
     {
-        if( $string = $this->connectForge->stringQuery() )
-        {
-            return $string;
-        }
-        elseif( $string = $this->connectTool->stringQuery() )
-        {
-            return $string;
-        }
-        elseif( $string = $this->connect->stringQuery() )
-        {
-            return $string;
-        }
-        else
-        {
-            return false;
-        }
+        $query = $this->stringQuery ?: false;
+
+        $this->stringQuery = NULL;
+
+        return $query;
     }
 
     /**
@@ -808,6 +765,7 @@ class GrandModel
     protected function getDatabaseConnections()
     {
         $staticConnection    = defined('static::connection') ? static::connection : NULL;
+
         $this->connect       = Singleton::class('ZN\Database\DB')->differentConnection($staticConnection);
         $this->connectTool   = Singleton::class('ZN\Database\DBTool')->differentConnection($staticConnection);
         $this->connectForge  = Singleton::class('ZN\Database\DBForge')->differentConnection($staticConnection);
@@ -914,29 +872,7 @@ class GrandModel
         # 5.3.7[added]
         $param = $parameters[0] ?? NULL;
 
-        if( is_array($param) )
-        {
-            $data = [$method => $param];
-            
-            if( ! $this->modifyColumn($data) )
-            {  
-                if( ! $this->renameColumn($data) )
-                {
-                    if( ! $this->addColumn($data) )
-                    {
-                        $this->options[$method] = $param;
-                    }
-                }
-            }
-        }
-        elseif( $param === NULL )
-        {
-            $this->dropColumn($method);
-        }
-        else
-        {
-            $this->options[$method] = $param;
-        }
+        $this->options[$method] = $param;
 
         return $this;
     }
@@ -959,5 +895,16 @@ class GrandModel
         }
 
         return $selectTransaction ?? NULL;
+    }
+
+    /**
+     * protected return query
+     */
+    protected function returnQuery($process, $fix = '')
+    {
+        $this->stringQuery = $this->{'connect' . ucfirst($fix)}->stringQuery();
+        $this->error       = $this->{'connect' . ucfirst($fix)}->error();
+
+        return $process;
     }
 }
