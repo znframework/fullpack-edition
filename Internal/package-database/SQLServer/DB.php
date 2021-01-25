@@ -149,7 +149,7 @@ class DB extends DriverMappingAbstract
      */
     public function multiQuery($query, $security = NULL)
     {
-        return $this->query($query, $security);
+        return (bool) $this->query($query, $security);
     }
 
     /**
@@ -319,7 +319,7 @@ class DB extends DriverMappingAbstract
         if( ! empty($this->connect) )
         {
             $error = sqlsrv_errors(SQLSRV_ERR_ERRORS);
-            
+
             return ! empty($error['code']) ? ($error['message'] ?: false) : false;
         }
         else

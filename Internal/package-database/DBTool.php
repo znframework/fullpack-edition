@@ -35,7 +35,7 @@ class DBTool extends Connection
      * 
      * @return array
      */
-    public function listDatabases() : Array
+    public function listDatabases()
     {
         return $this->tool->listDatabases();
     }
@@ -45,7 +45,7 @@ class DBTool extends Connection
      * 
      * @return array
      */
-    public function listTables() : Array
+    public function listTables()
     {
         return $this->tool->listTables();
     }
@@ -57,7 +57,7 @@ class DBTool extends Connection
      * 
      * @return object
      */
-    public function statusTables($table = '*') : \stdClass
+    public function statusTables($table = '*')
     {
         return $this->tool->statusTables($table);
     }
@@ -69,7 +69,7 @@ class DBTool extends Connection
      * 
      * @return string
      */
-    public function optimizeTables($table = '*') : String
+    public function optimizeTables($table = '*')
     {
         return $this->tool->optimizeTables($table);
     }
@@ -83,7 +83,7 @@ class DBTool extends Connection
      * 
      * @return string
      */
-    public function repairTables($table = '*') : String
+    public function repairTables($table = '*')
     {
         return $this->tool->repairTables($table);
     }
@@ -97,7 +97,7 @@ class DBTool extends Connection
      * 
      * @return string
      */
-    public function backup($tables = '*', String $fileName = NULL, String $path = STORAGE_DIR) : String
+    public function backup($tables = '*', String $fileName = NULL, String $path = STORAGE_DIR)
     {
         return $this->tool->backup($tables, $fileName, $path);
     }

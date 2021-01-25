@@ -13,5 +13,33 @@ use ZN\Database\DriverForge;
 
 class DBForge extends DriverForge
 {
+    /**
+     * Drop Foreign Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $constraint = NULL
+     * 
+     * @return string
+     */
+    public function dropForeignKey($table, $constraint = NULL)
+    {
+        return 'ALTER TABLE ' . $table . ' DROP ' . $this->db()->foreignKey() . ' ' . $constraint . ';';
+    }
 
+    /**
+     * Drop Primary Key
+     * 
+     * 5.7.4[added]
+     * 
+     * @param string $table
+     * @param string $constraint = NULL
+     * 
+     * @return string
+     */
+    public function dropPrimaryKey($table, $constraint = NULL)
+    {
+        return 'ALTER TABLE ' . $table . ' DROP ' . $this->db()->primaryKey() . ';';
+    }
 }

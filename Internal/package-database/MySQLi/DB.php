@@ -139,7 +139,7 @@ class DB extends DriverMappingAbstract
                 $this->connect = new MySQLi;
 
                 $this->connect->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, true);
-                $this->connect->ssl_set($ssl['key'] ?? NULL, $ssl['cert'] ?? NULL, $ssl['ca'] ?? NULL, $ssl['capath'] ?? NULL, $ssl['cipher'] ?? NULL);      
+                $this->connect->ssl_set($ssl['key'] ?? NULL, $ssl['cert'] ?? NULL, $ssl['ca'] ?? NULL, $ssl['capath'] ?? NULL, $ssl['cipher'] ?? NULL); 
                 $this->connect->real_connect($host, $user, $pass, $db, $port, NULL, MYSQLI_CLIENT_SSL);
             }  
             else
@@ -203,7 +203,7 @@ class DB extends DriverMappingAbstract
             return false;
         }
 
-        return $this->query = $this->connect->multi_query($query);
+        return (bool) ($this->query = $this->connect->multi_query($query));
     }
 
     /**

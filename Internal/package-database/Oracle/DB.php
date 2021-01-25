@@ -136,7 +136,7 @@ class DB extends DriverMappingAbstract
      */
     public function multiQuery($query, $security = NULL)
     {
-        return $this->query($query, $security);
+        return (bool) $this->query($query, $security);
     }
 
     /**
