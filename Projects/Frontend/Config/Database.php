@@ -93,8 +93,9 @@
 
     'mongodb' =>
     [
-        'database' => 'test',
-        'dns'      => 'localhost',
-        'options'  => []
+        'database'      => 'test',
+        'dns'           => 'localhost',
+        'options'       => [],
+        'driverOptions' => []
     ]
 ];
