@@ -144,9 +144,11 @@ trait CallableTalkingQueries
         if( isset($split[2]) )
         {
             # For delete: tableDeleteColumn($value)
-            if( $method === 'Delete' )
+            if( $method === 'Delete' && isset($parameters[0]) )
             {
-                $this->where($split[2], $data);
+                $prefix = NULL;
+
+                $this->where($split[2], $parameters[0]);
             }
             # For update: tableUpdateColumn($data, $value)
             elseif( $method === 'Update' && isset($parameters[1]) )

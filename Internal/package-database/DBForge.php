@@ -43,11 +43,11 @@ class DBForge extends Connection
 
         switch($method)
         {
-            case 'Create'  : $method = 'createTable';
-            case 'Drop'    : $method = 'dropTable'  ;
-            case 'Alter'   : $method = 'alterTable' ;
-            case 'Rename'  : $method = 'renameTable';
-            case 'Truncate': $method = 'truncate'   ;
+            case 'Create'  : $method = 'createTable'; break;
+            case 'Drop'    : $method = 'dropTable'  ; break;
+            case 'Alter'   : $method = 'alterTable' ; break;
+            case 'Rename'  : $method = 'renameTable'; break;
+            case 'Truncate': $method = 'truncate'   ; break;
             default        : Support::classMethod(get_called_class(), $originMethodName);
         }
 
