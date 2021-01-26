@@ -22,7 +22,7 @@ class Sort
      * 
      * @return array
      */
-    public static function order(Array $array, String $type = NULL, String $flags = 'regular') : Array
+    public static function order(Array $array, $type = NULL, $flags = 'regular') : Array
     {
         $flags = Helper::toConstant($flags, 'SORT_');
 
@@ -35,9 +35,6 @@ class Sort
             case 'insens'       : natcasesort($array);      break;
             case 'natural'      : natsort($array);          break;
             case 'reverse'      : rsort($array, $flags);    break;
-            case 'userassoc'    : uasort($array, $flags);   break;
-            case 'userkey'      : uksort($array, $flags);   break;
-            case 'user'         : usort($array, $flags);    break;
             case 'random'       : shuffle($array);          break;
             default             : sort($array, $flags);
         }
@@ -111,42 +108,16 @@ class Sort
     }
 
     /**
-     * User Assoc Order
+     * Reverse
      * 
      * @param array  $array
      * @param string $flags = 'regular' - options[regular|numeric|string|localeString]
      * 
      * @return array
      */
-    public static function userAssoc(Array $array, String $flag = 'regular') : Array
+    public static function reverse(Array $array, String $flag = 'regular') : Array
     {
-        return self::order($array, 'userassoc', $flag);
-    }
-
-    /**
-     * User Key Order
-     * 
-     * @param array  $array
-     * @param string $flags = 'regular' - options[regular|numeric|string|localeString]
-     * 
-     * @return array
-     */
-    public static function userKey(Array $array, String $flag = 'regular') : Array
-    {
-        return self::order($array, 'userkey', $flag);
-    }
-
-    /**
-     * User Order
-     * 
-     * @param array  $array
-     * @param string $flags = 'regular' - options[regular|numeric|string|localeString]
-     * 
-     * @return array
-     */
-    public static function user(Array $array, String $flag = 'regular') : Array
-    {
-        return self::order($array, 'user', $flag);
+        return self::order($array, 'reverse', $flag);
     }
 
     /**
@@ -159,7 +130,7 @@ class Sort
      */
     public static function insensitive(Array $array) : Array
     {
-        return self::order($array, 'natcasesort');
+        return self::order($array, 'insens');
     }
 
     /**
@@ -171,7 +142,7 @@ class Sort
      */
     public static function natural(Array $array) : Array
     {
-        return self::order($array, 'natsort');
+        return self::order($array, 'natural');
     }
 
     /**
