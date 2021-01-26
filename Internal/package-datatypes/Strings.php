@@ -64,7 +64,8 @@ class Strings extends Factory
     const functionalization = 
     [
         'repeat' => 'str_repeat',
-        'length' => 'mb_strlen'
+        'length' => 'mb_strlen',
+        'split'  => 'str_split'
     ];
 
     /**
