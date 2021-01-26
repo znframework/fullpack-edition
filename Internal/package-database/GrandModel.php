@@ -125,13 +125,14 @@ class GrandModel
         {
             return $this->callColumnProcess($method, $parameters, $transaction);
         }
+        else if( $this->isDatabaseCallMethod($method, $parameters) !== false )
+        {
+            return $this;
+        }
         else
         {
-            # 5.3.7[added]|5.6.5[updated]
             return $this->callColumnForge($method, $parameters);
         }
-
-        Support::classMethod(get_called_class(), $method);
     }
 
     /**
@@ -183,20 +184,6 @@ class GrandModel
     public function isExists(String $column, String $value) : Bool
     {
         return $this->connect->isExists($this->grandTable, $column, $value);
-    }
-
-    /**
-     * Set select columns
-     * 
-     * @param string ...$select
-     * 
-     * @return $this
-     */
-    public function select(...$select)
-    {
-        $this->connect->select(...$select);
-
-        return $this;
     }
 
     /**
@@ -354,218 +341,6 @@ class GrandModel
     public function totalRows(Bool $status = false) : Int
     {
         return $this->returnQuery($this->_get()->totalRows($status));
-    }
-
-    /**
-     * Set where
-     * 
-     * @param mixed  $column
-     * @param string $value   = NULL
-     * @param string $logical = NULL
-     * 
-     * @return $this
-     */
-    public function where($column, String $value = NULL, String $logical = NULL)
-    {
-        $this->connect->where($column, $value, $logical);
-
-        return $this;
-    }
-
-    /**
-     * Set having
-     * 
-     * @param mixed  $column
-     * @param string $value   = NULL
-     * @param string $logical = NULL
-     * 
-     * @return $this
-     */
-    public function having($column, String $value = NULL, String $logical = NULL)
-    {
-        $this->connect->having($column, $value, $logical);
-
-        return $this;
-    }
-
-    /**
-     * Where group
-     * 
-     * @param mixed ...$args
-     * 
-     * @return $this
-     */
-    public function whereGroup(...$args)
-    {
-        $this->connect->whereGroup(...$args);
-
-        return $this;
-    }
-
-    /**
-     * Where having
-     * 
-     * @param mixed ...$args
-     * 
-     * @return $this
-     */
-    public function havingGroup(...$args)
-    {
-        $this->connect->havingGroup(...$args);
-
-        return $this;
-    }
-
-    /**
-     * Inner join
-     * 
-     * @param string $tableColumn
-     * @param string $otherTableColumn
-     * @param string $operator = '='
-     * 
-     * @return $this
-     */
-    public function innerJoin(String $table, String $otherColumn, String $operator = '=')
-    {
-        $this->connect->innerJoin($table, $otherColumn, $operator);
-
-        return $this;
-    }
-
-     /**
-     * Outer join
-     * 
-     * @param string $tableColumn
-     * @param string $otherTableColumn
-     * @param string $operator = '='
-     * 
-     * @return $this
-     */
-    public function outerJoin(String $table, String $otherColumn, String $operator = '=')
-    {
-        $this->connect->outerJoin($table, $otherColumn, $operator);
-
-        return $this;
-    }
-
-    /**
-     * Left join
-     * 
-     * @param string $tableColumn
-     * @param string $otherTableColumn
-     * @param string $operator = '='
-     * 
-     * @return $this
-     */
-    public function leftJoin(String $table, String $otherColumn, String $operator = '=')
-    {
-        $this->connect->leftJoin($table, $otherColumn, $operator);
-
-        return $this;
-    }
-
-    /**
-     * Right join
-     * 
-     * @param string $tableColumn
-     * @param string $otherTableColumn
-     * @param string $operator = '='
-     * 
-     * @return $this
-     */
-    public function rightJoin(String $table, String $otherColumn, String $operator = '=')
-    {
-        $this->connect->rightJoin($table, $otherColumn, $operator);
-
-        return $this;
-    }
-
-    /**
-     * Join
-     * 
-     * @param string $table
-     * @param string $condition
-     * @param string $type = NULL
-     * 
-     * @return $this
-     */
-    public function join(String $table, String $condition, String $type = NULL)
-    {
-        $this->connect->join($table, $condition, $type);
-
-        return $this;
-    }
-
-    /**
-     * Duplicate check 
-     * 
-     * @param string ...$columns
-     * 
-     * @return $this
-     */
-    public function duplicateCheck(...$args)
-    {
-        $this->connect->duplicateCheck(...$args);
-
-        return $this;
-    }
-
-    /**
-     * Duplicate check update
-     * 
-     * @param string ...$columns
-     * 
-     * @return $this
-     */
-    public function duplicateCheckUpdate(...$args)
-    {
-        $this->connect->duplicateCheckUpdate(...$args);
-
-        return $this;
-    }
-
-    /**
-     * Set order by
-     * 
-     * @param mixed  $condition
-     * @param string $type = NULL
-     * 
-     * @return $this
-     */
-    public function orderBy($condition, String $type = NULL)
-    {
-        $this->connect->orderBy($condition, $type);
-
-        return $this;
-    }
-
-    /**
-     * Set group by
-     * 
-     * @param string ...$args
-     * 
-     * @return $this
-     */
-    public function groupBy(...$args)
-    {
-        $this->connect->groupBy(...$args);
-
-        return $this;
-    }
-
-    /**
-     * Set limit
-     * 
-     * @param int $start = 0
-     * @param int $limit = 0
-     * 
-     * @return $this
-     */
-    public function limit($start = 0, Int $limit = 0)
-    {
-        $this->connect->limit($start, $limit);
-
-        return $this;
     }
 
     /**
@@ -878,20 +653,34 @@ class GrandModel
     }
 
     /**
+     * Protected is database call method
+     */
+    protected function isDatabaseCallMethod($method, $parameters)
+    {
+        if( method_exists($this->connect, $method) )
+        {
+            return $this->connect->$method(...$parameters);
+        }
+        else if( method_exists($this->connectForge, $method) )
+        {
+            return $this->connectForge->$method(...$parameters);
+        }
+        else if( method_exists($this->connectTool, $method) )
+        {
+            return $this->connectTool->$method(...$parameters);
+        }
+
+        return false;
+    }
+
+    /**
      * Protected is call column process
      */
     protected function isCallColumnTransaction($method, &$selectTransaction)
     {
-        $transactions = ['row', 'result', 'update', 'delete'];
-
-        foreach( $transactions as $transaction )
+        if( preg_match('/^(row|result|update|delete)/', $method, $match) )
         {
-            if( stripos($method, $transaction) === 0 )
-            {
-                $selectTransaction = $transaction;
-
-                break;
-            }
+            $selectTransaction = $match[1];
         }
 
         return $selectTransaction ?? NULL;
