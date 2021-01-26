@@ -42,6 +42,7 @@ class Arrays extends Factory
             'removelast'                   => 'Arrays\RemoveElement::last',
             'removefirst'                  => 'Arrays\RemoveElement::first',
             'deleteelement'                => 'Arrays\RemoveElement::element',
+            'delete'                       => 'Arrays\RemoveElement::element',
             'order'                        => 'Arrays\Sort::order',
             'sort'                         => 'Arrays\Sort::normal',
             'descending'                   => 'Arrays\Sort::descending',

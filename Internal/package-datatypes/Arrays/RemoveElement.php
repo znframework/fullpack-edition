@@ -58,7 +58,7 @@ class RemoveElement
      * 
      * @return array
      */
-    public static function use(Array $array, $keys, $values) : Array
+    public static function use(Array $array, $keys = [], $values = []) : Array
     {
         if( ! empty($keys) )
         {
