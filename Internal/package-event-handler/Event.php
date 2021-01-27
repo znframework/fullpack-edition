@@ -60,11 +60,11 @@ class Event implements EventInterface
 
         if( $priority )
         {
-            Properties::$listeners[$priority] = $callback;
+            Properties::$listener[$priority] = $callback;
         }
         else
         {
-            Properties::$listeners[] = $callback;
+            Properties::$listener[] = $callback;
         }
 
         return new self;
@@ -77,11 +77,11 @@ class Event implements EventInterface
      */
     public static function create($event = NULL)
     { 
-        $listeners = Properties::$listeners;
+        $listener = Properties::$listener;
 
-        Properties::$listeners = [];
+        Properties::$listener = [];
 
-        Properties::$listeners[$event] = $listeners;
+        Properties::$listeners[$event] = $listener;
 
         return new self;
     }

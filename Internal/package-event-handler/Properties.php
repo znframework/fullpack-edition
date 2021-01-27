@@ -17,4 +17,11 @@ class Properties
      * @var array
      */
     public static $listeners = [];
+
+    /**
+     * Keeps listener
+     * 
+     * @var array
+     */
+    public static $listener = [];
 }
