@@ -620,12 +620,7 @@ class Sender implements SenderInterface
                 $mime = NULL;
             }
         }
-
-        if( $mime )
-        {
-            $fileContent =& $file;
-        }
-
+        
         if( strpos($file, '://') === false && ! file_exists($file) )
         {
             $this->error[] = $this->getLang('email:attachmentMissing', $file);
@@ -885,8 +880,7 @@ class Sender implements SenderInterface
 
             for( $i = 0, $z = 0; $i < count($this->attachments); $i++ )
             {
-                $filename = $this->attachments[$i]['name'][0];
-                $basename = $this->attachments[$i]['name'][1] ?? basename($filename);
+                $basename = $this->attachments[$i]['name'][1];
 
                 $attachment[$z++] = '--'.$this->boundary.$this->lf.
                                     'Content-Type: '.$this->attachments[$i]['type'].'; name="'.$basename.'"'.$this->lf.
