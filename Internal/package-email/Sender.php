@@ -12,6 +12,7 @@
 use ZN\IS;
 use ZN\Lang;
 use ZN\Config;
+use ZN\Datatype;
 use ZN\Security;
 use ZN\Singleton;
 use ZN\Inclusion;
@@ -587,9 +588,22 @@ class Sender implements SenderInterface
      */
     public function attachment(String $file, String $disposition = NULL, String $newName = NULL, $mime = NULL) : Sender
     {
-        if( $mime !== NULL )
+        if( $newName === NULL )
         {
-            if( $mimes = Singleton::class('ZN\Helpers\Mime')->$mime() )
+            $newName = Datatype::divide($file, '/', -1);
+        }
+        
+        # If mime is not specified, treat the extension as a mime.
+        if( $mime === NULL )
+        {
+            $mime = pathinfo($file, PATHINFO_EXTENSION);
+        }
+
+        # Is it a real mime?
+        if( ! strstr($mime, '/') )
+        {
+            # Check it out from the list
+            if( $mimes = (Singleton::class('ZN\Helpers\Mime')->mimeTypes[$mime] ?? NULL) )
             {
                 if( is_array($mimes) )
                 {
@@ -600,7 +614,15 @@ class Sender implements SenderInterface
                     $mime = $mimes;
                 } 
             }
+            # Set as invalid if it's not listed
+            else
+            {
+                $mime = NULL;
+            }
+        }
 
+        if( $mime )
+        {
             $fileContent =& $file;
         }
 
