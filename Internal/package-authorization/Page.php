@@ -12,6 +12,21 @@
 class Page extends PermissionExtends
 {
     /**
+     * Real path
+     * 
+     * @var string
+     */
+    public static $realpath;
+
+    /**
+     * Real path
+     */
+    public static function realpath($realpath = CURRENT_CFURI)
+    {
+        self::$realpath = $realpath;
+    }
+
+    /**
      * Page
      * 
      * @param mixed $roleId   = NULL
@@ -27,6 +42,10 @@ class Page extends PermissionExtends
            return self::predefinedPermissionConfiguration($roleId, $table, $callback, 'page', [$roleId, NULL, NULL, 'page']);
         }
 
-        return self::common(self::$roleId ?? $roleId, NULL, NULL, 'page');
+        $realpath = self::$realpath;
+
+        self::$realpath = NULL;
+
+        return self::common(self::$roleId ?? $roleId, NULL, NULL, 'page', $realpath);
     }
 }

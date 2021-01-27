@@ -21,6 +21,7 @@ class Permission extends Factory
             'end'            => 'Process::end',
             'process'        => 'Process::use',
             'page'           => 'Page::use',
+            'realpath'       => 'Page::realpath:this',
             'post'           => 'Method::post',
             'get'            => 'Method::get',
             'request'        => 'Method::request',
@@ -29,7 +30,8 @@ class Permission extends Factory
             'setpermrules'   => 'RoleRules::setPermRules',
             'setnopermrules' => 'RoleRules::setNopermRules',
             'getpermrules'   => 'RoleRules::getPermRules',
-            'getnopermrules' => 'RoleRules::getNopermRules'
+            'getnopermrules' => 'RoleRules::getNopermRules',
+            
         ]
     ];
 }

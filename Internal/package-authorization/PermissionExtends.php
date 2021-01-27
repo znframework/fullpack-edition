@@ -147,10 +147,11 @@ class PermissionExtends
      * @param mixed $process  = NULL
      * @param mixed $object   = NULL
      * @param mixed $function = NULL
+     * @param mixed $realpath = NULL
      * 
      * @return mixed
      */
-    protected static function common($roleId = 6, $process = NULL, $object = NULL, $function = NULL)
+    protected static function common($roleId = 6, $process = NULL, $object = NULL, $function = NULL, $realpath = NULL)
     {
         self::$permission = self::getConfigByType($function);
 
@@ -169,7 +170,7 @@ class PermissionExtends
         }
         else
         {
-            $currentUrl = $process ?? Base::currentPath();
+            $currentUrl = $process ?? $realpath ?? Base::currentPath();
         }
 
         $object = $object ?? true;
