@@ -14,52 +14,45 @@ interface EventInterface
     /**
      * Run event by event name
      * 
-     * @param string $eventName
+     * @param string $event
      * @param array  $parameters
      * 
      * @return bool
      */
-    public static function run(String $eventName, Array $parameters = []) : Bool;
+    public static function run(String $event, Array $parameters = []) : Bool;
 
     /**
      * Insert a listener.
      * 
-     * @param string|callable $eventName
      * @param callable|int    $callback
      * @param int|null        $priority
      */
-    public static function insert($eventName = NULL, $callback = NULL, $priority = NULL) : Event;
+    public static function callback($callback = NULL, $priority = NULL) : Event;
+
+    /**
+     * Insert a listener.
+     * 
+     * @param string $event
+     */
+    public static function create($event = NULL);
 
     /**
      * Select a listener.
      * 
-     * @param string $eventName
+     * @param string $event
+     * @param int    $priority = NULL
      * 
-     * @return array
+     * @return array|callback
      */
-    public static function selectListener(String $eventName) : Array;
-
-    /**
-     * Select all listeners.
-     * 
-     * @return array
-     */
-    public static function selectListeners() : Array;
+    public static function get(String $event, Int $priority = NULL);
 
     /**
      * Delete a listener.
      * 
-     * @param string $eventName
-     * @param mixed  $callback = NULL
+     * @param string $event
+     * @param int    $priority = NULL
      * 
      * @return bool
      */
-    public static function deleteListener(String $eventName, $callback = NULL) : Bool;
-
-    /**
-     * Delete all listeners.
-     * 
-     * @return bool
-     */
-    public static function deleteListeners() : Bool;
+    public static function remove(String $event, Int $priority = NULL) : Bool;
 }

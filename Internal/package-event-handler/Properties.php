@@ -17,11 +17,4 @@ class Properties
      * @var array
      */
     public static $listeners = [];
-
-    /**
-     * Keep start listener name.
-     * 
-     * @var string
-     */
-    public static $startListenerName;
 }

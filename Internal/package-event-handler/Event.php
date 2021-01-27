@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\EventHandler\Exception\InvalidCallbackMethodException;
+
 class Event implements EventInterface
 {
     /**
@@ -19,26 +21,67 @@ class Event implements EventInterface
     /**
      * Run event by event name
      * 
-     * @param string $eventName
+     * @param string $event
      * @param array  $parameters
      * 
      * @return bool
      */
-    public static function run(String $eventName, Array $parameters = []) : Bool
+    public static function run(String $event, Array $parameters = []) : Bool
     {
-        return Run::event($eventName, $parameters);
+        $events = self::get($event);
+        
+        $return = NULL;
+
+        foreach( $events as $e )
+        {
+            $return = $e(...$parameters);
+        }
+
+        if( $return === false )
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Insert a listener.
      * 
-     * @param string|callable $eventName
      * @param callable|int    $callback
      * @param int|null        $priority
      */
-    public static function insert($eventName = NULL, $callback = NULL, $priority = NULL) : Event
+    public static function callback($callback = NULL, $priority = NULL) : Event
     {
-        Listener::insert($eventName, $callback, $priority);
+        if( ! is_callable($callback) )
+        {
+            throw new InvalidCallbackMethodException;
+        }
+
+        if( $priority )
+        {
+            Properties::$listeners[$priority] = $callback;
+        }
+        else
+        {
+            Properties::$listeners[] = $callback;
+        }
+
+        return new self;
+    }
+
+    /**
+     * Insert a listener.
+     * 
+     * @param string $event
+     */
+    public static function create($event = NULL)
+    { 
+        $listeners = Properties::$listeners;
+
+        Properties::$listeners = [];
+
+        Properties::$listeners[$event] = $listeners;
 
         return new self;
     }
@@ -46,45 +89,54 @@ class Event implements EventInterface
     /**
      * Select a listener.
      * 
-     * @param string $eventName
+     * @param string $event
+     * @param int    $priority = NULL
      * 
-     * @return array
+     * @return array|callback
      */
-    public static function selectListener(String $eventName) : Array
+    public static function get(String $event, Int $priority = NULL)
     {
-        return Listener::select($eventName);
-    }
+        if ( ! isset(Properties::$listeners[$event]))
+		{
+			return [];
+        }
 
-    /**
-     * Select all listeners.
-     * 
-     * @return array
-     */
-    public static function selectListeners() : Array
-    {
-        return Listener::selectAll();
+        $listeners = Properties::$listeners[$event];
+        
+        ksort($listeners);
+
+        if( $priority )
+        {
+            return $listeners[$priority] ?? [];
+        }
+
+        return $listeners;
     }
 
     /**
      * Delete a listener.
      * 
-     * @param string $eventName
-     * @param mixed  $callback = NULL
+     * @param string $event
+     * @param int    $priority = NULL
      * 
      * @return bool
      */
-    public static function deleteListener(String $eventName, $callback = NULL) : Bool
+    public static function remove(String $event, Int $priority = NULL) : Bool
     {
-        return Listener::delete($eventName, $callback);
-    }
+        if( isset(Properties::$listeners[$event][$priority]) )
+        {
+            unset(Properties::$listeners[$event][$priority]);
 
-    /**
-     * Delete all listeners.
-     * 
-     * @return bool
-     */
-    public static function deleteListeners() : Bool
-    {
-        return Listener::deleteAll();
+            return true;
+        }
+
+        if( $priority === NULL && isset(Properties::$listeners[$event]) )
+        {
+            unset(Properties::$listeners[$event]);
+
+            return true;
+        }
+
+        return false;
     }
 }
