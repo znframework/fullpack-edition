@@ -28,7 +28,7 @@ trait Speech
 
         array_unshift($parameters, $method);
 
-        return Lang::select($config, ...$parameters);
+        return Lang::default('ZN\CoreDefaultLanguage')::select($config, ...$parameters);
     }
 
     /**
@@ -38,7 +38,7 @@ trait Speech
      */
     public static function all() : Array
     {
-        return Lang::select(self::getOnlyClassName());
+        return Lang::default('ZN\CoreDefaultLanguage')::select(self::getOnlyClassName());
     }
 
     /**

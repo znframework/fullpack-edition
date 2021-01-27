@@ -16,6 +16,6 @@ class FileNotFoundException extends Exception
 {
     public function __construct($file)
     {
-        parent::__construct(Lang::select('Exception', 'fileNotFound', $file));
+        parent::__construct(Lang::default('ZN\CoreDefaultLanguage')::select('Exception', 'fileNotFound', $file));
     }
 }

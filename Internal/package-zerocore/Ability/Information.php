@@ -73,7 +73,7 @@ trait Information
             }
             else
             {
-                return Lang::select('Success', 'success');
+                return Lang::default('ZN\CoreDefaultLanguage')::select('Success', 'success');
             }
         }
         else

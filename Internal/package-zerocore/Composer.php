@@ -63,7 +63,7 @@ class Composer
     {
         $path = Base::suffix($composer) . self::$path;
 
-        Helper::report('Error', Lang::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
+        Helper::report('Error', Lang::default('ZN\CoreDefaultLanguage')::select('Error', 'fileNotFound', $path) ,'AutoloadComposer');
 
         throw new Exception('Error', 'fileNotFound', $path);
     }

@@ -1,5 +1,5 @@
 <?php
-$lang = ZN\Lang::select('IndividualStructures'); 
+$lang = ZN\Lang::default('ZN\CoreDefaultLanguage')::select('IndividualStructures'); 
 
 require __DIR__ . '/Styles.php';
 ?>

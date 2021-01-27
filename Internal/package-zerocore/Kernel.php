@@ -346,7 +346,7 @@ class Kernel
 
         if( PROJECT_CONFIG['log']['createFile'] === true && $errorLast = Errors::last() )
         {
-            $lang    = Lang::select('Templates');
+            $lang    = Lang::default('ZN\ErrorHandling\ErrorHandlingDefaultLanguage')::select('Templates');
             $message = $lang['line']   .':'.$errorLast['line'].', '.
                        $lang['file']   .':'.$errorLast['file'].', '.
                        $lang['message'].':'.$errorLast['message'];

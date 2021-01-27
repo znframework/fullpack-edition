@@ -29,7 +29,9 @@ class ConsoleDefaultLanguage
     [
         'upgradeSuccess'   => 'The upgrade was successfully completed.',
         'alreadyVersion'   => 'The version you are using is already up to date!',
-        'composerUpdate'   => 'Can not upgrade! Please run the composer update command from the console.'
+        'composerUpdate'   => 'Can not upgrade! Please run the composer update command from the console.',
+        'success'          => 'The operation completed successfully.',
+        'error'            => 'Operation failed!'
      
     ];
     
@@ -37,6 +39,8 @@ class ConsoleDefaultLanguage
     [
         'upgradeSuccess'   => 'Yükseltme işlemi başarı ile tamamlandı.',
         'alreadyVersion'   => 'Kullandığınız sürüm zaten güncel!',
-        'composerUpdate'   => 'Yükseltme işlemi yapılamıyor! Lütfen konsoldan composer update komutunu çalıştırarak deneyin.'
+        'composerUpdate'   => 'Yükseltme işlemi yapılamıyor! Lütfen konsoldan composer update komutunu çalıştırarak deneyin.',
+        'success'          => 'İşlem başarı ile tamamlandı.',
+        'error'            => 'İşlem başarısız.'
     ];
 }

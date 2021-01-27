@@ -25,7 +25,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     public static $errorCodes = 
     [
-        0       => 'ERROR',
+        1       => 'ERROR',
         2       => 'WARNING',
         4       => 'PARSE',
         8       => 'NOTICE',
@@ -68,7 +68,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
     {
         $debug = self::throwFinder(debug_backtrace(2), 0, 2);
 
-        if( $lang = Lang::select($message, $key, $send) )
+        if( $lang = Lang::default('ZN\CoreDefaultLanguage')::select($message, $key, $send) )
         {
             $message = '['.self::cleanInternalPrefixFromClassName($debug['class']).'::'.$debug['function'].'()] '.$lang;
         }
@@ -99,7 +99,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             $no    = 'NULL';
         }
 
-        $lang    = Lang::select('Templates');
+        $lang    = Lang::default('ZN\ErrorHandling\ErrorHandlingDefaultLanguage')::select('Templates');
         $message = $lang['line'].':'.$line.', '.$lang['file'].':'.$file.', '.$lang['message'].':'.$msg;
 
         Helper::report('ExceptionError', $message, 'ExceptionError');

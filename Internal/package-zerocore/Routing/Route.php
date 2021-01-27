@@ -225,7 +225,7 @@ class Route extends FilterProperties implements RouteInterface
     {
         if( ! $routeShow404 = $this->getConfig['show404'] )
         {
-            Helper::report('Error', Lang::select('Error', $lang, $function), $report);
+            Helper::report('Error', Lang::default('ZN\CoreDefaultLanguage')::select('Error', $lang, $function), $report);
             
             exit(Errors::message('Error', $lang, $function));
         }

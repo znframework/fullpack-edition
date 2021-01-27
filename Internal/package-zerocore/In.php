@@ -294,7 +294,7 @@ class In
 
             if( ! method_exists($controllerClass, $controllerFunc) || ! (new ReflectionMethod($controllerClass, $controllerFunc))->isPublic() )
             {
-                Helper::report('Error', Lang::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
+                Helper::report('Error', Lang::default('ZN\CoreDefaultLanguage')::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
 
                 throw new Exception('Error', 'callUserFuncArrayError', $controllerFunc);
             }

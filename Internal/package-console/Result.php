@@ -32,8 +32,8 @@ class Result
 
         $this->return = Buffering\Callback::do(function() use($result)
         {
-            $success = Lang::select('Success', 'success');
-            $error   = Lang::select('Error', 'error');
+            $success = Lang::default('ZN\Console\ConsoleDefaultLanguage')::select('Success', 'success');
+            $error   = Lang::default('ZN\Console\ConsoleDefaultLanguage')::select('Error', 'error');
             $nodata  = 'No Data';
     
             if( $result === true || $result === NULL )

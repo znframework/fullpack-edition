@@ -27,7 +27,7 @@ class Response
 
         if( empty($invalidRequest['page']) )
         {
-            Helper::report('Error', $getInvalidRequestLang = Lang::select('Error', 'invalidRequest'), 'InvalidRequestError');
+            Helper::report('Error', $getInvalidRequestLang = Lang::default('ZN\CoreDefaultLanguage')::select('Error', 'invalidRequest'), 'InvalidRequestError');
             
             Base::trace($getInvalidRequestLang);
         }

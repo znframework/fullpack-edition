@@ -55,7 +55,7 @@ class Errors
 
         if( $errorMsg !== NULL )
         {
-            $str .= Lang::select($langFile, $errorMsg, $ex);
+            $str .= Lang::default('ZN\CoreDefaultLanguage')::select($langFile, $errorMsg, $ex);
         }
         else
         {

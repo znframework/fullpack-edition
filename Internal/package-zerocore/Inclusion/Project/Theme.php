@@ -42,7 +42,6 @@ class Theme
 
         define('CURRENT_THEME', $active);
         define('CURRENT_THEME_DIR', THEMES_DIR . self::$active);
-        define('CURRENT_THEME_URL', Request::getBaseUrl(CURRENT_THEME_DIR));
     }
 
     /**

@@ -13,7 +13,7 @@ use Migration;
 
 /**
  * @command multidown-migration
- * @description multidown-migration {name1, name2 ...} 
+ * @description multidown-migration {migration-name} 
  */
 class MultidownMigration
 {

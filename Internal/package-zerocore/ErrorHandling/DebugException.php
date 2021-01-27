@@ -25,7 +25,7 @@ class DebugException
      */
     public function __construct(String $file, String $message = NULL, $changed = NULL)
     {
-        if( $data = Lang::select($file, $message, $changed) )
+        if( $data = Lang::default('ZN\CoreDefaultLanguage')::select($file, $message, $changed) )
         {
             $message = $data;
         }

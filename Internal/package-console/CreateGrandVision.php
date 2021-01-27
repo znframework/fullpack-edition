@@ -21,7 +21,7 @@ class CreateGrandVision
     /**
      * Magic constructor
      * 
-     * @param string $command
+     * @param string $command = NULL
      * 
      * @return void
      */
