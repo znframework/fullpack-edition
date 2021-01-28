@@ -12,6 +12,44 @@
 interface StoreInterface
 {
     /**
+     * Write
+     * 
+     * @param string $file
+     * @param mixed  $data
+     * 
+     * @return string
+     */
+    public static function write(String $file, $data) : Bool;
+
+    /**
+     * Read
+     * 
+     * @param string $file
+     * @param bool   $array = false
+     * 
+     * @return mixed
+     */
+    public static function read(String $file, Bool $array = false);
+
+    /**
+     * Read object
+     * 
+     * @param string $file
+     * 
+     * @return object
+     */
+    public static function readObject(String $file);
+
+    /**
+     * Read array
+     * 
+     * @param string $file
+     * 
+     * @return array
+     */
+    public static function readArray(String $file) : Array;
+
+    /**
      * Encode
      * 
      * @param mixed  $data

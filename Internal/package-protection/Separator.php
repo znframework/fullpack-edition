@@ -13,6 +13,8 @@ use stdClass;
 
 class Separator extends StoreAbstract implements StoreInterface
 {
+    use StoreTrait;
+    
     /**
      * Keeps key
      * 

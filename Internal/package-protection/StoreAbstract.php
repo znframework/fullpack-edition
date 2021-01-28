@@ -9,6 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
+use ZN\Protection\Exception\ScalarDataException;
+
 abstract class StoreAbstract
 {
     /**

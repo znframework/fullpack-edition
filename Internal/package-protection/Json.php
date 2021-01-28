@@ -13,6 +13,8 @@ use ZN\Helper;
 
 class Json extends StoreAbstract implements StoreInterface
 {
+    use StoreTrait;
+
     /**
      * Encode
      * 

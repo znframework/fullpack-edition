@@ -13,6 +13,8 @@ use stdClass;
 
 class Serial extends StoreAbstract implements StoreInterface
 {
+    use StoreTrait;
+    
     /**
      * Encode
      * 
