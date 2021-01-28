@@ -217,7 +217,7 @@ class Info
     {
         $file = self::rpath($file);
 
-        if( ! is_file($file) )
+        if( ! file_exists($file) )
         {
             throw new Exception\FileNotFoundException(NULL, $file);
         }

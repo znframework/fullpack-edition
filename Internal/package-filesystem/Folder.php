@@ -19,6 +19,7 @@ class Folder extends Factory
         [
             'exists'      => 'Info::existsFolder',
             'fileinfo'    => 'Info::fileInfo',
+            'info'        => 'Info::get',
             'basepath'    => 'Info::basePath',
             'disk'        => 'Info::disk',
             'totalspace'  => 'Info::totalSpace',
