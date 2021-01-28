@@ -68,7 +68,7 @@ class Forge
         }
 
         $contents        = file_get_contents($file);
-        $replaceContents = Regex::replace($pattern, $replace, $contents);
+        $replaceContents = (new Regex)->replace($pattern, $replace, $contents);
 
         if( $contents !== $replaceContents )
         {
