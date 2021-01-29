@@ -16,17 +16,17 @@ class Security
      * 
      * @return string 
      */
-    public static function getCSRFTokenKey()
+    public static function getCSRFTokenKey($key = 'token')
     {
-        return $_SESSION['token'];
+        return $_SESSION[$key];
     }
 
     /**
      * Creates CSRF Token Key
      */
-    public static function createCSRFTokenKey()
+    public static function createCSRFTokenKey($key = 'token')
     {
-       $_SESSION['token'] = self::createHashCode();
+       $_SESSION[$key] = self::createHashCode();
     }
 
     /**
@@ -37,7 +37,7 @@ class Security
      * 
      * @return void
      */
-    public static function CSRFToken(String $uri = NULL, String $type = 'post')
+    public static function CSRFToken(String $uri = NULL, String $type = 'post', $key = 'token')
     {
         switch( $type )
         {
@@ -49,8 +49,8 @@ class Security
         {
             Storage::start();
 
-            $mtoken = $method['token']   ?? self::createHashCode(16);
-            $stoken = $_SESSION['token'] ?? self::createHashCode(8);
+            $mtoken = $method[$key]   ?? self::createHashCode(16);
+            $stoken = $_SESSION[$key] ?? self::createHashCode(8);
 
             if( $mtoken !== $stoken )
             {

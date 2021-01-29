@@ -29,6 +29,7 @@ class Guard extends Factory
             'csrfpost'           => 'CrossSiteRequestForgery::token',
             'csrfget'            => 'CrossSiteRequestForgery::get',
             'csrftokenkey'       => 'CrossSiteRequestForgery::key',
+            'validcsrftokenkey'  => 'CrossSiteRequestForgery::validToken',
             'htmlencode'         => 'Html::encode',
             'htmldecode'         => 'Html::decode',
             'htmltagclean'       => 'Html::tagClean',
