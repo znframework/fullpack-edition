@@ -215,15 +215,27 @@ class File
                     if( is_array($function) )
                     {
                         $subValue = '';
+                        
 
                         foreach( $function as $key => $val )
                         {
+                            $subValue = NULL;
+                            
                             if( ! is_numeric($key) )
                             {
                                 $subValue = $val;
                                 $val      = $key;
                             }
 
+                            $vartype = NULL;
+
+                            if( strstr($val, ' ') )
+                            {
+                                $varEx = explode(' ', $val);
+                                $val = $varEx[1];
+                                $vartype = $varEx[0] . ' ';
+                            }
+                            
                             if( strpos($val, '...') === 0 )
                             {
                                 $varprefix = str_replace('...', '...$', $val);
@@ -234,7 +246,7 @@ class File
                                 $varprefix = '$'.$val;
                             }
 
-                            $parameters .= $varprefix.( ! empty($subValue) ? ' = '.$subValue : '').', ';
+                            $parameters .= $vartype . $varprefix.( ! empty($subValue) ? ' = '.$subValue : '').', ';
                         }
 
                         $parameters = rtrim($parameters, ', ');
