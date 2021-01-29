@@ -10,6 +10,27 @@
  */
 
 /**
+ * Data length
+ * 
+ * @param mixed
+ * 
+ * @return int
+ */
+function length($data) : Int
+{
+    if( is_scalar($data) )
+    {
+        return strlen($data);
+    }
+    else if( is_object($data) || is_array($data) )
+    {
+        return count($data);
+    }
+
+    return 0;
+}
+
+/**
  * Against
  * 
  * Returns the value based on the key matching the parameter.
