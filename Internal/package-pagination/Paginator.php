@@ -723,7 +723,7 @@ class Paginator implements PaginatorInterface
     {
         if( $this->output === 'bootstrap' )
         {
-            $attr = NULL;
+            $attr = ' class="page-link"';
         }
 
         return '<a href="'.$this->checkGetRequest($var).'"'.$this->getAttributesForAjaxProcess($var).$attr.'>'.$val.'</a>';
@@ -736,6 +736,8 @@ class Paginator implements PaginatorInterface
     {
         if( $this->output === 'bootstrap' )
         {
+            $fix = preg_replace('/class\=\"(.*?)\"/', 'class="page-item $1"', $fix);
+
             return '<li'.$fix.'>' . $link . '</li>';
         }
 
