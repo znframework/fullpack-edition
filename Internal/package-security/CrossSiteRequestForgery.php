@@ -37,4 +37,16 @@ class CrossSiteRequestForgery
     {
         self::token($uri, 'get');
     }
+
+    /**
+     * Get string token
+     * 
+     * @return string
+     */
+    public static function key()
+    {
+        Security::createCSRFTokenKey();
+
+        return Security::getCSRFTokenKey();
+    }
 }
