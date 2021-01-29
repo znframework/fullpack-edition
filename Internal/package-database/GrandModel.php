@@ -340,7 +340,7 @@ class GrandModel
      */
     public function totalRows(Bool $status = false) : Int
     {
-        return $this->returnQuery($this->_get()->totalRows($status));
+        return $this->returnQuery($this->getCurrent()->totalRows($status));
     }
 
     /**
@@ -354,16 +354,7 @@ class GrandModel
      */
     public function pagination(String $url = NULL, Array $settings = [], Bool $output = true)
     {
-        if( ! empty($this->get) )
-        {
-            $get = $this->get;
-        }
-        else
-        {
-            $get = $this->_get();
-        }
-
-        return $get->pagination($url, $settings, $output);
+        return $this->getCurrent()->pagination($url, $settings, $output);
     }
 
     /**
@@ -695,5 +686,22 @@ class GrandModel
         $this->error       = $this->{'connect' . ucfirst($fix)}->error();
 
         return $process;
+    }
+
+    /**
+     * Protected get current
+     */
+    protected function getCurrent()
+    {
+        if( ! empty($this->get) )
+        {
+            $get = $this->get;
+        }
+        else
+        {
+            $get = $this->_get();
+        }
+
+        return $get;
     }
 }
