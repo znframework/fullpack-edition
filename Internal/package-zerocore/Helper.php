@@ -130,8 +130,11 @@ class Helper
      */
     public static function toConstant(String $var, String $prefix = NULL, String $suffix = NULL)
     {
-        $var = implode('_', Datatype::splitUpperCase($var));
-        
+        if( ! ctype_upper($var) && ! defined($var) )
+        {
+            $var = implode('_', Datatype::splitUpperCase($var));
+        }
+       
         $variable = strtoupper($prefix . $var . $suffix);
 
         if( defined($variable) )

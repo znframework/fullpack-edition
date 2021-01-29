@@ -408,7 +408,7 @@ class Converter
             }
         }
 
-        return str_replace( $chars[strtolower($type)], $chars[strtolower($changeType)], $string );
+        return trim(str_replace( $chars[strtolower($type)], $chars[strtolower($changeType)], $string ));
     }
 
     /**
