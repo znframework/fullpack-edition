@@ -9,9 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-class Cleaner
+class Symbol
 {
     use ZN\Ability\Facade;
 
-    const target = 'ZN\Helpers\Cleaner';
+    const target = 'ZN\Helpers\Symbol';
 }

@@ -82,7 +82,7 @@ class Reflect
             }
             else
             {
-                $class = $class->getMethod($function);
+                $class = $this->method($class, $function);
             }
         } 
         
