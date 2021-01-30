@@ -87,6 +87,11 @@ trait StoreTrait
      */
     public static function readArray(String $file) : Array
     {
+        if( is_file($file) && strstr(get_called_class(), 'Separator') )
+        {
+            return (array) self::decode(file_get_contents($file));
+        }
+
         return self::read($file, true);
     }
 }
