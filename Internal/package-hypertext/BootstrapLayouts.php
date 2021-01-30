@@ -152,7 +152,7 @@ trait BootstrapLayouts
      */
     protected function createBootstrapGridsystem()
     {
-        $return = $this->class($this->bootstrapContainerDivElementAttributes ?? 'container')->div($this->getBootstrapGridsystem());
+        $return = (string) $this->class($this->bootstrapContainerDivElementAttributes ?? 'container')->div($this->getBootstrapGridsystem());
 
         $this->bootstrapGridsystemRow = '';
 

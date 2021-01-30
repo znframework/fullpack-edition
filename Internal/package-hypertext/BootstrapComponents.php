@@ -12,6 +12,7 @@
 use ZN\Base;
 use ZN\Config;
 use ZN\Datatype;
+use ZN\Buffering;
 use ZN\Request\URI;
 
 trait BootstrapComponents
