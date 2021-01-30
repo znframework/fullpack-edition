@@ -52,6 +52,8 @@ class Insert extends MLExtends
 
         if( $json !== $datas )
         {
+            Properties::$select = NULL;
+
             return file_put_contents($createFile, json_encode($json, JSON_UNESCAPED_UNICODE));
         }
         else

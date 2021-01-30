@@ -28,8 +28,8 @@ class ML extends Factory
             'deleteall'    => 'Delete::all',
             'grid'         => 'Grid::create',
             'table'        => 'Grid::create',
-            'limit'        => 'Grid::limit:this',
-            'url'          => 'Grid::url:this'
+            'limit'        => 'Grid::limit',
+            'url'          => 'Grid::url'
         ]
     ];
 
@@ -42,6 +42,8 @@ class ML extends Factory
      */
     public function lang(String $lang = 'tr') : Bool
     {
+        Properties::$select = NULL;
+        
         return Lang::set($lang);
     }
 }

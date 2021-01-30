@@ -16,13 +16,6 @@ use ZN\Filesystem;
 class Select extends MLExtends
 {
     /**
-     * Get select lang.
-     * 
-     * @var string
-     */
-    protected $select = NULL;
-
-    /**
      * Select word.
      * 
      * @param string $key     = NULL
@@ -30,11 +23,11 @@ class Select extends MLExtends
      */
     public function do(String $key = NULL, $convert = NULL)
     {
-        if( $this->select === NULL )
+        if( Properties::$select === NULL )
         {
-            if( is_file($this->lang) )
+            if( is_file($this->getFilePath()) )
             {
-                $read   = file_get_contents($this->lang);
+                $read   = file_get_contents($this->getFilePath());
             }
 
             if( is_file($this->externalLang) )
@@ -42,25 +35,25 @@ class Select extends MLExtends
                 $eread  = file_get_contents($this->externalLang);
             }
 
-            $read          = json_decode($read  ?? '', true);
-            $eread         = json_decode($eread ?? '', true);
-            $this->select  = array_merge((array) $eread, (array) $read);
+            $read                = json_decode($read  ?? '', true);
+            $eread               = json_decode($eread ?? '', true);
+            Properties::$select  = array_merge((array) $eread, (array) $read);
         }
         
         if( $key === NULL )
         {
-            return $this->select;
+            return Properties::$select;
         }
 
-        if( isset($this->select[$key]) )
+        if( isset(Properties::$select[$key]) )
         {
             if( is_array($convert) )
             {
-                $return = str_replace(array_keys($convert), array_values($convert), $this->select[$key]);
+                $return = str_replace(array_keys($convert), array_values($convert), Properties::$select[$key]);
             }
             else
             {
-                $return = str_replace('%', $convert, $this->select[$key]);
+                $return = str_replace('%', $convert, Properties::$select[$key]);
             }
         }
         else

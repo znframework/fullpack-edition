@@ -49,13 +49,6 @@ class MLExtends
      */
     protected $directory = 'ml/';
 
-    /**
-     * Keeps language path
-     * 
-     * @var string 
-     */
-    protected $lang;
-
    /**
      * Keeps external language path
      * 
@@ -87,8 +80,15 @@ class MLExtends
 
         $getLang = Lang::get();
 
-        $this->lang         = $this->appdir.$getLang.$this->extension;
         $this->externalLang = $this->externalAppdir.$getLang.$this->extension;
+    }
+
+    /**
+     * protected get file path
+     */
+    protected function getFilePath()
+    {
+        return $this->appdir . Lang::get(). $this->extension;
     }
 
     /**
@@ -100,6 +100,6 @@ class MLExtends
      */
     protected function _langFile($app)
     {
-        return $this->appdir.$app.$this->extension;
+        return $this->appdir . $app . $this->extension;
     }
 }

@@ -49,6 +49,8 @@ class Delete extends MLExtends
             }
         }
 
+        Properties::$select = NULL;
+
         return file_put_contents($createFile, json_encode($json, JSON_UNESCAPED_UNICODE));
     }
 
@@ -61,6 +63,8 @@ class Delete extends MLExtends
      */
     public function all($app = NULL) : Bool
     {
+        Properties::$select = NULL;
+        
         if( ! is_string($app) )
         {
             if( $app === NULL )
