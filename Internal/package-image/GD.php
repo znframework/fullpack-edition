@@ -81,9 +81,13 @@ class GD implements GDInterface
     {   
         if( ! is_numeric($width) )
         {
+            # width -> image
             if( $this->mime->type($width, 0) === 'image' )
             {
-                $this->createImageCanvas($width);
+                # width  -> image
+                # height -> width
+                # rgb    -> height
+                $this->createImageCanvas($width, $height, $rgb);
             }
             else
             {
@@ -92,7 +96,7 @@ class GD implements GDInterface
         }
         else
         {
-            $this->createEmptyCanvas($width, $height, $rgb, $real, $p1);
+            $this->createEmptyCanvas($width, $height, $rgb, $real);
         }
         
         $this->defaultRevolvingVariables();
@@ -869,9 +873,10 @@ class GD implements GDInterface
     {
         $this->canvas = imagecropauto
         (
-            $this->canvas, Helper::toConstant($mode, 'IMG_CROP_'), 
-            $this->threshold ?? $threshold, 
-            $this->color ?? $color
+            $this->canvas, 
+            Helper::toConstant($mode, 'IMG_CROP_'), 
+            $threshold, 
+            $mode === 'threshold' ? $this->allocate($color) : $color
         );
 
         $this->defaultRevolvingVariables();
@@ -1207,19 +1212,19 @@ class GD implements GDInterface
     /**
      * Protected create image canvas
      */
-    protected function createImageCanvas($image)
+    protected function createImageCanvas($image, $width, $height)
     {
         $this->type = $this->mime->type($image, 1);
             
-        $this->imageSize = ! isset($this->width) ? getimagesize($image) : [$this->width ?? 0, $this->height ?? 0];
+        $this->imageSize = ! isset($width) ? getimagesize($image) : [(int) $width, (int) $height];
 
         $this->canvas = $this->createFrom($image,
         [
             # For type gd2p
-            'x'      => $this->x      ?? 0,
-            'y'      => $this->y      ?? 0,
-            'width'  => $this->width  ?? $this->imageSize[0],
-            'height' => $this->height ?? $this->imageSize[1]
+            'x'      => 0,
+            'y'      => 0,
+            'width'  => $this->imageSize[0],
+            'height' => $this->imageSize[1]
         ]);
     }
 
@@ -1228,11 +1233,6 @@ class GD implements GDInterface
      */
     protected function createEmptyCanvas($width, $height, $rgb, $real)
     {
-        $width  = $this->width  ?? $width;
-        $height = $this->height ?? $height;
-        $rgb    = $this->color  ?? $rgb;
-        $real   = $this->real   ?? $real;
-
         $this->imageSize = [$width, $height];
 
         if( $real === false )
@@ -1328,6 +1328,7 @@ class GD implements GDInterface
         $this->save    = NULL;
         $this->output  = true;
         $this->quality = NULL;
+        $this->type    = NULL;
     }
 
     /**
