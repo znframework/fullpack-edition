@@ -377,7 +377,7 @@ trait BootstrapComponents
 
         $this->isBootstrapAttribute('dismiss-button', function($attribute) use(&$content)
         {
-            $content .= $this->buttonDismissButton($this->spanDismissButton($attribute));  
+            $content .= $this->buttonDismissButton((string) $this->spanDismissButton($attribute));  
         });
 
         return $this->role('alert')->class('alert alert-' . $type)->div($content);
