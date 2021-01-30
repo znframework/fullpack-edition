@@ -41,28 +41,27 @@ class CrossSiteRequestForgery
     /**
      * Get string token
      * 
-     * @param string $token = 'token'
+     * @param string $name = 'token'
      * 
      * @return string
      */
-    public static function key(String $key = 'token')
+    public static function key(String $name = 'token')
     {
-        Security::createCSRFTokenKey($key);
+        Security::createCSRFTokenKey($name);
 
-        return Security::getCSRFTokenKey($key);
+        return Security::getCSRFTokenKey($name);
     }
 
     /**
      * Valid token
      * 
-     * @param string $token = 'token'
-     * @param string $uri   = NULL
+     * @param string $name  = 'token'
      * @param string $type  = 'post'
      * 
-     * @return void
+     * @return bool
      */
-    public static function validToken(string $key = 'token', String $uri = NULL, String $type = 'post')
+    public static function validToken(String $name = 'token', String $type = 'post') : Bool
     {
-        Security::CSRFToken($uri, $type, $key);
+        return Security::validCSRFToken($name, $type);
     }
 }

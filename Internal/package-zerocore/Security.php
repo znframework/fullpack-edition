@@ -14,19 +14,23 @@ class Security
     /**
      * Get CSRF Token Key
      * 
+     * @param string $name = 'token'
+     * 
      * @return string 
      */
-    public static function getCSRFTokenKey($key = 'token')
+    public static function getCSRFTokenKey(String $name = 'token')
     {
-        return $_SESSION[$key];
+        return $_SESSION[$name];
     }
 
     /**
      * Creates CSRF Token Key
+     * 
+     * @param string $name = 'token'
      */
-    public static function createCSRFTokenKey($key = 'token')
+    public static function createCSRFTokenKey(String $name = 'token')
     {
-       $_SESSION[$key] = self::createHashCode();
+       $_SESSION[$name] = self::createHashCode();
     }
 
     /**
@@ -37,7 +41,7 @@ class Security
      * 
      * @return void
      */
-    public static function CSRFToken(String $uri = NULL, String $type = 'post', $key = 'token')
+    public static function CSRFToken(String $uri = NULL, String $type = 'post', $name = 'token')
     {
         switch( $type )
         {
@@ -49,14 +53,43 @@ class Security
         {
             Storage::start();
 
-            $mtoken = $method[$key]   ?? self::createHashCode(16);
-            $stoken = $_SESSION[$key] ?? self::createHashCode(8);
+            $mtoken = $method[$name]   ?? self::createHashCode(16);
+            $stoken = $_SESSION[$name] ?? self::createHashCode(8);
 
             if( $mtoken !== $stoken )
             {
                 Response::redirect($uri);
             }
         }
+    }
+
+    /**
+     * Cross Site Request Forgery
+     * 
+     * @param string $name = NULL
+     * @param string $type = 'post'
+     * 
+     * @return bool
+     */
+    public static function validCSRFToken(String $name = 'token', String $type = 'post')
+    {
+        switch( $type )
+        {
+            case 'post': $method = $_POST; break;
+            case 'get' : $method = $_GET;  break;
+        }
+
+        Storage::start();
+
+        $mtoken = $method[$name]   ?? self::createHashCode(16);
+        $stoken = $_SESSION[$name] ?? self::createHashCode(8);
+
+        if( $mtoken !== $stoken )
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
