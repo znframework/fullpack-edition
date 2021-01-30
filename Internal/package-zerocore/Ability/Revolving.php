@@ -61,10 +61,11 @@ trait Revolving
      * Default variables
      * 
      * @param string $type = 'all'
+     * @param bool   $self = false
      * 
      * @return void
      */
-    protected function defaultVariables($type = 'all')
+    protected function defaultVariables($type = 'all', $self = false)
     {
         # Gets class variables.
         $vars = $this->getClassVarsByType($type);      
@@ -72,7 +73,7 @@ trait Revolving
         # MDefaults all class properties null.
         foreach( $vars as $key => $var )
         {
-            $this->$key = NULL;
+            $this->$key = ($self === false ? NULL : $var);
         }
     }
 

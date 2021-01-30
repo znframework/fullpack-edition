@@ -13,9 +13,12 @@ use ZN\Base;
 use ZN\Config;
 use ZN\Request\URL;
 use ZN\Request\URI;
+use ZN\Ability\Revolving;
 
 class Paginator implements PaginatorInterface
 {
+    use Revolving;
+
     /**
      * Keep settings
      * 
@@ -359,7 +362,11 @@ class Paginator implements PaginatorInterface
         # Generate pagination bar.
         if( $this->isPaginationBar() )
         {
-            return $this->isBasicPaginationBar() ? $this->createBasicPaginationBar($startRowNumber) : $this->createAdvancedPaginationBar($startRowNumber);
+            $return = $this->isBasicPaginationBar() ? $this->createBasicPaginationBar($startRowNumber) : $this->createAdvancedPaginationBar($startRowNumber);
+
+            $this->defaultVariables('all', true);
+
+            return $return;
         }
 
         return false;
