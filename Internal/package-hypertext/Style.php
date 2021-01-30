@@ -59,6 +59,8 @@ class Style implements TextInterface
     {
         $script = "<style type=\"$this->type\">".EOL;
 
+        $this->default();
+
         return $script;
     }
 
@@ -73,5 +75,13 @@ class Style implements TextInterface
     {
         $script =  '</style>'.EOL;
         return $script;
+    }
+
+    /**
+     * protected default
+     */
+    protected function default()
+    {
+        $this->type = 'text/css';
     }
 }

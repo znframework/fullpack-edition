@@ -105,6 +105,8 @@ class Script implements TextInterface
     {
         $script = "<script type=\"$this->type\">".EOL;
 
+        $this->default();
+
         return $script;
     }
 
@@ -119,5 +121,13 @@ class Script implements TextInterface
     {
         $script =  '</script>'.EOL;
         return $script;
+    }
+
+    /**
+     * protected default
+     */
+    protected function default()
+    {
+        $this->type = 'text/javascript';
     }
 }
