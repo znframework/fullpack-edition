@@ -132,7 +132,7 @@ class Helper
     {
         preg_match('/^[A-Z]+/', $var, $match);
         
-        if( ! ctype_upper($match[0]) && ! defined($var) )
+        if( ! ctype_upper($match[0] ?? '') && ! defined($var) )
         {
             $var = implode('_', Datatype::splitUpperCase($var));
         }
