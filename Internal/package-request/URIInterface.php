@@ -12,6 +12,15 @@
 interface URIInterface
 {
     /**
+     * Data usage.
+     * 
+     * @param string|array $data
+     * 
+     * @return self
+     */
+    public static function data($data) : URI;
+
+    /**
      * Manipulation
      * 
      * @param array $rules

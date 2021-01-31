@@ -21,6 +21,13 @@ use ZN\DataTypes\Strings;
 class URI implements URIInterface
 {
     /**
+     * Keeps data.
+     * 
+     * @param array
+     */
+    protected static $data = NULL;
+
+    /**
      * Magic Call
      * 
      * @param string $method
@@ -43,6 +50,25 @@ class URI implements URIInterface
     }
 
     /**
+     * Data usage.
+     * 
+     * @param string|array $data
+     * 
+     * @return self
+     */
+    public static function data($data) : URI
+    {
+        if( is_string($data) )
+        {
+            $data = explode('/', Base::removePrefix($data));
+        }
+
+        self::$data = $data;
+
+        return new self;
+    }
+
+    /**
      * Manipulation
      * 
      * @param array $rules
@@ -59,7 +85,8 @@ class URI implements URIInterface
             if( is_numeric($key) )
             {
                 if( ! empty($val = self::get($value)) )
-                { 
+                {
+                   
                     $query .= $value . '/' . $val . '/';
                 }
             }
@@ -336,7 +363,9 @@ class URI implements URIInterface
      */
     public static function segmentArray() : Array
     {
-        $segmentEx = Arrays\RemoveElement::element(explode('/', self::_cleanPath()), '');
+        $segmentEx  = self::$data ?? Arrays\RemoveElement::element(explode('/', self::_cleanPath()), '');
+
+        self::$data = NULL;
 
         return $segmentEx;
     }
