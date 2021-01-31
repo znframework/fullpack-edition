@@ -390,7 +390,7 @@ class ZN
 
         # Directory Index
         define('DIRECTORY_INDEX', GET_DIRS['DIRECTORY_INDEX']);
-        define('BASE_DIR', ltrim(explode(DIRECTORY_INDEX, $_SERVER['SCRIPT_NAME'])[0], '/'));
+        define('BASE_DIR', Base::suffix(ltrim(explode(DIRECTORY_INDEX, $_SERVER['SCRIPT_NAME'])[0], '/')));
 
         # It keeps path of the files needed for the system.
         define('ZEROCORE', INTERNAL_DIR . 'ZN/');
