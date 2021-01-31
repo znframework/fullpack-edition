@@ -265,24 +265,24 @@ class URI implements URIInterface
         }
 
         $get -= 1;
-        $uri  = '';
-
+        
         $countSegArr = count($segArr);
 
         if( $index < 0 )
         {
-            $index = $countSegArr + $index + 1;
+            $index = $countSegArr + ($index + 1);
         }
-
-        if( $index > 0 )
+        else if( $index > 0 )
         {
             $index = $get + $index;
+
+            if( $index > $countSegArr )
+            {
+                $index = $countSegArr;
+            }
         }
 
-        if( abs($index) > $countSegArr )
-        {
-            $index = $countSegArr;
-        }
+        $uri = '';
 
         for( $i = $get; $i < $index; $i++ )
         {
