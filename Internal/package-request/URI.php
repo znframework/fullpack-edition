@@ -310,6 +310,10 @@ class URI implements URIInterface
         {
             $indexVal = count($segArr) - 1;
         }
+        else if( $index === NULL )
+        {
+            return $segArr[array_search($get, $segArr) + 1] ?? '';
+        }
         else
         {
             $indexVal = array_search($index, $segArr);

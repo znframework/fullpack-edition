@@ -1,5 +1,6 @@
 {
     "name": "znframework/package-request",
+    "version": "6.0.10.6",
     "description": "ZN Framework Request Package",
     "license": "MIT",
     "homepage": "https://znframework.com",
