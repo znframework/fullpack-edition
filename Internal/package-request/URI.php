@@ -126,7 +126,7 @@ class URI implements URIInterface
 
         if( is_numeric($get) )
         {
-            return self::getByIndex($get, $index);
+            return self::getByIndex($get, $index, $segArr);
         }
 
         if( in_array($get, $segArr) )
@@ -137,14 +137,14 @@ class URI implements URIInterface
             # 2. The non-numerical state of the parameter
             if( ! empty($while) && ! is_numeric($index) )
             {
-                return self::getByName($get, $index);
+                return self::getByName($get, $index, $segArr);
             }
 
             # 2. the parameter is all-in
             # It gives all segments from parameter 1.
             if( $index === 'all' )
             {
-                return self::getNameAll($get);
+                return self::getNameAll($get, $segArr);
             }
 
              # 3. parameter is not empty
@@ -178,7 +178,7 @@ class URI implements URIInterface
             # It gives all segments from parameter 1.
             if( $index === 'count' )
             {
-                return self::getNameCount($get);
+                return self::getNameCount($get, $segArr);
             }
 
             if( isset($segArr[$segVal + $index]) )
@@ -203,9 +203,9 @@ class URI implements URIInterface
      * 
      * @return int
      */
-    public static function getNameCount(String $get) : Int
+    public static function getNameCount(String $get, $segArr = NULL) : Int
     {
-        $segArr = self::segmentArray();
+        $segArr = $segArr ?? self::segmentArray();
 
         if( in_array($get, $segArr) )
         {
@@ -224,9 +224,9 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function getNameAll(String $get) : String
+    public static function getNameAll(String $get, $segArr = NULL) : String
     {
-        $segArr = self::segmentArray();
+        $segArr = $segArr ?? self::segmentArray();
 
         if( in_array($get, $segArr) )
         {
@@ -255,9 +255,9 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function getByIndex(Int $get = 1, Int $index = 1) : String
+    public static function getByIndex(Int $get = 1, Int $index = 1, $segArr = NULL) : String
     {
-        $segArr = self::segmentArray();
+        $segArr =  $segArr ?? self::segmentArray();
 
         if( $get == 0 )
         {
@@ -300,9 +300,9 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function getByName(String $get, $index = NULL) : String
+    public static function getByName(String $get, $index = NULL, $segArr = NULL) : String
     {
-        $segArr = self::segmentArray();
+        $segArr = $segArr ?? self::segmentArray();
         
         $getVal = (int) array_search($get, $segArr);
 
