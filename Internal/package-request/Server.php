@@ -21,11 +21,6 @@ class Server
      */
     public static function __callStatic($method, $parameters)
     {
-        if( $method === 'all' )
-        {
-            return self::data();
-        }
-
         return self::data($method);
     }
 
@@ -121,6 +116,11 @@ class Server
             'gatewayInterface'           => $_SERVER['GATEWAY_INTERFACE']     ?? false
         ];
 
+        if( $type === 'all' )
+        {
+            return $server;
+        }
+
         if( isset($server[$type]) )
         {
             if( is_array($server[$type]) )
@@ -139,55 +139,5 @@ class Server
 
         // 5.4.3[edited]
         return str_replace('&amp;', '&', $return) ?: false;
-    }
-
-    /**
-     * Name
-     * 
-     * @return string
-     */
-    public static function name() : String
-    {
-        return self::data('name');
-    }
-
-    /**
-     * Addr
-     * 
-     * @return string
-     */
-    public static function addr() : String
-    {
-        return self::data('addr');
-    }
-
-    /**
-     * Port
-     * 
-     * @return int
-     */
-    public static function port() : Int
-    {
-        return self::data('port');
-    }
-
-    /**
-     * Admin
-     * 
-     * @return string
-     */
-    public static function admin() : String
-    {
-        return self::data('admin');
-    }
-
-    /**
-     * Protocol
-     * 
-     * @return string
-     */
-    public static function protocol() : String
-    {
-        return self::data('protocol');
     }
 }
