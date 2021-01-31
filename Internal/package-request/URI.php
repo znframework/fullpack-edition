@@ -59,7 +59,7 @@ class URI implements URIInterface
             if( is_numeric($key) )
             {
                 if( ! empty($val = self::get($value)) )
-                {
+                { 
                     $query .= $value . '/' . $val . '/';
                 }
             }
@@ -89,15 +89,15 @@ class URI implements URIInterface
         {
             if( is_numeric($key) )
             {
-                $query .= $value . '/';
+                $query .= $value . $separator;
             }
             else
             {
-                $query .= $key . '/' . $value . '/';
+                $query .= $key . $separator . $value . $separator;
             }
         }
 
-        return self::_addFix($query, $type);
+        return self::_addFix($query, $type, $separator);
     }
 
     /**
@@ -505,15 +505,15 @@ class URI implements URIInterface
     /**
      * Protected Add Fix
      */
-    protected static function _addFix($query, $type)
+    protected static function _addFix($query, $type, $separator = '/')
     {
-        $query = rtrim($query, '/');
+        $query = rtrim($query, $separator);
         
         switch( $type )
         {
-            case 'left'  : return Base::prefix($query);
-            case 'right' : return Base::suffix($query);
-            case 'both'  : return Base::presuffix($query);
+            case 'left'  : return Base::prefix($query, $separator);
+            case 'right' : return Base::suffix($query, $separator);
+            case 'both'  : return Base::presuffix($query, $separator);
             default      : return $query;
         }
     }
