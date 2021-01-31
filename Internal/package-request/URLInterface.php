@@ -66,14 +66,14 @@ interface URLInterface
     /**
      * Build Query
      * 
-     * @param mixed $data
+     * @param mixed  $data
      * @param string $numericPrefix = NULL
      * @param string $separator     = NULL
-     * @param int    $enctype       = PHP_QUERY_RFC1738
+     * @param string $type          = '+' - options[+|%]
      * 
      * @return mixed
      */
-    public static function buildQuery($data, String $numericPrefix = NULL, String $separator = NULL, Int $enctype = PHP_QUERY_RFC1738) : String;
+    public static function buildQuery($data, String $numericPrefix = NULL, String $separator = NULL, String $enctype = '+') : String;
 
     /**
      * Parse URL

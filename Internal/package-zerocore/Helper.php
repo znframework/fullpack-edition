@@ -130,7 +130,9 @@ class Helper
      */
     public static function toConstant(String $var, String $prefix = NULL, String $suffix = NULL)
     {
-        if( ! ctype_upper($var) && ! defined($var) )
+        preg_match('/^[A-Z]+/', $var, $match);
+        
+        if( ! ctype_upper($match[0]) && ! defined($var) )
         {
             $var = implode('_', Datatype::splitUpperCase($var));
         }

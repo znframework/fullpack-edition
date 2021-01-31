@@ -114,16 +114,18 @@ class URL implements URLInterface
     /**
      * Build Query
      * 
-     * @param mixed $data
+     * @param mixed  $data
      * @param string $numericPrefix = NULL
      * @param string $separator     = NULL
-     * @param int    $enctype       = PHP_QUERY_RFC1738
+     * @param string $type          = '+' - options[+|%]
      * 
      * @return mixed
      */
-    public static function buildQuery($data, String $numericPrefix = NULL, String $separator = NULL, Int $enctype = PHP_QUERY_RFC1738) : String
+    public static function buildQuery($data, String $numericPrefix = NULL, String $separator = NULL, String $enctype = '+') : String
     {
-        return http_build_query($data, $numericPrefix, $separator ?? '&', $enctype);
+        $rfc = $enctype === '+' ? PHP_QUERY_RFC1738 : PHP_QUERY_RFC3986;
+
+        return http_build_query($data, $numericPrefix, $separator ?? '&', $rfc);
     }
 
     /**
