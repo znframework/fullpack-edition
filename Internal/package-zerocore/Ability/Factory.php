@@ -90,7 +90,9 @@ trait Factory
             # The return value $this can be sent to ensure object continuity.
             if( isset($resolve['this']) )
             {
-                return new self;
+                $parent = get_called_class();
+
+                return new $parent;
             }
 
             # Return new instance.
