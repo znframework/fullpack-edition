@@ -48,7 +48,7 @@ trait Factory
      * 
      * @return mixed
      */
-    public function call($method, $parameters)
+    public static function call($method, $parameters)
     {
         if( ! defined('static::factory') )
         {
@@ -79,18 +79,18 @@ trait Factory
         else
         {
             # Solving starts when a valid class and method information is sent.
-            if( ! $this->isValidClassAndMethodName($class, $resolve) )
+            if( ! self::isValidClassAndMethodName($class, $resolve) )
             {
                 throw new Exception\InvalidFactoryMethod(NULL, $class);
             }
 
             # A new singleton inheritance class instance is created.
-            $return = $this->createSingletonInstance($resolve['class'], $resolve['method'], $parameters);
+            $return = self::createSingletonInstance($resolve['class'], $resolve['method'], $parameters);
 
             # The return value $this can be sent to ensure object continuity.
             if( isset($resolve['this']) )
             {
-                return $this;
+                return new self;
             }
 
             # Return new instance.
@@ -101,15 +101,15 @@ trait Factory
     /**
      * Protected create singleton instance
      */
-    protected function createSingletonInstance($class, $method, $parameters)
+    protected static function createSingletonInstance($class, $method, $parameters)
     {
-        return Singleton::class($this->getCalledClassNamespace() . $class)->$method(...$parameters);
+        return Singleton::class(self::getCalledClassNamespace() . $class)->$method(...$parameters);
     }
 
     /**
      * Protected get called class namespace
      */
-    protected function getCalledClassNamespace()
+    protected static function getCalledClassNamespace()
     {
         $namespace = NULL;
 
@@ -129,7 +129,7 @@ trait Factory
     /**
      * Protected is valid class & method name.
      */
-    protected function isValidClassAndMethodName($class, &$resolve)
+    protected static function isValidClassAndMethodName($class, &$resolve)
     {
         return preg_match('/(?<class>([a-zA-Z]\w+(\\\\)*){1,})\:\:(?<method>\w+)(?<this>\:this)*/', $class, $resolve);
     }
