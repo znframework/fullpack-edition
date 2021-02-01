@@ -351,7 +351,9 @@ class Restful implements RestfulInterface
      */
     protected function buildQuery($data)
     {
-        return http_build_query($this->data ?? $data, NULL, '&', PHP_QUERY_RFC1738);
+        $data = $this->data ?? $data;
+
+        return is_string($data) ? $data : http_build_query($data, NULL, '&', PHP_QUERY_RFC1738);
     }
 
     /**
