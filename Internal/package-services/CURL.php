@@ -106,6 +106,8 @@ class CURL implements CURLInterface
         }
         else
         {
+            $this->multipleInformations = NULL;
+            
             $this->init = curl_init($url);
         }
 
@@ -389,8 +391,6 @@ class CURL implements CURLInterface
     protected function multipleInformations()
     {
         $return = $this->multipleInformations;
-
-        $this->multipleInformations = NULL;
 
         return $return;
     }
