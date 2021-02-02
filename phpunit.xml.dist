@@ -22,7 +22,7 @@
 		<whitelist processUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">./UnitTests</directory>
             <exclude>
-				<directory>./Internal/extends</directory>
+				<directory>./UnitTests/extends</directory>
 			</exclude>
 		</whitelist>
 	</filter>
