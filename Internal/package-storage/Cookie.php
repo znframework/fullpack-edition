@@ -200,7 +200,7 @@ class Cookie implements CookieInterface, StorageInterface
         }
         else
         {
-            return false;
+            return [];
         }
     }
 
