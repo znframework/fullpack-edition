@@ -98,6 +98,8 @@ class Session implements StorageInterface
      */
     public function deleteAll() : Bool
     {
+        $_SESSION = [];
+
         return session_destroy();
     }
 }

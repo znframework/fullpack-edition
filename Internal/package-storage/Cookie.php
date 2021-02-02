@@ -243,9 +243,14 @@ class Cookie implements CookieInterface, StorageInterface
     {
         $path = $this->config['path'];
 
-        if( ! empty($_COOKIE) ) foreach( $_COOKIE as $key => $val )
+        if( ! empty($_COOKIE) ) 
         {
-            setcookie($key, '', time() - 1, $path);
+            foreach( $_COOKIE as $key => $val )
+            {
+                setcookie($key, '', time() - 1, $path);
+            }
+
+            $_COOKIE = [];
         }
         else
         {
