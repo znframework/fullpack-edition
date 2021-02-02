@@ -59,6 +59,8 @@ class Delete extends CartExtends
      */
     public function items() : Bool
     {
+        Properties::$items = [];
+        
         return $this->driver->delete($this->key);
     }
 }
