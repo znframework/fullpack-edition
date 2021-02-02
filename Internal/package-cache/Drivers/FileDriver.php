@@ -182,7 +182,15 @@ class FileDriver extends DriverMappingAbstract
      */
     public function clean()
     {
-        return Filesystem\Forge::deleteFolder($this->path);
+        foreach( Filesystem\Folder::files($this->path, NULL, true) as $file )
+        { 
+            if( is_file($file) )
+            {
+                unlink($file);
+            }
+        }
+
+        return true;
     }
 
     /**
