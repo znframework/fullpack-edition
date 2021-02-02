@@ -382,6 +382,8 @@ class Render implements RenderInterface
 
         imagedestroy($file);
 
+        $this->sets = [];
+
         return $captcha;
     }
 
