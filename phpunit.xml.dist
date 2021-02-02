@@ -20,10 +20,9 @@
 
     <filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">./Internal</directory>
+			<directory suffix=".php">./UnitTests</directory>
             <exclude>
-				<directory>./Internal/composer</directory>
-                <directory>./Internal/autoload.php</directory>
+				<directory>./Internal/extends</directory>
 			</exclude>
 		</whitelist>
 	</filter>
