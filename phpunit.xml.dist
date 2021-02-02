@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         bootstrap="bootstrap"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         verbose="true"
+>
+    <testsuites>
+        <testsuite name="ZN">
+            <directory suffix="Test.php">UnitTests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">./Internal</directory>
+            <exclude>
+				<directory>./UnitTests/extends</directory>
+                <directory>./Internal/composer</directory>
+                <file>./Internal/autoload.php</file>
+                <directory>./Internal/package-zerocore/Facades</directory>
+                <directory>./Internal/package-zerocore/ErrorHandling/Resources</directory>
+                <directory>./Internal/package-zerocore/Exception</directory>
+                <directory>./Internal/package-zerocore/Resources</directory>
+                <directory>./Internal/package-authentication/Resources</directory>
+                <directory>./Internal/package-hypertext/Resources</directory>
+                <directory>./Internal/package-payment</directory>
+            </exclude>
+		</whitelist>
+	</filter>
+
+	<logging>
+		<log type="coverage-clover" target="build/logs/clover.xml"/>
+	</logging>
+</phpunit>
