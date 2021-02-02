@@ -2,5 +2,5 @@
 
 class GlobalExtends extends \PHPUnit\Framework\TestCase
 {
-    const default = 'Internal/';
+    const default = 'UnitTests/';
 }
