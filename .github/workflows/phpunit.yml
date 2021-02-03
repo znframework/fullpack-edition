@@ -95,7 +95,7 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Test with PHPUnit
-        run: vendor/bin/phpunit -v"
+        run: script -e -c "vendor/bin/phpunit -v"
 
       - if: matrix.php-versions == '7.4'
         name: Run Coveralls
