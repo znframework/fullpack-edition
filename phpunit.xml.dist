@@ -54,10 +54,7 @@
                 <directory>./Internal/package-storage/Exception</directory>
                 <directory>./Internal/package-validation/Exception</directory>
                 <directory>./Internal/package-xml/Exception</directory>
-                <directory>./Internal/package-zerocore/Facades</directory>
-                <directory>./Internal/package-zerocore/ErrorHandling/Resources</directory>
-                <directory>./Internal/package-zerocore/Exception</directory>
-                <directory>./Internal/package-zerocore/Resources</directory>
+                <directory>./Internal/package-zerocore</directory>
             </exclude>
 		</whitelist>
 	</filter>
