@@ -312,7 +312,7 @@ class Register extends UserExtends
      */
     protected function insertJoinUserDataByUsername($username, &$joinData)
     {
-        $joinCol = getJoinColumnByUsername($username);
+        $joinCol = $this->getJoinColumnByUsername($username);
 
         foreach( $this->joinTables as $table => $joinColumn )
         {
