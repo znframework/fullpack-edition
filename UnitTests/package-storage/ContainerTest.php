@@ -6,6 +6,8 @@ class ContainerTest extends StorageExtends
     {
         $session = new Session;
 
+        unset($_SESSION);
+
         $session->start();
 
         $session->regenerate();

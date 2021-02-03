@@ -37,7 +37,11 @@ class SessionInsertTest extends \PHPUnit\Framework\TestCase
     {
         Config::storage('session', ['encode' => true]);
 
-        $this->assertTrue(Session::example('Example'));
+        $session = new \ZN\Storage\Session;
+
+        $session->insert('example', 'Example');
+
+        $this->assertEquals('Example', $session->select('example'));
 
         Config::storage('session', ['encode' => 'super']);
 
