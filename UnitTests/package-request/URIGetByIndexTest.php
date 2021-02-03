@@ -24,4 +24,18 @@ class URIGetByIndexTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('us/sendForm', URI::getByIndex(2, -3));
     }
+
+    public function testUriGetNameCountZeroToOne()
+    {
+        $_SERVER['REQUEST_URI'] = 'contact/us/sendForm/count/test';
+
+        $this->assertEquals('contact', URI::getByIndex(0));
+    }
+
+    public function testUriGetNameCountIndexGreaterThanSegmentCount()
+    {
+        $_SERVER['REQUEST_URI'] = 'contact/us/sendForm/count/test';
+
+        $this->assertEquals('us/sendForm/count/test', URI::getByIndex(2, 10));
+    }
 }

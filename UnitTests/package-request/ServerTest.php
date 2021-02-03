@@ -13,4 +13,37 @@ class ServerTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertIsArray(Server::all());
     }
+
+    public function testServerWithMethod()
+    {
+        $method = new Method;
+
+        $this->assertEmpty($method::server('host'));
+    }
+
+    public function testServerWithMethodSecondParameter()
+    {
+        $method = new Method;
+
+        $this->assertEquals('Example', $method::server('example', 'Example'));
+    }
+
+    public function testOs()
+    {
+        $this->assertIsString(Server::os());
+    }
+
+    public function testServerArrayParameter()
+    {
+        $_SERVER['example'] = ['a', 'b'];
+
+        $this->assertIsArray(Server::data(NULL));
+    }
+
+    public function testServerStringParameter()
+    {
+        $_SERVER['example'] = 'Example';
+
+        $this->assertEquals('Example', Server::data('example'));
+    }
 }

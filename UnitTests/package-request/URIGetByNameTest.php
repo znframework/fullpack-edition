@@ -18,4 +18,11 @@ class URIGetByNameTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('sendForm/count/test', URI::getByName('sendForm', 'test'));
     }
+
+    public function testUriGetByNameWithAllParameter()
+    {
+        $_SERVER['REQUEST_URI'] = 'contact/us/sendForm/count/test';
+
+        $this->assertEquals('sendForm/count/test', URI::getByName('sendForm', 'all'));
+    }
 }

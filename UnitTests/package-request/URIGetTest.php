@@ -52,4 +52,24 @@ class URIGetTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('us/sendForm', URI::get(2, -1));
         $this->assertEquals('contact/us', URI::get(1, -2));
     }
+
+    public function testUriGetInvalidIndex()
+    {
+        $this->assertEquals('contact', URI::get(1, []));
+    }
+
+    public function testUriGetIndexGreaterThanSegmentCount()
+    {
+        $this->assertEquals('contact/us/sendForm', URI::get(1, 10, true));
+    }
+
+    public function testUriGetIndexNegative()
+    {
+        $this->assertEquals('', URI::get(1, -5, true));
+    }
+
+    public function testUriGetInvalidSegment()
+    {
+        $this->assertEquals('', URI::get('abc'));
+    }
 }

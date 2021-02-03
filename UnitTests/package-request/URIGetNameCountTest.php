@@ -10,4 +10,9 @@ class URIGetNameCountTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(4, URI::getNameCount('contact'));
     }
+
+    public function testUriGetNameCountReturnFalse()
+    {
+        $this->assertEquals(0, URI::getNameCount('contactx'));
+    }
 }

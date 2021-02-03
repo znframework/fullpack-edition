@@ -17,4 +17,18 @@ class URLCurrentTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertStringContainsString('/about/me', URL::current('about/me'));
     }
+
+    public function testUrlCurrentFirstCharSlash()
+    {
+        $_SERVER['REQUEST_URI'] = '/contact/us/sendForm';
+
+        $this->assertStringContainsString('/about/me', URL::current('about/me'));
+    }
+
+    public function testUrlCurrentSetFalseFirstParameter()
+    {
+        $_SERVER['REQUEST_URI'] = '/contact/us/sendForm';
+
+        $this->assertStringContainsString('contact/us/sendForm', URL::current(false));
+    }
 }

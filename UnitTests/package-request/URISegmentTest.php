@@ -35,4 +35,25 @@ class URISegmentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('test', URI::e1());
         $this->assertEquals('count', URI::e2());
     }
+
+    public function testUriSegmentZero()
+    {
+        $_SERVER['REQUEST_URI'] = 'contact/0/sendForm/count/test';
+
+        $this->assertEquals(0, URI::segment(2));
+    }
+
+    public function testUriSegmentNone()
+    {
+        $_SERVER['REQUEST_URI'] = 'contact/0/sendForm/count/test';
+
+        $this->assertEquals('', URI::segment(10));
+    }
+
+    public function testUriSegmentCount()
+    {
+        $_SERVER['REQUEST_URI'] = 'contact/us/sendForm/count/test';
+
+        $this->assertEquals(5, URI::segmentCount());
+    }
 }

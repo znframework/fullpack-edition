@@ -10,4 +10,9 @@ class URIGetNameAllTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('sendForm/count/test', URI::getNameAll('us'));
     }
+
+    public function testUriGetNameCountReturnFalse()
+    {
+        $this->assertEquals('', URI::getNameAll('contactx'));
+    }
 }

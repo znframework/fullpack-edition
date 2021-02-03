@@ -143,11 +143,6 @@ class URI implements URIInterface
             $index = 1;
         }
 
-        if( ! is_scalar($while) )
-        {
-            $while = false;
-        }
-
         $segArr = self::segmentArray();
         $segVal = '';
 
