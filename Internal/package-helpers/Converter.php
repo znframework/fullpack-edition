@@ -256,7 +256,7 @@ class Converter
 
         $moneyFormat = $left . substr($moneyFormat,0,-1).($float === true ? ','.$remaining : '') . $right;
 
-        return $moneyFormat;
+        return trim($moneyFormat);
     }
 
     /**

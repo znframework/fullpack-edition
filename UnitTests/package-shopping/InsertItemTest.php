@@ -18,4 +18,18 @@ class InsertItemTest extends \PHPUnit\Framework\TestCase
 
         Cart::delete('4432222345219');
     }
+
+    public function testInsertNoQuantity()
+    {
+        $insert = Cart::insert
+        ([
+            'product'       => 'Banana',
+            'price'         => '10',
+            'serial-number' => '4432222345219'
+        ]);
+
+        $this->assertTrue($insert);
+
+        Cart::delete('4432222345219');
+    }
 }
