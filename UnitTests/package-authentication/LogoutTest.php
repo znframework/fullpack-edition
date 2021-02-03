@@ -1,5 +1,6 @@
 <?php namespace ZN\Authentication;
 
+use DB;
 use User;
 
 class LogoutTest extends AuthenticationExtends
@@ -9,5 +10,20 @@ class LogoutTest extends AuthenticationExtends
         User::logout();
 
         $this->assertFalse(User::isLogin());
+    }
+
+    public function testLogoutActiveColumn()
+    {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+
+        User::register
+        ([
+            'username' => 'robot@znframework.com',
+            'password' => '1234'
+        ], true);
+
+        User::logout();
+
+        $this->assertTrue(User::isLogin());
     }
 }

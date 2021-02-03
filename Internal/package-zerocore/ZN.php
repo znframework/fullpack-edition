@@ -807,8 +807,8 @@ class ZN
                         if( ! empty($file->raw_url) )
                         {
                             # If the changes are in the project directory, they are ignored.
-                            # The only exception to this in projects is devtools. 5.7.3.7[added]
-                            if( strpos($file->filename, PROJECTS_DIR) !== 0 || strpos($file->filename, PROJECTS_DIR . 'Devtools') === 0 )
+                            # If the changes are in the unit tests directory, they are ignored.
+                            if( strpos($file->filename, PROJECTS_DIR) !== 0 && strpos($file->filename, 'UnitTests/') !== 0 )
                             {
                                 $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
                             }
