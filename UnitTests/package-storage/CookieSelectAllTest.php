@@ -10,4 +10,11 @@ class CookieSelectAllTest extends StorageExtends
 
         $this->assertIsArray(Cookie::selectAll());
     }
+
+    public function testSelectAllEmpty()
+    {
+        unset($_COOKIE);
+        
+        $this->assertEquals([], Cookie::selectAll());
+    }
 }

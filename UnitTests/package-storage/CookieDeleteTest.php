@@ -12,4 +12,11 @@ class CookieDeleteTest extends StorageExtends
 
         $this->assertEmpty(Cookie::select('example'));
     }
+
+    public function testDeleteReturnTrue()
+    {
+        $_COOKIE[md5('example')] = 'Example';
+
+        Cookie::delete('example');
+    }
 }
