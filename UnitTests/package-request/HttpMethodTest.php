@@ -37,5 +37,9 @@ class HttpMethodTest extends \PHPUnit\Framework\TestCase
         $http = new Http;
 
         $this->assertIsBool($http::input('post')->delete('example'));
+        $this->assertIsBool($http::input('get')->delete('example'));
+        $this->assertIsBool($http::input('env')->delete('example'));
+        $this->assertIsBool($http::input('server')->delete('example'));
+        $this->assertIsBool($http::input('request')->delete('example'));
     }
 }

@@ -135,7 +135,6 @@ class Method implements MethodInterface
                 case 'get'     : $_GET[$name]     = $value; break;
                 case 'request' : $_REQUEST[$name] = $value; break;
                 case 'env'     : $_ENV[$name]     = $value; break;
-                default        : $_POST[$name]    = $value; break;
             }
 
             return true;

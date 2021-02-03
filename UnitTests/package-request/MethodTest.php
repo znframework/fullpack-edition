@@ -30,8 +30,22 @@ class MethodTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(Method::Post('example', 'Example'));
     }
 
+    public function testCallbackMethod()
+    {
+        Method::post('example', function()
+        {
+            return 1;
+        });
+
+        $this->assertIsCallable(Method::post('example'));
+    }
+
     public function testDelete()
     {
         Method::delete('post', 'example');
+        Method::delete('get', 'example');
+        Method::delete('env', 'example');
+        Method::delete('server', 'example');
+        Method::delete('request', 'example');
     }
 }
