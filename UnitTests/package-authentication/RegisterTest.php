@@ -33,4 +33,18 @@ class RegisterTest extends AuthenticationExtends
 
         DB::where('username', 'robot@znframework.com')->delete('users');
     }
+
+    public function testStandartWithWithOptionalMethodAutoLogin()
+    {
+        User::autoLogin()->register
+        ([
+            'username' => 'robot@znframework.com',
+            'password' => '1234'
+
+        ]);
+
+        $this->assertEquals('robot@znframework.com', User::data()->username);
+
+        DB::where('username', 'robot@znframework.com')->delete('users');
+    }
 }
