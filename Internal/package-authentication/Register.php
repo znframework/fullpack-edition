@@ -288,7 +288,7 @@ class Register extends UserExtends
      */
     protected function redirectAutoLogin($path)
     {
-        new Redirect($path);
+        new Redirect($path, 0, [], Properties::$redirectExit);
     }
 
     /**

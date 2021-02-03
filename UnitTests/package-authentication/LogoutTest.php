@@ -14,6 +14,8 @@ class LogoutTest extends AuthenticationExtends
 
     public function testLogoutActiveColumn()
     {
+        Properties::$redirectExit = false;
+        
         DB::where('username', 'robot@znframework.com')->delete('users');
 
         User::register
@@ -23,7 +25,9 @@ class LogoutTest extends AuthenticationExtends
         ], true);
 
         User::logout();
+        
+        $this->assertFalse(User::isLogin());
 
-        $this->assertTrue(User::isLogin());
+        Properties::$redirectExit = true;
     }
 }

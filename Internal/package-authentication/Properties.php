@@ -33,6 +33,13 @@ class Properties
     public static $success;
 
     /**
+     * Redirecting
+     * 
+     * @var array
+     */
+    public static $redirectExit = true;
+
+    /**
      * Keeps set email template
      * 
      * 5.7.3[added]

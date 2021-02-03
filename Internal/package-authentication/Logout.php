@@ -60,6 +60,6 @@ class Logout extends UserExtends
         $this->cookieClass ->delete($this->getUniquePasswordKey());
         $this->sessionClass->delete($uniqueUsernameKey);
 
-        new Redirect((string) $redirectUrl, $time);
+        new Redirect((string) $redirectUrl, $time, [], Properties::$redirectExit);
     }
 }
