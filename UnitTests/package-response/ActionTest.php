@@ -18,5 +18,6 @@ class ActionTest extends \PHPUnit\Framework\TestCase
         Refresh::wait(0)
                ->data(['example' => 'Example'])
                ->action('profile');
+               
     }
 }
