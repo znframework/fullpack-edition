@@ -12,6 +12,7 @@
          stopOnFailure="false"
          verbose="true"
 >
+
     <testsuites>
         <testsuite name="ZN">
             <directory suffix="Test.php">UnitTests</directory>
@@ -20,7 +21,7 @@
 
     <filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">./Internal</directory>
+            <directory suffix=".php">./Internal</directory>
             <exclude>
                 <directory>./UnitTests/extends</directory>
                 <directory>./Internal/composer</directory>

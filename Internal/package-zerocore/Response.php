@@ -74,8 +74,6 @@ class Response
             header('Refresh:'.$time.'; url='.$url);
         }
 
-        $exit = Config::response('redirectExit') ?? $exit;
-
         if( $exit === true )
         {
             exit;
