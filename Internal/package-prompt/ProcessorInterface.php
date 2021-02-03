@@ -12,15 +12,6 @@
 interface ProcessorInterface
 {
     /**
-     * Path
-     * 
-     * @param string $path = NULL
-     * 
-     * @return Processor
-     */
-    public function path(String $path = NULL);
-
-    /**
      * Sapi Name
      * 
      * @return string

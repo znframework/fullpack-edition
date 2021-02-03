@@ -18,11 +18,6 @@ class Processor implements ProcessorInterface
     /**
      * @var string
      */
-    protected $path;
-
-    /**
-     * @var string
-     */
     protected $output;
 
     /**
@@ -41,22 +36,7 @@ class Processor implements ProcessorInterface
     public function __construct()
     {
         $this->getConfig = Config::default('ZN\Prompt\PromptDefaultConfiguration')::get('Services', 'processor');
-        $this->path      = $this->getConfig['path'];
         $this->driver    = $this->getConfig['driver'];
-    }
-
-    /**
-     * Path
-     * 
-     * @param string $path = NULL
-     * 
-     * @return Processor
-     */
-    public function path(String $path = NULL)
-    {
-        $this->path = $path;
-        
-        return $this;
     }
 
     /**
@@ -110,6 +90,8 @@ class Processor implements ProcessorInterface
             break;
         }
 
+        $this->driver = NULL;
+
         return $return ?? false;
     }
 
@@ -153,26 +135,5 @@ class Processor implements ProcessorInterface
     protected function _split($string)
     {
         return explode("\n", rtrim($string, "\n"));
-    }
-
-    /**
-     * Protected Run
-     */
-    protected function _run($command)
-    {
-        $return = $this->exec($command);
-
-        $this->_defaultVariables();
-
-        return $return;
-    }
-
-    /**
-     * Protected Default Variables
-     */
-    protected function _defaultVariables()
-    {
-        $this->path    = NULL;
-        $this->driver  = NULL;
     }
 }
