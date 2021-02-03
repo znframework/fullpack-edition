@@ -7,6 +7,8 @@ class UpdateTest extends AuthenticationExtends
 {
     public function testUpdateOnlyPassword()
     {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+        
         User::register
         ([
             'username' => 'robot@znframework.com',

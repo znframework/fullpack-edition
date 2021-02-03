@@ -9,6 +9,8 @@ class RegisterTest extends AuthenticationExtends
 {
     public function testStandart()
     {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+
         User::register
         ([
             'username' => 'robot@znframework.com',
@@ -18,12 +20,12 @@ class RegisterTest extends AuthenticationExtends
         $row = DB::where('username', 'robot@znframework.com')->users()->row();
 
         $this->assertEquals('robot@znframework.com', $row->username);
-
-        DB::where('username', 'robot@znframework.com')->delete('users');
     }
 
     public function testStandartWithAutoLogin()
     {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+
         User::register
         ([
             'username' => 'robot@znframework.com',
@@ -32,12 +34,12 @@ class RegisterTest extends AuthenticationExtends
         ], true);
 
         $this->assertEquals('robot@znframework.com', User::data()->username);
-
-        DB::where('username', 'robot@znframework.com')->delete('users');
     }
 
     public function testStandartWithWithOptionalMethodAutoLogin()
     {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+
         User::autoLogin()->register
         ([
             'username' => 'robot@znframework.com',
@@ -46,12 +48,12 @@ class RegisterTest extends AuthenticationExtends
         ]);
 
         $this->assertEquals('robot@znframework.com', User::data()->username);
-
-        DB::where('username', 'robot@znframework.com')->delete('users');
     }
 
     public function testJoinColumn()
     {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+
         DBForge::createTable('addresses',
         [
             'username' => [DB::varchar(255)],
@@ -86,8 +88,6 @@ class RegisterTest extends AuthenticationExtends
 
         $this->assertEquals('London', $data->address ?? 'London');
 
-        DB::where('username', 'robot@znframework.com')->delete('users');
-
         DBForge::dropTable('addresses');
 
         Config::set('Auth', 
@@ -98,5 +98,19 @@ class RegisterTest extends AuthenticationExtends
                 'tables' => []
             ]
         ]);
+    }
+
+    public function testUnknownUserInformation()
+    {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+        
+        User::register
+        ([
+            'username' => 'robot@znframework.com',
+            'password' => '1234',
+            'unknown'  => 'value'
+        ]);
+
+        $this->assertEquals('Unknown error!', User::error());
     }
 }

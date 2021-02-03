@@ -7,6 +7,8 @@ class LoginTest extends AuthenticationExtends
 { 
     public function testStandartLogin()
     {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+
         User::register
         ([
             'username' => 'robot@znframework.com',
@@ -14,12 +16,12 @@ class LoginTest extends AuthenticationExtends
         ]);
 
         $this->assertTrue(User::login('robot@znframework.com', '1234'));
-
-        DB::where('username', 'robot@znframework.com')->delete('users');
     }
 
     public function testIsLogin()
     {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+        
         User::register
         ([
             'username' => 'robot@znframework.com',
@@ -29,8 +31,6 @@ class LoginTest extends AuthenticationExtends
         User::login('robot@znframework.com', '1234');
 
         $this->assertTrue(User::isLogin());
-
-        DB::where('username', 'robot@znframework.com')->delete('users');
     }
 
     public function testData()
