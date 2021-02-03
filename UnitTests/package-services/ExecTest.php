@@ -13,4 +13,18 @@ class ExecTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('https://github.com/', CURL::info()['url']);
     }
+
+    public function testSingleExecuteInvalidException()
+    {
+        $curl = new \ZN\Services\CURL;
+
+        try
+        {
+            $curl->exec();
+        }
+        catch( Exception\InvalidArgumentException $e )
+        {
+            $this->assertEquals('`$this->init` parameter should contain the resource data type!', $e->getMessage());
+        }
+    }
 }

@@ -12,5 +12,7 @@ class MultipleExecTest extends \PHPUnit\Framework\TestCase
              ->exec();
 
         $this->assertEquals(2, count($response));
+
+        $this->assertIsArray(CURL::info());
     }
 }
