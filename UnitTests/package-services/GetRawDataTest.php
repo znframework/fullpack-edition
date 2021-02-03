@@ -19,4 +19,9 @@ class GetRawDataTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull(Restful::getRawDataObject());
     }
+
+    public function testGetRawDataFalse()
+    {
+        $this->assertFalse(Restful::getRawData('unknown'));
+    }
 }

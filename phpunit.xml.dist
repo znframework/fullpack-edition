@@ -22,7 +22,7 @@
 		<whitelist processUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">./Internal</directory>
             <exclude>
-				<directory>./UnitTests/extends</directory>
+                <directory>./UnitTests/extends</directory>
                 <directory>./Internal/composer</directory>
                 <file>./Internal/autoload.php</file>
                 <directory>./Internal/package-authentication/Resources</directory>
@@ -49,6 +49,7 @@
                 <directory>./Internal/package-remote/Exception</directory>
                 <directory>./Internal/package-request/Exception</directory>
                 <directory>./Internal/package-services/Exception</directory>
+                <directory>./Internal/package-services/CDNDrivers</directory>
                 <directory>./Internal/package-storage/Exception</directory>
                 <directory>./Internal/package-validation/Exception</directory>
                 <directory>./Internal/package-xml/Exception</directory>

@@ -17,4 +17,11 @@ class PostTest extends \PHPUnit\Framework\TestCase
 
         $this->assertStringContainsString('path/example', Restful::info('all')['url']);
     }
+
+    public function testPostWithDataMethod()
+    {
+        Restful::data(['example' => 'Example'])->post('path/example');
+
+        $this->assertStringContainsString('path/example', Restful::info('all')['url']);
+    }
 }

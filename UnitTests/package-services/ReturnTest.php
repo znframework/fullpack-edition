@@ -9,7 +9,7 @@ class ReturnTest extends \PHPUnit\Framework\TestCase
     {
         $return = Buffer::callback(function()
         {
-            Restful::contentType('json')->return(function()
+            Restful::httpStatus(200)->contentType('json')->return(function()
             {
                 echo json_encode(['example' => 'Example']);
             });

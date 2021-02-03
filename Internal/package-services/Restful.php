@@ -338,11 +338,6 @@ class Restful implements RestfulInterface
      */
     public function return(Callable $callback)
     {
-        if( ! Http::isCurl() )
-        {
-            Singleton::class('ZN\Routing\Route')->redirectInvalidRequest();
-        }
-
         return $callback();
     }
 
