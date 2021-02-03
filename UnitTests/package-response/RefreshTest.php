@@ -8,4 +8,9 @@ class RefreshTest extends \PHPUnit\Framework\TestCase
     {
         Redirect::refresh('profile', 2);
     }
+
+    public function testRefreshClass()
+    {
+        new Refresh('profile');
+    }
 }

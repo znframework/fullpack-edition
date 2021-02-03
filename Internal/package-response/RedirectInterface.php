@@ -95,6 +95,15 @@ interface RedirectInterface
     public function action(String $action = NULL);
 
     /**
+     * Sets redirect exit
+     * 
+     * @param bool $exit = 0
+     * 
+     * @return self
+     */
+    public function exit(Bool $exit = true);
+
+    /**
      * Sets redirect time
      * 
      * @param int $time = 0

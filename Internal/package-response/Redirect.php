@@ -176,8 +176,9 @@ class Redirect implements RedirectInterface
      */
     public function action(String $action = NULL)
     {
-        $time = $this->redirect['time'];
-        $data = $this->redirect['data'];
+        $time = $this->redirect['time'] ?? 0;
+        $data = $this->redirect['data'] ?? [];
+        $exit = $this->redirect['exit'] ?? true;
 
         $this->redirect = [];
 
@@ -186,8 +187,22 @@ class Redirect implements RedirectInterface
             $exit = false;
             $type = 'refresh';
         }
-        
-        $this->location($action, $time, $data, $exit ?? true, $type ?? 'location');
+
+        $this->location($action, $time, $data, $exit, $type ?? 'location');
+    }
+
+    /**
+     * Sets redirect exit
+     * 
+     * @param bool $exit = 0
+     * 
+     * @return self
+     */
+    public function exit(Bool $exit = true)
+    {
+        $this->redirect['exit'] = $exit;
+
+        return $this;
     }
 
     /**
