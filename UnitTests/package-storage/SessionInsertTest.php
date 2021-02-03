@@ -1,5 +1,6 @@
 <?php namespace ZN\Storage;
 
+use Config;
 use Session;
 
 class SessionInsertTest extends \PHPUnit\Framework\TestCase
@@ -30,5 +31,15 @@ class SessionInsertTest extends \PHPUnit\Framework\TestCase
         Session::last()->insert('example', 'Example2');
 
         $this->assertEquals(['Example', 'Example2'], Session::example());
+    }
+
+    public function testInsertEncodeMd5()
+    {
+        Config::storage('session', ['encode' => true]);
+
+        $this->assertTrue(Session::example('Example'));
+
+        Config::storage('session', ['encode' => 'super']);
+
     }
 }
