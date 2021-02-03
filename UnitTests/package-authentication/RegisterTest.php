@@ -38,7 +38,7 @@ class RegisterTest extends AuthenticationExtends
 
     public function testStandartWithAutoLoginRedirect()
     {
-        return false;
+        Config::response('redirectExit', false);
         
         DB::where('username', 'robot@znframework.com')->delete('users');
 
@@ -48,6 +48,8 @@ class RegisterTest extends AuthenticationExtends
             'password' => '1234'
 
         ], 'redirect/link');
+
+        Config::response('redirectExit', true);
     }
 
     public function testStandartWithWithOptionalMethodAutoLogin()
