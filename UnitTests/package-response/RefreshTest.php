@@ -1,22 +1,16 @@
 <?php namespace ZN\Response;
 
-use Refresh;
 use Redirect;
 
-class ActionTest extends \PHPUnit\Framework\TestCase
+class RefreshTest extends \PHPUnit\Framework\TestCase
 {
-    public function testAction()
+    public function testLocation()
     {
-        Redirect::exit(false)
-                ->time(0) 
-                ->insert(['example' => 'Example'])
-                ->action('profile');
+        Redirect::refresh('profile', 2);
     }
 
-    public function testActionWithRefreshClass()
+    public function testRefreshClass()
     {
-        Refresh::wait(0)
-               ->data(['example' => 'Example'])
-               ->action('profile');
+        new Refresh('profile');
     }
 }
