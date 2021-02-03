@@ -8,7 +8,15 @@ class ErrorTest extends \PHPUnit\Framework\TestCase
 
         $curl->init('xyz')->exec();
 
-        $this->assertEmpty($curl->error());
+        $this->assertIsString($curl->error());
+    }
+
+    public function testErrno()
+    {
+        $curl = new CURL;
+
+        $curl->init('xyz')->exec();
+
         $this->assertIsInt($curl->errno());
     }
 
