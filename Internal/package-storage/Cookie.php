@@ -170,11 +170,6 @@ class Cookie implements CookieInterface, StorageInterface
     {
         $this->encodeNameValue($name);
 
-        if( ! empty($this->decode) )
-        {
-            $this->decode = NULL;
-        }
-
         if( isset($_COOKIE[$name]) )
         {
             return $this->getScalarCookieContentByName($name);

@@ -17,10 +17,23 @@ class CookieInsertTest extends StorageExtends
         try
         {
             Cookie::path('cookie')
+                ->time(60)
                 ->domain(URL::site())
                 ->secure(true)
                 ->httpOnly(true)
                 ->insert('example', 'Example');
+        }
+        catch( Exception\SetcookieException $e )
+        {
+            $this->assertEquals('Could not set the cookie!', $e->getMessage());
+        }
+    }
+
+    public function testValueParameterWithArray()
+    {
+        try
+        {
+            Cookie::insert('example', ['Example']);
         }
         catch( Exception\SetcookieException $e )
         {
