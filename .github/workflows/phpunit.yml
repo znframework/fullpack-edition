@@ -13,7 +13,7 @@ on:
       - composer.json
       - DockerFile
       - docker-compose.yml
-      - bootstrap
+      - bootstrap.php
       - zerocore 
       - '**.php'
       - phpunit.xml.dist
@@ -30,7 +30,7 @@ on:
       - composer.json
       - DockerFile
       - docker-compose.yml
-      - bootstrap
+      - bootstrap.php
       - zerocore 
       - '**.php'
       - phpunit.xml.dist
