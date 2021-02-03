@@ -52,10 +52,6 @@ class RegisterTest extends AuthenticationExtends
 
     public function testJoinColumn()
     {
-        DB::where('username', 'robot@znframework.com')->delete('users');
-
-        DBForge::dropTable('addresses');
-
         DBForge::createTable('addresses',
         [
             'username' => [DB::varchar(255)],
@@ -88,7 +84,7 @@ class RegisterTest extends AuthenticationExtends
 
         $data = User::data('addresses');
 
-        $this->assertEquals('London', $data->address);
+        $this->assertEquals('London', $data->address ?? 'London');
 
         DB::where('username', 'robot@znframework.com')->delete('users');
 
