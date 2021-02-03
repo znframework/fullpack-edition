@@ -935,7 +935,7 @@ class Sender implements SenderInterface
             }
             else
             {
-                throw new BadEmailAddressException($to);
+                throw new BadEmailAddressException(NULL, $to);
             }
         }
     }
