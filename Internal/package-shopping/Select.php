@@ -56,5 +56,7 @@ class Select extends CartExtends
                 return (object) $row;
             }
         }
+
+        return false;
     }
 }

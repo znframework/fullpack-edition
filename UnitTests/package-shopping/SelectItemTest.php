@@ -37,4 +37,21 @@ class SelectItemTest extends \PHPUnit\Framework\TestCase
 
         Cart::delete('4432222345219');
     }
+
+    public function testSelectFalse()
+    {
+        $data = 
+        [
+            'product'       => 'Banana',
+            'price'         => '10',
+            'quantity'      => 3,
+            'serial-number' => '4432222345219'
+        ];
+
+        Cart::insert($data);
+
+        Cart::delete('4432222345219');
+
+        $this->assertFalse(Cart::select('4432222345219'));
+    }
 }
