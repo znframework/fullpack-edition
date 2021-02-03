@@ -1,5 +1,6 @@
 <?php namespace ZN\Response;
 
+use Refresh;
 use Redirect;
 
 class ActionTest extends \PHPUnit\Framework\TestCase
