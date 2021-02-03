@@ -11,7 +11,7 @@ class PHPTagTest extends \PHPUnit\Framework\TestCase
 
     public function testPhpDecode()
     {
-        $this->assertEquals('<&#63;php echo 1;', Security::htmlDecode('&#60;&#63;php echo 1;'));
+        $this->assertEquals('<?php echo 1;', Security::phpTagDecode('&#60;&#63;php echo 1;'));
     }
 
     public function testPhpClean()

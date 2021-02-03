@@ -38,4 +38,15 @@ class CSRFTokenTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(true);
     }
+    
+    public function testCSRFTokenGet()
+    {
+        $token = Security::CSRFTokenKey();
+
+        Get::token($token);
+
+        Security::CSRFGet('home/invalid');
+
+        $this->assertTrue(true);
+    }
 }

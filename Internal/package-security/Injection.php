@@ -37,12 +37,6 @@ class Injection
         {
             foreach( $secBadChars as $badChar => $changeChar )
             {
-                if( is_numeric($badChar) )
-                {
-                    $badChar = $changeChar;
-                    $changeChar = '';
-                }
-
                 $badChar = trim($badChar, '/');
                 $string  = preg_replace('/'.$badChar.'/xi', $changeChar, $string);
             }

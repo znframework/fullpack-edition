@@ -13,4 +13,14 @@ class InjectionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals('ZN" Framework', Security::injectionDecode('ZN\\" Framework'));
     }
+
+    public function testEscapeStringEncode()
+    {
+        $this->assertEquals('ZN\" Framework', Security::escapeStringEncode('ZN" Framework'));
+    }
+
+    public function testEscapeStringDecode()
+    {
+        $this->assertEquals('ZN" Framework', Security::escapeStringDecode('ZN\\" Framework'));
+    }
 }
