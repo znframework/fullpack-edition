@@ -25,13 +25,37 @@
 				<directory>./UnitTests/extends</directory>
                 <directory>./Internal/composer</directory>
                 <file>./Internal/autoload.php</file>
+                <directory>./Internal/package-authentication/Resources</directory>
+                <directory>./Internal/package-authentication/Exception</directory>       
+                <directory>./Internal/package-buffering/Exception</directory>
+                <directory>./Internal/package-cache/Exception</directory>
+                <directory>./Internal/package-comparison/Exception</directory>
+                <directory>./Internal/package-compression/Exception</directory>
+                <directory>./Internal/package-crontab/Exception</directory>
+                <directory>./Internal/package-cryptography/Exception</directory>
+                <directory>./Internal/package-database/Exception</directory>
+                <directory>./Internal/package-datatypes/Exception</directory>
+                <directory>./Internal/package-datetime/Exception</directory>
+                <directory>./Internal/package-email/Exception</directory>
+                <directory>./Internal/package-event-handler/Exception</directory>
+                <directory>./Internal/package-filesystem/Exception</directory>
+                <directory>./Internal/package-generator/Exception</directory>
+                <directory>./Internal/package-helpers/Exception</directory>  
+                <directory>./Internal/package-hypertext/Resources</directory>
+                <directory>./Internal/package-hypertext/Exception</directory>
+                <directory>./Internal/package-image/Exception</directory>
+                <directory>./Internal/package-payment</directory>
+                <directory>./Internal/package-protection/Exception</directory>
+                <directory>./Internal/package-remote/Exception</directory>
+                <directory>./Internal/package-request/Exception</directory>
+                <directory>./Internal/package-services/Exception</directory>
+                <directory>./Internal/package-storage/Exception</directory>
+                <directory>./Internal/package-validation/Exception</directory>
+                <directory>./Internal/package-xml/Exception</directory>
                 <directory>./Internal/package-zerocore/Facades</directory>
                 <directory>./Internal/package-zerocore/ErrorHandling/Resources</directory>
                 <directory>./Internal/package-zerocore/Exception</directory>
                 <directory>./Internal/package-zerocore/Resources</directory>
-                <directory>./Internal/package-authentication/Resources</directory>
-                <directory>./Internal/package-hypertext/Resources</directory>
-                <directory>./Internal/package-payment</directory>
             </exclude>
 		</whitelist>
 	</filter>
