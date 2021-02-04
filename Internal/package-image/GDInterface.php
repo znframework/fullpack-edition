@@ -69,38 +69,6 @@ interface GDInterface
     public function mime(String $type = 'jpeg') : String;
 
     /**
-     * To WBMP
-     * 
-     * @param string $fileName
-     * @param int    $threshold = NULL
-     * 
-     * @return GD
-     */
-    public function toWbmp(String $fileName = NULL, Int $threshold = NULL) : GD;
-
-    /**
-     * JPEG to WBMP
-     * 
-     * @param string $pngFile
-     * @param string $wbmpFile
-     * @param array  $settings = []
-     * 
-     * @return bool
-     */
-    public function jpegToWbmp(String $jpegFile, String $wbmpFile, Array $settings = []) : Bool;
-
-    /**
-     * PNG to WBMP
-     * 
-     * @param string $pngFile
-     * @param string $wbmpFile
-     * @param array  $settings = []
-     * 
-     * @return bool
-     */
-    public function pngToWbmp(String $pngFile, String $wbmpFile, Array $settings = []) : Bool;
-
-    /**
      * Sets alpha blending
      * 
      * @param bool $blendMode = NULL
@@ -215,87 +183,6 @@ interface GDInterface
     public function text(String $text, Array $settings = []) : GD;
 
     /**
-     * Set closest
-     * 
-     * @param string $rgb
-     * 
-     * @return int
-     */
-    public function closest(String $rgb) : Int;
-
-    /**
-     * Set resolve
-     * 
-     * @param string $rgb
-     * 
-     * @return int
-     */
-    public function resolve(String $rgb) : Int;
-
-    /**
-     * Set index
-     * 
-     * @param string $rgb
-     * 
-     * @return int
-     */
-    public function index(String $rgb) : Int;
-
-    /**
-     * Set pixel index
-     * 
-     * @param int $x
-     * @param int $y
-     * 
-     * @return int
-     */
-    public function pixelIndex(Int $x, Int $y) : Int;
-
-    /**
-     * Set closest hwb
-     * 
-     * @param string $rgb
-     * 
-     * @return int
-     */
-    public function closestHwb(String $rgb) : Int;
-
-    /**
-     * Match
-     * 
-     * @param resource $sourceImage
-     * 
-     * @return GD
-     */
-    public function match($sourceImage) : GD;
-
-    /**
-     * Set
-     * 
-     * @param int    $index
-     * @param string $rgb = NULL
-     * 
-     * @return GD
-     */
-    public function set(Int $index, String $rgb = NULL) : GD;
-
-    /**
-     * Total
-     * 
-     * @return int
-     */
-    public function total() : Int;
-
-    /**
-     * Set transparent
-     * 
-     * @param string $rgb
-     * 
-     * @return GD
-     */
-    public function transparent(String $rgb) : GD;
-
-    /**
      * Set convolution
      * 
      * @param array $matrix
@@ -395,24 +282,6 @@ interface GDInterface
     public function line(Array $settings = []) : GD;
 
     /**
-     * Set font height
-     * 
-     * @param int $height
-     * 
-     * @return int
-     */
-    public function fontHeight(Int $height) : Int;
-
-    /**
-     * Set font width
-     * 
-     * @param int $width
-     * 
-     * @return int
-     */
-    public function fontWidth(Int $width) : Int;
-
-    /**
      * Get screenshot
      * 
      * @return GD
@@ -460,15 +329,6 @@ interface GDInterface
     public function pixel(Array $settings = []) : GD;
 
     /**
-     * Set style
-     * 
-     * @param array $style
-     * 
-     * @return GD
-     */
-    public function style(Array $style) : GD;
-
-    /**
      * Set thickness
      * 
      * @param int $thickness = 1
@@ -487,16 +347,6 @@ interface GDInterface
     public function tile($tile) : GD;
 
     /**
-     * Set window display
-     * 
-     * @param int $window
-     * @param int $clientArea = 0
-     * 
-     * @return GD
-     */
-    public function windowDisplay(Int $window, Int $clientArea = 0) : GD;
-
-    /**
      * Set layer effect
      * 
      * @param string $effect = 'normal'
@@ -504,45 +354,6 @@ interface GDInterface
      * @return GD
      */
     public function layerEffect(String $effect = 'normal') : GD;
-
-    /**
-     * Set load font
-     * 
-     * @param string $file
-     * 
-     * @return int
-     */
-    public function loadFont(String $file) : Int;
-
-    /**
-     * Get copy palette
-     * 
-     * @param resource $source
-     * 
-     * @return resource
-     */
-    public function copyPalette($source);
-
-    /**
-     * Get canvas width
-     * 
-     * @return int
-     */
-    public function canvasWidth() : Int;
-
-    /**
-     * Get canvas height
-     * 
-     * @return int
-     */
-    public function canvasHeight() : Int;
-
-    /**
-     * Get types
-     * 
-     * @return int
-     */
-    public function types() : Int;
 
     /**
      * Generate Image

@@ -8,7 +8,7 @@ class ThumbTest extends \ZN\Test\GlobalExtends
     const dir = self::default . 'package-image/resources/';
     const img = self::dir . 'image.jpg';
 
-    public function testCanvas()
+    public function testCreate()
     {
         $this->assertStringContainsString
         (
@@ -44,6 +44,11 @@ class ThumbTest extends \ZN\Test\GlobalExtends
         );
     }
 
+    public function testGetProsize()
+    {
+        $this->assertIsObject(Thumb::path(self::img)->getProsize(200));
+    }
+
     public function testWatermark()
     {
         $this->assertStringContainsString
@@ -70,6 +75,15 @@ class ThumbTest extends \ZN\Test\GlobalExtends
         (
             0, 
             count(Folder::files(self::dir . 'thumbs'))
+        );
+    }
+
+    public function testCreateApplyFilter()
+    {
+        $this->assertStringContainsString
+        (
+            'resources/thumbs/image-350x200px-730x501size.jpg', 
+            Thumb::path(self::img)->colorize(80, 50, 60)->crop(350, 200)->create()
         );
     }
 }
