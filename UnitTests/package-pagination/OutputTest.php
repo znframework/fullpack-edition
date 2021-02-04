@@ -1,5 +1,6 @@
 <?php namespace ZN\Pagination;
 
+use URL;
 use Pagination;
 
 class OutputTest extends \PHPUnit\Framework\TestCase
@@ -21,7 +22,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertStringContainsString
         (
-            '<a href="' . URL::site('Home/main/0') . '" class="page-link">first</a>', 
+            'Home/main/190">last', 
             Pagination::output('classic')->linkNames('prev', 'next', 'first', 'last')->limit(10)->countLinks(5)->totalRows(200)->create(100)
         );
     }
