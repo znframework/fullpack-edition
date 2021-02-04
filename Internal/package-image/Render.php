@@ -284,19 +284,6 @@ class Render implements RenderInterface
         return Filesystem::getExtension($file) === 'png';
     }
 
-    protected function fillBackgroundWithColorReturnOrigin($file, $set)
-    {
-        $allocateParameters = explode('|', $set['backgroundColor']);
-        $imageColorAllocate = count($allocateParameters) === 3 ? 'imagecolorallocate' : 'imagecolorallocatealpha';
-        $color              = $imageColorAllocate($file, ...$allocateParameters); 
-
-        $file = imagecreatetruecolor($set['backgroundOriginX'], $set['backgroundOriginY']);
-
-        imagefill($file, 0, 0, $color);
-        
-        return WatermarkImageAligner::align($set['backgroundAlign'], $width, $height, $set['backgroundOriginX'], $set['backgroundOriginY'], 0);
-    }
-
     /**
      * Protected apply bacground transparency
      */

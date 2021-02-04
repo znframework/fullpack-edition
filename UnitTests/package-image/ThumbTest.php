@@ -29,6 +29,11 @@ class ThumbTest extends \ZN\Test\GlobalExtends
         }
     }
 
+    public function testCreateReturnEmpty()
+    {
+        $this->assertEmpty(Thumb::path('zeroneed.php')->crop(100, 200)->create());
+    }
+
     public function testCreateWithPNG()
     {
         $this->assertStringContainsString
