@@ -19,6 +19,8 @@ class CoveredUsagesTest extends Test\GDExtends
 
     public function testTypeJPEGFrom()
     {
-        $this->assertIsObject(ImageTypeCreator::from(self::dir . 'image.jpeg'));
+        $return = ImageTypeCreator::from(self::dir . 'image.jpeg');
+
+        $this->assertTrue( is_object($return) || is_resource($return) );
     }
 }
