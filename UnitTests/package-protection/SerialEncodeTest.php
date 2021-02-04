@@ -2,7 +2,7 @@
 
 use Serial;
 
-class SerialEncodeTest extends Test\CommonExtends
+class SerialEncodeTest extends ProtectionExtends
 {
     public function testEncode()
     {

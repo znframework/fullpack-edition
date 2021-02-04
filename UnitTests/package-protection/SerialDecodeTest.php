@@ -2,7 +2,7 @@
 
 use Serial;
 
-class SerialDecodeTest extends Test\CommonExtends
+class SerialDecodeTest extends ProtectionExtends
 {
     public function testDecode()
     {

@@ -2,7 +2,7 @@
 
 use Separator;
 
-class SeparatorDecodeTest extends Test\CommonExtends
+class SeparatorDecodeTest extends ProtectionExtends
 {
     public function testDecode()
     {

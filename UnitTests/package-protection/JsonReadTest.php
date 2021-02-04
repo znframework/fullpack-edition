@@ -2,7 +2,7 @@
 
 use Json;
 
-class JsonReadTest extends Test\CommonExtends
+class JsonReadTest extends ProtectionExtends
 {
     public function testRead()
     {

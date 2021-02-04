@@ -2,7 +2,7 @@
 
 use Separator;
 
-class SeparatorReadTest extends Test\CommonExtends
+class SeparatorReadTest extends ProtectionExtends
 {
     public function testRead()
     {

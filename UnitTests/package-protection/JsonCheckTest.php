@@ -2,7 +2,7 @@
 
 use Json;
 
-class JsonCheckTest extends Test\CommonExtends
+class JsonCheckTest extends ProtectionExtends
 {
     public function testCheckTrue()
     {

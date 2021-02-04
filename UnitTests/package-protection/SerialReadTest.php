@@ -2,7 +2,7 @@
 
 use Serial;
 
-class SerialReadTest extends Test\CommonExtends
+class SerialReadTest extends ProtectionExtends
 {
     public function testRead()
     {

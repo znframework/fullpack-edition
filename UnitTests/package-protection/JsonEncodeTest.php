@@ -2,7 +2,7 @@
 
 use Json;
 
-class JsonEncodeTest extends Test\CommonExtends
+class JsonEncodeTest extends ProtectionExtends
 {
     public function testEncode()
     {

@@ -2,7 +2,7 @@
 
 use Separator;
 
-class SeparatorWriteTest extends Test\CommonExtends
+class SeparatorWriteTest extends ProtectionExtends
 {
     public function testWrite()
     {

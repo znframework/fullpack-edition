@@ -2,7 +2,7 @@
 
 use Serial;
 
-class SerialWriteTest extends Test\CommonExtends
+class SerialWriteTest extends ProtectionExtends
 {
     public function testWrite()
     {
