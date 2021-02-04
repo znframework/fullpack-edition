@@ -85,7 +85,7 @@ class Select extends MLExtends
             }
             else
             {
-                return false;
+                return [];
             }
 
             $allMLFiles = [];
