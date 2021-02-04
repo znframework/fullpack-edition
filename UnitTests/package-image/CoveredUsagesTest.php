@@ -23,4 +23,16 @@ class CoveredUsagesTest extends Test\GDExtends
 
         $this->assertTrue( is_object($return) || is_resource($return) );
     }
+
+    public function testWatermarkAligner()
+    {
+        $this->assertEquals([10, 10], WatermarkImageAligner::align('topleft', 50, 50, 100, 100, 10));
+        $this->assertEquals([25, 10], WatermarkImageAligner::align('topcenter', 50, 50, 100, 100, 10));
+        $this->assertEquals([40, 10], WatermarkImageAligner::align('topright', 50, 50, 100, 100, 10));
+        $this->assertEquals([10, 25], WatermarkImageAligner::align('middleleft', 50, 50, 100, 100, 10));
+        $this->assertEquals([40, 25], WatermarkImageAligner::align('middleright', 50, 50, 100, 100, 10));
+        $this->assertEquals([10, 40], WatermarkImageAligner::align('bottomleft', 50, 50, 100, 100, 10));
+        $this->assertEquals([25, 40], WatermarkImageAligner::align('bottomcenter', 50, 50, 100, 100, 10));
+        $this->assertEquals([40, 40], WatermarkImageAligner::align('bottomright', 50, 50, 100, 100, 10));
+    }
 }

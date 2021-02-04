@@ -109,6 +109,11 @@ class ThumbTest extends \ZN\Test\GlobalExtends
         );
     }
 
+    public function testCleanItSelf()
+    {
+        Thumb::clean(self::dir . 'thumbs/image-0x0px-146x100size.jpg', true);
+    }
+
     public function testCreateApplyFilter()
     {
         $this->assertStringContainsString
