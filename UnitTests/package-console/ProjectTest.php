@@ -1,6 +1,7 @@
 <?php namespace ZN\Console;
 
 use Folder;
+use Buffer;
 
 class ProjectTest extends \PHPUnit\Framework\TestCase
 {
@@ -8,7 +9,10 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
     {
         $dir = PROJECTS_DIR . 'MyExampleProject';
 
-        new CreateProject('MyExampleProject');
+        Buffer::callback(function()
+        {
+            new CreateProject('MyExampleProject');
+        });
 
         $this->assertDirectoryExists($dir = PROJECTS_DIR . 'MyExampleProject');
 
@@ -22,8 +26,11 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
     {
         $dir = PROJECTS_DIR . 'MyExampleProject';
 
-        new CreateProject('MyExampleProject');
-        new DeleteProject('MyExampleProject');
+        Buffer::callback(function()
+        {
+            new CreateProject('MyExampleProject');
+            new DeleteProject('MyExampleProject');
+        });
 
         $this->assertFalse(is_dir($dir));
     }

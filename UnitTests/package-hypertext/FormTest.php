@@ -3,6 +3,7 @@
 use DB;
 use Form;
 use Config;
+use Buffer;
 use Session;
 
 class FormTest extends \PHPUnit\Framework\TestCase
@@ -188,7 +189,7 @@ class FormTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString
         (
             'serializer', 
-            (string) Form::serializer('Contact/ajaxSendForm', '#successDiv')->button('send', 'SEND')
+            Buffer::callback(function(){ Form::serializer('Contact/ajaxSendForm', '#successDiv')->button('send', 'SEND');})
         );
     }
 
@@ -197,7 +198,7 @@ class FormTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString
         (
             'trigger', 
-            (string) Form::trigger('keyup', 'Validations/control', function(){})->button('send', 'SEND')
+            Buffer::callback(function(){ Form::trigger('keyup', 'Validations/control', function(){})->button('send', 'SEND');})
         );
     }
 }

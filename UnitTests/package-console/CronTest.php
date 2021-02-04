@@ -1,6 +1,7 @@
 <?php namespace ZN\Console;
 
 use File;
+use Buffer;
 use Crontab;
 
 class CronTest extends \PHPUnit\Framework\TestCase
@@ -9,7 +10,10 @@ class CronTest extends \PHPUnit\Framework\TestCase
     {
         $file = EXTERNAL_DIR . 'Crontab/Jobs';
 
-        new Cron('Example:run', ['daily']);
+        Buffer::callback(function()
+        {
+            new Cron('Example:run', ['daily']);
+        }); 
 
         $length = strlen(File::read($file));
 
@@ -25,7 +29,10 @@ class CronTest extends \PHPUnit\Framework\TestCase
     {
         $file = EXTERNAL_DIR . 'Crontab/Jobs';
 
-        new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
+        Buffer::callback(function()
+        {
+            new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
+        }); 
 
         $length = strlen(File::read($file));
 
@@ -41,7 +48,10 @@ class CronTest extends \PHPUnit\Framework\TestCase
     {
         $file = EXTERNAL_DIR . 'Crontab/Jobs';
 
-        new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
+        Buffer::callback(function()
+        {
+            new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
+        });
 
         $array = Crontab::listArray();
 
@@ -57,8 +67,11 @@ class CronTest extends \PHPUnit\Framework\TestCase
     {
         $file = EXTERNAL_DIR . 'Crontab/Jobs';
 
-        new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
-        new RemoveCron('Example');
+        Buffer::callback(function()
+        {
+            new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
+            new RemoveCron('Example');
+        });
 
         $array = Crontab::listArray();
 

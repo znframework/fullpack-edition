@@ -1,6 +1,7 @@
 <?php namespace ZN\Console;
 
 use Cache;
+use Buffer;
 
 class CleanCacheTest extends \PHPUnit\Framework\TestCase
 {
@@ -8,8 +9,11 @@ class CleanCacheTest extends \PHPUnit\Framework\TestCase
     {
         Cache::insert('a', 'value');
 
-        new CleanCache;
-
+        Buffer::callback(function()
+        {
+            new CleanCache;
+        });
+    
         $this->assertEmpty(Cache::select('a'));
     }
 }

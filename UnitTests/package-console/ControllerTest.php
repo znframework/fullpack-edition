@@ -1,13 +1,17 @@
 <?php namespace ZN\Console;
 
 use File;
+use Buffer;
 
 class ControllerTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateController()
     {
-        new CreateController('Example');
-
+        Buffer::callback(function()
+        {
+            new CreateController('Example');
+        }); 
+        
         $this->assertFileExists($file = CONTROLLERS_DIR . 'Example.php');
 
         if( is_file($file) )
@@ -18,8 +22,11 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     public function testDeleteController()
     {
-        new CreateController('Example');
-        new DeleteController('Example');
+        Buffer::callback(function()
+        {
+            new CreateController('Example');
+            new DeleteController('Example');
+        }); 
 
         $file = CONTROLLERS_DIR . 'Example.php';
 

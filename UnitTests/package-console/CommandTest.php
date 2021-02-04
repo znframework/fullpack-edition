@@ -17,7 +17,10 @@ class CommandTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateCommand()
     {
-        new CreateCommand('Example');
+        Buffer::callback(function()
+        {
+            new CreateCommand('Example');
+        });
 
         $this->assertFileExists($file = COMMANDS_DIR . 'Example.php');
 
@@ -29,8 +32,11 @@ class CommandTest extends \PHPUnit\Framework\TestCase
 
     public function testDeleteCommand()
     {
-        new CreateCommand('Example');
-        new DeleteCommand('Example');
+        Buffer::callback(function()
+        {
+            new CreateCommand('Example');
+            new DeleteCommand('Example');
+        }); 
 
         $file = COMMANDS_DIR . 'Example.php';
 

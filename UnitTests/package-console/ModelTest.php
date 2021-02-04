@@ -2,13 +2,17 @@
 
 use File;
 use Folder;
+use Buffer;
 
 class ModelTest extends \ZN\Database\DatabaseExtends
 {
     public function testCreateModel()
     {
-        new CreateModel('Example1');
-
+        Buffer::callback(function()
+        {
+            new CreateModel('Example1');
+        });
+        
         $this->assertFileExists($file = MODELS_DIR . 'Example1.php');
 
         if( is_file($file) )
@@ -19,7 +23,10 @@ class ModelTest extends \ZN\Database\DatabaseExtends
 
     public function testCreateGrandModel()
     {
-        new CreateGrandModel('Example');
+        Buffer::callback(function()
+        {
+            new CreateGrandModel('Example');
+        });
 
         $this->assertFileExists($file = MODELS_DIR . 'Example.php');
 
@@ -31,18 +38,27 @@ class ModelTest extends \ZN\Database\DatabaseExtends
 
     public function testCreateGrandVision()
     {
-        new CreateGrandVision('testdb');
+        Buffer::callback(function()
+        {
+            new CreateGrandVision('testdb');
+        });       
     }
 
     public function testDeleteGrandVision()
     {
-        new DeleteGrandVision('testdb');
+        Buffer::callback(function()
+        {
+            new DeleteGrandVision('testdb');
+        });    
     }
 
     public function testCreateMigration()
     {
-        new CreateMigration('Persons', [0]);
-
+        Buffer::callback(function()
+        {
+            new CreateMigration('Persons', [0]);
+        });
+        
         $this->assertFileExists($file = MODELS_DIR . 'Migrations/Persons.php');
 
         if( is_file($file) )
@@ -53,7 +69,10 @@ class ModelTest extends \ZN\Database\DatabaseExtends
 
     public function testCreateMigrationOtherVersion()
     {
-        new CreateMigration('Persons', [2]);
+        Buffer::callback(function()
+        {
+            new CreateMigration('Persons', [2]);
+        });
 
         $this->assertFileExists($file = MODELS_DIR . 'Migrations/PersonsVersion/002.php');
 
@@ -65,8 +84,11 @@ class ModelTest extends \ZN\Database\DatabaseExtends
 
     public function testDeleteModel()
     {
-        new CreateModel('Example');
-        new DeleteModel('Example');
+        Buffer::callback(function()
+        {
+            new CreateModel('Example');
+            new DeleteModel('Example');
+        });     
 
         $file = MODELS_DIR . 'Example.php';
 
@@ -75,8 +97,11 @@ class ModelTest extends \ZN\Database\DatabaseExtends
 
     public function testDeleteMigration()
     {
-        new CreateMigration('Persons');
-        new DeleteMigration('Persons');
+        Buffer::callback(function()
+        {
+            new CreateMigration('Persons');
+            new DeleteMigration('Persons');
+        });       
 
         $file = MODELS_DIR . 'Migrations/Persons.php';
 
@@ -85,8 +110,11 @@ class ModelTest extends \ZN\Database\DatabaseExtends
 
     public function testDeleteMigrationAll()
     {
-        new CreateMigration('Persons');
-        new DeleteMigrationAll();
+        Buffer::callback(function()
+        {
+            new CreateMigration('Persons');
+            new DeleteMigrationAll();
+        });  
 
         $file = MODELS_DIR . 'Migrations/Persons.php';
 
