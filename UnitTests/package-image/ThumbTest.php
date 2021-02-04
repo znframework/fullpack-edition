@@ -17,6 +17,27 @@ class ThumbTest extends \ZN\Test\GlobalExtends
         );
     }
 
+    public function testCreateImageNotFoundException()
+    {
+        try
+        {
+            Thumb::path($path = self::img . 'xbyz')->crop(100, 200)->create();
+        }
+        catch( Exception\ImageNotFoundException $e )
+        {
+            $this->assertStringContainsString($path, $e->getMessage());
+        }
+    }
+
+    public function testCreateWithPNG()
+    {
+        $this->assertStringContainsString
+        (
+            'resources/thumbs/image-0x0px-100x100size.png', 
+            Thumb::quality(100)->path(self::dir . 'image.png')->resize(100, 100)->create()
+        );
+    }
+
     public function testCropAndSize()
     {
         $this->assertStringContainsString
@@ -49,9 +70,9 @@ class ThumbTest extends \ZN\Test\GlobalExtends
         $this->assertIsObject(Thumb::path(self::img)->getProsize(200));
     }
 
-    public function testGetProsizeNegative()
+    public function testGetProsizeSizeGreaterThanHeight()
     {
-        $this->assertIsObject(Thumb::path(self::img)->getProsize(-200));
+        $this->assertIsObject(Thumb::path(self::img)->getProsize(10, 10));
     }
 
     public function testWatermark()

@@ -103,9 +103,6 @@ class Render implements RenderInterface
         # If the image file is not found, an exception is thrown.
         $this->throwExceptionImageFileIfNotExists($filePath = $this->cleanURLFix($fpath));
        
-        # If the file is not a valid image file, an exception is thrown.
-        $this->throwExceptionIsNotImageFile($filePath);
-
         # If the image type cannot be created, it returns empty.
         if( ! $createNewImageByType = ImageTypeCreator::from($filePath) )
         {
@@ -194,17 +191,6 @@ class Render implements RenderInterface
 
             $set['filters'][] = ['mix', [$set['watermark'][0]]];
         }  
-    }
-
-    /**
-     * Protected throw exception image file if not exists
-     */
-    protected function throwExceptionIsNotImageFile($file)
-    {
-        if( ! $this->isImageFile($file) )
-        {
-            throw new Exception\InvalidImageFileException(NULL, $file);
-        }
     }
 
     /**
