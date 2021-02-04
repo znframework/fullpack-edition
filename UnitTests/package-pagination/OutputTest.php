@@ -16,4 +16,13 @@ class OutputTest extends \PHPUnit\Framework\TestCase
                ->create()
         );
     }
+
+    public function testOutputClassic()
+    {
+        $this->assertStringContainsString
+        (
+            '<a href="' . URL::site('Home/main/0') . '" class="page-link">first</a>', 
+            Pagination::output('classic')->linkNames('prev', 'next', 'first', 'last')->limit(10)->countLinks(5)->totalRows(200)->create(100)
+        );
+    }
 }
