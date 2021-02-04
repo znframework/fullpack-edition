@@ -39,7 +39,7 @@ class Grid extends MLExtends
         parent::__construct();
 
         $this->getLang = Lang::default('ZN\Language\GridDefaultLanguage')
-                             ::select('Language');
+                             ::select('ViewObjects:dbgrid');
     }
 
     /**

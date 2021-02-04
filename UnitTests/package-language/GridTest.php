@@ -2,6 +2,7 @@
 
 use ML;
 use Post;
+use Config;
 
 class GridTest extends \PHPUnit\Framework\TestCase
 {
@@ -13,15 +14,6 @@ class GridTest extends \PHPUnit\Framework\TestCase
     public function testLimit()
     {
         $this->assertStringContainsString('ML_TABLE', ML::limit(4)->grid());
-    }
-
-    public function testSearch()
-    {
-        unset($_POST);
-
-        Post::ML_SEARCH_SUBMIT('abc');
-
-        $this->assertStringContainsString('ML_TABLE', ML::grid());
     }
 
     public function testAddLanguage()
@@ -74,6 +66,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
     {
         unset($_POST);
 
+        Post::ML_UPDATE_KEYWORD_SUBMIT(true);
         Post::ML_LANGUAGES('en,tr');
         Post::ML_UPDATE_KEYWORD_HIDDEN('example');
         Post::ML_UPDATE_WORDS(['en' => 'Example2', 'tr' => 'Deneme2']);
@@ -90,5 +83,16 @@ class GridTest extends \PHPUnit\Framework\TestCase
         Post::ML_DELETE_SUBMIT(true);
         
         $this->assertStringContainsString('ML_TABLE', ML::grid());
+    }
+
+    public function testSearch()
+    {
+        unset($_POST);   
+
+        Post::ML_LANGUAGES('en,tr');
+        Post::ML_SEARCH('abc');
+        Post::ML_SEARCH_SUBMIT(true);
+
+        $this->assertStringContainsString('ML_TABLE', ML::url('')->grid());
     }
 }
