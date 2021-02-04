@@ -10,7 +10,6 @@
  */
 
 use ZN\Config;
-use ZN\Singleton;
 use ZN\Buffering;
 
 class Processor implements ProcessorInterface
@@ -80,13 +79,6 @@ class Processor implements ProcessorInterface
             case 'system':
                 $return       = Buffering\Callback::do(function() use($command) {system($command, $this->return);});
                 $this->output = $this->_split($return);
-            break;
-
-            case 'ssh':
-                $ssh = Singleton::class('ZN\Remote\SSH');
-                $ssh->run($command);
-                $this->output = $this->_split($return = $ssh->output());
-                $this->return = 0;
             break;
         }
 
