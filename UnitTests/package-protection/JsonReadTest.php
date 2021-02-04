@@ -18,4 +18,9 @@ class JsonReadTest extends ProtectionExtends
     {
         $this->assertEquals(['foo' => 'Foo', 'bar' => 'Bar'], Json::readArray(self::dir . 'example'));
     }
+
+    public function testReadReturnFalse()
+    {
+        $this->assertFalse(Json::read(self::dir . 'unknown'));
+    }
 }
