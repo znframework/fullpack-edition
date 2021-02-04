@@ -35,4 +35,10 @@ class DeleteTest extends \PHPUnit\Framework\TestCase
         # If not, it returns itself.
         $this->assertSame('pencil', ML::select('pencil'));
     }
+
+    public function testDeleteReturnFalse()
+    {
+        # If not, it returns itself.
+        $this->assertFalse(ML::deleteAll('abc'));
+    }
 }
