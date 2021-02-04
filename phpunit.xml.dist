@@ -47,7 +47,7 @@
                 <directory>./Internal/package-image/Exception</directory>
                 <directory>./Internal/package-payment</directory>
                 <directory>./Internal/package-protection/Exception</directory>
-                <directory>./Internal/package-remote/Exception</directory>
+                <directory>./Internal/package-remote</directory>
                 <directory>./Internal/package-request/Exception</directory>
                 <directory>./Internal/package-services/Exception</directory>
                 <directory>./Internal/package-services/CDNDrivers</directory>
