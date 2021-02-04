@@ -95,4 +95,19 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $this->assertStringContainsString('ML_TABLE', ML::url('')->grid());
     }
+
+    public function testStyleElement()
+    {
+        unset($_POST);   
+
+        Config::viewObjects('mlgrid', 
+        [
+            'styleElement' => [
+                '#ML_TABLE tr:nth-child(even)' => ['background' => '#E6F9FF'],
+                '#ML_TABLE tr:nth-child(odd)'  => ['background' => '#FFF']
+            ]
+        ]);
+
+        $this->assertStringContainsString('ML_TABLE', ML::grid());
+    }
 }
