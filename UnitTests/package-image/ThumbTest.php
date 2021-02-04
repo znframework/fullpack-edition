@@ -49,6 +49,11 @@ class ThumbTest extends \ZN\Test\GlobalExtends
         $this->assertIsObject(Thumb::path(self::img)->getProsize(200));
     }
 
+    public function testGetProsizeNegative()
+    {
+        $this->assertIsObject(Thumb::path(self::img)->getProsize(-200));
+    }
+
     public function testWatermark()
     {
         $this->assertStringContainsString

@@ -34,11 +34,10 @@ interface GDInterface
      * Creates form
      * 
      * @param string $source
-     * @param array  $settings = []
      * 
      * @return resource
      */
-    public function createFrom(String $source, Array $settings = []);
+    public function createFrom(String $source);
 
     /**
      * Set size
@@ -338,15 +337,6 @@ interface GDInterface
     public function thickness(Int $thickness = 1) : GD;
 
     /**
-     * Set tile
-     * 
-     * @param resource $tile
-     * 
-     * @return GD
-     */
-    public function tile($tile) : GD;
-
-    /**
      * Set layer effect
      * 
      * @param string $effect = 'normal'
@@ -364,11 +354,4 @@ interface GDInterface
      * @return resource
      */
     public function generate(String $type, String $save);
-
-    /**
-     * Get result
-     * 
-     * @return string
-     */
-    public function result() : String;
 }

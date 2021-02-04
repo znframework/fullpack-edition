@@ -12,4 +12,13 @@ class RotateTest extends Test\GDExtends
 
         $this->assertFileExists($generateFile);
     }
+
+    public function testRotateTransparent()
+    {
+        GD::canvas(self::img)
+          ->rotate(90, 'transparent')
+          ->generate('png', $generateFile = self::dir . 'image-rotate.png');
+
+        $this->assertFileExists($generateFile);
+    }
 }

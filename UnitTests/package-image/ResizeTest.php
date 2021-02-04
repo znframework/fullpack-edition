@@ -18,4 +18,24 @@ class ResizeTest extends Test\GDExtends
 
         $this->assertFileExists($generateFile);
     }
+
+    public function testResizeInvalidArgumentException()
+    {   
+        try
+        {
+          GD::canvas(self::img)
+          ->target(50, 50)
+          ->source(300, 450)
+          ->targetWidth(300)
+          ->targetHeight(300)
+          ->sourceWidth(10)
+          ->sourceHeight(10)
+          ->resize(self::dir . 'image-convolution.png')
+          ->generate('png', $generateFile = self::dir . 'image-mix.png2');
+        }
+        catch( Exception\InvalidArgumentException $e )
+        {
+            $this->assertStringContainsString($generateFile, $e->getMessage());
+        }
+    }
 }

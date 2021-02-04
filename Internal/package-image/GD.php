@@ -43,13 +43,6 @@ class GD implements GDInterface
     protected $output = true;
 
     /**
-     * Keeps result
-     * 
-     * @var array
-     */
-    protected $result = [];
-
-    /**
      * Magic Constructor
      */
     public function __construct()
@@ -108,32 +101,20 @@ class GD implements GDInterface
      * Creates form
      * 
      * @param string $source
-     * @param array  $settings = []
      * 
      * @return resource
      */
-    public function createFrom(String $source, Array $settings = [])
+    public function createFrom(String $source)
     {
-        $type = $this->mime->type($source, 1);
+        $type     = $this->mime->type($source, 1);
+        $function = 'imagecreatefrom' . ($type ?? 'jpeg');
 
-        switch( $type )
+        if( ! function_exists($function) )
         {
-            case 'gd2p'   : $return = imagecreatefromgd2part
-            (
-                $source,
-                $settings['x']      ?? NULL,
-                $settings['y']      ?? NULL,
-                $settings['width']  ?? NULL,
-                $settings['height'] ?? NULL
-            ); 
-            break;
-
-            default: 
-                $function = 'imagecreatefrom' . ($type ?? 'jpeg');
-                $return   = $function($source);
+            throw new InvalidImageFileException(NULL, $source);
         }
 
-        return $return;
+        return $function($source);
     }
 
     /**
@@ -826,25 +807,6 @@ class GD implements GDInterface
     }
 
     /**
-     * Set tile
-     * 
-     * @param resource $tile
-     * 
-     * @return GD
-     */
-    public function tile($tile) : GD
-    {
-        if( ! Base::isResourceObject($tile) )
-        {
-            throw new InvalidArgumentException(NULL, '[resource]');
-        }
-
-        imagesettile($this->canvas, $tile);
-
-        return $this;
-    }
-
-    /**
      * Set layer effect
      * 
      * @param string $effect = 'normal'
@@ -893,21 +855,6 @@ class GD implements GDInterface
     }
 
     /**
-     * Get result
-     * 
-     * @return string
-     */
-    public function result() : String
-    {
-        if( empty($this->result['path']) )
-        {
-            return 'No Result!';
-        }
-
-        return Singleton::class('ZN\Hypertext\Html')->image($this->result['path']);
-    }
-
-    /**
      * Protected create image canvas
      */
     protected function createImageCanvas($image, $width, $height)
@@ -916,14 +863,7 @@ class GD implements GDInterface
             
         $this->imageSize = ! isset($width) ? getimagesize($image) : [(int) $width, (int) $height];
 
-        $this->canvas = $this->createFrom($image,
-        [
-            # For type gd2p
-            'x'      => 0,
-            'y'      => 0,
-            'width'  => $this->imageSize[0],
-            'height' => $this->imageSize[1]
-        ]);
+        $this->canvas = $this->createFrom($image);
     }
 
     /**
@@ -985,21 +925,6 @@ class GD implements GDInterface
     }
 
     /**
-     * Protected Image Color
-     */
-    public function getImageColor($rgb, $function)
-    {
-        $rgb = explode('|', $rgb);
-
-        $red   = $rgb[0] ?? 0;
-        $green = $rgb[1] ?? 0;
-        $blue  = $rgb[2] ?? 0;
-        $alpha = $rgb[3] ?? 0;
-
-        return $function($this->canvas, $red, $green, $blue, $alpha);
-    }
-
-    /**
      * Protected Destroy
      */
     protected function destroyImage()
@@ -1039,7 +964,6 @@ class GD implements GDInterface
         if( ! empty($this->save) )
         {
             $save = Base::suffix($this->save, '.'.($type === 'jpeg' ? 'jpg' : $type));
-            $this->result['path'] = $save;
         }
         else
         {

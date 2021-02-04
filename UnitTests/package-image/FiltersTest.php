@@ -13,4 +13,14 @@ class FiltersTest extends Test\GDExtends
 
         $this->assertFileExists($generateFile);
     }
+
+    public function testFiltersWithCallable()
+    {
+        GD::canvas(self::img)
+          ->colorize(80, 50, 60)
+          ->brightness(80)
+          ->generate('png', $generateFile = self::dir . 'image-colorize.png');
+
+        $this->assertFileExists($generateFile);
+    }
 }
