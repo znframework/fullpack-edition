@@ -19,7 +19,7 @@ class JsonWriteTest extends ProtectionExtends
         }
         catch( Exception\ScalarDataException $e )
         {
-            $this->assertEquals('[data] information must be array or object type!', $e->getMessage());
+            $this->assertStringContainsString('[data]', $e->getMessage());
         }
     }
 }
