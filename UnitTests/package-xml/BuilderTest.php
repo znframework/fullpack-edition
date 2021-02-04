@@ -35,4 +35,17 @@ class BuilderTest extends \ZN\Test\GlobalExtends
 
         $this->assertStringContainsString('<video id="2">Vidyo</video>', $output);
     } 
+
+    public function testBuildWithoutContent()
+    {
+        $builder = new Builder;
+
+        $output = $builder->version(1)->encoding('utf-8')->do
+        ([  
+            'name'  => 'media', 
+            'attr'  => ['id' => 1]
+        ]);
+
+        $this->assertStringContainsString('<media id="1"></media>', $output);
+    } 
 }
