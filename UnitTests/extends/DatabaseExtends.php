@@ -6,6 +6,8 @@ use DBForge;
 
 class DatabaseExtends extends \ZN\Test\GlobalExtends
 {
+    protected $persons;
+
     public function __construct()
     {
         parent::__construct();
@@ -23,5 +25,17 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
             'surname' => [DB::varchar(255)],
             'phone'   => [DB::varchar(255)]
         ]);
+
+        $this->persons = new Class() extends GrandModel
+        {
+            const table      = 'persons';
+            const facade     = 'ZN\Database\Test\Persons';
+            const connection = 
+            [
+                'driver'   => 'sqlite',
+                'database' => \ZN\Test\GlobalExtends::default . 'package-database/testdb',
+                'password' => '1234'
+            ];
+        };
     }
 }
