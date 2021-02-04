@@ -15,6 +15,11 @@ class LinkTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString('keyframes.min.js', CDN::links()['jquerykeyframes']);
     }
 
+    public function testLinkByVersion()
+    {
+        $this->assertStringContainsString('keyframes.min.js', CDN::link('jquerykeyframes', '3'));
+    }
+
     public function testRefresh()
     {
         $this->assertStringContainsString('keyframes.min.js', CDN::refresh()->links()['jquerykeyframes']);
