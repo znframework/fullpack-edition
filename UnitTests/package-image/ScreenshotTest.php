@@ -6,8 +6,11 @@ class ScreenshotTest extends Test\GDExtends
 {
     public function testScreenshot()
     {
-        GD::screenshot()->generate('png', $generateFile = self::dir . 'screenshot.png');
+        if( function_exists('imagegrabscreen') )
+        {
+            GD::screenshot()->generate('png', $generateFile = self::dir . 'screenshot.png');
 
-        $this->assertFileExists($generateFile);
+            $this->assertFileExists($generateFile);
+        } 
     }
 }
