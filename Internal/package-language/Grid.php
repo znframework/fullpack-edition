@@ -49,11 +49,9 @@ class Grid extends MLExtends
      * 
      * @return Grid
      */
-    public function url(String $url = NULL) : Grid
+    public function url(String $url = NULL)
     {
         $this->url = $url;
-
-        return $this;
     }
 
     /**
@@ -63,11 +61,9 @@ class Grid extends MLExtends
      * 
      * @return Grid
      */
-    public function limit(Int $limit = NULL) : Grid
+    public function limit(Int $limit = NULL)
     {
         $this->limit = $limit;
-
-        return $this;
     }
 
     /**

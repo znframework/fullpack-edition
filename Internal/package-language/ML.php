@@ -28,8 +28,8 @@ class ML extends Factory
             'deleteall'    => 'Delete::all',
             'grid'         => 'Grid::create',
             'table'        => 'Grid::create',
-            'limit'        => 'Grid::limit',
-            'url'          => 'Grid::url'
+            'limit'        => 'Grid::limit:this',
+            'url'          => 'Grid::url:this'
         ]
     ];
 
