@@ -38,11 +38,6 @@ class Render implements RenderInterface
     protected $thumbPath;
 
     /**
-     * Valid Mimes
-     */
-    protected $validMimes = ['jpeg', 'png', 'gif'];
-
-    /**
      * Clean thumb files
      * 
      * @param string $ile
@@ -349,36 +344,6 @@ class Render implements RenderInterface
     protected function createThumbDirectory($file)
     {
         return $this->cleanURLFix($this->getFileDirectory($file) . $this->getThumbDirectoryName());
-    }
-
-    /**
-     * Protected From File Type
-     */
-    protected function fromFileType($path)
-    {
-        switch( Filesystem::getExtension($path) )
-        {
-            case 'png' : return imagecreatefrompng($path);
-            case 'gif' : return imagecreatefromgif($path);
-            case 'jpg' :
-            case 'jpeg':
-            default    : return imagecreatefromjpeg($path);
-        }
-    }
-
-    /**
-     * Protected Is Image File
-     */
-    protected function isImageFile($file)
-    {
-        if( in_array(MimeTypeFinder::get($file), $this->validMimes) )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     /**
