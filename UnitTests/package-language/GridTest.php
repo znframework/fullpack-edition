@@ -84,13 +84,11 @@ class GridTest extends \PHPUnit\Framework\TestCase
     public function testDeleteKeyword()
     {
         unset($_POST);
-        
+
         Post::ML_LANGUAGES('en,tr');
         Post::ML_UPDATE_KEYWORD_HIDDEN('example');
         Post::ML_DELETE_SUBMIT(true);
-
-        print_r(Post::all());
-
+        
         $this->assertStringContainsString('ML_TABLE', ML::grid());
     }
 }
