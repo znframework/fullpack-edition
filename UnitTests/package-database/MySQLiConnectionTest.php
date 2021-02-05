@@ -6,8 +6,16 @@ class MySQLiConnectionTest extends DatabaseExtends
 
     public function testConnection()
     {
-        $db = new MySQLi\DB;
+        try
+        {
+            $db = new MySQLi\DB;
 
-        $db->connect(self::connection);
+            $db->connect(self::connection);
+        }
+        catch( Exception\ConnectionErrorException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+        
     }
 }
