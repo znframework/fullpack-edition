@@ -14,5 +14,7 @@ class MySQLiConnectionTest extends DatabaseExtends
         $this->mysqli($db);
 
         $db->exec('SELECT * FROM persons');
+
+        $db->close();
     }
 }
