@@ -100,7 +100,7 @@ class DB extends DriverMappingAbstract
         }
         catch( Exception $e )
         {
-            throw new ConnectionErrorException;
+            throw new ConnectionErrorException(NULL, $this->connect->lastErrorMsg());
         }
     }
 

@@ -147,7 +147,7 @@ class DB extends DriverMappingAbstract
 
         if( $this->connect->connect_errno )
         {
-            throw new ConnectionErrorException;
+            throw new ConnectionErrorException(NULL, $this->connect->connect_error);
         }
 
         if( ! empty($this->config['charset']  ) ) $this->query("SET NAMES '".$this->config['charset']."'");  

@@ -101,7 +101,7 @@ class DB extends DriverMappingAbstract
 
         if( empty($this->connect) )
         {
-            throw new ConnectionErrorException();
+            throw new ConnectionErrorException(NULL, oci_error($this->connect)['message']);
         }
     }
 

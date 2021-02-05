@@ -108,7 +108,7 @@ class DB extends DriverMappingAbstract
 
         if( empty($this->connect) )
         {
-            throw new ConnectionErrorException();
+            throw new ConnectionErrorException(NULL, 'connection');
         }
 
         if( ! empty($this->config['charset']) )

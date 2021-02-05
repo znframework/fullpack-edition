@@ -15,7 +15,7 @@ class ConnectionErrorException extends Exception
 {
     const lang = 
     [
-        'tr' => 'Veritabanı bağlantısı sağlanamadı! Lütfen bağlantı ayarlarınızı kontrol edin!',
-        'en' => 'Database connection error! Please check your connection settings!'
+        'tr' => 'Veritabanı bağlantısı sağlanamadı! Lütfen bağlantı ayarlarınızı kontrol edin! [%]',
+        'en' => 'Database connection error! Please check your connection settings! [%]'
     ];
 }
