@@ -11,4 +11,26 @@ class CardDateTest extends \ZN\Test\GlobalExtends
     {
         $this->assertFalse(Validator::cardDate('1030'));
     }
+
+    public function testRulesValid()
+    {
+        \Post::data('10/30');
+
+        $data = new Data;
+
+        $data->cardDate()->rules('data');
+
+        $this->assertEmpty($data->error('string')); 
+    }
+
+    public function testRulesInvalid()
+    {
+        \Post::data('1030');
+
+        $data = new Data;
+
+        $data->cardDate()->rules('data');
+
+        $this->assertIsString($data->error('string')); 
+    }
 }

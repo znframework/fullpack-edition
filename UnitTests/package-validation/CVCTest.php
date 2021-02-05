@@ -11,4 +11,26 @@ class CVCTest extends \ZN\Test\GlobalExtends
     {
         $this->assertFalse(Validator::cvc('4978', 'visa'));
     }  
+
+    public function testRulesValid()
+    {
+        \Post::data('978');
+
+        $data = new Data;
+
+        $data->cvc('maestro')->rules('data');
+
+        $this->assertEmpty($data->error('string')); 
+    }
+
+    public function testRulesInvalid()
+    {
+        \Post::data('4978');
+
+        $data = new Data;
+
+        $data->cvc('visa')->rules('data');
+
+        $this->assertIsString($data->error('string')); 
+    }
 }
