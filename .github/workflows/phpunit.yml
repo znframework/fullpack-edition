@@ -106,7 +106,11 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - uses: mirromutth/mysql-action@v1.1
+      - name: Restart MySQL
+        run: sudo service mysql stop
+
+      - name: Set up MySQL
+        uses: mirromutth/mysql-action@v1.1
         with:
           mysql user: 'user'
           mysql password: ''
