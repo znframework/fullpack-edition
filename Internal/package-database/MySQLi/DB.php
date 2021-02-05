@@ -125,29 +125,27 @@ class DB extends DriverMappingAbstract
     {
         $this->config = $config;
         
-        try
+        $host = ($this->config['pconnect'] === true ? 'p:' : NULL) . $this->config['host'];
+        $user = $this->config['user'];
+        $pass = $this->config['password'];
+        $db   = $this->config['database'];
+        $port = $this->config['port'] ?: 3306;
+        $ssl  = $this->config['ssl'] ?? NULL;
+
+        if( ! empty($ssl['key']) || ! empty($ssl['cert']) || ! empty($ssl['ca']) || ! empty($ssl['capath']) || ! empty($ssl['cipher']) )
         {
-            $host = ($this->config['pconnect'] === true ? 'p:' : NULL) . $this->config['host'];
-            $user = $this->config['user'];
-            $pass = $this->config['password'];
-            $db   = $this->config['database'];
-            $port = $this->config['port'] ?: 3306;
-            $ssl  = $this->config['ssl'] ?? NULL;
+            $this->connect = new MySQLi;
 
-            if( ! empty($ssl['key']) || ! empty($ssl['cert']) || ! empty($ssl['ca']) || ! empty($ssl['capath']) || ! empty($ssl['cipher']) )
-            {
-                $this->connect = new MySQLi;
-
-                $this->connect->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, true);
-                $this->connect->ssl_set($ssl['key'] ?? NULL, $ssl['cert'] ?? NULL, $ssl['ca'] ?? NULL, $ssl['capath'] ?? NULL, $ssl['cipher'] ?? NULL); 
-                $this->connect->real_connect($host, $user, $pass, $db, $port, NULL, MYSQLI_CLIENT_SSL);
-            }  
-            else
-            {
-                $this->connect = new MySQLi($host, $user, $pass, $db, $port);
-            }
+            $this->connect->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, true);
+            $this->connect->ssl_set($ssl['key'] ?? NULL, $ssl['cert'] ?? NULL, $ssl['ca'] ?? NULL, $ssl['capath'] ?? NULL, $ssl['cipher'] ?? NULL); 
+            $this->connect->real_connect($host, $user, $pass, $db, $port, NULL, MYSQLI_CLIENT_SSL);
+        }  
+        else
+        {
+            $this->connect = new MySQLi($host, $user, $pass, $db, $port);
         }
-        catch( Exception $e )
+
+        if( $this->connect->connect_errno )
         {
             throw new ConnectionErrorException;
         }
@@ -426,7 +424,7 @@ class DB extends DriverMappingAbstract
             return false;
         }
 
-       return $this->connect->close();
+        return $this->connect->close();
     }
 
     /**

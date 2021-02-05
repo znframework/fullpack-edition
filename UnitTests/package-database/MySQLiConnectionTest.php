@@ -4,17 +4,12 @@ use DB;
 
 class MySQLiConnectionTest extends DatabaseExtends
 {
+    const connection = ['driver' => 'mysqli', 'user' => 'root', 'host' => 'localhost', 'database' => 'test', 'password' => ''];
+
     public function testConnection()
     {
-        $this->mysqli();
-    }
+        $db = new MySQLi\DB;
 
-    public function testExec()
-    {
-        $this->mysqli($db);
-
-        $db->exec('SELECT * FROM persons');
-
-        $db->close();
+        $db->connect(self::connection);
     }
 }
