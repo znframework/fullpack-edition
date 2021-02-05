@@ -88,6 +88,7 @@ jobs:
           mysql database: test
           mysql user: user
           mysql password: password
+          mysql port: 3306
 
       - name: Install Memcached
         uses: niden/actions-memcached@v7
