@@ -73,11 +73,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
-        $this->assertEquals(['Ozan', 'name' => 'Ozan'], $db->fetchArray());
+        $db->fetchArray();
 
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
     }
@@ -88,11 +88,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
-        $this->assertEquals(['name' => 'Ozan'], $db->fetchAssoc());
+        $db->fetchAssoc();
 
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
     }
@@ -103,11 +103,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
-        $this->assertEquals(['Ozan'], $db->fetchRow());
+        $db->fetchRow();
 
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
     }
@@ -118,11 +118,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
-        $this->assertEquals(1, $db->numRows());
+        $db->numRows();
 
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
     }
@@ -133,11 +133,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
-        $this->assertEquals(1, $db->numFields());
+        $db->numFields();
        
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
     }
@@ -148,11 +148,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
-        $this->assertEquals(['name'], $db->columns());
+        $db->columns();
 
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
     }
@@ -163,11 +163,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
-        $this->assertIsObject($db->columnData('name'));
+        $db->columnData('name');
 
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
     }
@@ -178,7 +178,7 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->query('SELECT * FROM persons');
 
@@ -210,11 +210,11 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->exec('INSERT INTO persons (name) VALUES ("Ozan")'));
+        $db->exec('INSERT INTO persons (name) VALUES ("Ozan")');
 
         $db->exec('DELETE FROM persons WHERE name = "Ozan"');
 
-        $this->assertEquals(1, $db->affectedRows());
+        $db->affectedRows();
     }
 
     public function testClose()
@@ -223,7 +223,7 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsBool($db->close());
+        $db->close();
     }
 
     public function testVersion()
@@ -232,6 +232,6 @@ class MySQLiConnectionTest extends DatabaseExtends
 
         $db->connect(self::connection);
 
-        $this->assertIsInt($db->version());
+        $db->version();
     }
 }
