@@ -118,7 +118,7 @@ class DB extends DriverMappingAbstract
         }
         catch( PDOException $e )
         {
-            throw new ConnectionErrorException($e);
+            throw new ConnectionErrorException(NULL, $this->connect->errorInfo()[2]);
         }
         
         if( ! empty($this->config['charset']  ) ) $this->connect->exec("SET NAMES '".$this->config['charset']."'");
