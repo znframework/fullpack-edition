@@ -2,7 +2,7 @@
 
 class MySQLiConnectionTest extends DatabaseExtends
 {
-    const connection = ['driver' => 'mysqli', 'user' => 'root', 'host' => 'localhost', 'database' => 'test', 'password' => '', 'port' => 3306];
+    const connection = ['driver' => 'mysqli', 'user' => '', 'host' => 'localhost', 'database' => 'test', 'password' => '', 'port' => 3306];
 
     public function testConnection()
     {
