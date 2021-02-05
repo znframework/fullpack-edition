@@ -114,7 +114,9 @@ jobs:
         with:
           mysql version: 5.7
           mysql database: test
+          mysql user: root
           mysql root password: ${{ secrets.DatabasePassword }}
+          mysql password: ""
 
       - name: Test with PHPUnit
         run: script -e -c "vendor/bin/phpunit -v"
