@@ -33,4 +33,15 @@ class PhoneTest extends \ZN\Test\GlobalExtends
 
         $this->assertIsString($data->error('string')); 
     }
+
+    public function testRulesEmpty()
+    {
+        \Post::data('12+34');
+
+        $data = new Data;
+
+        $data->phone()->rules('data');
+
+        $this->assertIsString($data->error('string')); 
+    }
 }

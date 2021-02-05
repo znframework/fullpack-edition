@@ -11,4 +11,15 @@ class AlphaTest extends \ZN\Test\GlobalExtends
     {
         $this->assertFalse(Validator::alpha('ab14'));
     }
+
+    public function testRulesValid()
+    {
+        \Post::data('abc');
+
+        $data = new Data;
+
+        $data->alpha()->rules('data');
+
+        $this->assertEmpty($data->error('string')); 
+    }
 }

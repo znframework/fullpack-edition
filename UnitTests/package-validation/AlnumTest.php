@@ -11,4 +11,15 @@ class AlnumTest extends \ZN\Test\GlobalExtends
     {
         $this->assertFalse(Validator::alnum('ab14-'));
     }
+
+    public function testRulesValid()
+    {
+        \Post::data('abc123');
+
+        $data = new Data;
+
+        $data->alnum()->rules('data');
+
+        $this->assertEmpty($data->error('string')); 
+    }
 }

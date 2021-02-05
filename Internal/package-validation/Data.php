@@ -257,11 +257,6 @@ class Data implements DataInterface
     {
         $method = $this->setMethodType($name, $met);
 
-        if( ! isset($method) )
-        {
-            return false;
-        }
-
         return $method;
     }
 

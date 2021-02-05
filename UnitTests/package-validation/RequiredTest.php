@@ -11,4 +11,15 @@ class RequiredTest extends \ZN\Test\GlobalExtends
     {
         $this->assertFalse(Validator::required(''));
     }  
+
+    public function testRulesValid()
+    {
+        \Post::data('10/30');
+
+        $data = new Data;
+
+        $data->required()->rules('data');
+
+        $this->assertEmpty($data->error('string')); 
+    }
 }
