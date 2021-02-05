@@ -106,6 +106,13 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
+      - name: Set up MySQL 5.7
+        uses: mirromutth/mysql-action@master
+        with:
+          mysql version: 5.7
+          mysql database: test
+          mysql user: root
+
       - name: Test with PHPUnit
         run: script -e -c "vendor/bin/phpunit -v"
         env:
