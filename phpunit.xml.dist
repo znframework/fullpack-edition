@@ -34,6 +34,8 @@
                 <directory>./Internal/package-crontab/Exception</directory>
                 <directory>./Internal/package-cryptography/Exception</directory>
                 <directory>./Internal/package-database/Exception</directory>
+                <file>./Internal/package-database/MDB.php</file>
+                <file>./Internal/package-database/MDBInterface.php</file>
                 <directory>./Internal/package-datatypes/Exception</directory>
                 <directory>./Internal/package-datetime/Exception</directory>
                 <directory>./Internal/package-email/Exception</directory>
