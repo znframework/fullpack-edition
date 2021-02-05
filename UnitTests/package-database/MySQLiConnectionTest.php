@@ -4,12 +4,12 @@ use DB;
 
 class MySQLiConnectionTest extends DatabaseExtends
 {
-    const connection = ['driver' => 'mysqli', 'user' => 'root', 'host' => 'localhost', 'database' => 'test', 'password' => ''];
+    const connection = ['driver' => 'mysqli', 'user' => '', 'host' => 'localhost', 'database' => 'test', 'password' => ''];
 
     public function testConnection()
     {
-        #$db = new MySQLi\DB;
+        $db = new MySQLi\DB;
 
-        #$db->connect(self::connection);
+        $db->connect(self::connection);
     }
 }
