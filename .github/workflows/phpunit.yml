@@ -106,15 +106,6 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - name: Stop MySQL Service
-        run: sudo service mysql stop
-
-      - name: Set up MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql user: 'user'
-          mysql password: 'password'
-
       - name: Test with PHPUnit
         run: script -e -c "vendor/bin/phpunit -v"
         env:
