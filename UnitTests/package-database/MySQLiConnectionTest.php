@@ -8,8 +8,8 @@ class MySQLiConnectionTest extends DatabaseExtends
 
     public function testConnection()
     {
-        $db = new MySQLi\DB;
+        #$db = new MySQLi\DB;
 
-        $db->connect(self::connection);
+        #$db->connect(self::connection);
     }
 }
