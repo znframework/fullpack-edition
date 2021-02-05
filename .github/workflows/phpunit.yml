@@ -106,7 +106,7 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - name: Restart MySQL
+      - name: Stop MySQL Service
         run: sudo service mysql stop
 
       - name: Set up MySQL
