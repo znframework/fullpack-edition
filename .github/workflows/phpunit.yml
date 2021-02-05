@@ -49,7 +49,7 @@ jobs:
         db-platforms: ['MySQLi', 'Postgre', 'SQLite3']
 
     services:
-     mariadb:
+      mariadb:
         image: mariadb:latest
         ports:
           - 3306
