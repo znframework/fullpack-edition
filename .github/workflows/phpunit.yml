@@ -49,14 +49,16 @@ jobs:
         db-platforms: ['MySQLi', 'Postgre', 'SQLite3']
 
     services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: test
+     mariadb:
+        image: mariadb:latest
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 3306
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: test
+          MYSQL_ROOT_PASSWORD: password
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
       postgres:
         image: postgres
         env:
@@ -105,18 +107,6 @@ jobs:
           composer update --ansi --no-interaction
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
-
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
-
-      - name: Set up MySQL 5.7
-        uses: mirromutth/mysql-action@master
-        with:
-          mysql version: 5.7
-          mysql database: test
-          mysql user: root
-          mysql root password: ${{ secrets.DatabasePassword }}
-          mysql password: test
 
       - name: Test with PHPUnit
         run: script -e -c "vendor/bin/phpunit -v"
