@@ -11,6 +11,8 @@ class MySQLiConnectionTest extends DatabaseExtends
             $db = new MySQLi\DB;
 
             $db->connect(self::connection);
+
+            echo 1;
         }
         catch( Exception\ConnectionErrorException $e )
         {
