@@ -106,7 +106,7 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - Connect MySQLi 5.7
+      - name: Connect MySQLi 5.7
         run: sudo service mysql stop
         uses: mirromutth/mysql-action@master
         with:
