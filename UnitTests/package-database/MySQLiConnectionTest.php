@@ -4,7 +4,7 @@ use DB;
 
 class MySQLiConnectionTest extends DatabaseExtends
 {
-    const connection = ['driver' => 'mysqli', 'user' => 'user', 'host' => 'localhost', 'database' => 'test', 'password' => 'password'];
+    const connection = ['driver' => 'mysqli', 'user' => 'root', 'host' => 'localhost', 'database' => 'test', 'password' => ''];
 
     public function testConnection()
     {

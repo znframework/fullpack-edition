@@ -49,16 +49,14 @@ jobs:
         db-platforms: ['MySQLi', 'Postgre', 'SQLite3']
 
     services:
-      mariadb:
-        image: mariadb:latest
-        ports:
-          - 3306
+      mysql:
+        image: mysql:5.7
         env:
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: test
-          MYSQL_ROOT_PASSWORD: password
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         image: postgres
         env:
@@ -77,14 +75,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-    
-      - name: Verify MariaDB connection
-        env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-            sleep 1
-          done
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
