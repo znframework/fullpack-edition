@@ -116,7 +116,7 @@ jobs:
           mysql database: test
           mysql user: root
           mysql root password: ${{ secrets.DatabasePassword }}
-          mysql password: ""
+          mysql password: test
 
       - name: Test with PHPUnit
         run: script -e -c "vendor/bin/phpunit -v"
