@@ -49,14 +49,6 @@ jobs:
         db-platforms: ['MySQLi', 'Postgre', 'SQLite3']
 
     services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         image: postgres
         env:
@@ -105,6 +97,15 @@ jobs:
           composer update --ansi --no-interaction
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        
+      - name: Stop MySQL Service
+        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
+
+      - name: Setup MariaDB
+        uses: getong/mariadb-action@v1.1
+        with:
+          mysql user: 'user' 
+          mysql password: 'password'
 
       - name: Test with PHPUnit
         run: script -e -c "vendor/bin/phpunit -v"
