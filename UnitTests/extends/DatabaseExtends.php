@@ -7,7 +7,7 @@ use DBForge;
 class DatabaseExtends extends \ZN\Test\GlobalExtends
 {
     protected $persons;
-
+    
     public function __construct()
     {
         parent::__construct();
@@ -37,5 +37,12 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
                 'password' => '1234'
             ];
         };
+    }
+
+    public function mysqli(&$db = NULL)
+    {
+        $db = new MySQLi\DB;
+
+        $db->connect(['driver' => 'mysqli', 'user' => 'root', 'host' => 'localhost', 'database' => 'test', 'password' => '']);
     }
 }
