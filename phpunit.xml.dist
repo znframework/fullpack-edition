@@ -12,7 +12,6 @@
          stopOnFailure="false"
          verbose="true"
 >
-
     <testsuites>
         <testsuite name="ZN">
             <directory suffix="Test.php">UnitTests</directory>
@@ -44,6 +43,7 @@
                 <directory>./Internal/package-helpers/Exception</directory>  
                 <directory>./Internal/package-hypertext/Resources</directory>
                 <directory>./Internal/package-hypertext/Exception</directory>
+                <file>./Internal/package-hypertext/JavascriptValidationFunctions.php</file>
                 <directory>./Internal/package-image/Exception</directory>
                 <directory>./Internal/package-payment</directory>
                 <directory>./Internal/package-protection/Exception</directory>
