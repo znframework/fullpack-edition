@@ -104,8 +104,9 @@ jobs:
       - name: Setup MariaDB
         uses: getong/mariadb-action@v1.1
         with:
-          mysql user: 'user' 
-          mysql password: 'password'
+          mysql database: test
+          mysql user: user 
+          mysql password: password
 
       - name: Test with PHPUnit
         run: script -e -c "vendor/bin/phpunit -v"
