@@ -1,7 +1,5 @@
 <?php namespace ZN\Database;
 
-use DB;
-
 class PostgresConnectionTest extends DatabaseExtends
 { 
     const connection = ['driver' => 'postgres', 'user' => 'postgres', 'host' => 'localhost', 'database' => 'test', 'password' => 'postgres', 'port' => 5432];
