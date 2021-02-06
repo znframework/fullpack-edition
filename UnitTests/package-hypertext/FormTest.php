@@ -69,6 +69,8 @@ class FormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('Haluk', Form::getUpdateRow()->name);
 
         unset($_POST);
+        unset($_REQUEST);
+        Session::delete('FormValidationRulespersons');
     }
 
     public function testProcessInsert()
@@ -94,6 +96,8 @@ class FormTest extends \PHPUnit\Framework\TestCase
         Form::validateErrorArray();
 
         unset($_POST);
+        unset($_REQUEST);
+        Session::delete('FormValidationRulespersons');
     }
 
     public function testClose()
