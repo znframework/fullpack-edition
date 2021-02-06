@@ -366,4 +366,13 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
             Html::source('ex')->b('name')
         );
     }
+
+    public function testInput()
+    {
+        $this->assertStringContainsString
+        (
+            '<input type="text" name="">', 
+            Html::type('text')->input()
+        );
+    }
 }
