@@ -1,19 +1,10 @@
 <?php namespace ZN\Validation;
 
+use Post;
+use Session;
+
 class CheckTest extends \ZN\Test\GlobalExtends
 {
-    public function testValid()
-    {
-        \Form::placeholder('Subject')->validate(['minchar' => 5, 'maxchar' => 250])->textarea('subject');
-
-        \Post::subject('abcde');
-        \Post::ValidationFormName('exampleForm');
-
-        $data = new Data;
-
-        $this->assertTrue($data->check());
-    }
-
     public function testInvalid()
     {
         unset($_POST);
@@ -25,9 +16,9 @@ class CheckTest extends \ZN\Test\GlobalExtends
 
     public function testRuleCheckError()
     {
-        \Post::example(1);
+        Post::example(1);
         	
-        \Session::insert('FormValidationRules', []);
+        Session::insert('FormValidationRules', []);
 
         $data = new Data;
 
