@@ -1,5 +1,6 @@
 <?php namespace ZN\Helpers;
 
+use Buffer;
 use Debugger;
 
 class DebuggerTest extends \PHPUnit\Framework\TestCase
@@ -19,5 +20,20 @@ class DebuggerTest extends \PHPUnit\Framework\TestCase
     public function testOutput()
     {
         $this->assertIsObject(Debugger::output(1));
+    }
+
+    public function testOutputArray()
+    {
+        $this->assertIsArray(Debugger::output('array'));
+    }
+
+    public function testOutputString()
+    {
+        $this->assertIsString(Buffer::callback(function(){Debugger::output('string');}));
+    }
+
+    public function testOutputDefault()
+    {
+        $this->assertIsObject(Debugger::output('abc'));
     }
 }
