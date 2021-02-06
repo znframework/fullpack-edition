@@ -36,4 +36,11 @@ class PostgresToolTest extends DatabaseExtends
 
         $this->assertFalse($tool->repairTables());
     }
+
+    public function testBackup()
+    {
+        $tool = \DBTool::new(self::postgres);
+
+        $this->assertFalse($tool->backup());
+    }
 }

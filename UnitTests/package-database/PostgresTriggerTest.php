@@ -12,6 +12,7 @@ class PostgresTriggerTest extends DatabaseExtends
     public function testBody()
     {
         $this->assertNull((new Postgres\DBTrigger)->body('id'));
+        $this->assertNull((new Postgres\DBTrigger)->body(['id']));
     }
 
     public function testDropTrigger()
