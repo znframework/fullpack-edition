@@ -39,6 +39,6 @@ class DBTrigger extends DriverTrigger
      */
     public function dropTrigger($name, $type = NULL)
     {
-        return 'DROP TRIGGER ON'.$name. ($type ? ' ' . $table : NULL) . ';';
+        return 'DROP TRIGGER ON '.$name. ($type ? ' ' . $type : NULL) . ';';
     }
 }

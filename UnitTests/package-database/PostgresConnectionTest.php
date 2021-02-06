@@ -253,4 +253,93 @@ class PostgresConnectionTest extends DatabaseExtends
             $this->assertIsArray($db->version());
         });
     }
+
+    public function testExtras()
+    {
+        $this->assertNull((new Postgres\DBForge)->extras([]));
+    }
+
+    public function testModifyColumn()
+    {
+        $this->assertEquals('ALTER TABLE test ALTER COLUMN id TYPE int;', (new Postgres\DBForge)->modifyColumn('test', ['id' => 'int']));
+    }
+
+    public function testRenameColumn()
+    {
+        $this->assertEquals('ALTER TABLE test RENAME COLUMN id TO int;', (new Postgres\DBForge)->renameColumn('test', ['id' => 'int']));
+    }
+
+    public function testAddColumn()
+    {
+        $this->assertEquals('ALTER TABLE test ADD id int;', (new Postgres\DBForge)->addColumn('test', ['id' => 'int']));
+    }
+
+    public function testListDatabases()
+    {
+        $tool = \DBTool::new(self::postgres);
+
+        $this->assertEquals('test', $tool->listDatabases()[1]);
+    }
+
+    public function testListTables()
+    {
+        $tool = \DBTool::new(self::postgres);
+
+        $this->assertEquals(['persons'], $tool->listTables());
+    }
+
+    public function testStatusTables()
+    {
+        $tool = \DBTool::new(self::postgres);
+
+        $this->assertFalse($tool->statusTables());
+    }
+
+    public function testOptimizeTables()
+    {
+        $tool = \DBTool::new(self::postgres);
+
+        $this->assertFalse($tool->optimizeTables());
+    }
+
+    public function testRepairTables()
+    {
+        $tool = \DBTool::new(self::postgres);
+
+        $this->assertFalse($tool->repairTables());
+    }
+
+    public function testBody()
+    {
+        $this->assertNull((new Postgres\DBTrigger)->body('id'));
+    }
+
+    public function testDropTrigger()
+    {
+        $this->assertEquals('DROP TRIGGER ON test ex;', (new Postgres\DBTrigger)->dropTrigger('test', 'ex'));
+    }
+
+    public function testUserName()
+    {
+        $this->assertNull((new Postgres\DBUser)->name('test'));
+    }
+
+    public function testUserCreate()
+    {
+        $this->assertEquals('CREATE USER test', (new Postgres\DBUser)->create('test'));
+    }
+
+    public function testUserDrop()
+    {
+        $this->assertEquals('DROP USER test', (new Postgres\DBUser)->drop('test'));
+    }
+
+    public function testUserAlter()
+    {
+        $user = new Postgres\DBUser;
+
+        $user->option('PASSWORD', 'test');
+
+        $this->assertEquals('ALTER USER test PASSWORD test', $user->alter('test'));
+    }
 }
