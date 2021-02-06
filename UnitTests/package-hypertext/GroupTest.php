@@ -58,4 +58,16 @@ class GroupTest extends \PHPUnit\Framework\TestCase
             ->text('email')
         );
     }
+
+    public function testHelptext4()
+    {
+        $this->assertStringContainsString
+        (
+            'text-muted', 
+            (string) Form::helptext4('Bu bölüm e-posta alanıdır.')
+            ->group()
+            ->label('email', 'Email:')->col('sm-4')
+            ->text('email')
+        );
+    }
 }

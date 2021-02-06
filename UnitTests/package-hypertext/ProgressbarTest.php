@@ -18,7 +18,7 @@ class ProgressbarTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString
         (
             '<div style="height:50px" class="progress">', 
-            (string) Html::progressbar4('danger', 89, 50)
+            (string) Html::progressbarText('50')->progressbarStriped()->progressbarAnimated()->progressbar4('danger', 89, 50)
         );
     }
 
@@ -27,7 +27,7 @@ class ProgressbarTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString
         (
             '<div class="progress-bar progress-bar-danger progress-bar-striped" style="width:18%">', 
-            (string) Html::progressbarStriped()->progressbarAnimated()->progressbarDanger(18, 45)
+            (string) Html::progressbarText('50')->progressbarStriped()->progressbarAnimated()->progressbarDanger(18, 45)
         );
     }
 }

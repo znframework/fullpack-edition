@@ -13,7 +13,16 @@ class SpinnerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testSpinnerCall()
+    public function testBorder()
+    {
+        $this->assertStringContainsString
+        (
+            'spinner-border', 
+            (string) Html::spinnerBorder('danger', 'sm')
+        );
+    }
+
+    public function testGrow()
     {
         $this->assertStringContainsString
         (

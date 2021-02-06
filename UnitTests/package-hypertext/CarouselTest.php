@@ -49,4 +49,22 @@ class CarouselTest extends \PHPUnit\Framework\TestCase
                      Html::activeCarouselOptions('myCarousel')
         );
     }
+
+    public function testCarouselOn()
+    {
+        $this->assertStringContainsString
+        (
+            '<div class="carousel-inner">', 
+            (string) Html::on('shown', 'console.log(1)')->item('slide1.jpg')->item('slide2.jpg')->carousel()
+        );
+    }
+
+    public function testCarouselItemArray()
+    {
+        $this->assertStringContainsString
+        (
+            'slide1.jpg', 
+            (string) Html::keyboard('key')->carousel('myCarousel', ['slide1.jpg'])
+        );
+    }
 }

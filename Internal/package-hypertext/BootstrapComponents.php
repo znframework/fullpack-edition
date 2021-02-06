@@ -29,11 +29,9 @@ trait BootstrapComponents
     {
         if( is_string($code) )
         {
-            $this->settings['group']['class'] = $this->bootstrapClassResolution('form-group', $code);
-
-            return $this;
+            $this->settings['group']['class'] = $this->bootstrapClassResolution('form-group', $code);    
         }
-        elseif( is_callable($code) )
+        else if( is_callable($code) )
         {
             $this->callableGroup = true;
 
@@ -45,6 +43,8 @@ trait BootstrapComponents
             
             return $result;
         }
+
+        return $this;
     }
 
     /**

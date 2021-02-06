@@ -22,6 +22,15 @@ class MoodalboxTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testBox4()
+    {
+        $this->assertStringContainsString
+        (
+            '<div id="myModal" class="modal">', 
+            (string) Html::modalbox4('myModal')
+        );
+    }
+
     public function testSize()
     {
         $this->assertStringContainsString

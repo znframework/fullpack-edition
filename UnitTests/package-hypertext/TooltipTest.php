@@ -13,4 +13,14 @@ class TooltipTest extends \PHPUnit\Framework\TestCase
                      Html::tooltipEvent('all', ['delay' => 100])
         );
     }
+
+    public function testPopoverEventItSelf()
+    {
+        $this->assertStringContainsString
+        (
+            ' data-toggle="tooltip"', 
+            (string) Html::class('btn btn-danger')->tooltip('right', 'ZN Framework')->button('NAME') .
+                     Html::tooltip('all', ['delay' => 100])
+        );
+    }
 }
