@@ -11,4 +11,17 @@ class CleanerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame([0 => 'a', 2 => 'c'], Cleaner::data(['a', 'b', 'c'], 'b'));
         $this->assertSame([0 => 'a'], Cleaner::data(['a', 'b', 'c'], ['b', 'c']));
     }
+
+    public function testDataException()
+    {
+        try
+        {
+            Cleaner::data('robot@znframework.com', 'xxxxxrobot@znframework.com');
+        }
+        catch( Exception\LogicException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }
+

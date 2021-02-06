@@ -70,13 +70,9 @@ class Debugger
         {
             return (object) ( $debug[$type] ?? $this->_default() );
         }
-        elseif( $type === 'array' )
+        else if( $type === 'array' )
         {
             return $debug;
-        }
-        elseif( $type === 'string' )
-        {
-            return output($debug, [], true);
         }
         else
         {

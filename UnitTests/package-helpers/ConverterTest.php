@@ -9,6 +9,13 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('976.56KB', Converter::byte(1000000, 2));
         $this->assertSame('976.6', Converter::byte(1000000, 1, false));
         $this->assertSame('976.56 KB', Converter::byte(1000000, 2, true, ' '));
+        $this->assertSame('100B', Converter::byte(100));
+        $this->assertSame('9.5MB', Converter::byte(10000000));
+        $this->assertSame('9.3GB', Converter::byte(10000000000));
+        $this->assertSame('9.1TB', Converter::byte(10000000000000));
+        $this->assertSame('8.9PB', Converter::byte(10000000000000000));
+        $this->assertSame('8.7EB', Converter::byte(10000000000000000000));
+        $this->assertSame('10.000.000.000.000.000.000.000B', Converter::byte(10000000000000000000000));
     }
 
     public function testToBytes()
@@ -34,12 +41,18 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(2, (int) Converter::time(120, 'second', 'minute'));
         $this->assertSame(4, (int) Converter::time(120, 'day', 'month'));
         $this->assertSame(1, (int) Converter::time(12, 'month', 'year'));
+        $this->assertSame(12, (int) Converter::time(1, 'year', 'month'));
     }
 
     public function testSlug()
     {
         $this->assertSame('example-file.php', Converter::slug('Example File.php', true));
         $this->assertSame('example-file-php', Converter::slug('Example File.php'));
+    }
+
+    public function testUrlWord()
+    {
+        $this->assertSame('example-file-php', Converter::urlWord('Example File.php'));
     }
 
     public function testWord()
@@ -70,16 +83,40 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
             '69 120 97 109 112 108 101  68 97 116 97',
             Converter::char('Example Data', 'char', 'dec') 
         );
+
         $this->assertSame
         ( 
             '45 78 61 6D 70 6C 65  44 61 74 61',
             Converter::char('Example Data', 'char', 'hex') 
         );
+
+        try
+        {
+            Converter::char('Example Data', 'charx', 'hex');
+        }
+        catch( Exception\InvalidArgumentException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        } 
+
+        try
+        {
+            Converter::char('Example Data', 'char', 'char');
+        }
+        catch( Exception\LogicException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        } 
     }
 
     public function testAccent()
     {
         $this->assertSame('Accent', Converter::accent('Åççeňt'));
+    }
+
+    public function testHighLight()
+    {
+        $this->assertStringContainsString('<code>', Converter::highLight('<?php echo 1;'));
     }
 
     public function testCharset()
@@ -90,6 +127,12 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     public function testToString()
     {
         $this->assertSame('Z N', Converter::toString(['Z', 'N']));
+        $this->assertSame('ZN', Converter::toString('ZN'));
+    }
+
+    public function testToObjectRecursive()
+    {
+        $this->assertIsObject(Converter::toObjectRecursive(['a' => 'a', ['b', 'c' => 'c']]));
     }
 
     public function testToConstant()

@@ -378,16 +378,6 @@ class Converter
 
         $string = self::accent($string);
 
-        if( ! is_string($type) )
-        {
-            $type = 'char';
-        }
-
-        if( ! is_string($changeType) )
-        {
-            $changeType = 'html';
-        }
-
         for( $i = 32; $i <= 255; $i++ )
         {
             $hexRemaining = ( $i % 16 );
