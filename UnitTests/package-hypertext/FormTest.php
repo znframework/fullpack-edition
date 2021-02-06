@@ -2,7 +2,7 @@
 
 use DB;
 use Form;
-use Config;
+use Post;
 use Buffer;
 use Session;
 
@@ -10,7 +10,7 @@ class FormTest extends \PHPUnit\Framework\TestCase
 {
     public function testOpen()
     {
-        $this->assertStringStartsWith('<form id="formId" name="formName" method="post">', (string) Form::open('formName', ['id' => 'formId']));
+        $this->assertStringStartsWith('<form id="formId" name="formName" method="post" enctype="multipart/form-data">', (string) Form::enctype('multipart')->open('formName', ['id' => 'formId']));
         $this->assertStringStartsWith('<form name="upload-form" method="post" enctype="multipart/form-data">', (string) Form::enctype('multipart')->open('upload-form'));
         $this->assertGreaterThan(0, strpos((string) Form::csrf()->open('form'), 'token'));
 
@@ -24,113 +24,34 @@ class FormTest extends \PHPUnit\Framework\TestCase
         $this->assertStringStartsWith('<form name="formName" method="post" onsubmit="event.preventDefault()">', (string) Form::prevent()->open('formName'));
     }
 
+    public function testProcess()
+    {
+        Buffer::callback(function()
+        { 
+            Post::FormProcessValue(true); Post::name('abc');
+
+            Form::process('insert')->open('person')->validate('required')->text('name')->close(); 
+        
+            $this->assertIsString(Form::validateErrorMessage());
+
+            unset($_POST);
+
+            Post::FormProcessValue(true); Post::name('abc');
+
+            Buffer::callback(function()
+            { 
+                Form::process('insert')->whereColumn('name')->whereValue('abc')->open('persons')->validate('required')->text('name')->close(); 
+            });
+
+            $this->assertIsArray(Form::validateErrorArray());
+
+            unset($_POST);
+        });
+    }
+
     public function testClose()
     {
-        $this->assertStringStartsWith('</form>', (string) Form::close());
-    }
-
-    public function testText()
-    {
-        $this->assertStringStartsWith
-        (
-            '<input type="text" name="textBox" value="Welcome!" id="example-text" maxlength="10">', 
-            (string) Form::id('example-text')->maxlength(10)->text('textBox', 'Welcome!')
-        );
-    }
-
-    public function testPassword()
-    {
-        $this->assertStringStartsWith
-        (
-            '<input type="password" maxlength="10" name="password" value="*****">', 
-            (string) Form::password('password', '*****', ['maxlength' => 10])
-        );
-    }
-
-    public function testTextarea()
-    {
-        $this->assertStringStartsWith
-        (
-            '<textarea cols="50" rows="5" name="address">Address</textarea>', 
-            (string) Form::cols(50)->rows(5)->textarea('address', 'Address')
-        );
-    }
-
-    public function testSubmit()
-    {
-        $this->assertStringStartsWith
-        (
-            '<input type="submit" name="sendSubmit" value="Send">', 
-            (string) Form::submit('sendSubmit', 'Send')
-        );
-    }
-
-    public function testReset()
-    {
-        $this->assertStringStartsWith
-        (
-            '<input type="reset" name="clear" value="Clear">', 
-            (string) Form::reset('clear', 'Clear')
-        );
-    }
-
-    public function testButton()
-    {
-        $this->assertStringStartsWith
-        (
-            '<input type="button" name="sendButton" value="Send">', 
-            (string) Form::button('sendButton', 'Send')
-        );
-    }
-
-    public function testRadio()
-    {
-        $this->assertStringStartsWith
-        (
-            '<input type="radio" name="gender" value="Female" checked="checked">', 
-            (string) Form::checked()->radio('gender', 'Female')
-        );
-    }
-
-    public function testCheckbox()
-    {
-        $this->assertStringContainsString
-        (
-            '<input type="checkbox" name="trueType" value="true" checked="checked">', 
-            (string) Form::checked()->checkbox('trueType', 'true')
-        );
-    }
-
-    public function testSelect()
-    {
-        $options = [ '34' => 'Istanbul', '19' => 'Corum' ];
-
-        $this->assertStringContainsString
-        (
-            '<option value="34">Istanbul</option>', 
-            (string) Form::select('cities', $options, '19')
-        );
-
-        $this->assertStringContainsString
-        (
-            '<option value="19">Corum</option>', 
-            (string) Form::including(['19'])->select('cities', $options)
-        );
-
-        $this->assertStringContainsString
-        (
-            '<option value="34">Istanbul</option>', 
-            (string) Form::excluding(['19'])->select('cities', $options)
-        );
-    }
-
-    public function testFile()
-    {
-        $this->assertStringContainsString
-        (
-            '<input type="file" name="upload[]" value="" multiple="multiple">', 
-            (string) Form::file('upload', true)
-        );
+        $this->assertStringContainsString('</form>', (string) Form::close());
     }
 
     public function testCallHTML5Element()
@@ -199,6 +120,30 @@ class FormTest extends \PHPUnit\Framework\TestCase
         (
             'trigger', 
             Buffer::callback(function(){ Form::trigger('keyup', 'Validations/control', function(){})->button('send', 'SEND');})
+        );
+    }
+
+    public function testGetUpdateRow()
+    {
+        $this->assertNull
+        (
+            Form::getUpdateRow()
+        );
+    }
+
+    public function testCloseJSValidationFunction()
+    {
+        $this->assertIsString
+        (
+            Buffer::callback(function(){  Form::open()->vBetween(10, 20)->close();})
+        );
+    }
+
+    public function testDatetimeLocal()
+    {
+        $this->assertIsString
+        (
+            (string) Form::datetimeLocal()
         );
     }
 }

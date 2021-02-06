@@ -9,6 +9,10 @@ class AjaxBuilderTest extends \PHPUnit\Framework\TestCase
         $output = $builder->tag(true)
                     ->url('foo/bar')
                     ->type('post')
+                    ->complete(function()
+                    {
+                        echo '{data=1}';
+                    })
                     ->data(function()
                     {
                         echo '{data=1}';
