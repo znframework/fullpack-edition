@@ -79,8 +79,6 @@ trait ViewCommonTrait
         if( isset($this->settings['attr']['type']) )
         {
             $type = $this->settings['attr']['type'];
-
-            unset($this->settings['attr']['type']);
         }
 
         $this->settings['attr'] = [];

@@ -186,10 +186,14 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertStringContainsString
         (
-            '<table border="1" bordercolor="red">', 
+            '<table cellspacing="5" cellpadding="5" id="1" border="1" bordercolor="red" width="200" height="200" style=" color:red; border:border;">', 
             (string) Html::table()
-            ->border(1)
+            ->cell(5, 5)
+            ->attr(['id' => 1])
+            ->border(1, 'red')
             ->borderColor('red')
+            ->size(200, 200)
+            ->style(['color' => 'red', 'border'])
             ->create
             (
                 [1, 2, 3, 4],
@@ -316,5 +320,50 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertStringContainsString('ul', Html::list()->create(['ul' => [1, 2, 'ol' => [1, 'a', 'b']], 'ol' => [1, 2, 3], 2, 3 => ['a', 'b', 'c'], 'd' => ['a', 'b', 'c']]));
         $this->assertStringContainsString('abc', Html::list()->create('abc'));
+    }
+
+    public function testAria()
+    {
+        $this->assertStringContainsString
+        (
+            '<b aria-ex="b">name</b>', 
+            Html::aria('ex', 'b')->b('name')
+        );
+    }
+
+    public function testData()
+    {
+        $this->assertStringContainsString
+        (
+            '<b data-ex="b">name</b>', 
+            Html::data('ex', 'b')->b('name')
+        );
+    }
+
+    public function testIcerepeating()
+    {
+        $this->assertStringContainsString
+        (
+            '<b ice:repeating="ex2">name</b>', 
+            Html::iceRepeating('ex2')->b('name')
+        );
+    }
+
+    public function testSpry()
+    {
+        $this->assertStringContainsString
+        (
+            '<b spry-ex="b">name</b>', 
+            Html::spry('ex', 'b')->b('name')
+        );
+    }
+
+    public function testSource()
+    {
+        $this->assertStringContainsString
+        (
+            '<b src="ex">name</b>', 
+            Html::source('ex')->b('name')
+        );
     }
 }

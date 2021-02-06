@@ -46,7 +46,7 @@ class ScriptTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString
         (
             'eval(function(p,a,c,k,e,d)', 
-            Script::compress(function(){ echo 'console.log(data)'; })
+            Script::tag()->compress(function(){ echo 'console.log(data)'; })
         );
     }
 }
