@@ -205,7 +205,7 @@ class DB extends DriverMappingAbstract
             return false;
         }
 
-        return pg_last_oid($this->query);
+        return pg_last_oid($this->query) ?: $this->fetchRow()[0] ?? false;
     }
 
     /**
@@ -384,9 +384,9 @@ class DB extends DriverMappingAbstract
      */
     public function affectedRows()
     {
-        if( is_resource($this->connect) )
+        if( ! empty($this->query) )
         {
-            return pg_affected_rows($this->connect);
+            return pg_affected_rows($this->query);
         }
         else
         {
@@ -403,9 +403,7 @@ class DB extends DriverMappingAbstract
     {
         if( is_resource($this->connect) )
         {
-            // pg_close($this->connect);
-
-            return true;
+            return pg_close($this->connect);
         }
         else
         {

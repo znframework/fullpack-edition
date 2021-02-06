@@ -8,6 +8,9 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
 {
     protected $persons;
 
+    const mysqli   = ['driver' => 'mysqli'  , 'user' => 'root'    , 'host' => 'localhost', 'database' => 'test', 'password' => ''        , 'port' => 3306];
+    const postgres = ['driver' => 'postgres', 'user' => 'postgres', 'host' => 'localhost', 'database' => 'test', 'password' => 'postgres', 'port' => 5432];
+
     public function __construct()
     {
         parent::__construct();
@@ -37,5 +40,39 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
                 'password' => '1234'
             ];
         };
+    }
+
+    protected function driver($callback, $driver = 'postgres')
+    {
+        try
+        {
+            $class = 'ZN\Database\\' . $driver . '\\DB';
+
+            $db = new $class;
+
+            $db->connect(constant('self::' . strtolower($driver)));
+
+            if( $callback !== NULL )
+                $callback($db);
+        }
+        catch( Exception\ConnectionErrorException $e )
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    protected function postgres($callback = NULL)
+    {
+        $this->driver($callback, 'Postgres');
+    }
+
+    protected function mysqli($callback = NULL)
+    {
+        $this->driver($callback, 'MySQLi');
+    }
+
+    protected function pdo($callback = NULL)
+    {
+        $this->driver($callback, 'PDO');
     }
 }
