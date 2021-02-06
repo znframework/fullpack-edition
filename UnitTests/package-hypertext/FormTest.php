@@ -3,6 +3,7 @@
 use DB;
 use Form;
 use Post;
+use Method;
 use Buffer;
 use Session;
 
@@ -10,43 +11,89 @@ class FormTest extends \PHPUnit\Framework\TestCase
 {
     public function testOpen()
     {
-        $this->assertStringStartsWith('<form id="formId" name="formName" method="post" enctype="multipart/form-data">', (string) Form::enctype('multipart')->open('formName', ['id' => 'formId']));
-        $this->assertStringStartsWith('<form name="upload-form" method="post" enctype="multipart/form-data">', (string) Form::enctype('multipart')->open('upload-form'));
-        $this->assertGreaterThan(0, strpos((string) Form::csrf()->open('form'), 'token'));
+        $this->assertStringStartsWith('<form id="formId" name="formName" method="post">', (string) Form::open('formName', ['id' => 'formId']));
+    }
 
+    public function testOpenWithEnctype()
+    {
+        $this->assertStringStartsWith('<form name="upload-form" method="post" enctype="multipart/form-data">', (string) Form::enctype('multipart')->open('upload-form'));
+        $this->assertStringStartsWith('<form enctype="multipart/form-data" name="upload-form" method="post">', (string) Form::open('upload-form', ['enctype' => 'multipart']));
+    }
+
+    public function testOpenWithCSRF()
+    {
+        $this->assertGreaterThan(0, strpos((string) Form::csrf()->open('form'), 'token'));
+    }
+
+    public function testOpenWithWhere()
+    {
         $form = (string) Form::where('username', 'robot@znframework.com')->open('persons');
 
         $this->assertStringStartsWith("SELECT  *  FROM persons  WHERE username =  'robot@znframework.com'", DB::stringQuery());
+    }
 
+    public function testOpenWithQuery()
+    {
         $form = (string) Form::query("SELECT  *  FROM persons  WHERE username =  'robot@znframework.com'")->open('persons');
 
         $this->assertStringStartsWith("SELECT  *  FROM persons  WHERE username =  'robot@znframework.com'", DB::stringQuery());
+    }
+
+    public function testOpenWithPrevent()
+    {
         $this->assertStringStartsWith('<form name="formName" method="post" onsubmit="event.preventDefault()">', (string) Form::prevent()->open('formName'));
     }
 
-    public function testProcess()
+    public function testProcessUpdate()
     {
         Buffer::callback(function()
         { 
-            Post::FormProcessValue(true); Post::name('abc');
+            # Simulate
+            Post::name('Haluk');
+            Method::request('ValidationFormName', 'persons');
+            Post::FormProcessValue(true);
+            Session::insert('FormValidationRulespersons', ['name' => 
+            [
+                'required',
+                'xss',
+                'value' => 'name'
+            ]]);
 
-            Form::process('insert')->open('person')->validate('required')->text('name')->close(); 
-        
-            $this->assertIsString(Form::validateErrorMessage());
-
-            unset($_POST);
-
-            Post::FormProcessValue(true); Post::name('abc');
-
-            Buffer::callback(function()
-            { 
-                Form::process('insert')->whereColumn('name')->whereValue('abc')->open('persons')->validate('required')->text('name')->close(); 
-            });
-
-            $this->assertIsArray(Form::validateErrorArray());
-
-            unset($_POST);
+            echo Form::where('name', 'Haluk')->process('update')->open('persons');
+            echo Form::postback()->validate('required', 'xss')->text('name');
+            echo Form::close();
         });
+
+        Form::validateErrorMessage();
+
+        $this->assertEquals('Haluk', Form::getUpdateRow()->name);
+
+        unset($_POST);
+    }
+
+    public function testProcessInsert()
+    {
+        Buffer::callback(function()
+        { 
+            # Simulate
+            Post::name('Example');
+            Method::request('ValidationFormName', 'persons');
+            Post::FormProcessValue(true);
+            Session::insert('FormValidationRulespersons', ['name' => 
+            [
+                'required',
+                'xss',
+                'value' => 'name'
+            ]]);
+
+            echo Form::duplicateCheck()->process('insert')->open('persons');
+            echo Form::postback()->validate('required', 'xss')->text('name');
+            echo Form::close();
+        });
+
+        Form::validateErrorArray();
+
+        unset($_POST);
     }
 
     public function testClose()
@@ -120,14 +167,6 @@ class FormTest extends \PHPUnit\Framework\TestCase
         (
             'trigger', 
             Buffer::callback(function(){ Form::trigger('keyup', 'Validations/control', function(){})->button('send', 'SEND');})
-        );
-    }
-
-    public function testGetUpdateRow()
-    {
-        $this->assertNull
-        (
-            Form::getUpdateRow()
         );
     }
 

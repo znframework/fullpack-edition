@@ -4,39 +4,85 @@ use Form;
 
 class SelectTest extends \PHPUnit\Framework\TestCase
 {
-    public function testSelect()
+    const options = [ '34' => 'Istanbul', '19' => 'Corum' ];
+
+    public function testBasic()
     {
-        $options = [ '34' => 'Istanbul', '19' => 'Corum' ];
-
         $this->assertStringContainsString
         (
             '<option value="34">Istanbul</option>', 
-            (string) Form::select('cities', $options, '19')
+            (string) Form::select('cities', self::options, '19')
         );
+    }
 
-        $this->assertStringContainsString
-        (
-            '<option value="19">Corum</option>', 
-            (string) Form::including(['19'])->select('cities', $options)
-        );
-
+    public function testBasicWithSelectedValueAttr()
+    {
         $this->assertStringContainsString
         (
             '<option value="34">Istanbul</option>', 
-            (string) Form::excluding(['19'])->select('cities', $options)
+            (string) Form::selectedValue(19)->select('cities', self::options)
         );
+    }
 
+    public function testIncluding()
+    {
         $this->assertStringContainsString
         (
             '<option value="19">Corum</option>', 
-            (string) Form::order('asc')->select('cities', $options)
+            (string) Form::including(['19'])->select('cities', self::options)
         );
+    }
 
+    public function testExcluding()
+    {
+        $this->assertStringContainsString
+        (
+            '<option value="34">Istanbul</option>', 
+            (string) Form::excluding(['19'])->select('cities', self::options)
+        );
+    }
+
+    public function testBasicWithOrdering()
+    {
+        $this->assertStringContainsString
+        (
+            '<option value="19">Corum</option>', 
+            (string) Form::order('asc')->select('cities', self::options)
+        );
+    }
+
+    public function testBasicWithTable()
+    {
         $this->assertStringContainsString
         (
             '<select name="person">', 
             (string) Form::table('persons')->select('person', ['name' => 'name', '' => 'select name'])
         );
+    }
+
+    public function testBasicWithDBChangingValue()
+    {
+        $this->assertStringContainsString
+        (
+            '<select name="person">', 
+            (string) Form::table('persons')->select('person', ['name' => function($row)
+            {
+                return $row->name; 
+            }])
+        );
+    }
+
+    public function testBasicWithTableDifferentConnection()
+    {
+        $this->assertStringContainsString
+        (
+            '<select name="person">', 
+            (string) Form::table('cluster:persons')->select('person', ['name' => 'name', '' => 'select name'])
+        );
+    }
+
+    public function testBasicWithQuery()
+    {
 
         $this->assertStringContainsString
         (
@@ -45,32 +91,32 @@ class SelectTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testMultiSelect()
+    public function testBasicMultiSelect()
     {
-        $options = [ '34' => 'Istanbul', '19' => 'Corum' ];
-
         $this->assertStringContainsString
         (
             '<select multiple="multiple" name="cities">', 
-            (string) Form::multiselect('cities', $options, ['19', '34'])
-        );
-
-        $this->assertStringContainsString
-        (
-            '<option value="19">Corum</option>', 
-            (string) Form::including(['19'])->multiselect('cities', $options)
-        );
-
-        $this->assertStringContainsString
-        (
-            '<option value="34">Istanbul</option>', 
-            (string) Form::excluding(['19'])->multiselect('cities', $options)
-        );
-
-        $this->assertStringContainsString
-        (
-            '<select multiple="multiple" name="cities">', 
-            (string) Form::multiselect('cities', $options, json_encode(['19', '34']))
+            (string) Form::multiselect('cities', self::options, '19')
         );
     }
+
+    public function testBasicMultiSelectJsonKeys()
+    {
+        $this->assertStringContainsString
+        (
+            '<select multiple="multiple" name="cities">', 
+            (string) Form::multiselect('cities', self::options, json_encode(['19', '34']))
+        );
+    }
+    
+    public function testBasicMultiSelectMultipleKeys()
+    {
+        $this->assertStringContainsString
+        (
+            '<select multiple="multiple" name="cities">', 
+            (string) Form::multiselect('cities', self::options, ['19', '34'])
+        );
+    }
+
+    
 }
