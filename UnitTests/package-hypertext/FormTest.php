@@ -14,6 +14,11 @@ class FormTest extends \PHPUnit\Framework\TestCase
         $this->assertStringStartsWith('<form id="formId" name="formName" method="post">', (string) Form::open('formName', ['id' => 'formId']));
     }
 
+    public function testOpenWithAction()
+    {
+        $this->assertStringContainsString('action', (string) Form::action('foo/bar')->open('formName'));
+    }
+
     public function testOpenWithEnctype()
     {
         $this->assertStringStartsWith('<form name="upload-form" method="post" enctype="multipart/form-data">', (string) Form::enctype('multipart')->open('upload-form'));

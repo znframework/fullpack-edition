@@ -15,6 +15,21 @@ class SelectTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testBasicWithOptionAttr()
+    {
+        $this->assertStringContainsString
+        (
+            '<option value="34">Istanbul</option>', 
+            (string) Form::option(34, 'Istanbul')->select('cities')
+        );
+
+        $this->assertStringContainsString
+        (
+            '<option value="34">Istanbul</option>', 
+            (string) Form::option([34 => 'Istanbul'])->select('cities')
+        );
+    }
+
     public function testBasicWithSelectedValueAttr()
     {
         $this->assertStringContainsString

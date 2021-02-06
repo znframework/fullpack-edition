@@ -1,6 +1,7 @@
 <?php namespace ZN\Hypertext;
 
 use Html;
+use Permission;
 
 class HtmlTest extends \PHPUnit\Framework\TestCase
 {
@@ -127,6 +128,60 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testMailtoInvalidArgumentException()
+    {
+        try
+        {
+            Html::mailTo('robot@znframework', 'Robot');
+        }
+        catch( Exception\InvalidArgumentException $e )
+        {
+            $this->assertStringContainsString('1.($mail)', $e->getMessage());
+        }
+    }
+
+    public function testScript()
+    {
+        $this->assertStringContainsString
+        (
+            'javascript', 
+            (string) Html::script('abc')
+        );
+    }
+
+    public function testLink()
+    {
+        $this->assertStringContainsString
+        (
+            'stylesheet', 
+            (string) Html::link('abc')
+        );
+    }
+
+    public function testElement()
+    {
+        $this->assertStringContainsString
+        (
+            '<b id="1">content</b>', 
+            (string) Html::element('b', 'content', ['id' => 1])
+        );
+    }
+
+    public function testMultiAttr()
+    {
+        $this->assertStringContainsString
+        (
+            'b', 
+            (string) Html::multiAttr('b')
+        );
+
+        $this->assertStringContainsString
+        (
+            '<b><strong id="1"><i class="nice">b</i></strong></b>', 
+            (string) Html::multiAttr('b', ['b', 'strong' => ['id' => 1], 'i' => 'class="nice"'])
+        );
+    }
+
     public function testTable()
     {
         $this->assertStringContainsString
@@ -165,12 +220,59 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testLabelThirdParameter()
+    {
+        $this->assertStringContainsString
+        (
+            '<label for="checkBoxId" form="exampleForm">', 
+            (string) Html::label('checkBoxId', 'Do you like peas?', 'exampleForm')
+        );
+    }
+
     public function testMeta()
     {
         $this->assertStringContainsString
         (
             '<meta name="author" content="Ozan UYKUN" />', 
             (string) Html::meta('name:author', 'Ozan UYKUN')
+        );
+
+        $this->assertStringContainsString
+        (
+            '<meta http-equiv="author" content="Ozan UYKUN" />', 
+            (string) Html::meta('http:author', 'Ozan UYKUN')
+        );
+
+        $this->assertStringContainsString
+        (
+            '<meta property="author" content="Ozan UYKUN" />', 
+            (string) Html::meta('property:author', 'Ozan UYKUN')
+        );
+
+        $this->assertStringContainsString
+        (
+            '<meta property="author" />', 
+            (string) Html::meta('property:author')
+        );
+    }
+    
+    public function testMetaArray()
+    {
+        $this->assertStringContainsString
+        (
+            '<meta name="author" content="Ozan UYKUN" />', 
+            (string) Html::meta(['name:author' => 'Ozan UYKUN'])
+        );
+    }
+
+    public function testContentElements()
+    {
+        Permission::roleId(1);
+
+        $this->assertStringContainsString
+        (
+            '<article>value</article>', 
+            (string) Html::perm('delete')->article('value')
         );
     }
 
@@ -199,5 +301,20 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
             '<audio src="music.mp3" controls="controls"></audio>', 
             Html::controls()->audio('music.mp3')
         );
+    }
+
+    public function testForm()
+    {
+        $this->assertStringContainsString
+        (
+            'type="text"', 
+            Html::form()->text('name')
+        );
+    }
+
+    public function testList()
+    {
+        $this->assertStringContainsString('ul', Html::list()->create(['ul' => [1, 2, 'ol' => [1, 'a', 'b']], 'ol' => [1, 2, 3], 2, 3 => ['a', 'b', 'c'], 'd' => ['a', 'b', 'c']]));
+        $this->assertStringContainsString('abc', Html::list()->create('abc'));
     }
 }

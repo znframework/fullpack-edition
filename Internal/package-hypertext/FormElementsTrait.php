@@ -309,12 +309,7 @@ trait FormElementsTrait
      */
     public function excluding($exclude)
     {
-        if( is_scalar($exclude) )
-        {
-            $exclude[] = $exclude;
-        }
-
-        $this->settings['exclude'] = $exclude;
+        $this->settings['exclude'] = (array) $exclude;
 
         return $this;
     }
@@ -328,12 +323,7 @@ trait FormElementsTrait
      */
     public function including($include)
     {
-        if( is_scalar($include) )
-        {
-            $include[] = $include;
-        }
-
-        $this->settings['include'] = $include;
+        $this->settings['include'] = (array) $include;
 
         return $this;
     }
@@ -437,13 +427,11 @@ trait FormElementsTrait
      */
     public function attr(Array $attr = [])
     {
+        $settings = [];
+
         if( isset($this->settings['attr']) && is_array($this->settings['attr']) )
         {
             $settings = $this->settings['attr'];
-        }
-        else
-        {
-            $settings = [];
         }
 
         $this->settings['attr'] = array_merge($settings, $attr);
@@ -622,11 +610,6 @@ trait FormElementsTrait
                 $default = Singleton::class('ZN\Validation\Data')->postBack($name, $method) ?: $default;
             }   
         }
-    }
-
-    protected function validationNameFormPrefix($name)
-    {
-        return $this->getFormName . $name;
     }
 
     /**

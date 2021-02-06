@@ -46,6 +46,7 @@
                 <directory>./Internal/package-hypertext/Resources</directory>
                 <directory>./Internal/package-hypertext/Exception</directory>
                 <file>./Internal/package-hypertext/JavascriptValidationFunctions.php</file>
+                <file>./Internal/package-hypertext/Sheet.php</file>
                 <directory>./Internal/package-image/Exception</directory>
                 <directory>./Internal/package-payment</directory>
                 <directory>./Internal/package-protection/Exception</directory>
