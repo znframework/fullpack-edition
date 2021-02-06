@@ -42,6 +42,7 @@
                 <directory>./Internal/package-event-handler/Exception</directory>
                 <directory>./Internal/package-filesystem/Exception</directory>
                 <directory>./Internal/package-generator/Exception</directory>
+                <file>./Internal/package-generator/Databases.php</file>
                 <directory>./Internal/package-helpers/Exception</directory>  
                 <directory>./Internal/package-hypertext/Resources</directory>
                 <directory>./Internal/package-hypertext/Exception</directory>
