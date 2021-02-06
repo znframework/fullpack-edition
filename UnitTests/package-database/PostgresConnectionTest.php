@@ -21,6 +21,18 @@ class PostgresConnectionTest extends DatabaseExtends
         }
     }
 
+    public function testConnectionWithDNS()
+    {
+        try
+        {
+            (new Postgres\DB)->connect(['dsn' => 'host=localhost port=5432 dbname=test user=postgres password=postgres', 'charset' => 'utf-8']);
+        }
+        catch( Exception\ConnectionErrorException $e )
+        {
+            echo $e->getMessage();
+        }
+    }
+
     public function testExecFalse()
     {
         $this->postgres(function($db)
@@ -66,7 +78,8 @@ class PostgresConnectionTest extends DatabaseExtends
         {
             $db->transStart();
             $db->query('SELECT * FROM persons');
-            $this->assertTrue($db->error() ? $db->transRollback() : $db->transCommit());
+            $db->transRollback();
+            $db->transCommit();
         });
     }
 
@@ -79,6 +92,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('INSERT INTO persons(id, name) VALUES (1, \'Tika\') RETURNING id;');
 
             $this->assertEquals(1, $db->insertId());
+            
+            $db->query('');
+
+            $this->assertEquals(false, $db->insertId());
         });
     }
 
@@ -90,6 +107,10 @@ class PostgresConnectionTest extends DatabaseExtends
 
             $this->assertIsArray($db->columnData());
             $this->assertIsObject($db->columnData('name'));
+
+            $db->query('');
+
+            $this->assertFalse($db->columnData());
         });
     }
 
@@ -100,6 +121,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('SELECT * FROM persons');
 
             $this->assertEquals(1, $db->numRows());
+
+            $db->query('');
+
+            $this->assertEquals(0, $db->numRows());
         });
     }
 
@@ -110,6 +135,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('SELECT * FROM persons');
 
             $this->assertEquals(['id', 'name'], $db->columns());
+
+            $db->query('');
+
+            $this->assertEquals([], $db->columns());
         });
     }
 
@@ -120,6 +149,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('SELECT * FROM persons');
 
             $this->assertEquals(2, $db->numFields());
+
+            $db->query('');
+
+            $this->assertEquals(0, $db->numFields());
         });
     }
 
@@ -154,6 +187,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('SELECT * FROM persons');
 
             $this->assertEquals([1, 'Tika', 'id' => 1, 'name' => 'Tika'], $db->fetchArray());
+
+            $db->query('');
+
+            $this->assertEquals([], $db->fetchArray());
         });
     }
 
@@ -164,6 +201,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('SELECT * FROM persons');
 
             $this->assertEquals(['id' => 1, 'name' => 'Tika'], $db->fetchAssoc());
+
+            $db->query('');
+
+            $this->assertEquals([], $db->fetchAssoc());
         });
     }
 
@@ -174,6 +215,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('SELECT * FROM persons');
 
             $this->assertEquals([1, 'Tika'], $db->fetchRow());
+
+            $db->query('');
+
+            $this->assertEquals([], $db->fetchRow());
         });
     }
 
@@ -186,6 +231,10 @@ class PostgresConnectionTest extends DatabaseExtends
             $db->query('INSERT INTO persons(id, name) VALUES (1, \'Tika\');');
 
             $this->assertEquals(1, $db->affectedRows());
+
+            $db->query('');
+
+            $this->assertEquals(0, $db->affectedRows());
         });
     }
 

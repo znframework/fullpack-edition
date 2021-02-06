@@ -422,5 +422,7 @@ class DB extends DriverMappingAbstract
         {
             return pg_version($this->connect);
         }
+
+        return false;
     }
 }
