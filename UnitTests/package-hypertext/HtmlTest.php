@@ -269,6 +269,18 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testPermException()
+    {
+        try
+        {
+            Html::perm('delete')->article('value');
+        }
+        catch( Exception\PermissionRoleIdException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
+
     public function testContentElements()
     {
         Permission::roleId(1);
@@ -373,6 +385,36 @@ class HtmlTest extends \PHPUnit\Framework\TestCase
         (
             '<input type="text" name="">', 
             Html::type('text')->input()
+        );
+    }
+
+    public function testBoolAttribute()
+    {
+        $this->assertStringContainsString
+        (
+            '<b abc="true">a</b>', 
+            Html::abc(true)->b('a')
+        );
+
+        $this->assertStringContainsString
+        (
+            '<b abc="false">a</b>', 
+            Html::abc(false)->b('a')
+        );
+    }
+
+    public function testArrayAttribute()
+    {
+        $this->assertStringContainsString
+        (
+            '<b abc="true">a</b>', 
+            Html::abc(true)->b('a')
+        );
+
+        $this->assertStringContainsString
+        (
+            '<b abc="[&quot;a&quot;]">a</b>', 
+            Html::abc(['a'])->b('a')
         );
     }
 }
