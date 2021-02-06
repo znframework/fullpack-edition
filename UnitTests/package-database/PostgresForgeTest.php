@@ -1,7 +1,5 @@
 <?php namespace ZN\Database;
 
-use DB;
-
 class PostgresForgeTest extends DatabaseExtends
 { 
     public function testExtras()
@@ -22,40 +20,5 @@ class PostgresForgeTest extends DatabaseExtends
     public function testAddColumn()
     {
         $this->assertEquals('ALTER TABLE test ADD id int;', (new Postgres\DBForge)->addColumn('test', ['id' => 'int']));
-    }
-
-    public function testListDatabases()
-    {
-        $tool = \DBTool::new(self::postgres);
-
-        $this->assertEquals('test', $tool->listDatabases()[1]);
-    }
-
-    public function testListTables()
-    {
-        $tool = \DBTool::new(self::postgres);
-
-        $this->assertEquals(['persons'], $tool->listTables());
-    }
-
-    public function testStatusTables()
-    {
-        $tool = \DBTool::new(self::postgres);
-
-        $this->assertFalse($tool->statusTables());
-    }
-
-    public function testOptimizeTables()
-    {
-        $tool = \DBTool::new(self::postgres);
-
-        $this->assertFalse($tool->optimizeTables());
-    }
-
-    public function testRepairTables()
-    {
-        $tool = \DBTool::new(self::postgres);
-
-        $this->assertFalse($tool->repairTables());
     }
 }
