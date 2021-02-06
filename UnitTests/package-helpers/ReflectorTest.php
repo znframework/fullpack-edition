@@ -28,6 +28,10 @@ class ReflectorTest extends \PHPUnit\Framework\TestCase
         $reflector = Reflect::annotation(__CLASS__, 'testMethod');
 
         $this->assertSame('c4ca4238a0b923820dcc509a6f75849b', $reflector->encode);
+
+        $reflector = Reflect::annotation(__CLASS__ . '::testMethod');
+
+        $this->assertSame('c4ca4238a0b923820dcc509a6f75849b', $reflector->encode);
     }
 
     /**
@@ -40,5 +44,10 @@ class ReflectorTest extends \PHPUnit\Framework\TestCase
         $reflector = Reflect::annotation(__CLASS__, '$property');
 
         $this->assertSame('c4ca4238a0b923820dcc509a6f75849b', $reflector->encode);
+    }
+
+    public function testCallClass()
+    {
+        $this->assertIsArray(Reflect::function('substr')->getParameters());
     }
 }

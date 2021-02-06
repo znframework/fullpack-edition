@@ -9,6 +9,7 @@ class SearcherTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(true, Searcher::data(['a', 'b'], 'b') );
         $this->assertSame(1, Searcher::data(['a', 'b'], 'b', 'position') );
         $this->assertSame('b', Searcher::data(['a', 'b'], 'b', 'string') );
+        $this->assertFalse(Searcher::data(['a', 'b'], 'b', 'stringx') );
     }
 
     public function testStringData()
@@ -16,5 +17,6 @@ class SearcherTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(true, Searcher::data('Example Data', 'Example') );
         $this->assertSame(0, Searcher::data('Example Data', 'Example', 'position') );
         $this->assertSame('Example Data', Searcher::data('Example Data', 'Example', 'string') ); 
+        $this->assertFalse(Searcher::data('Example Data', 'Example', 'stringx')); 
     }
 }
