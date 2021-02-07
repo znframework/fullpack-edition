@@ -32,6 +32,18 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase
         }));  
     }
 
+    public function testRunException()
+    {
+        try
+        {
+            Events::callback('no callback')::create('X');
+        }
+        catch( Exception\InvalidCallbackMethodException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }    
+    }
+
     public function testGet()
     {
         $this->assertSame(3, count(Events::get('FileProcess')));
@@ -40,6 +52,8 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase
         {
             Events::get('FileProcess', 1)();
         }));  
+
+        $this->assertEmpty(Events::get('Y'));
     }
 
     public function testRemove()
@@ -50,6 +64,9 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase
         {
             Events::run('FileProcess');
         }));   
+
+        # Remove Event
+        Events::remove('FileProcess');
     }
 
     public function testRunWithParameters()
@@ -64,5 +81,22 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase
         {
             Events::run('param', ['myParam']);
         }));  
+    }
+
+    public function testRealCallStatic()
+    {
+        # call static.
+        $this->assertIsBool(\ZN\EventHandler\Event::X());
+    }
+
+    public function testRunFalse()
+    {
+        Events::callback(function()
+        {
+            return false;
+        
+        })::create('Z');
+
+        $this->assertFalse(Events::run('Z'));
     }
 }
