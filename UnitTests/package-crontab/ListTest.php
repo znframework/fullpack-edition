@@ -1,19 +1,17 @@
 <?php namespace ZN\Crontab;
 
-use Crontab;
-
 class ListTest extends \PHPUnit\Framework\TestCase
 {    
     public function testCronList()
     {
-        $cronList = Crontab::list();
+        $cronList = (new Job)->list();
 
         $this->assertIsString($cronList);
     }
 
     public function testCronListArray()
     {
-        $cronList = Crontab::listArray();
+        $cronList = (new Job)->listArray();
 
         $this->assertIsArray($cronList);
     }

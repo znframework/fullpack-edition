@@ -186,11 +186,9 @@ trait CrontabIntervalTrait
      */
     public function clock(String $clock = '23:59') : Job
     {
-        $match = '[0-9]{1,2}';
-
-        if( ! preg_match('/^'.$match.':'.$match.'$/', $clock) )
+        if( ! preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/', $clock) )
         {
-            throw new InvalidTimeFormatException('Services', 'crontab:timeFormatError');
+            throw new InvalidTimeFormatException(NULL, $clock);
         }
         else
         {

@@ -15,7 +15,7 @@ class InvalidTimeFormatException extends Exception
 {
     const lang = 
     [
-        'en' => 'Invalid time format!',
-        'tr' => 'Geçersiz zaman formatı!'
+        'en' => '[%] Invalid time format!',
+        'tr' => '[%] Geçersiz zaman formatı!'
     ];
 }

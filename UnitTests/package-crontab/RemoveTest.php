@@ -1,25 +1,32 @@
 <?php namespace ZN\Crontab;
 
-use Crontab;
-
 class RemoveTest extends \PHPUnit\Framework\TestCase
 {    
     public function testRemoveCronByID()
     {
-        Crontab::path('/opt/lampp/bin/php')->daily()->command('ExampleCommand:exampleMethod');
+        (new Job)->path('/opt/lampp/bin/php')->daily()->command('ExampleCommand:exampleMethod');
 
-        Crontab::remove(0);
-        Crontab::remove(0);
+        (new Job)->remove(0);
+        (new Job)->remove(0);
 
-        $this->assertEmpty(Crontab::listArray()[0] ?? NULL);
+        $this->assertEmpty((new Job)->listArray()[0] ?? NULL);
     }
 
     public function testRemoveCronByFilter()
     {
-        Crontab::command('ExampleCommand:exampleMethod');
+        (new Job)->command('ExampleCommand:exampleMethod');
 
-        Crontab::remove('ExampleCommand');
+        (new Job)->remove('ExampleCommand');
 
-        $this->assertEmpty(Crontab::listArray());
+        $this->assertEmpty((new Job)->listArray());
+    }
+
+    public function testRemoveAll()
+    {
+        (new Job)->command('ExampleCommand:exampleMethod');
+
+        (new Job)->remove();
+
+        $this->assertEmpty((new Job)->listArray());
     }
 }

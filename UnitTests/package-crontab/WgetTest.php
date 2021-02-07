@@ -1,15 +1,13 @@
 <?php namespace ZN\Crontab;
 
-use Crontab;
-
 class WgetTest extends \PHPUnit\Framework\TestCase
 {    
     public function testRunWget()
     {
-        Crontab::daily()->wget('https://site.com/example/page');
+        (new Job)->daily()->wget('https://site.com/example/page');
 
-        $this->assertStringContainsString('https://site.com/example/page', Crontab::list());
+        $this->assertStringContainsString('https://site.com/example/page', (new Job)->list());
 
-        Crontab::remove('https://site.com/example/page');
+        (new Job)->remove('https://site.com/example/page');
     }
 }

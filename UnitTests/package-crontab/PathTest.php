@@ -1,15 +1,13 @@
 <?php namespace ZN\Crontab;
 
-use Crontab;
-
 class PathTest extends \PHPUnit\Framework\TestCase
 {    
     public function testRunCronSetPHPPath()
     {
-        Crontab::path('/opt/lampp/bin/php')->daily()->command('ExampleCommand:exampleMethod');
+        (new Job)->path('/opt/lampp/bin/php')->daily()->command('ExampleCommand:exampleMethod');
 
-        $this->assertStringContainsString('/opt/lampp/bin/php', Crontab::list());
+        $this->assertStringContainsString('/opt/lampp/bin/php', (new Job)->list());
 
-        Crontab::remove('/opt/lampp/bin/php');
+        (new Job)->remove('/opt/lampp/bin/php');
     }
 }
