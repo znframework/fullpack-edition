@@ -33,7 +33,7 @@ class Sender implements SenderInterface
      */
     const driver =
     [
-        'options'   => ['smtp', 'mail', 'pipe', 'send', 'imap'],
+        'options'   => ['smtp', 'imap'],
         'namespace' => 'ZN\Email\Drivers',
         'construct' => 'settings',
         'config'    => 'Services:email',
