@@ -39,7 +39,7 @@
                 <directory>./Internal/package-datatypes/Exception</directory>
                 <directory>./Internal/package-datetime/Exception</directory>
                 <directory>./Internal/package-email/Exception</directory>
-                <file>./Internal/package-email/Drivers</file>
+                <directory>./Internal/package-email/Drivers</directory>
                 <directory>./Internal/package-event-handler/Exception</directory>
                 <directory>./Internal/package-filesystem/Exception</directory>
                 <directory>./Internal/package-generator/Exception</directory>
