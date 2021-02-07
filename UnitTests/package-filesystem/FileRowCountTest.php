@@ -12,4 +12,21 @@ class FileRowCountTest extends FilesystemExtends
 
         File::delete(self::file);
     }
+
+    public function testFolderRowCount()
+    {
+        $this->assertIsInt(File::rowCount(self::directory));
+    }
+    
+    public function testGroupException()
+    {
+        try
+        {
+            File::rowCount(self::file . 'unknown');
+        }
+        catch( Exception\FileNotFoundException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }

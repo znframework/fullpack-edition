@@ -421,7 +421,8 @@ class Info
         {
             return count( file($file) );
         }
-        elseif( is_dir($file) )
+        # Is dir
+        else
         {
             $files = FileList::allFiles($file, $recursive);
 
@@ -436,10 +437,6 @@ class Info
             }
 
             return $rowCount;
-        }
-        else
-        {
-            return false;
         }
     }
 

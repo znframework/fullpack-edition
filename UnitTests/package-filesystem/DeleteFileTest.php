@@ -14,4 +14,16 @@ class DeleteFileTest extends FilesystemExtends
 
         File::write(self::file, 'test');
     }
+
+    public function testDeleteException()
+    {
+        try
+        {
+            File::delete(self::file . 'unknown');
+        }
+        catch( Exception\FileNotFoundException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }

@@ -13,4 +13,16 @@ class FileCreateDateTest extends FilesystemExtends
 
         File::delete(self::file);
     }
+
+    public function testInfoException()
+    {
+        try
+        {
+            File::createDate(self::file . 'unknown');
+        }
+        catch( Exception\FileNotFoundException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }

@@ -12,4 +12,9 @@ class FolderExistsTest extends FilesystemExtends
 
         Folder::delete(self::dir);
     }
+
+    public function testExistsFalse()
+    {
+        $this->assertFalse(Folder::exists(self::dir . 'unknown'));
+    }
 }

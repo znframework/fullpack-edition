@@ -4,7 +4,7 @@ use Document;
 
 class DocumentTest extends FilesystemExtends
 {
-    public function testRun()
+    public function testFile()
     {
         $this->assertSame
         (
@@ -13,6 +13,17 @@ class DocumentTest extends FilesystemExtends
                     ->create()
                     ->write('Hello Body!')
                     ->read()
+                    ->apply()
+        );
+    }
+
+    public function testFolder()
+    {
+        $this->assertTrue
+        (
+            Document::target(self::directory . 'abc')
+                    ->create()
+                    ->delete()
                     ->apply()
         );
     }

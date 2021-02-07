@@ -14,4 +14,16 @@ class RenameFileTest extends FilesystemExtends
 
         File::delete($file);
     }
+
+    public function testRenameException()
+    {
+        try
+        {
+            File::rename(self::file . 'unknown', $file = self::directory . 'rename-file.txt');
+        }
+        catch( Exception\FileNotFoundException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }

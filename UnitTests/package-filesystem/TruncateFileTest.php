@@ -14,4 +14,16 @@ class TruncateFileTest extends FilesystemExtends
 
         File::delete(self::file);
     }
+
+    public function testTruncateException()
+    {
+        try
+        {
+            File::truncate(self::file . 'unknown', 2);
+        }
+        catch( Exception\FileNotFoundException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }

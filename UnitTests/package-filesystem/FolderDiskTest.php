@@ -13,4 +13,22 @@ class FolderDiskTest extends FilesystemExtends
 
         Folder::delete($directory);
     }
+    
+    public function testdiskException()
+    {
+        try
+        {
+            Folder::disk(self::directory . 'unknown');
+        }
+        catch( Exception\FolderNotFoundException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
+
+    public function testTotalSpace()
+    {
+        $this->assertIsFloat(Folder::totalSpace(self::directory));
+        $this->assertIsFloat(Folder::freeSpace(self::directory));
+    }
 }

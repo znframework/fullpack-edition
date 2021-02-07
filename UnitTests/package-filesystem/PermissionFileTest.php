@@ -14,4 +14,16 @@ class PermissionFileTest extends FilesystemExtends
 
         File::delete(self::file);
     }
+
+    public function testPermissionException()
+    {
+        try
+        {
+            File::permission(self::file . 'unknown', 644);
+        }
+        catch( Exception\FileNotFoundException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }

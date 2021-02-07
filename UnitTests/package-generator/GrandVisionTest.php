@@ -13,4 +13,16 @@ class GrandVisionTest extends GeneratorExtends
 
         Folder::delete(MODELS_DIR . 'Visions/');
     }
+
+    public function testDeleteGrandVision()
+    {
+        $this->assertNull(Generate::deleteVision('*'));
+    }
+
+    public function testDeleteGrandVisionSome()
+    {
+        $this->assertNull(Generate::deleteVision('testdb', ['persons']));
+
+        Generate::grandVision();
+    }
 }

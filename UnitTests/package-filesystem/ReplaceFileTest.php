@@ -14,4 +14,9 @@ class ReplaceFileTest extends FilesystemExtends
 
         File::delete(self::file);
     }
+
+    public function testReplaceFalse()
+    {
+        $this->assertEmpty(File::replace(self::file . 'unknown', 'test', 'example'));
+    }
 }

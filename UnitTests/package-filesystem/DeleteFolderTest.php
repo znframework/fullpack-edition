@@ -10,4 +10,11 @@ class DeleteFolderTest extends FilesystemExtends
 
         $this->assertTrue(Folder::delete(self::dir));
     }
+
+    public function testDeleteEmpty()
+    {
+        Folder::create($directory = self::directory . 'example');
+
+        $this->assertTrue(Folder::deleteEmpty($directory));
+    }
 }
