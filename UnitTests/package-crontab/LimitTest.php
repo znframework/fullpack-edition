@@ -11,4 +11,9 @@ class LimitTest extends \PHPUnit\Framework\TestCase
     {
         \Crontab::limit(2);
     }
+
+    public function testLimitAgain()
+    {
+        $this->testLimit();
+    }
 }

@@ -11,10 +11,15 @@ class QueueTest extends \PHPUnit\Framework\TestCase
     {
         \Crontab::queue(function($queueIndex, $decrement)
         {   
-            if( $queueIndex === 2 )
+            if( $queueIndex === 1 )
             {
                 return false;
             }
         });
+    }
+
+    public function testQueueAgain()
+    {
+        $this->testQueue();
     }
 }
