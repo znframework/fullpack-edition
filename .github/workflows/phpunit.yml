@@ -86,34 +86,34 @@ jobs:
         env:
           update: true
 
-      - name: Install Memcached
+      - name: Install memcached driver
         uses: niden/actions-memcached@v7
 
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Cache Dependencies
+      - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           composer update --ansi --no-interaction
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - name: Test with PHPUnit
+      - name: Check PHPUnit tests
         run: script -e -c "vendor/bin/phpunit -v"
         env:
           DB: ${{ matrix.db-platforms }}
           TERM: xterm-256color
 
       - if: matrix.php-versions == '7.4'
-        name: Run Coveralls
+        name: Run coveralls
         run: |
           composer global require php-coveralls/php-coveralls:^2.4
           php-coveralls --coverage_clover=build/logs/clover.xml -v
