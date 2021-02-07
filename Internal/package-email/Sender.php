@@ -628,21 +628,20 @@ class Sender implements SenderInterface
 
         if( empty($mime) )
         {
-            if( ! ($fp = @fopen($file, 'rb')) )
+            if( $fp = @fopen($file, 'rb') )
+            {
+                $fileContent = stream_get_contents($fp);
+
+                fclose($fp);
+            }
+            else
             {
                 $this->error[] = $this->getLang('email:attachmentUnreadable', $file);
-            }
-
-            $fileContent = stream_get_contents($fp);
-
-            fclose($fp);
+            }         
         }
-        else
+        else if( ! $fileContent = file_get_contents($file) )
         {
-            if( ! ($fileContent = file_get_contents($file)) )
-            {
-                $this->error[] = $this->getLang('email:attachmentUnreadable', $file);
-            }
+            $this->error[] = $this->getLang('email:attachmentUnreadable', $file);
         }
 
         $this->attachments[] =

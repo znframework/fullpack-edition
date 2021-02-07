@@ -252,7 +252,7 @@ class ImapDriver extends DriverMappingAbstract
     {
         if( empty($config) )
         {
-            $config = Config::default('ZN\Remote\EmailDefaultConfiguration')::get('Services', 'email')['imap'];
+            $config = Config::default('ZN\Email\EmailDefaultConfiguration')::get('Services', 'email')['imap'];
         }
 
         $host     = $this->host = $config['host'];
