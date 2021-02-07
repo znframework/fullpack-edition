@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
         php-versions: ['7.2', '7.3', '7.4', '8.0']
-        db-platforms: ['MySQLi', 'Postgre', 'SQLite3']
+        db-platforms: ['MySQLi', 'Postgre', 'SQLite3', 'SQLSRV']
 
     services:
       mysql:
@@ -55,7 +55,7 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: test
         ports:
-          - 3306
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         image: postgres
@@ -66,6 +66,15 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
+
+      mssql:
+        image: microsoft/mssql-server-linux:2017-latest
+        env:
+          SA_PASSWORD: 1Secure*Password1
+          ACCEPT_EULA: Y
+          MSSQL_PID: Developer
+        ports:
+          - 1433:1433
       redis:
         image: redis
         ports:
@@ -73,6 +82,10 @@ jobs:
         options: --health-cmd "redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - name: Create MSSQL database
+        if: ${{ matrix.db-platforms == 'SQLSRV'}}
+        run: sqlcmd -S localhost -U sa -P 1Secure*Password1 -Q "CREATE DATABASE test"
+        
       - name: Checkout
         uses: actions/checkout@v2
 
