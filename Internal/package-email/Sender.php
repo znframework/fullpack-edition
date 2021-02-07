@@ -809,21 +809,6 @@ class Sender implements SenderInterface
     }
 
     /**
-     * Protected to Array
-     */
-    protected function toArray($email)
-    {
-        if( ! is_array($email) )
-        {
-            return ( strpos($email, ',') !== false )
-                   ? preg_split('/[\s,]/', $email, -1, PREG_SPLIT_NO_EMPTY)
-                   : (array)trim($email);
-        }
-
-        return $email;
-    }
-
-    /**
      * Protected to String
      */
     protected function toString($email)
