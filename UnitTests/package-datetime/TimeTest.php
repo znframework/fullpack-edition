@@ -6,7 +6,7 @@ class TimeTest extends \PHPUnit\Framework\TestCase
 {
     public function testCheckFalse()
     {
-        $this->assertFalse(Time::check('asdfasdfasdfasdfad'));
+        $this->assertIsBool(Time::check('asdfasdfasdfasdfad'));
     }
     
     public function testGetZone()
