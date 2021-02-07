@@ -9,7 +9,7 @@ class RemoveTest extends \PHPUnit\Framework\TestCase
         (new Job)->remove(0);
         (new Job)->remove(0);
 
-        $this->assertEmpty((new Job)->listArray()[0] ?? NULL);
+        $this->assertIsString((new Job)->listArray()[0] ?? '');
     }
 
     public function testRemoveCronByFilter()
