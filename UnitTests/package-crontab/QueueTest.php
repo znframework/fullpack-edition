@@ -1,25 +1,20 @@
 <?php namespace ZN\Crontab;
 
-use Crontab;
-
 class QueueTest extends \PHPUnit\Framework\TestCase
 {    
     public function testMake()
     {
-        $class = new class() extends \Project\Commands\Command
-        {
-            public function do()
-            {
-                Crontab::queue(function($queueIndex, $decrement)
-                {   
-                    if( $queueIndex === 2 )
-                    {
-                        return false;
-                    }
-                });
-            }
-        };
+        (new Job)->dayNumber(3)->command('ZN\Crontab\QueueTest:testQueue'); 
+    }
 
-        $class->do();
+    public function testQueue()
+    {
+        \Crontab::queue(function($queueIndex, $decrement)
+        {   
+            if( $queueIndex === 2 )
+            {
+                return false;
+            }
+        });
     }
 }

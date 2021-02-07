@@ -1,19 +1,14 @@
 <?php namespace ZN\Crontab;
 
-use Crontab;
-
 class LimitTest extends \PHPUnit\Framework\TestCase
 {    
     public function testMake()
     {
-        $class = new class() extends \Project\Commands\Command
-        {
-            public function do()
-            {
-                Crontab::limit(2);
-            }
-        };
+        (new Job)->dayNumber(3)->command('ZN\Crontab\LimitTest:testLimit'); 
+    }
 
-        $class->do();
+    public function testLimit()
+    {
+        \Crontab::limit(2);
     }
 }
