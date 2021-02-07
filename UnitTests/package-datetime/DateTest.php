@@ -13,6 +13,7 @@ class DateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertSame('2020-10-30', Date::calculate('2020-11-30', '-1 month'));
         $this->assertSame('30-10-2020', Date::calculate('2020-11-30', '-1 month', '{dn}-{mn}-{y}'));
+        $this->assertIsString(Date::calculate('{year}-{monthNumber}-{dayNumber}', '30 day'));
     }
 
     public function testCompare()
@@ -77,6 +78,7 @@ class DateTest extends \PHPUnit\Framework\TestCase
     public function testToday()
     {
         $this->assertSame('Saturday', Date::today('2021-01-23'));
+        $this->assertIsString(Date::today());
     }
 
     public function testTodayNumber()
@@ -99,6 +101,16 @@ class DateTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('Friday', Date::prevDay('2021-01-23'));
     }
 
+    public function testYesterday()
+    {
+        $this->assertSame('Friday', Date::yesterday('2021-01-23'));
+    }
+
+    public function testTomorrow()
+    {
+        $this->assertSame('Sunday', Date::tomorrow('2021-01-23'));
+    }
+
     public function testPrevDayNumber()
     {
         $this->assertSame('22', Date::prevDayNumber('2021-01-23'));
@@ -107,6 +119,7 @@ class DateTest extends \PHPUnit\Framework\TestCase
     public function testAddDay()
     {
         $this->assertSame('2021-01-25', Date::addDay('2021-01-23', 2));
+        $this->assertIsString(Date::addDay('10'));
     }
 
     public function testRemoveDay()
@@ -117,5 +130,22 @@ class DateTest extends \PHPUnit\Framework\TestCase
     public function testDiffDay()
     {
         $this->assertSame(4, (int) Date::diffDay('2021-01-23', '2021-01-27'));
+        $this->assertIsFloat(Date::diffDay('2021-01-23'));
+        $this->assertSame(4, (int) Date::diffDay('2021-01-23', '2021-01-27', 'up'));
+    }
+
+    public function testCheckFalse()
+    {
+        $this->assertFalse(Date::check('19-19-9'));
+    }
+
+    public function testDefault()
+    {
+        $this->assertIsString(Date::default());
+    }
+
+    public function testCurrentDay()
+    {
+        $this->assertIsString(Date::currentDay());
     }
 }

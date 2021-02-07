@@ -4,11 +4,28 @@ use Time;
 
 class TimeTest extends \PHPUnit\Framework\TestCase
 {
+    public function testCheckFalse()
+    {
+        $this->assertFalse(Time::check('asdfasdfasdfasdfad'));
+    }
+    
     public function testGetZone()
     {
         Time::zone('America/Toronto');
 
         $this->assertSame('America/Toronto', date_default_timezone_get());
+    }
+
+    public function testGetZoneException()
+    {
+        try
+        {
+            Time::zone('America/Torontox');
+        }
+        catch( Exception\InvalidTimezoneException $e )
+        {
+            $this->assertIsString($e->getMessage());
+        } 
     }
 
     public function testSetLocale()
@@ -39,5 +56,25 @@ class TimeTest extends \PHPUnit\Framework\TestCase
     public function testDiffHour()
     {
         $this->assertSame(2, (int) Time::diffHour('10:20', '12:20'));
+    }
+
+    public function testIsPast()
+    {
+        $this->assertIsBool(Time::isPast('10:20'));
+    }
+
+    public function testCurrent()
+    {
+        $this->assertIsString(Time::current());
+    }
+
+    public function testDefault()
+    {
+        $this->assertIsString(Time::default());
+    }
+
+    public function testStandart()
+    {
+        $this->assertIsString(Time::standart());
     }
 }
