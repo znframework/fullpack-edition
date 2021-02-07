@@ -56,6 +56,15 @@ class CommandTest extends \PHPUnit\Framework\TestCase
         (new Job)->remove('ExampleCommand');
     }
 
+    public function testRunCommandMonthly()
+    {
+        (new Job)->monthly()->command('ExampleCommand:exampleMethod');
+
+        $this->assertStringContainsString('0 0 1 * *', (new Job)->list());
+
+        (new Job)->remove('ExampleCommand');
+    }
+
     public function testRunCommandWeekly()
     {
         (new Job)->weekly()->command('ExampleCommand:exampleMethod');
@@ -138,6 +147,11 @@ class CommandTest extends \PHPUnit\Framework\TestCase
         (new Job)->lastJob();
     }
 
+    public function testDebug()
+    {
+        (new Job)->debug();
+    }
+
     public function testChangeProjectWithDriver()
     {
         (new Job)->project('Frontend')->driver('exec')->interval('* 1 * * *')->command('ExampleCommand:exampleMethod');
@@ -150,6 +164,18 @@ class CommandTest extends \PHPUnit\Framework\TestCase
         try
         {
             (new Job)->clock('01:60')->command('ExampleCommand:exampleMethod');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
+
+    public function testRunCommandInvalidFormat()
+    {
+        try
+        {
+            (new Job)->interval('abc')->command('ExampleCommand:exampleMethod');
         }
         catch( \Exception $e )
         {

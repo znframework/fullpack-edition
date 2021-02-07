@@ -387,6 +387,8 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     protected function executeCommand()
     {
+        $this->defaultCommandVariables();
+
         return $this->processor->exec('crontab ' . $this->crontabCommands);
     }
 
