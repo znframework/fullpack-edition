@@ -11,7 +11,6 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
     const sqlite   = ['driver'   => 'sqlite', 'database' => self::default . 'package-database/resources/testdb', 'password' => '1234'];
     const mysqli   = ['driver' => 'mysqli'  , 'user' => 'root'    , 'host' => 'localhost', 'database' => 'test', 'password' => ''        , 'port' => 3306];
     const postgres = ['driver' => 'postgres', 'user' => 'postgres', 'host' => 'localhost', 'database' => 'test', 'password' => 'postgres', 'port' => 5432];
-    const odbc     = ['driver' => 'odbc', 'host' => 'Microsoft Access Driver (*.mdb, *.accdb)}', 'database' => self::default . 'package-database/resources/testdb.mdb'];
 
     public function __construct()
     {
@@ -66,15 +65,5 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
     protected function mysqli($callback = NULL)
     {
         $this->driver($callback, 'MySQLi');
-    }
-
-    protected function pdo($callback = NULL)
-    {
-        $this->driver($callback, 'PDO');
-    }
-
-    protected function odbc($callback = NULL)
-    {
-        $this->driver($callback, 'ODBC');
     }
 }
