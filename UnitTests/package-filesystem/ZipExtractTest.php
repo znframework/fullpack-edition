@@ -51,4 +51,9 @@ class ZipExtractTest extends FilesystemExtends
             $this->assertIsString($e->getMessage());
         }
     }
+
+    public function testExtractFalse()
+    {
+        $this->assertFalse(File::zipExtract(self::directory . 'invalid'));
+    }
 }

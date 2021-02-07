@@ -21,7 +21,7 @@ class DocumentTest extends FilesystemExtends
     {
         $this->assertTrue
         (
-            Document::target(self::directory . 'abc')
+            Document::target(self::directory . 'abc/')
                     ->create()
                     ->delete()
                     ->apply()

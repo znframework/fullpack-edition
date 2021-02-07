@@ -1,6 +1,7 @@
 <?php namespace ZN\Filesystem;
 
 use File;
+use Folder;
 
 class CreateZipTest extends FilesystemExtends
 {
@@ -9,12 +10,18 @@ class CreateZipTest extends FilesystemExtends
         File::create($file1 = self::directory . '1.txt');
         File::create($file2 = self::directory . '2.txt');
         
-        File::createZip($zipFile = self::directory . 'example.zip', [$file1, $file2]);
+        # If directory not exists createing.
+        # file and directory
+        # alias file name
+        File::createZip($zipFile = self::directory . 'zip/example.zip', [$file1, $file2 => 'file name', self::directory]);
+
+        # Delete Before
+        File::createZip($zipFile, [$file1, $file2]);
 
         $this->assertFileExists($zipFile);
 
         File::delete($file1);
         File::delete($file2);
-        File::delete($zipFile);
+        Folder::delete(self::directory . 'zip');
     }
 }

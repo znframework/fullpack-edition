@@ -1,5 +1,6 @@
 <?php namespace ZN\Filesystem;
 
+use Folder;
 use Upload;
 use ZN\Base;
 
@@ -14,6 +15,47 @@ class UploadTest extends FilesystemExtends
         $_FILES['file']['size']     = 1;
         $_FILES['file']['tmp_name'] = sys_get_temp_dir();
         $_FILES['file']['error']    = UPLOAD_ERR_OK;
+
+        $_FILES['mfile']['name'][0]     = basename($file);
+        $_FILES['mfile']['type'][0]     = 'text/plain';
+        $_FILES['mfile']['size'][0]     = 1;
+        $_FILES['mfile']['tmp_name'][0] = sys_get_temp_dir();
+        $_FILES['mfile']['error'][0]    = UPLOAD_ERR_OK;
+        $_FILES['mfile']['name'][1]     = basename($file);
+        $_FILES['mfile']['type'][1]     = 'text/plain';
+        $_FILES['mfile']['size'][1]     = 1;
+        $_FILES['mfile']['tmp_name'][1] = sys_get_temp_dir();
+        $_FILES['mfile']['error'][1]    = UPLOAD_ERR_OK;
+    }
+
+    public function testTargetSource()
+    {
+        Upload::target($directory = self::directory . 'uploads')->source('file')->start();
+
+        $this->assertEmpty(Upload::error());
+
+        Folder::delete($directory);
+    }
+
+    public function testMultiple()
+    {
+        # If invalid hash set md5
+        Upload::encode('xyz')->target($directory = self::directory . 'uploads')->source('mfile')->start();
+
+        $this->assertEmpty(Upload::error());
+        $this->assertIsObject(Upload::info());
+
+        Folder::delete($directory);
+    }
+
+    public function testMultipleError()
+    {
+        Upload::mimes('image/jpg')->target($directory = self::directory . 'uploads')->source('mfile')->start();
+
+        $this->assertIsString(Upload::error());
+        $this->assertIsObject(Upload::info());
+
+        Folder::delete($directory);
     }
 
     public function testInvalidExtension()
@@ -72,6 +114,13 @@ class UploadTest extends FilesystemExtends
     {
         $this->assertTrue(Upload::isFile('file'));
         $this->assertFalse(Upload::isFile('file2'));
+
+        $file = tempnam(sys_get_temp_dir(), 'Tux');
+
+        $_FILES['file'][0]['name']     = basename($file);
+        $_FILES['file'][1]['name']     = basename($file);
+
+        $this->assertTrue(Upload::isFile('file'));
     }
 
     public function testInfo()
