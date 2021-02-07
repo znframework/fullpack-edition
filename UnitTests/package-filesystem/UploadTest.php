@@ -78,4 +78,14 @@ class UploadTest extends FilesystemExtends
     {
         $this->assertIsObject(Upload::info());
     }   
+
+    public function testSettings()
+    {
+        Transfer::settings(['path' => self::directory]);
+    }
+
+    public function testUpload()
+    {
+        Transfer::upload('file');
+    }
 }
