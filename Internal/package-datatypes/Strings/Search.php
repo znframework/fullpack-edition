@@ -89,6 +89,8 @@ class Search
 
             return $function($str, $needle);
         }
+
+        return false;
     }
 
     /**

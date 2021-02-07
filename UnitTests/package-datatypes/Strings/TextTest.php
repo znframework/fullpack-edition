@@ -17,6 +17,8 @@ class TextTest extends \PHPUnit\Framework\TestCase
     public function testPlacement()
     {
         $this->assertSame('foo bar zoo baz', Strings::placement('foo ? zoo ?', '?', ['bar', 'baz']));
+        $this->assertSame('foo', Strings::placement('foo', '', []));
+        $this->assertSame('foo ? ?', Strings::placement('foo ? ?', '?', ['a']));
     }
 
     public function testSection()
@@ -27,6 +29,7 @@ class TextTest extends \PHPUnit\Framework\TestCase
     public function testReplace()
     {
         $this->assertSame('foo bar zoo', Strings::replace('foo bar baz', 'baz', 'zoo'));
+        $this->assertSame('foo bar zoo', Strings::replace('foo bar baz', 'baz', 'zoo', false));
     }
 
     public function testToArray()

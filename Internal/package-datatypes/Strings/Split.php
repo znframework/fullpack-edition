@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Base;
 use ZN\Datatype;
 
 class Split
@@ -43,7 +44,7 @@ class Split
             $string .= implode('', $chunk) . $end;
         }
 
-        return $string;
+        return Base::removeSuffix($string, $end);
     }
 
     /**

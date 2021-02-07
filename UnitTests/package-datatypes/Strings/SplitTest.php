@@ -25,4 +25,9 @@ class SplitTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('bar/baz', Strings::divide('foo/bar/baz', '/', -2, 2));
         $this->assertSame('bar/baz', Strings::divide('foo/bar/baz', '/', 1, 2));
     }
+
+    public function testApportion()
+    {
+        $this->assertSame('foo-bar', Strings::apportion('foobar', 3, '-'));
+    }
 }

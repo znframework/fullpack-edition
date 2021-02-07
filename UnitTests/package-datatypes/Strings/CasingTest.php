@@ -35,4 +35,9 @@ class CasingTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertSame('fooBarBaz', Strings::camelCase('Foo BAR baz'));
     }
+
+    public function testUnderscore()
+    {
+        $this->assertSame('foo_bar_baz', Strings::underscoreCase('foo bar baz'));
+    }
 }

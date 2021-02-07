@@ -105,25 +105,6 @@ class Casing
      */
     public static function underscore(String $str) : String
     {
-        if( ! ctype_lower($str) )
-        {
-            $newstr = NULL;
-
-            for( $i = 0; $i < strlen($str); $i++ )
-            {
-                if( ctype_upper($str[$i]) )
-                {
-                    $newstr .= '_' . strtolower($str[$i]);
-                }
-                else
-                {
-                    $newstr .= $str[$i];
-                }
-            }
-
-            $str = $newstr;
-        }
-
-        return preg_replace('/\s+/', '\_', $str);
+        return preg_replace('/(\s+)/', '_', strtolower($str));
     }
 }
