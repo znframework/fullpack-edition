@@ -45,16 +45,4 @@ class Excluding
 
         return $newArray;
     }
-
-    /**
-     * Key Control
-     * 
-     * @param string|int
-     * 
-     * @return string|int
-     */
-    public static function keyControl($key)
-    {
-        return ! is_numeric($key) ? $key : '-' . $key;
-    }
 }

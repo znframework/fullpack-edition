@@ -11,6 +11,18 @@ class ElementTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('foo', $return);
     }
 
+    public function testKeyvalInvalidArgumentException()
+    {
+        try
+        {
+            Arrays::keyval(['foo', 'bar'], 'valuex');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
+
     public function testKeyvalOnlyKey()
     {
         $return = Arrays::keyval(['foo', 'bar'], 'key');

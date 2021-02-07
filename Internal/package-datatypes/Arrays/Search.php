@@ -24,7 +24,7 @@ class Search
     {
         $startPosition = array_search($start, $array);
 
-        if( isset($array[$start]) && $startPosition !== false )
+        if( isset($array[$end]) && $startPosition !== false )
         {
             return self::betweenBothForeachFunction($array, $startPosition, $end);
         }
@@ -66,7 +66,7 @@ class Search
     {
         $startPosition = array_search($start, $array);
 
-        if( isset($array[$start]) && $startPosition !== false )
+        if( isset($array[$end]) && $startPosition !== false )
         {
             return self::betweenForeachFunction($array, $startPosition, $end);
         }
