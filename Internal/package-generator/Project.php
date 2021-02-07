@@ -9,8 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Singleton;
-use ZN\Request\Post;
 use ZN\Filesystem\Forge;
 
 class Project
@@ -24,16 +22,10 @@ class Project
      */
     public static function generate(String $name) : Bool
     {
-        Post::project($name);
-
-        $validation = Singleton::class('ZN\Validation\Data');
-
-        $validation->rules('project', ['alpha'], 'Project Name');
-
-        if( ! $error = $validation->error('string') )
+        if( ctype_alnum($name) )
         {
             $source = EXTERNAL_FILES_DIR . 'DefaultProject.zip';
-            $target = PROJECTS_DIR . Post::project();
+            $target = PROJECTS_DIR . $name;
 
             Forge::zipExtract($source, $target);
 

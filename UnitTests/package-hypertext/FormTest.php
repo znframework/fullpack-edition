@@ -71,7 +71,7 @@ class FormTest extends \PHPUnit\Framework\TestCase
 
         Form::validateErrorMessage();
 
-        Form::getUpdateRow();
+        $this->assertEquals('Haluk', Form::getUpdateRow()->name);
 
         unset($_POST);
         unset($_REQUEST);
