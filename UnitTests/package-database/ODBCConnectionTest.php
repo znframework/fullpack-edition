@@ -1,17 +1,17 @@
 <?php namespace ZN\Database;
 
-class PostgresConnectionTest extends DatabaseExtends
+class ODBCConnectionTest extends DatabaseExtends
 { 
     public function testConnection()
     {
-        $this->postgres();
+        $this->odbc();
     }
 
     public function testConnectionFail()
     {
         try
         {
-            (new Postgres\DB)->connect([]);
+            (new ODBC\DB)->connect([]);
         }
         catch( Exception\ConnectionErrorException $e )
         {
@@ -23,7 +23,7 @@ class PostgresConnectionTest extends DatabaseExtends
     {
         try
         {
-            (new Postgres\DB)->connect(['dsn' => 'host=localhost port=5432 dbname=test user=postgres password=postgres', 'charset' => 'utf-8']);
+            (new ODBC\DB)->connect(['dsn' => 'Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq=' . self::default . 'package-database/resources/testdb.mdb']);
         }
         catch( Exception\ConnectionErrorException $e )
         {
@@ -33,7 +33,7 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testExecFalse()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $this->assertFalse($db->exec(''));
         });
@@ -41,18 +41,16 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testExec()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->exec('DELETE FROM persons');
-            $db->exec('CREATE TABLE IF NOT EXISTS persons (id SERIAL PRIMARY KEY, name varchar(255))');
-
-            $this->assertEmpty($db->error());
+            $db->exec('CREATE TABLE persons (id int, name varchar(255))');
         });
     }
 
     public function testQuery()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('SELECT * FROM persons');
 
@@ -62,7 +60,7 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testMultiQuery()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->multiQuery('SELECT * FROM persons');
 
@@ -72,34 +70,32 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testTransQuery()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->transStart();
             $db->query('SELECT * FROM persons');
             $db->transRollback();
             $db->transCommit();
+
+            $this->assertEmpty($db->error());
         });
     }
 
     public function testInsertId()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('DELETE FROM persons');
 
-            $db->query('INSERT INTO persons(id, name) VALUES (1, \'Tika\') RETURNING id;');
+            $db->query("INSERT INTO persons(id, name) VALUES (1, 'Tika')");
 
-            $this->assertEquals(1, $db->insertId());
-            
-            $db->query('');
-
-            $this->assertEquals(false, $db->insertId());
+            $this->assertFalse($db->insertId());
         });
     }
 
     public function testColumnData()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('SELECT * FROM persons');
 
@@ -114,11 +110,11 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testNumrows()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('SELECT * FROM persons');
 
-            $this->assertEquals(1, $db->numRows());
+            $this->assertEquals(-1, $db->numRows());
 
             $db->query('');
 
@@ -128,7 +124,7 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testColumns()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('SELECT * FROM persons');
 
@@ -142,7 +138,7 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testNumFields()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('SELECT * FROM persons');
 
@@ -156,81 +152,85 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testRealEscapeString()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('SELECT * FROM persons');
 
-            $this->assertEquals("ozan''", $db->realEscapeString("ozan'"));
+            $this->assertEquals("ozan\'", $db->realEscapeString("ozan'"));
         });
     }
 
     public function testError()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('SELECT * FROM personsx');
 
             $this->assertIsString($db->error());
-
-            $db->query('SELECT * FROM persons');
-
-            $this->assertEmpty($db->error());
         });
     }
 
     public function testFetchArray()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
+            $db->query("INSERT INTO persons(id, name) VALUES (1, 'Tika')");
+
             $db->query('SELECT * FROM persons');
 
-            $this->assertEquals([1, 'Tika', 'id' => 1, 'name' => 'Tika'], $db->fetchArray());
+            $this->assertEquals(['id' => '1', 'name' => 'Tika'], $db->fetchArray());
 
             $db->query('');
 
             $this->assertEquals([], $db->fetchArray());
+
+            $db->query('DELETE FROM persons');
         });
     }
 
     public function testFetchAssoc()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
+            $db->query("INSERT INTO persons(id, name) VALUES (1, 'Tika')");
+
             $db->query('SELECT * FROM persons');
 
-            $this->assertEquals(['id' => 1, 'name' => 'Tika'], $db->fetchAssoc());
+            $this->assertEquals(['id' => '1', 'name' => 'Tika'], $db->fetchAssoc());
 
             $db->query('');
 
             $this->assertEquals([], $db->fetchAssoc());
+
+            $db->query('DELETE FROM persons');
         });
     }
 
     public function testFetchRow()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
+            $db->query("INSERT INTO persons(id, name) VALUES (1, 'Tika')");
+
             $db->query('SELECT * FROM persons');
 
-            $this->assertEquals([1, 'Tika'], $db->fetchRow());
+            $this->assertEquals(['id' => '1', 'name' => 'Tika'], $db->fetchRow());
 
             $db->query('');
 
             $this->assertEquals([], $db->fetchRow());
+
+            $db->query('DELETE FROM persons');
         });
     }
 
     public function testAffectedRows()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
             $db->query('DELETE FROM persons');
 
-            $db->query('INSERT INTO persons(id, name) VALUES (1, \'Tika\');');
-
-            $this->assertEquals(1, $db->affectedRows());
-
-            $db->query('');
+            $db->query("INSERT INTO persons(id, name) VALUES (1, 'Tika')");
 
             $this->assertEquals(0, $db->affectedRows());
         });
@@ -238,17 +238,17 @@ class PostgresConnectionTest extends DatabaseExtends
 
     public function testClose()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
-            $this->assertTrue($db->close());
+            $this->assertNull($db->close());
         });
     }
     
     public function testVersion()
     {
-        $this->postgres(function($db)
+        $this->odbc(function($db)
         {
-            $this->assertIsArray($db->version());
+            $this->assertFalse($db->version());
         });
     }
 }

@@ -93,9 +93,20 @@ class DB extends DriverMappingAbstract
     {
         $this->config = $config;
 
-        $dsn =  ! empty($this->config['dsn'])
-                ? $this->config['dsn']
-                : 'DRIVER='.Base::suffix(Base::prefix($this->config['host'], '{'), '}').';SERVER='.$this->config['server'].';DATABASE='.$this->config['database'];
+        $host = Base::suffix(Base::prefix($this->config['host'], '{'), '}');
+        
+        if( ! empty($this->config['dsn']) )
+        {
+            $dsn = $this->config['dsn'];
+        }
+        else if( is_file($this->config['database']) )
+        {
+            $dsn = 'DRIVER=' . $host . ';DBQ=' . $this->config['database'];
+        }
+        else
+        {
+            $dsn = 'DRIVER=' . $host . ';SERVER=' . $this->config['server'] . ';DATABASE=' . $this->config['database'];
+        }
 
         $connectMethod = $this->config['pconnect'] === true ? 'odbc_pconnect' : 'odbc_connect';
 
@@ -103,7 +114,7 @@ class DB extends DriverMappingAbstract
 
         if( empty($this->connect) )
         {
-            throw new ConnectionErrorException(NULL, odbc_errormsg($this->connect));
+            throw new ConnectionErrorException(NULL, 'connection');
         }
     }
 
@@ -122,18 +133,18 @@ class DB extends DriverMappingAbstract
             return false;
         }
 
-        return odbc_exec($this->connect, $query);
+        return odbc_exec($this->connect, $this->comma($query));
     }
 
     /**
      * Multiple Queries
      * 
      * @param string $query
-     * @param array  $security = NULL
+     * @param array  $security = []
      * 
      * @return bool
      */
-    public function multiQuery($query, $security = NULL)
+    public function multiQuery($query, $security = [])
     {
         return (bool) $this->query($query, $security);
     }
@@ -148,8 +159,12 @@ class DB extends DriverMappingAbstract
      */
     public function query($query, $security = [])
     {
-        $this->query = odbc_prepare($this->connect, $query);
-        return odbc_execute($this->query, $security);
+        if( $this->query = odbc_prepare($this->connect, $this->comma($query)) )
+        {
+            return odbc_execute($this->query, $security);
+        }
+
+        return $this->query;
     }
 
     /**
@@ -184,6 +199,16 @@ class DB extends DriverMappingAbstract
         $commit = odbc_commit($this->connect);
         odbc_autocommit($this->connect, true);
         return $commit;
+    }
+
+    /**
+     * Insert Last ID
+     * 
+     * @return int|false
+     */
+    public function insertID()
+    {
+        return false;
     }
 
     /**
@@ -347,7 +372,7 @@ class DB extends DriverMappingAbstract
     {
         if( ! empty($this->query) )
         {
-            return odbc_fetch_row($this->query);
+            return odbc_fetch_array($this->query);
         }
         else
         {
@@ -362,14 +387,7 @@ class DB extends DriverMappingAbstract
      */
     public function affectedRows()
     {
-        if( ! empty($this->connect) )
-        {
-            return 0;
-        }
-        else
-        {
-            return 0;
-        }
+        return 0;
     }
 
     /**
@@ -392,9 +410,11 @@ class DB extends DriverMappingAbstract
      */
     public function version()
     {
-        if( ! empty($this->connect) )
-        {
-            return false;
-        }
+        return false;
+    }
+
+    protected function comma($query)
+    {
+        return Base::suffix(trim($query), ';');
     }
 }
