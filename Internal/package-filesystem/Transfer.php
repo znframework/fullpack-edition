@@ -22,7 +22,7 @@ class Transfer
      */
     public static function settings(Array $set = [])
     {
-        return Upload::settings($set);
+        return \Upload::settings($set);
     }
 
     /**
@@ -35,7 +35,7 @@ class Transfer
      */
     public static function upload(String $fileName = 'upload', String $rootDir = UPLOADS_DIR) : Bool
     {
-        return Upload::start($fileName, $rootDir);
+        return \Upload::start($fileName, $rootDir);
     }
 
     /**
