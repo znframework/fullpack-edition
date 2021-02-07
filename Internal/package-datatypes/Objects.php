@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use stdClass;
+
 class Objects
 {
     /**
@@ -18,11 +20,25 @@ class Objects
      */
     public function __construct(Array $array)
     {
-        if ( ! empty($array) )
+        self::objectRecursive($array, $this);
+    }
+
+     /**
+     * Protected Object Recursive
+     */
+    protected static function objectRecursive(Array $array, &$std)
+    {
+        foreach( $array as $key => $value )
         {
-            foreach( $array as $key => $val )
+            if( is_array($value) )
             {
-                $this->{$key} = $val;
+                $std->$key = new stdClass;
+
+                self::objectRecursive($value, $std->$key);
+            }
+            else
+            {
+                $std->$key = $value;
             }
         }
     }
