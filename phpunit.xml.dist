@@ -19,7 +19,7 @@
     </testsuites>
 
     <filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./Internal</directory>
             <exclude>
                 <directory>./UnitTests/extends</directory>
@@ -67,7 +67,7 @@
                 <directory>./Internal/package-xml/Exception</directory>
                 <directory>./Internal/package-zerocore</directory>
             </exclude>
-		</whitelist>
+        </whitelist>
 	</filter>
 
 	<logging>

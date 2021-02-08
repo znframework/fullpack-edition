@@ -17,4 +17,16 @@ class BackgroundTest extends CaptchaExtends
 
         $this->isEquals();
     }
+
+    public function testBackgroundImage()
+    {
+        Captcha::path(self::directory)->bgImage
+        ([
+            self::directory . 'images/1.png',
+            self::directory . 'images/2.png'
+            
+        ])->size(400, 400)->create(true);
+
+        $this->isEquals();
+    }
 }
