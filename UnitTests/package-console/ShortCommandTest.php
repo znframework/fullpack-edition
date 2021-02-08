@@ -9,9 +9,8 @@ class ShortCommandTest extends \PHPUnit\Framework\TestCase
         Buffer::callback(function()
         {
             new CreateCommand('Example');
-            new ShortCommand('Example:run');
+            new ShortCommand('Example:run a b c');
             new DeleteCommand('Example');
         });
-    
     }
 }
