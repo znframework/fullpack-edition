@@ -1,52 +1,34 @@
 <?php namespace ZN\Compression;
 
-use Compress;
-
 class DoTest extends CompressionExtends
 {
-    public function testDo()
+    public function testGz()
     {
-        $compress = Compress::do('Example Data');
-
-        $this->assertIsString($compress);
+        $this->do('gz');
     }
 
     public function testBz()
     {
-        Compress::driver('bz'); $this->testDo();
+        $this->do('bz');
     }
 
     public function testLzf()
     {
-        try
-        {
-            Compress::driver('lzf'); $this->testDo();
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
+        $this->do('lzf');
     }
 
     public function testZlib()
     {
-        Compress::driver('zlib'); $this->testDo();
+        $this->do('zlib');
     }
 
     public function testRar()
     {
-        try
-        {
-            Compress::driver('rar'); $this->testDo();
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }   
+        $this->do('rar'); 
     }
 
     public function testZip()
     {
-        Compress::driver('zip'); $this->testDo();
+        $this->do('zip');
     }
 }

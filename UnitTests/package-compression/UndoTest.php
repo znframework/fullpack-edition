@@ -1,54 +1,34 @@
 <?php namespace ZN\Compression;
 
-use Compress;
-
 class UndoTest extends CompressionExtends
 {
-    public function testUndo()
+    public function testGz()
     {
-        $compress = Compress::do('Example Data');
-
-        $undo = Compress::undo($compress);
-
-        $this->assertIsString('Example Data', $undo);
+        $this->undo('gz');
     }
 
     public function testBz()
     {
-        Compress::driver('bz'); $this->testUndo();
+        $this->undo('bz');
     }
 
     public function testLzf()
     {
-        try
-        {
-            Compress::driver('lzf'); $this->testUndo();
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
+        $this->undo('lzf');
     }
 
     public function testZlib()
     {
-        Compress::driver('zlib'); $this->testUndo();
+        $this->undo('zlib');
     }
 
     public function testRar()
     {
-        try
-        {
-            Compress::driver('rar'); $this->testUndo();
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }   
+        $this->undo('rar');  
     }
 
     public function testZip()
     {
-        Compress::driver('zip'); $this->testUndo();
+        $this->undo('zip');
     }
 }

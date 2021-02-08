@@ -1,55 +1,34 @@
 <?php namespace ZN\Compression;
 
-use File;
-use Compress;
-
 class WriteTest extends CompressionExtends
 {
     public function testWrite()
     {
-        Compress::write(self::file, 'Example Data');
-
-        $this->assertIsString(File::read(self::file));
-
-        File::delete(self::file);
+        $this->write('gz');
     }
 
     public function testBz()
     {
-        Compress::driver('bz'); $this->testWrite();
+        $this->write('bz');
     }
 
     public function testLzf()
     {
-        try
-        {
-            Compress::driver('lzf'); $this->testWrite();
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
+        $this->write('lzf');
     }
 
     public function testZlib()
     {
-        Compress::driver('zlib'); $this->testWrite();
+        $this->write('zlib');
     }
 
     public function testRar()
     {
-        try
-        {
-            Compress::driver('rar'); $this->testWrite();
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }   
+        $this->write('rar');
     }
 
     public function testZip()
     {
-        Compress::driver('zip'); $this->testWrite();
+        $this->write('zip');
     }
 }
