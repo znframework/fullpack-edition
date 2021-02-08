@@ -40,7 +40,7 @@ class BzDriver extends DriverMappingAbstract
      */
     public function extract($source, $target, $password)
     {
-        Support::func('bzextract', 'BZ Driver Extract');
+        return false;
     }
 
     /**

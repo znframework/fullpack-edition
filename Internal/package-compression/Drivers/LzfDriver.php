@@ -39,7 +39,7 @@ class LzfDriver extends DriverMappingAbstract
      */
     public function extract($source, $target, $password)
     {
-        Support::func('lzf_extract', 'LZF Driver Extract');   
+        return false;
     }
 
     /**

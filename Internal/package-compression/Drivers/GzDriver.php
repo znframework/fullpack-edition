@@ -40,7 +40,7 @@ class GzDriver extends DriverMappingAbstract
      */
     public function extract($source, $target, $password)
     {
-        Support::func('gzextract', 'GZ Driver Extract');
+        return false;
     }
 
     /**

@@ -10,20 +10,6 @@ class CompressionExtends extends \ZN\Test\GlobalExtends
     const file      = self::directory . 'test.txt';
     const path      = self::default . 'package-compression/resources/';
 
-    public function do($driver)
-    {
-        try
-        {
-            $compress = Compress::driver($driver)->do('Example Data');
-
-            $this->assertIsString($compress);
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }   
-    }
-
     public function extract($driver)
     {
         try
@@ -37,18 +23,25 @@ class CompressionExtends extends \ZN\Test\GlobalExtends
         catch( \Exception $e )
         {
             $this->assertIsString($e->getMessage());
-        }   
+        }  
+        
+        try
+        {
+            Compress::extract('unknownpath');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        } 
     }
 
-    public function read($driver)
+    public function do($driver)
     {
         try
         {
-            Compress::driver($driver)->write(self::file, 'Example Data');
+            $compress = Compress::driver($driver)->do('Example Data');
 
-            $this->assertEquals('Example Data', Compress::driver($driver)->read(self::file));
-
-            File::delete(self::file);
+            $this->assertIsString($compress);
         }
         catch( \Exception $e )
         {
@@ -86,5 +79,39 @@ class CompressionExtends extends \ZN\Test\GlobalExtends
         {
             $this->assertIsString($e->getMessage());
         }   
+
+        try
+        {
+            Compress::driver($driver)->write(self::file . 'unknown', 'Example Data');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
+
+    public function read($driver)
+    {
+        try
+        {
+            Compress::driver($driver)->write(self::file, 'Example Data');
+
+            $this->assertEquals('Example Data', Compress::driver($driver)->read(self::file));
+
+            File::delete(self::file);
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }   
+
+        try
+        {
+            Compress::driver($driver)->read(self::file . 'unknown');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
     }
 }

@@ -39,7 +39,7 @@ class ZlibDriver extends DriverMappingAbstract
      */
     public function extract($source, $target, $password)
     {
-        Support::func('zlib_extract', 'ZLIB Driver Extract');   
+        return false; 
     }
 
     /**
