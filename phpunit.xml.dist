@@ -31,6 +31,7 @@
                 <directory>./Internal/package-cache/Exception</directory>
                 <directory>./Internal/package-comparison/Exception</directory>
                 <directory>./Internal/package-compression/Exception</directory>
+                <file>./Internal/package-console/Run.php</file>
                 <directory>./Internal/package-crontab/Exception</directory>
                 <directory>./Internal/package-cryptography/Exception</directory>
                 <directory>./Internal/package-database/Exception</directory>
