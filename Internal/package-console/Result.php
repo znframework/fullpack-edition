@@ -128,6 +128,7 @@ class Result
      */
     protected function outputSingleResult()
     {
+        echo EOL;
         echo $this->line();
         echo $this->title();                                                                                         
         echo $this->line();
@@ -141,7 +142,7 @@ class Result
     protected function outputMultipleResult()
     {
         $this->return = $max = max($this->print) . '    ';
-
+        echo EOL;
         echo $this->line();
         echo $this->title();                                                                                         
         echo $this->line();
@@ -149,6 +150,7 @@ class Result
         foreach( $this->print as $key => $ret )
         {
             $diff = strlen($max) - strlen($return = $key . ' | ' . $ret);
+
             $this->return = $return . str_repeat(' ', $diff);            
         
             echo $this->content();

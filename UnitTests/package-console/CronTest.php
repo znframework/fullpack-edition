@@ -4,50 +4,64 @@ use File;
 use Buffer;
 use Crontab;
 
-class CronTest extends \PHPUnit\Framework\TestCase
+class CronTest extends ConsoleExtends
 {
     public function testCronSingleParameter()
     {
-        $file = EXTERNAL_DIR . 'Crontab/Jobs';
-
         Buffer::callback(function()
         {
             new Cron('Example:run', ['daily']);
         }); 
 
-        $length = strlen(File::read($file));
+        $length = strlen(File::read(self::job));
 
         $this->assertTrue($length > 1);
 
-        if( is_file($file) )
+        if( is_file(self::job) )
         {
-            File::write($file, '');
+            File::write(self::job, '');
         }
+    }
+
+    public function testCronWget()
+    {
+        Buffer::callback(function()
+        {
+            new Cron('http//www.example.com', ['daily']);
+        });
+
+        File::write(self::job, '');
+    }
+
+    public function testCronController()
+    {
+        Buffer::callback(function()
+        {
+            new Cron('Home/main', ['daily']);
+        });
+
+        File::write(self::job, '');
     }
 
     public function testCronMultiParameter()
     {
-        $file = EXTERNAL_DIR . 'Crontab/Jobs';
-
         Buffer::callback(function()
         {
             new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
         }); 
 
-        $length = strlen(File::read($file));
+        $length = strlen(File::read(self::job));
 
         $this->assertTrue($length > 1);
 
-        if( is_file($file) )
+        if( is_file(self::job) )
         {
-            File::write($file, '');
+            File::write(self::job, '');
         }
     }
 
     public function testCronList()
     {
-        $file = EXTERNAL_DIR . 'Crontab/Jobs';
-
         Buffer::callback(function()
         {
             new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);
@@ -57,16 +71,22 @@ class CronTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(count($array) > 0);
 
-        if( is_file($file) )
+        if( is_file(self::job) )
         {
-            File::write($file, '');
+            File::write(self::job, '');
         }
+    }
+
+    public function testCronListWithConsole()
+    {
+        Buffer::callback(function()
+        {
+            new CronList;
+        });
     }
 
     public function testRemoveCron()
     {
-        $file = EXTERNAL_DIR . 'Crontab/Jobs';
-
         Buffer::callback(function()
         {
             new Cron('Example:run2', ['day', 'saturday', 'clock', '12:00']);

@@ -206,7 +206,9 @@ class File
     {
         $parameters = NULL;
 
-        if( ! empty($this->settings['functions']) ) foreach( $this->settings['functions'] as $isKey => $function )
+        $functions = (array) ($this->settings['functions'] ?? []);
+
+        if( ! empty($functions) ) foreach( $functions as $isKey => $function )
         {
             if( ! empty($function) )
             {

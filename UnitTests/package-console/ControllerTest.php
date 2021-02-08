@@ -5,6 +5,14 @@ use Buffer;
 
 class ControllerTest extends \PHPUnit\Framework\TestCase
 {
+    public function testRunController()
+    {
+        Buffer::callback(function()
+        {
+            new Controller('Home/main');
+        }); 
+    }
+
     public function testCreateController()
     {
         Buffer::callback(function()

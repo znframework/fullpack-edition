@@ -12,6 +12,7 @@ class RestorationTest extends \PHPUnit\Framework\TestCase
         {
             new CreateProject('ME');
             new StartRestoration('ME');
+            new EndRestoration('ME');
             new EndRestorationDelete('ME');
             new DeleteProject('ME');
         });
