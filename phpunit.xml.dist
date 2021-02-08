@@ -67,9 +67,6 @@
                 <directory>./Internal/package-xml/Exception</directory>
                 <directory>./Internal/package-zerocore</directory>
             </exclude>
-            <include>
-                <file>./Internal/package-zerocore/Buffering.php</file>
-            </include>
 		</whitelist>
 	</filter>
 

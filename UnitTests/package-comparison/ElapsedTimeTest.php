@@ -12,4 +12,32 @@ class ElapsedTimeTest extends \PHPUnit\Framework\TestCase
 
         $this->assertIsFloat(Benchmark::elapsedTime('test1'));
     }
+
+    public function testGetElapsedTimeStartException()
+    {
+        try
+        {
+            Benchmark::end('testGetElapsedTimeStartException');
+
+            Benchmark::elapsedTime('testGetElapsedTimeStartException');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
+
+    public function testGetElapsedTimeEndException()
+    {
+        try
+        {
+            Benchmark::start('testGetElapsedTimeEndException');
+
+            Benchmark::elapsedTime('testGetElapsedTimeEndException');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }

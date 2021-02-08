@@ -21,4 +21,32 @@ class MemoryUsageTest extends \PHPUnit\Framework\TestCase
 
         $this->assertIsInt(Benchmark::maxMemoryUsage('test1'));
     }
+
+    public function testGetMaxMemoryUsageStartException()
+    {
+        try
+        {
+            Benchmark::end('testGetMaxMemoryUsageStartException');
+
+            Benchmark::maxMemoryUsage('testGetMaxMemoryUsageStartException');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
+
+    public function testGetMaxMemoryUsageEndException()
+    {
+        try
+        {
+            Benchmark::start('testGetMaxMemoryUsageEndException');
+
+            Benchmark::maxMemoryUsage('testGetMaxMemoryUsageEndException');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
+    }
 }
