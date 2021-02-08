@@ -54,7 +54,7 @@ class ZipDriver extends DriverMappingAbstract
      */
     public function write($file, $data)
     {
-        return Singleton::class('GzDriver')->write($file, $data);
+        return Singleton::class('ZN\Compression\Drivers\GzDriver')->write($file, $data);
     }
     
     /**
@@ -66,7 +66,7 @@ class ZipDriver extends DriverMappingAbstract
      */
     public function read($file)
     {
-        return Singleton::class('GzDriver')->read($file);
+        return Singleton::class('ZN\Compression\Drivers\GzDriver')->read($file);
     }
 
     /**
@@ -78,7 +78,7 @@ class ZipDriver extends DriverMappingAbstract
      */
     public function do($data)
     {
-        return Singleton::class('GzDriver')->do($data);
+        return Singleton::class('ZN\Compression\Drivers\GzDriver')->do($data);
     }
     
     /**
@@ -90,6 +90,6 @@ class ZipDriver extends DriverMappingAbstract
      */
     public function undo($data)
     {
-        return Singleton::class('GzDriver')->undo($data);
+        return Singleton::class('ZN\Compression\Drivers\GzDriver')->undo($data);
     }
 }
