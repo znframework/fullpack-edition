@@ -78,7 +78,8 @@ jobs:
         with:
           mysql version: 5.7
           mysql database: test
-          mysql root password: ${{ secrets.DatabasePassword }}
+          mysql user: 'mysqli'
+          mysql password: 'mysqli'
 
       - name: Install Memcache
         uses: niden/actions-memcached@v7
