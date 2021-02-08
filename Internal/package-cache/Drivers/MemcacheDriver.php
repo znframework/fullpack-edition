@@ -120,7 +120,7 @@ class MemcacheDriver extends DriverMappingAbstract
      */
     public function decrement($key, $decrement)
     {
-        $this->memcache->decrement($key, $decrement);
+        return $this->memcache->decrement($key, $decrement);
     }
 
     /**
@@ -144,7 +144,7 @@ class MemcacheDriver extends DriverMappingAbstract
      */
     public function info($type = NULL)
     {
-        return $this->memcache->getStats(true);
+        return $this->memcache->getStats() ?: [];
     }
 
     /**
