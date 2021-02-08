@@ -12,4 +12,11 @@ class IncrementTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(2, Cache::select('a'));
     }
+
+    public function testIncrementEmpty()
+    {
+        Cache::increment('testIncrementEmpty');
+
+        $this->assertEquals(1, Cache::select('testIncrementEmpty'));
+    }
 }

@@ -10,4 +10,11 @@ class ViewTest extends \PHPUnit\Framework\TestCase
 
         $this->assertIsString($content);
     }
+
+    public function testViewWithRefresh()
+    {
+        Cache::refresh()
+             ->data(['example' => 'Example Data'])
+             ->view('contact/main');
+    }
 }

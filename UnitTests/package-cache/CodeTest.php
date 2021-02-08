@@ -13,4 +13,14 @@ class CodeTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(10, $result);
     }
+
+    public function testCodeWithKey()
+    {
+        $result = Cache::key('example')->code(function()
+        {
+            echo 10;
+        });
+
+        $this->assertEquals(10, $result);
+    }
 }

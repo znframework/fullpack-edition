@@ -10,4 +10,11 @@ class SelectTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(1, Cache::select('example'));
     }
+
+    public function testSelectCompress()
+    {
+        Cache::insert('example', 1, 1, 'gz');
+
+        $this->assertEquals(1, Cache::select('example', 'gz'));
+    }
 }

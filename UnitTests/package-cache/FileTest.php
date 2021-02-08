@@ -9,5 +9,9 @@ class FileTest extends \PHPUnit\Framework\TestCase
         $content = Cache::file('zeroneed.php');
 
         $this->assertIsString($content);
+
+        $content = Cache::file('zeroneed.php');
+
+        $this->assertIsString($content);
     }
 }

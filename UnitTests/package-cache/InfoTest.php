@@ -10,4 +10,11 @@ class InfoTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('a', Cache::info('a')['basename']);
     }
+
+    public function testInfoNull()
+    {
+        Cache::insert('a', 1);
+
+        $this->assertIsArray(Cache::info());
+    }
 }
