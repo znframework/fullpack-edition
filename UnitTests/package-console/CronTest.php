@@ -27,7 +27,7 @@ class CronTest extends ConsoleExtends
     {
         Buffer::callback(function()
         {
-            new Cron('http//www.example.com', ['daily']);
+            new Cron('http://www.example.com', ['daily']);
         });
 
         File::write(self::job, '');
