@@ -49,14 +49,6 @@ jobs:
         db-platforms: ['MySQLi', 'Postgre']
 
     services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         image: postgres
         env:
@@ -71,7 +63,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup PHP
+      - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
@@ -81,10 +73,17 @@ jobs:
         env:
           update: true
 
-      - name: Install memcached driver
+      - name: Install MySQL
+        uses: mirromutth/mysql-action@master
+        with:
+          mysql version: 5.7
+          mysql database: test
+          mysql root password: ${{ secrets.DatabasePassword }}
+
+      - name: Install Memcache
         uses: niden/actions-memcached@v7
 
-      - name: Install redis driver
+      - name: Install Redis
         uses: getong/redis-action@v1
         with:
           redis password: 'zntest'
