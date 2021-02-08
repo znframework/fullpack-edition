@@ -29,6 +29,9 @@
                 <directory>./Internal/package-authentication/Exception</directory>       
                 <directory>./Internal/package-buffering/Exception</directory>
                 <directory>./Internal/package-cache/Exception</directory>
+                <file>./Internal/package-cache/Drivers/ApcDriver.php</file>
+                <file>./Internal/package-cache/Drivers/ApcuDriver.php</file>
+                <file>./Internal/package-cache/Drivers/WincacheDriver.php</file>
                 <directory>./Internal/package-comparison/Exception</directory>
                 <directory>./Internal/package-compression/Exception</directory>
                 <file>./Internal/package-compression/Drivers/LzfDriver.php</file>

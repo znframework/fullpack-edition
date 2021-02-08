@@ -35,4 +35,9 @@ class CacheExtends extends \ZN\Test\GlobalExtends
     {
         return Cache::driver('redis');
     }
+
+    public function memcache()
+    {
+        return Cache::driver('memcache');
+    }
 }
