@@ -9,7 +9,7 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
     protected $persons;
 
     const sqlite   = ['driver'   => 'sqlite', 'database' => self::default . 'package-database/resources/testdb', 'password' => '1234'];
-    const mysqli   = ['driver' => 'mysqli'  , 'user' => 'mysqli'  , 'host' => 'mysql', 'database' => 'test', 'password' => 'mysqli'  , 'port' => 3306];
+    const mysqli   = ['driver' => 'mysqli'  , 'user' => 'mysqli'  , 'host' => 'localhost', 'database' => 'test', 'password' => 'mysqli'  , 'port' => 3306];
     const postgres = ['driver' => 'postgres', 'user' => 'postgres', 'host' => 'localhost', 'database' => 'test', 'password' => 'postgres', 'port' => 5432];
 
     public function __construct()
