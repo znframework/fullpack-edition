@@ -31,4 +31,16 @@ class ExtractTest extends CompressionExtends
     {
         $this->extract('zip');
     }
+
+    public function testExtractFileNotFoundException()
+    {
+        try
+        {
+            \Compress::extract('unknownpath');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }   
+    }
 }
