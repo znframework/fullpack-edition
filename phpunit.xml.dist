@@ -31,6 +31,8 @@
                 <directory>./Internal/package-cache/Exception</directory>
                 <directory>./Internal/package-comparison/Exception</directory>
                 <directory>./Internal/package-compression/Exception</directory>
+                <file>./Internal/package-compression/Drivers/LzfDriver.php</file>
+                <file>./Internal/package-compression/Drivers/RarDriver.php</file>
                 <file>./Internal/package-console/Run.php</file>
                 <directory>./Internal/package-crontab/Exception</directory>
                 <directory>./Internal/package-cryptography/Exception</directory>
@@ -65,6 +67,9 @@
                 <directory>./Internal/package-xml/Exception</directory>
                 <directory>./Internal/package-zerocore</directory>
             </exclude>
+            <include>
+                <file>./Internal/package-zerocore/Buffering.php</file>
+            </include>
 		</whitelist>
 	</filter>
 
