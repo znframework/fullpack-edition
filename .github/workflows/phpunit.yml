@@ -88,6 +88,8 @@ jobs:
         
       - name: Setup Redis
         uses: getong/redis-action@v1
+        with:
+          redis password: 'zntest'
 
       - name: Checkout
         uses: actions/checkout@v2
