@@ -68,10 +68,6 @@ jobs:
         options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Create MSSQL database
-        if: ${{ matrix.db-platforms == 'SQLSRV'}}
-        run: sqlcmd -S localhost -U sa -P 1Secure*Password1 -Q "CREATE DATABASE test"
-
       - name: Checkout
         uses: actions/checkout@v2
 
