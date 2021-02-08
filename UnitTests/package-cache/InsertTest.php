@@ -21,20 +21,5 @@ class InsertTest extends \PHPUnit\Framework\TestCase
         {
             $this->assertIsString($e->getMessage());
         }
-
-    }
-
-    public function testInsertRedis()
-    {
-        try
-        {
-            Cache::driver('redis')->insert('example', 1);
-
-            $this->assertEquals(1, Cache::driver('redis')->select('example'));
-        }
-        catch( \Exception $e )
-        {
-            echo $e->getMessage();
-        }
     }
 }
