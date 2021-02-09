@@ -107,11 +107,6 @@ jobs:
         run: |
           composer update --ansi --no-interaction
 
-      - name: Setup Environment Variables
-        run: php -r "$_ENV['SMTP_PASSWORD'] = '$SMTP_PASSWORD';"
-        env:
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-
       - name: Check PHPUnit tests
         run: script -e -c "vendor/bin/phpunit -v"
         env:
