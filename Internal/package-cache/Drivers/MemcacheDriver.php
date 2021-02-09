@@ -156,7 +156,7 @@ class MemcacheDriver extends DriverMappingAbstract
      */
     public function getMetaData($key)
     {
-        $stored = $this->memcache->get($key);
+        $stored = $this->memcache->get($key) ?: [];
 
         if( count($stored) !== 3 )
         {
