@@ -106,8 +106,11 @@ jobs:
       - name: Install dependencies
         run: |
           composer update --ansi --no-interaction
+
+      - name: Setup Environment Variables
+        run: echo "$SMTP_PASSWORD"
         env:
-          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
       - name: Check PHPUnit tests
         run: script -e -c "vendor/bin/phpunit -v"
