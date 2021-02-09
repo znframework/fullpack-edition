@@ -6,11 +6,9 @@ class MemcacheDriverTest extends CacheExtends
     {
         try
         {
-            $redis = $this->memcache();
-
-            $redis->insert('example', 1);
+            $this->memcache()->insert('example', 1);
     
-            $this->assertEquals(1, $redis->select('example'));
+            $this->assertEquals(1, $this->memcache()->select('example'));
         }
         catch( \Exception $e )
         {
@@ -22,13 +20,11 @@ class MemcacheDriverTest extends CacheExtends
     {
         try
         {
-            $redis = $this->memcache();
+            $this->memcache()->insert('example', 1);
 
-            $redis->insert('example', 1);
-
-            $redis->delete('example');
+            $this->memcache()->delete('example');
     
-            $this->assertEmpty($redis->select('example'));
+            $this->assertEmpty($this->memcache()->select('example'));
         }
         catch( \Exception $e )
         {
@@ -40,13 +36,11 @@ class MemcacheDriverTest extends CacheExtends
     {
         try
         {
-            $redis = $this->memcache();
+            $this->memcache()->insert('a', 2);
 
-            $redis->insert('a', 2);
-
-            $redis->decrement('a');
+            $this->memcache()->decrement('a');
     
-            $this->assertEquals(1, $redis->select('a'));
+            $this->assertEquals(1, $this->memcache()->select('a'));
         }
         catch( \Exception $e )
         {
@@ -58,13 +52,11 @@ class MemcacheDriverTest extends CacheExtends
     {
         try
         {
-            $redis = $this->memcache();
+            $this->memcache()->insert('a', 1);
 
-            $redis->insert('a', 1);
-
-            $redis->increment('a');
+            $this->memcache()->increment('a');
     
-            $this->assertEquals(2, $redis->select('a'));
+            $this->assertEquals(2, $this->memcache()->select('a'));
         }
         catch( \Exception $e )
         {
@@ -76,11 +68,9 @@ class MemcacheDriverTest extends CacheExtends
     {
         try
         {
-            $redis = $this->memcache();
-
-            $redis->insert('a', 1);
+            $this->memcache()->insert('a', 1);
     
-            $redis->info();
+            $this->memcache()->info();
         }
         catch( \Exception $e )
         {
@@ -92,13 +82,11 @@ class MemcacheDriverTest extends CacheExtends
     {
         try
         {
-            $redis = $this->memcache();
-
-            $redis->insert('a', 1);
+            $this->memcache()->insert('a', 1);
     
-            $redis->clean();
+            $this->memcache()->clean();
 
-            $this->assertEmpty($redis->select('a'));
+            $this->assertEmpty($this->memcache()->select('a'));
         }
         catch( \Exception $e )
         {
@@ -110,15 +98,30 @@ class MemcacheDriverTest extends CacheExtends
     {
         try
         {
-            $redis = $this->memcache();
-
-            $redis->insert('a', 1);
+            $this->memcache()->insert('a', 1);
     
-            $this->assertIsArray($redis->getMetaData('a'));
+            $this->assertIsArray($this->memcache()->getMetaData('a'));
         }
         catch( \Exception $e )
         {
             echo $e->getMessage();
         } 
+    }
+
+    public function testConnectionException()
+    {
+        try
+        {
+            new Drivers\MemcacheDriver
+            ([
+                'port'   => 1234,
+                'host'   => 'unknown',
+                'weight' => 1
+            ]);
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
     }
 }

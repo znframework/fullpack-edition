@@ -17,4 +17,9 @@ class InfoTest extends \PHPUnit\Framework\TestCase
 
         $this->assertIsArray(Cache::info());
     }
+
+    public function testInfoEmpty()
+    {
+        $this->assertEmpty(Cache::info('abctzd'));
+    }
 }

@@ -10,4 +10,9 @@ class GetMetaDataTest extends \PHPUnit\Framework\TestCase
 
         $this->assertIsArray(Cache::getMetaData('a'));
     }
+
+    public function testGetMetaDataEmptyArray()
+    {
+        $this->assertEmpty(Cache::getMetaData('unknown'));
+    }
 }
