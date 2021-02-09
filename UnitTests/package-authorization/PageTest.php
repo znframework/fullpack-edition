@@ -84,16 +84,24 @@ class PageTest extends AuthorizationExtends
         ]);
 
         $_SERVER['PATH_INFO'] = 'update';
+        $_POST['update'] = true;
 
         $this->assertTrue(Permission::page(3, ['noperm' => 'perms[role]:rules'], function()
         {
             return true;
         }));
 
-        DBForge::truncate('perms');
+        $this->assertTrue(Permission::post(3, ['noperm' => 'perms[role]:rules'], function()
+        {
+            return true;
+        }));
+
+        Permission::process(3, ['noperm' => 'perms[role]:rules'], 'Update');
 
         $this->assertEquals(['update', 'delete'], PermissionExtends::getNopermRules());
         $this->assertEmpty(PermissionExtends::getPermRules());
+
+        DBForge::truncate('perms');
 
         Config::database('database', \ZN\Database\DatabaseExtends::sqlite);
     }

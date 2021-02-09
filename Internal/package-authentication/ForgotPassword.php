@@ -72,12 +72,12 @@ class ForgotPassword extends UserExtends
         {
             if( ! empty($this->verificationColumn) )
             {
-                if( $verification !== $row->{$this->verificationColumn} )
+                if( ! $verification || $verification !== $row->{$this->verificationColumn} )
                 {
                     return $this->setErrorMessage('verificationOrEmailError');
                 }
             }
-            
+           
             if( ! IS::url($returnLinkPath) )
             {
                 $returnLinkPath = URL::site($returnLinkPath);

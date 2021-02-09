@@ -85,7 +85,7 @@ class RegisterTest extends AuthenticationExtends
             ]
         ]);
 
-        User::register
+        (new Register)->do
         ([
             'users' => 
             [
@@ -98,11 +98,11 @@ class RegisterTest extends AuthenticationExtends
             ]
         ]);
 
-        User::login('robot@znframework.com', '1234');
+        (new Login)->do('robot@znframework.com', '1234');
 
-        $data = User::data('addresses');
+        $data = (new Data)->get('addresses');
 
-        $this->assertEquals('London', $data->address ?? 'London');
+        $this->assertEquals('London', $data->address);
 
         DBForge::dropTable('addresses');
 

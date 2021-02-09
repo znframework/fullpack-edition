@@ -17,7 +17,7 @@ class InfoTest extends AuthenticationExtends
 
     public function testUserCount()
     {
-        DB::where('username', 'robot@znframework.com')->delete('users');
+        DB::whereStartLike('username', 'robot')->delete('users');
 
         User::register
         ([
