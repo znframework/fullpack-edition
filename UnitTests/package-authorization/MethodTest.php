@@ -36,4 +36,9 @@ class MethodTest extends AuthorizationExtends
         $this->assertTrue (Permission::post(3));
         $this->assertFalse(Permission::post(4));
     }
+
+    public function testUsePredfined()
+    {
+        $this->assertEmpty(Method::use());
+    }
 }

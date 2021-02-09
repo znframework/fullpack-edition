@@ -32,7 +32,7 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
             const connection = 
             [
                 'driver'   => 'sqlite',
-                'database' => \ZN\Test\GlobalExtends::default . 'package-database/testdb',
+                'database' => \ZN\Test\GlobalExtends::default . 'package-database/resources/testdb',
                 'password' => '1234'
             ];
         };

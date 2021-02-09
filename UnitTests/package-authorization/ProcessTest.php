@@ -23,6 +23,17 @@ class ProcessTest extends AuthorizationExtends
         $this->assertSame(false, Permission::process('update', '<b>Update Process</b>'));
     }
 
+    public function testUpdateProcessWithStartEnd()
+    {
+        Permission::start(1, 'update');
+        # codes
+        Permission::end();
+
+        Permission::start(3, 'update');
+        # codes
+        Permission::end();
+    }
+
     public function testDeleteProcess()
     {
         Permission::roleId(1);
