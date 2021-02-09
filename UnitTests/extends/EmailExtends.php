@@ -8,6 +8,11 @@ class EmailExtends extends \ZN\Test\GlobalExtends
     {
         parent::__construct();
 
+        self::default();
+    }
+
+    public static function default()
+    {
         Config::services('email', 
         [
             'driver' => 'smtp',

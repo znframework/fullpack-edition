@@ -35,6 +35,27 @@ class ForgotPasswordTest extends AuthenticationExtends
 
     public function testDoBefore()
     {
+        Config::set('Auth', 
+        [
+            'encode'    => 'gost',
+            'spectator' => '',
+            'matching'  =>
+            [
+                'table'   => 'users',
+                'columns' =>
+                [
+                    'username'     => 'username',
+                    'password'     => 'password', 
+                    'email'        => '',              
+                    'active'       => 'active',      
+                    'banned'       => 'banned',       
+                    'activation'   => '',     
+                    'verification' => 'verification',   
+                    'otherLogin'   => ['phone']         
+                ]
+            ]
+        ]);
+
         DB::where('username', 'robotBefore@znframework.com')->delete('users');
 
         (new Register)->do
@@ -44,25 +65,17 @@ class ForgotPasswordTest extends AuthenticationExtends
             'verification' => 'x89'
         ]);
 
-        try
-        {
-            $return = (new ForgotPassword)->do('robotBefore@znframework.com', 'password/before', 'before');
+        (new ForgotPassword)->do('robotBefore@znframework.com', 'password/before', 'before');
 
-            $this->assertEquals('Verification code or email information is wrong!', \User::error());
+        $this->assertEquals('Verification code or email information is wrong!', \User::error());
 
-            $forgot = new ForgotPassword;
+        $forgot = new ForgotPassword;
 
-            $forgot->verification('x89');
+        $forgot->verification('x89');
 
-            $return = $forgot->do('robotBefore@znframework.com', 'password/before', 'before');
+        $forgot->do('robotBefore@znframework.com', 'password/before', 'before');
 
-            $this->assertEquals('Verification code or email information is wrong!', \User::error());
-
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
+        $this->assertEquals('Your password has been sent to your email.', User::success());
 
         DB::where('username', 'robotBefore@znframework.com')->delete('users');
     }
@@ -74,18 +87,25 @@ class ForgotPasswordTest extends AuthenticationExtends
         (new Register)->do
         ([
             'username' => 'robotAfter@znframework.com',
-            'password' => '1234'
+            'password' => '1234',
+            'verification' => 'x89'
         ]);
+       
+        $forgot = new ForgotPassword;
 
-        try
-        {
-            (new ForgotPassword)->do('robotAfter@znframework.com', 'password/after', 'after');
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
+        $forgot->verification('x89');
 
+        $forgot->do('robotAfter@znframework.com', 'password/after', 'after');
+
+        $this->assertEquals('Your password has been sent to your email.', User::success());
+      
         DB::where('username', 'robotAfter@znframework.com')->delete('users'); 
+    }
+
+    public function testPasswordChangeComplete()
+    {
+        (new ForgotPassword)->passwordChangeComplete();
+
+        $this->assertEquals('You are not registered on the system or your username is incorrect!', \User::error());
     }
 }

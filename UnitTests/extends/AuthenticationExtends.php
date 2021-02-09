@@ -28,6 +28,8 @@ class AuthenticationExtends extends \ZN\Test\GlobalExtends
             'verification'      => [DB::varchar(20)]
         ]);
 
+        \ZN\Email\EmailExtends::default();
+
         Config::set('Auth', 
         [
             'encode'    => 'gost',
@@ -54,8 +56,8 @@ class AuthenticationExtends extends \ZN\Test\GlobalExtends
             ],
             'emailSenderInfo' =>
             [
-                'name' => '',
-                'mail' => ''
+                'name' => 'Robot',
+                'mail' => 'robot@znframework.com'
             ]
         ]);
     }
