@@ -379,43 +379,36 @@ class Html
     public function multiAttr($str, Array $array = []) : String
     {
         $perm  = $this->settings['attr']['perm'] ?? NULL;
+    
+        $open  = '';
+        $close = '';
+        $att   = '';
+        
 
-        if( is_array($array) )
+        foreach( $array as $k => $v )
         {
-            $open  = '';
-            $close = '';
-            $att   = '';
-           
-
-            foreach( $array as $k => $v )
+            if( ! is_numeric($k) )
             {
-                if( ! is_numeric($k) )
-                {
-                    $element = $k;
+                $element = $k;
 
-                    if( ! is_array($v) )
-                    {
-                        $att = ' '.$v;
-                    }
-                    else
-                    {
-                        $att = $this->attributes($v);
-                    }
+                if( ! is_array($v) )
+                {
+                    $att = ' '.$v;
                 }
                 else
                 {
-                    $element = $v;
+                    $att = $this->attributes($v);
                 }
-
-                $open .= '<'.$element.$att.'>';
-                $close = '</'.$element.'>'.$close;
             }
-        }
-        else
-        {
-            return $this->_perm($perm, $str);
-        }
+            else
+            {
+                $element = $v;
+            }
 
+            $open .= '<'.$element.$att.'>';
+            $close = '</'.$element.'>'.$close;
+        }
+       
         return $this->_perm($perm, $open.$str.$close);
     }
 
