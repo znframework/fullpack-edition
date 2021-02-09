@@ -7,6 +7,18 @@ use DBForge;
 
 class OptionalMethodsTest extends EmailExtends
 {
+    public function testEnv()
+    {
+        if( isset($_ENV['SMTP_PASSWORD']) )
+        {
+            Email::to('ozanbote@gmail.com')->send('Subject', 'Message');
+        }   
+        else
+        {
+            echo 'NOENV';
+        }
+    }
+
     public function testContentType()
     {
         Email::contentType('plain');

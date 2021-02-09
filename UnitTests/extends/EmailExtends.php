@@ -13,9 +13,9 @@ class EmailExtends extends \ZN\Test\GlobalExtends
             'driver' => 'smtp',
             'smtp'   =>
             [
-                'host'      => 'smtp.foo.com',
-                'user'      => 'foo',
-                'password'  => 'bar',
+                'host'      => 'smtp.yandex.com.tr',
+                'user'      => 'robot@znframework.com',
+                'password'  => $_ENV['SMTP_PASSWORD'] ?? '',
                 'port'      => 465,
                 'keepAlive' => false,
                 'timeout'   => 10,
