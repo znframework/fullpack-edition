@@ -109,11 +109,6 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - name: Setup Environment Variables
-        env: 
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          SMTP_TEST: test
-
       - name: Check PHPUnit tests
         run: script -e -c "vendor/bin/phpunit -v"
         env:
