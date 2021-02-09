@@ -19,8 +19,8 @@ class CallbackTest extends \PHPUnit\Framework\TestCase
     {
         $callback = new Callback;
 
-        $return = $callback->do('str_replace', ['a', 'x', 'a']);
+        $return = $callback->code('string');
 
-        $this->assertSame('x', $return);
+        $this->assertSame('string', $return);
     }
 }
