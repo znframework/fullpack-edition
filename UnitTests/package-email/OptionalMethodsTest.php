@@ -9,7 +9,7 @@ class OptionalMethodsTest extends EmailExtends
 {
     public function testEnv()
     {
-        print_r($_ENV ?? []); 
+        print_r(\ZN\Console\Environment::export('SMTP_PASSWORD'));
     }
 
     public function testContentType()

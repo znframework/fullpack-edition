@@ -106,6 +106,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer update --ansi --no-interaction
+          php zerocore environment SMTP_PASSWORD ${{ secrets.SMTP_PASSWORD }}
 
       - name: Check PHPUnit tests
         run: script -e -c "vendor/bin/phpunit -v"

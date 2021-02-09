@@ -37,6 +37,7 @@
                 <file>./Internal/package-compression/Drivers/LzfDriver.php</file>
                 <file>./Internal/package-compression/Drivers/RarDriver.php</file>
                 <file>./Internal/package-console/Run.php</file>
+                <file>./Internal/package-console/Environment.php</file>
                 <directory>./Internal/package-crontab/Exception</directory>
                 <directory>./Internal/package-cryptography/Exception</directory>
                 <directory>./Internal/package-database/Exception</directory>
@@ -72,10 +73,6 @@
             </exclude>
         </whitelist>
 	</filter>
-
-    <php>
-        <env name="SMTP_PASSWORD" value="$TERM"/>
-    </php>
 
 	<logging>
 		<log type="coverage-clover" target="build/logs/clover.xml"/>
