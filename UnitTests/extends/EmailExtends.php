@@ -15,7 +15,7 @@ class EmailExtends extends \ZN\Test\GlobalExtends
             [
                 'host'      => 'smtp.yandex.com.tr',
                 'user'      => 'robot@znframework.com',
-                'password'  => $_ENV['SMTP_PASSWORD'] ?? '',
+                'password'  => \ZN\Console\Environment::export('SMTP_PASSWORD'),
                 'port'      => 465,
                 'keepAlive' => false,
                 'timeout'   => 10,

@@ -9,7 +9,7 @@ class OptionalMethodsTest extends EmailExtends
 {
     public function testEnv()
     {
-        print_r(\ZN\Console\Environment::export('SMTP_PASSWORD'));
+        Email::to('znunittestmail@yandex.com')->send('Subject', 'Message');
     }
 
     public function testContentType()
