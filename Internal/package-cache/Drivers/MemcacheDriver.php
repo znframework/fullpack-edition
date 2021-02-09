@@ -174,17 +174,10 @@ class MemcacheDriver extends DriverMappingAbstract
     }
 
     /**
-     * Magic destructor
-     * 
-     * @param void
-     * 
-     * @return void
+     * Close
      */
-    public function __destruct()
+    public function close()
     {
-        if( ! empty($this->memcache) )
-        {
-            $this->memcache->close();
-        }
+        $this->memcache->close();
     }
 }

@@ -106,4 +106,12 @@ abstract class DriverMappingAbstract
      * @return array
      */
     abstract public function getMetaData($key);
+
+    /**
+     * Close
+     */
+    public function close()
+    {
+        return;
+    }
 }

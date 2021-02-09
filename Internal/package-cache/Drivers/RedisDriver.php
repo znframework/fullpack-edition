@@ -240,17 +240,10 @@ class RedisDriver extends DriverMappingAbstract
     }
 
     /**
-     * Magic destructor
-     * 
-     * @param void
-     * 
-     * @return void
+     * Close
      */
-    public function __destruct()
+    public function close()
     {
-        if( ! empty($this->redis) )
-        {
-            $this->redis->close();
-        }
+        $this->redis->close();
     }
 }

@@ -278,6 +278,14 @@ class Processor implements ProcessorInterface
     {
         return $this->driver->getMetaData($key);
     }
+    
+    /**
+     * Destructor magic method
+     */
+    public function __destruct()
+    {
+        $this->driver->close();
+    }
 
     /**
      * protected refresh
