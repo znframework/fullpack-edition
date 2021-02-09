@@ -14,4 +14,11 @@ class DeleteTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue($delete->do('a'));
     }
+
+    public function testDoReturnFalse()
+    {
+        $delete = new Delete;
+
+        $this->assertFalse($delete->do(function(){}));
+    }
 }

@@ -1,10 +1,10 @@
 {
-    "name": "znframework/package-captcha",
-    "version": "6.0.1.3",
-    "description": "ZN Framework Captcha Package",
+    "name": "znframework/package-cache",
+    "version": "6.0.6.5",
+    "description": "ZN Framework Cache",
     "license": "MIT",
     "homepage": "https://znframework.com",
-    "keywords": ["znframework", "captcha"],
+    "keywords": ["znframework", "cache"],
     "authors": [
         {
             "name": "Ozan Uykun",
@@ -14,13 +14,13 @@
     "require": {
         "php": ">=7.0.0",
         "znframework/package-zerocore": "6.*",
-        "znframework/package-image": "6.*",
-        "znframework/package-storage": "6.*",
-        "znframework/package-cryptography": "6.*"
+        "znframework/package-filesystem": "6.*",
+        "znframework/package-compression": "6.*",
+        "znframework/package-buffering": "6.*"
 	},
     "autoload": {
         "psr-4": {
-            "ZN\\Captcha\\": ""
+            "ZN\\Cache\\": ""
         }
     },
 	"minimum-stability": "dev"

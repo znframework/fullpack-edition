@@ -21,6 +21,11 @@ class CodeTest extends \PHPUnit\Framework\TestCase
             echo 10;
         });
 
+        $result = Cache::key('example')->code(function()
+        {
+            echo 5;
+        });
+
         $this->assertEquals(10, $result);
     }
 }

@@ -14,4 +14,13 @@ class CallbackTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame('1', $return);
     }
+
+    public function testCode()
+    {
+        $callback = new Callback;
+
+        $return = $callback->do('str_replace', ['a', 'x', 'a']);
+
+        $this->assertSame('x', $return);
+    }
 }

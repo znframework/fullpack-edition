@@ -108,7 +108,7 @@ class Processor implements ProcessorInterface
         {
             $output = Buffering\Callback::do($function);
 
-            $this->insert($name, $output, $time, 'gz');
+            $this->insert($name, $output, $time, $compress);
 
             return $output;
         }
@@ -160,7 +160,7 @@ class Processor implements ProcessorInterface
                 $output = Inclusion\View::use($file);
             }
 
-            $this->insert($name, $output, $time, 'gz');
+            $this->insert($name, $output, $time, $compress);
 
             return $output;
         }
