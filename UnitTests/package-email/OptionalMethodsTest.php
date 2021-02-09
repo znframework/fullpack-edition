@@ -9,14 +9,7 @@ class OptionalMethodsTest extends EmailExtends
 {
     public function testEnv()
     {
-        if( isset($_ENV['SMTP_PASSWORD']) )
-        {
-            Email::to('ozanbote@gmail.com')->send('Subject', 'Message');
-        }   
-        else
-        {
-            print_r($_ENV ?? []);
-        }
+        print_r($_ENV ?? []); 
     }
 
     public function testContentType()
