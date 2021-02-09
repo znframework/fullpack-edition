@@ -5,11 +5,13 @@ use Email;
 use Config;
 use DBForge;
 
-class OptionalMethodsTest extends EmailExtends
+class SendTest extends EmailExtends
 {
-    public function testEnv()
+    public function testSend()
     {
-        Email::to('znunittestmail@yandex.com')->send('Subject', 'Message');
+        Email::attachment(self::default . 'package-email/attachments/file.txt')
+             ->attachment(self::default . 'package-email/attachments/icon.png')
+             ->to('znunittestmail@yandex.com')->send('Subject', 'Message');
     }
 
     public function testContentType()
@@ -34,8 +36,8 @@ class OptionalMethodsTest extends EmailExtends
 
     public function testPriority()
     {
-        Email::contentType(3);  # Valid
-        Email::contentType(10); # Invalid returned 3
+        Email::priority(3);  # Valid
+        Email::priority(10); # Invalid returned 3
     }
 
     public function testAddHeader()
@@ -68,6 +70,11 @@ class OptionalMethodsTest extends EmailExtends
         Email::smtpPassword('password');
     }
 
+    public function testSmtpPort()
+    {
+        Email::smtpPort(465);
+    }
+
     public function testSmtpDsn()
     {
         Email::smtpDsn();
@@ -91,6 +98,16 @@ class OptionalMethodsTest extends EmailExtends
     public function testTo()
     {
         Email::to('to@mail.com');
+        Email::to(['to@mail.com' => 'To']);
+
+        try
+        {
+            Email::to('to');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
     }
 
     public function testReceiver()
@@ -187,6 +204,6 @@ class OptionalMethodsTest extends EmailExtends
     public function testAttachmentContentId()
     {
         $this->assertIsString(Email::attachmentContentId(self::default . 'package-email/attachments/file.txt'));
-        $this->assertFalse(Email::attachmentContentId(self::default . 'package-email/attachments/file.txtxx'));
+        $this->assertFalse(Email::multipart('alternative')->attachmentContentId(self::default . 'package-email/attachments/file.txtxx'));
     }
 }
