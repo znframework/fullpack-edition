@@ -73,9 +73,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with: 
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          SMTP_TEST: test
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
