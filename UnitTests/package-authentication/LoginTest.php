@@ -47,4 +47,30 @@ class LoginTest extends AuthenticationExtends
 
         DB::where('username', 'robot@znframework.com')->delete('users');
     }
+
+    public function testUsername()
+    {
+        User::username('example@example.com');
+
+        $this->assertEquals('example@example.com', Properties::$parameters['username']);
+    }
+
+    public function testPassword()
+    {
+        User::password('1234');
+
+        $this->assertEquals('1234', Properties::$parameters['password']);
+    }
+
+    public function testDoFalse()
+    {
+        $this->assertFalse((new Login)->do('example@example.com', '1234', []));
+    }
+
+    public function testDoLoginError()
+    {
+       (new Login)->do('example22@example.com', '1234', []);
+
+        $this->assertEquals('Login failed. The user name or password is incorrect!', User::error());
+    }
 }
