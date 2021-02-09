@@ -75,6 +75,7 @@ jobs:
         uses: actions/checkout@v2
         env: 
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_TEST: test
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

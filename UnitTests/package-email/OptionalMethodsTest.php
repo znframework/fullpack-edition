@@ -15,7 +15,7 @@ class OptionalMethodsTest extends EmailExtends
         }   
         else
         {
-            echo 'NOENV';
+            echo $_ENV['SMTP_TEST'] ?? 'NOENV';
         }
     }
 
