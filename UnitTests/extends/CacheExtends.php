@@ -18,7 +18,7 @@ class CacheExtends extends \ZN\Test\GlobalExtends
                 [
                     'host'   => '127.0.0.1',
                     'port'   => '11211',
-                    'weight' => '1',
+                    'weight' => '128',
                 ],
                 'redis' =>
                 [
