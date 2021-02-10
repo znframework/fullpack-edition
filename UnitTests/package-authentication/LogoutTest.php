@@ -16,11 +16,11 @@ class LogoutTest extends AuthenticationExtends
     {
         Properties::$redirectExit = false;
         
-        DB::where('username', 'robot@znframework.com')->delete('users');
+        DB::where('username', 'roboty@znframework.com')->delete('users');
 
         User::register
         ([
-            'username' => 'robot@znframework.com',
+            'username' => 'roboty@znframework.com',
             'password' => '1234'
         ], true);
 

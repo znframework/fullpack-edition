@@ -80,6 +80,28 @@ class ForgotPasswordTest extends AuthenticationExtends
         DB::where('username', 'robotBefore@znframework.com')->delete('users');
     }
 
+    public function testForgotPasswordError()
+    {
+        DB::where('username', 'robotAfter@znframework.com')->delete('users');
+
+        (new Register)->do
+        ([
+            'username'     => 'robotAfter@znframework.com',
+            'password'     => '1234',
+            'verification' => 'x89'
+        ]);
+       
+        $forgot = new ForgotPassword;
+
+        $forgot->verification('x89');
+
+        $forgot->do('invalidEmail', 'password/after', 'after');
+
+        $this->assertEquals('You are not registered on the system or your username is incorrect!', User::error());
+      
+        DB::where('username', 'robotAfter@znframework.com')->delete('users'); 
+    }
+
     public function testDoAfter()
     {
         DB::where('username', 'robotAfter@znframework.com')->delete('users');
