@@ -317,7 +317,7 @@ class SelectTest extends DatabaseExtends
 
         $this->assertGreaterThan($person->totalRows(), $person->totalRows(true));
     }
-    /*
+
     public function testGetTotalColumns()
     {
         $totalColumns = DB::persons()->totalColumns();
@@ -665,5 +665,4 @@ class SelectTest extends DatabaseExtends
     {
         $this->assertEquals("%abc", DB::like('abc', 'ending'));
     }
-    */
 }
