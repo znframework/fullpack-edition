@@ -59,7 +59,7 @@ class AuthenticationExtends extends \ZN\Test\GlobalExtends
             ]
         ]);
 
-        $this->userExtendsMock = new Class() extends UserExtends
+        $this->userExtendsMock = new Class extends UserExtends
         {
             public function mockGetEmailTemplate()
             {
@@ -78,5 +78,18 @@ class AuthenticationExtends extends \ZN\Test\GlobalExtends
                 return $this->getUserTableColumns();
             }
         };
+
+        $this->loginMock = new Class extends Login
+        {
+            public function mockUserExists()
+            {
+                return $this->userExists('robot@znframework.com', '1234');
+            }
+
+            public function mockStartPermanentUserSessionWithCookie()
+            {
+                return $this->startPermanentUserSessionWithCookie('robot@znframework.com', '1234');
+            }
+        };  
     }
 }

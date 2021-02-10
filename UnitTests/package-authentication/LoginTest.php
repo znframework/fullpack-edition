@@ -62,6 +62,13 @@ class LoginTest extends AuthenticationExtends
         $this->assertEquals('1234', Properties::$parameters['password']);
     }
 
+    public function testRemember()
+    {
+        (new Login)->remember(true);
+
+        $this->assertEquals(true, Properties::$parameters['remember']);
+    }
+
     public function testDoFalse()
     {
         $this->assertFalse((new Login)->do('example@example.com', '1234', []));
@@ -72,5 +79,22 @@ class LoginTest extends AuthenticationExtends
        (new Login)->do('example22@example.com', '1234', []);
 
         $this->assertEquals('Login failed. The user name or password is incorrect!', User::error());
+    }
+
+    public function testUserExists()
+    {
+        $this->assertEquals(0, $this->loginMock->mockUserExists());
+    }
+
+    public function testStartPermanentUserSessionWithCookie()
+    {
+        try
+        {
+            $this->loginMock->mockStartPermanentUserSessionWithCookie('robot@znframework.com', '1234');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
     }
 }
