@@ -139,7 +139,7 @@ class UserExtends
      */
     public function getEncryptionPassword($password)
     {
-        return ! empty($this->encodeType) ? Encode\Type::create($password, $this->encodeType) : $password;
+        return ! empty($this->encodeType) ? Encode\Type::create($password ?? '', $this->encodeType) : $password;
     }
 
     /**
