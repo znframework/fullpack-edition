@@ -7,7 +7,7 @@ use Method;
 use Buffer;
 use Session;
 
-class FormTest extends \PHPUnit\Framework\TestCase
+class FormTest extends HypertextExtends
 {
     public function testOpen()
     {
@@ -105,6 +105,32 @@ class FormTest extends \PHPUnit\Framework\TestCase
         Session::delete('FormValidationRulespersons');
     }
 
+    public function testProcessInvalid()
+    {
+        Post::namex('Example');
+        Method::request('ValidationFormName', 'persons');
+        Post::FormProcessValue(true);
+        Session::insert('FormValidationRulespersons', ['namex' => 
+        [
+            'required',
+            'xss',
+            'value' => 'namex'
+        ]]);
+
+        try
+        {
+            echo Form::duplicateCheck()->process('invalid')->open('persons');
+            echo Form::postback()->validate('required', 'xss')->text('namex');
+            echo Form::close();
+        }
+        catch( \Exception $e )
+        {
+            $this->assertEquals('[Form::process()] method can take one of the values [update or insert].', $e->getMessage());
+        }
+
+        unset($_POST); unset($_REQUEST); Session::delete('FormValidationRulespersons');
+    }
+
     public function testClose()
     {
         $this->assertStringContainsString('</form>', (string) Form::close());
@@ -193,5 +219,12 @@ class FormTest extends \PHPUnit\Framework\TestCase
         (
             (string) Form::datetimeLocal()
         );
+    }
+
+    public function testSetSelectedAttribute()
+    {
+        $this->mock->mockSetSelectedAttribute($selected);
+
+        $this->assertEquals('a', $selected);
     }
 }

@@ -25,7 +25,6 @@ class EscapeTest extends \PHPUnit\Framework\TestCase
         {
             $this->assertEquals('`$this->init` parameter should contain the resource data type!', $e->getMessage());
         }
-        
     }
 
     public function testUnEscapeInvalidArgumentException()
@@ -34,12 +33,11 @@ class EscapeTest extends \PHPUnit\Framework\TestCase
 
         try
         {
-            CURL::unescape('Hello%22');
+            $new->unescape('Hello%22');
         }
         catch( Exception\InvalidArgumentException $e )
         {
             $this->assertEquals('`$this->init` parameter should contain the resource data type!', $e->getMessage());
         }
-        
     }
 }

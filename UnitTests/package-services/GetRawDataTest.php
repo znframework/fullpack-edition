@@ -24,4 +24,12 @@ class GetRawDataTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse(Restful::getRawData('unknown'));
     }
+
+    public function testGetRequestHeaders()
+    {
+        if( function_exists('apache_request_headers') )
+        {
+            $this->assertIsArray(Restful::getRequestHeaders());
+        }
+    }
 }

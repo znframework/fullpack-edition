@@ -164,10 +164,7 @@ class Forge
             mkdir($pathDirName);
         }
 
-        if( $zip->open($zipPath, ZipArchive::CREATE) !== true )
-        {
-            return false;
-        }
+        $zip->open($zipPath, ZipArchive::CREATE);
 
         $status = '';
 

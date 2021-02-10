@@ -3,7 +3,7 @@
 use URL;
 use Pagination;
 
-class CreateTest extends \PHPUnit\Framework\TestCase
+class CreateTest extends PaginationExtends
 {
     public function testCreate()
     {
@@ -35,5 +35,17 @@ class CreateTest extends \PHPUnit\Framework\TestCase
             '<a href="' . URL::site('Home/main/0') . '" class="page-link">first</a>', 
             Pagination::linkNames('prev', 'next', 'first', 'last')->limit(10)->countLinks(5)->totalRows(200)->create(100)
         );
+    }
+
+    public function testExplodeRequestGetValue()
+    {
+        $this->assertEquals('?baz=baz', $this->mock->mockExplodeRequestGetValue());
+
+        $_SERVER['REQUEST_URI'] = NULL;
+    }
+
+    public function testCreateBasicPaginationBar()
+    {
+        $this->assertStringContainsString('Home/main/90', $this->mock->mockCreateBasicPaginationBar(100));
     }
 }
