@@ -1,15 +1,8 @@
 <?php namespace ZN\Database;
 
 use DB;
-use Get;
-use URI;
-use Post;
-use File;
-use Json;
-use Config;
-use Request;
 
-class SelectTest extends DatabaseExtends
+class Select1Test extends DatabaseExtends
 {
     public function testInsertPerson()
     {
