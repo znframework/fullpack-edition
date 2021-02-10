@@ -7,7 +7,6 @@ use Post;
 use File;
 use Json;
 use Config;
-use Buffer;
 use Request;
 
 class SelectTest extends DatabaseExtends
@@ -353,7 +352,7 @@ class SelectTest extends DatabaseExtends
 
     public function testDebugInfo()
     {
-        print_r(DB::get('persons'));
+        //print_r(DB::get('persons'));
     }
 
     public function testDifferentConnectionWithName()
