@@ -24,4 +24,11 @@ class DeleteTest extends DatabaseExtends
             $this->assertStringStartsWith('You can not perform unconditional deletion!', $exception->getMessage());
         }
     }
+
+    public function testQuick()
+    {
+        DB::where('id', 1)->quick()->delete('example');
+
+        $this->assertEquals("DELETE  QUICK  FROM example WHERE id =  '1' ", DB::stringQuery());
+    }
 }

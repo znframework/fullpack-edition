@@ -212,7 +212,7 @@ class DB extends Connection
      */
     public function whereNotEmpty($column, String $logical = NULL) : DB
     {
-        $group[] = ['exp:' . $column . '!=', '""', 'and'];
+        $group[] = ['exp:' . $column . ' !=', '""', 'and'];
         $group[] = ['exp:' . $column . ' is not', 'null'];
 
         if( $logical !== NULL )
@@ -879,7 +879,7 @@ class DB extends Connection
      */
     public function all() : DB
     {
-        $this->dictinct = ' ALL ';
+        $this->distinct = ' ALL ';
         return $this;
     }
 
@@ -2969,6 +2969,7 @@ class DB extends Connection
         $this->join            = NULL;
         $this->selectFunctions = NULL;
         $this->table           = NULL;
+        $this->partition       = NULL;
         $this->procedure       = NULL;
         $this->outFile         = NULL;
         $this->characterSet    = NULL;

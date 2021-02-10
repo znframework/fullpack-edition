@@ -400,4 +400,268 @@ class SelectTest extends DatabaseExtends
     {
         $this->assertEquals('SELECT DATE(ID)  FROM persons ', DB::string()->func('DATE', 'ID')->persons());
     }
+
+    public function testSelectDefaultParameter()
+    {
+        $this->assertEquals('SELECT  *  FROM persons ', DB::string()->select()->persons());
+    }
+
+    public function testSelectWithDatabase()
+    {
+        $this->assertEquals('SELECT  db.table.id  FROM persons ', DB::string()->select('db.table.id')->persons());
+    }
+
+    public function testWhereEmptyNotNullLogical()
+    {
+        $this->assertEquals('SELECT  *  FROM persons  WHERE ( id =  "" or  id is null  ) ', DB::string()->whereEmpty('id', 'and')->persons());
+    }
+
+    public function testWhereNotEmptyNotNullLogical()
+    {
+        $this->assertEquals('SELECT  *  FROM persons  WHERE ( id != "" and  id is not null  ) ', DB::string()->whereNotEmpty('id', 'and')->persons());
+    }
+
+    public function testWhereEndLike()
+    {
+        $this->assertEquals("SELECT  *  FROM persons  WHERE name like '%word' ", DB::string()->whereEndLike('name', 'word')->persons());
+    }
+
+    public function testWhereInTable()
+    {
+        DB::whereInTable('name', 'addresses')->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons  WHERE name in (SELECT  *  FROM addresses ) ", DB::stringQuery());
+    }
+
+    public function testWhereInQuery()
+    {
+        DB::whereInQuery('name', 'addresses')->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons  WHERE name in (addresses) ", DB::stringQuery());
+    }
+
+    public function testJoinWithDatabase()
+    {
+        DB::join('database.addresses.username', 'addresses.username', 'left')->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons  LEFT JOIN database.addresses.username ON addresses.username ", DB::stringQuery());
+    }
+
+    public function testBasic()
+    {
+        DB::transStart()->persons()->transEnd();
+
+        $this->assertEquals("SELECT  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testEscapeString()
+    {
+        $this->assertEquals("ozan\"", DB::escapeString('ozan"'));
+        $this->assertEquals("ozan\"", DB::realEscapeString('ozan"'));
+    }
+
+    public function testAlias()
+    {
+        $this->assertEquals(" ( table )  AS tbl", DB::alias('table', 'tbl' ,true));
+    }
+
+    public function testAll()
+    {
+        DB::all()->persons();
+
+        $this->assertEquals("SELECT  ALL  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testDistinct()
+    {
+        DB::distinct()->persons();
+
+        $this->assertEquals("SELECT  DISTINCT  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testStraightJoin()
+    {
+        DB::straightJoin()->persons();
+
+        $this->assertEquals("SELECT  STRAIGHT_JOIN  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testHighPriority()
+    {
+        DB::highPriority()->persons();
+
+        $this->assertEquals("SELECT  HIGH_PRIORITY  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testPartition()
+    {
+        DB::partition()->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons PARTITION() ", DB::stringQuery());
+    }
+
+    public function testProcedure()
+    {
+        DB::procedure()->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons PROCEDURE() ", DB::stringQuery());
+    }
+
+    public function testOutfile()
+    {
+        DB::outFile('file')->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons INTO OUTFILE 'file' ", DB::stringQuery());
+    }
+
+    public function testDumpfile()
+    {
+        DB::dumpFile('file')->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons INTO DUMPFILE 'file' ", DB::stringQuery());
+    }
+
+    public function testReferences()
+    {
+        $this->assertEquals("REFERENCES table(column)", DB::references('table', 'column'));
+    }
+
+    public function testCharset()
+    {
+        DB::characterSet('UTF-8');
+    }
+
+    public function testCset()
+    {
+        $this->assertEquals("CHARACTER SET utf8 ", DB::cset(''));
+    }
+
+    public function testCollate()
+    {
+        $this->assertEquals("COLLATE utf8_general_ci ", DB::collate(''));
+    }
+
+    public function testInto()
+    {
+        DB::into('var1', 'var2')->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons CHARACTER SET UTF-8 INTO var1 , var2 ", DB::stringQuery());
+    }
+
+    public function testForUpdate()
+    {
+        DB::forUpdate()->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons  FOR UPDATE ", DB::stringQuery());
+    }
+
+    public function testLockInShareMode()
+    {
+        DB::lockInShareMode()->persons();
+
+        $this->assertEquals("SELECT  *  FROM persons  LOCK IN SHARE MODE ", DB::stringQuery());
+    }
+
+    public function testSmallResult()
+    {
+        DB::smallResult()->persons();
+
+        $this->assertEquals("SELECT  SQL_SMALL_RESULT  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testBigResult()
+    {
+        DB::bigResult()->persons();
+
+        $this->assertEquals("SELECT  SQL_BIG_RESULT  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testBufferResult()
+    {
+        DB::bufferResult()->persons();
+
+        $this->assertEquals("SELECT  SQL_BUFFER_RESULT  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testCache()
+    {
+        DB::cache()->persons();
+
+        $this->assertEquals("SELECT  SQL_CACHE  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testNoCache()
+    {
+        DB::noCache()->persons();
+
+        $this->assertEquals("SELECT  SQL_NO_CACHE  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testCalcFoundRows()
+    {
+        DB::calcFoundRows()->persons();
+
+        $this->assertEquals("SELECT  SQL_CALC_FOUND_ROWS  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testStatus()
+    {
+        DB::status('persons');
+
+        $this->assertEquals("SHOW TABLE STATUS FROM UnitTests/package-authentication/resources/testdb LIKE 'persons'", DB::stringQuery());
+    }
+
+    public function testFetchArray()
+    {
+        $this->assertIsArray(DB::persons()->fetchArray());
+    }
+
+    public function testFetchAssoc()
+    {
+        $this->assertIsArray(DB::persons()->fetchAssoc());
+    }
+
+    public function testFetchRow()
+    {
+        $this->assertIsArray(DB::persons()->fetchRow());
+        $this->assertIsString(DB::persons()->fetchRow(true));
+    }
+
+    public function testFetch()
+    {
+        $this->assertIsArray(DB::persons()->fetch('assoc'));
+        $this->assertIsArray(DB::persons()->fetch('array'));
+        $this->assertIsArray(DB::persons()->fetch('row'));
+    }
+
+    public function testSwitchCase()
+    {
+        $case = DB::switchCase('name', ['as' => 'nm', 'default' => '10', 'else' => 5, 'white' => 'White'], true);
+
+        $this->assertEquals(" CASE name ELSE 10 ELSE 5 WHEN white THEN White END  as nm ", $case);
+    }
+
+    public function testVartype()
+    {
+        $this->assertEquals(" INTEGER(11) ", DB::vartype('int', 11));
+    }
+
+    public function testPropery()
+    {
+        $this->assertEquals(" PRIMARY KEY(id) ", DB::property('primarykey', 'id'));
+
+        DB::property('primarykey', 'id', false);
+    }
+
+    public function testDefaultValue()
+    {
+        $this->assertEquals(" DEFAULT(10) ", DB::defaultValue('10', true));
+
+        DB::defaultValue('10', false);
+    }
+
+    public function testLike()
+    {
+        $this->assertEquals("%abc", DB::like('abc', 'ending'));
+    }
 }

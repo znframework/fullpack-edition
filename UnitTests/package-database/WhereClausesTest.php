@@ -92,7 +92,7 @@ class WhereClausesTest extends DatabaseExtends
     {
         $query = DB::string()->whereNotEmpty('name')->persons();
 
-        $this->assertSame("SELECT  *  FROM persons  WHERE ( name!= \"\" and  name is not null  ) ", $query);
+        $this->assertSame("SELECT  *  FROM persons  WHERE ( name != \"\" and  name is not null  ) ", $query);
     }
 
     public function testWhereNull()

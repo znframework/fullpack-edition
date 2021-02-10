@@ -162,4 +162,32 @@ class InsertTest extends DatabaseExtends
 
         $this->assertSame('Darius', $person->name);
     }
+
+    public function testDelayed()
+    {
+        DB::delayed()->insert('table', ['id' => 1]);
+
+        $this->assertEquals("INSERT  DELAYED  INTO table (id) VALUES ('1')", DB::stringQuery());
+    }
+
+    public function testIgnore()
+    {
+        DB::ignore()->insert('table', ['id' => 1]);
+
+        $this->assertEquals("INSERT  IGNORE  INTO table (id) VALUES ('1')", DB::stringQuery());
+    }
+
+    public function testLowPriority()
+    {
+        DB::lowPriority()->insert('table', ['id' => 1]);
+
+        $this->assertEquals("INSERT  LOW_PRIORITY  INTO table (id) VALUES ('1')", DB::stringQuery());
+    }
+
+    public function testExp()
+    {
+        DB::insert('table', ['exp:name' => 'date']);
+
+        $this->assertEquals("INSERT  INTO table (name) VALUES (date)", DB::stringQuery());
+    }
 }
