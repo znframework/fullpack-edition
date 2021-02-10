@@ -8,7 +8,7 @@ class ToolTest extends DatabaseExtends
     {
         $result = DBTool::listDatabases();
 
-        $this->assertSame([\ZN\Test\GlobalExtends::default . 'package-database/resources/testdb'], $result);
+        $this->assertIsArray($result);
     }
 
     public function testListTables()

@@ -35,4 +35,25 @@ class TriggerTest extends DatabaseExtends
 
         $this->assertSame('SELECT * FROM information_schema.triggers WHERE TRIGGER_NAME = "exampleTrigger"', trim(DBTrigger::stringQuery()));
     }
+
+    public function testUser()
+    {
+        $trigger = new \ZN\Database\DBTrigger;
+
+        $trigger->user('root');
+    }
+
+    public function testOrder()
+    {
+        $trigger = new \ZN\Database\DBTrigger;
+
+        $trigger->order('FOLLOWS', 'test');
+    }
+
+    public function testListWithNull()
+    {
+        $trigger = new \ZN\Database\DBTrigger;
+
+        $this->assertIsArray($trigger->list());
+    }
 }
