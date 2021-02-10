@@ -242,7 +242,7 @@ class SelectTest extends DatabaseExtends
         $this->assertIsString(json_decode($result)[0]->name);
     }
 
-    /*
+    
     public function testJsonDecode()
     {
         DB::where('name', 'Micheal')->update('persons', 
@@ -317,7 +317,7 @@ class SelectTest extends DatabaseExtends
 
         $this->assertGreaterThan($person->totalRows(), $person->totalRows(true));
     }
-
+    /*
     public function testGetTotalColumns()
     {
         $totalColumns = DB::persons()->totalColumns();
