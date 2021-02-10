@@ -229,10 +229,6 @@ class Data implements DataInterface
                     return $resultArray;
                 }
             }
-            else
-            {
-                return false;
-            }
         }
         else
         {
@@ -240,11 +236,9 @@ class Data implements DataInterface
             {
                 return $this->error[$name];
             }
-            else
-            {
-                return false;
-            }
         }
+
+        return false;
     }
 
     /**
