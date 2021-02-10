@@ -6,6 +6,8 @@ use URI;
 use Post;
 use File;
 use Json;
+use Config;
+use Buffer;
 use Request;
 
 class SelectTest extends DatabaseExtends
@@ -347,5 +349,55 @@ class SelectTest extends DatabaseExtends
     {
         $this->assertTrue(DB::isExists('persons', 'surname', 'Tony'));
         $this->assertFalse(DB::isExists('persons', 'name', 'Samanta'));
+    }
+
+    public function testDebugInfo()
+    {
+        print_r(DB::get('persons'));
+    }
+
+    public function testDifferentConnectionWithName()
+    {
+        Config::database('database', 
+        [
+            'differentConnection' => 
+            [
+                'myConnect' => DatabaseExtends::postgres
+            ]
+        ]);
+
+        (new Connection)->differentConnection('myConnect');
+    }
+
+    public function testDifferentConnectionInvalidParameterException()
+    {
+        try
+        {
+            DB::differentConnection('example');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertEquals('`Mixed $connectName` input information is invalid!', $e->getMessage());
+        }
+    }
+
+    public function testVarTypes()
+    {
+        $this->assertIsArray(DB::varTypes());
+    }
+
+    public function testStringQueries()
+    {
+        $this->assertIsArray(DB::stringQueries());
+    }
+
+    public function testFunc()
+    {
+        $this->assertEquals('DATE(ID) ', DB::func('DATE', 'ID', true));
+    }
+
+    public function testString()
+    {
+        $this->assertEquals('SELECT DATE(ID)  FROM persons ', DB::string()->func('DATE', 'ID')->persons());
     }
 }
