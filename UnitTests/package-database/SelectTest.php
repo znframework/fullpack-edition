@@ -350,9 +350,10 @@ class SelectTest extends DatabaseExtends
         $this->assertFalse(DB::isExists('persons', 'name', 'Samanta'));
     }
 
+    /*
     public function testDebugInfo()
     {
-        //print_r(DB::get('persons'));
+        print_r(DB::get('persons'));
     }
 
     public function testDifferentConnectionWithName()
@@ -663,4 +664,5 @@ class SelectTest extends DatabaseExtends
     {
         $this->assertEquals("%abc", DB::like('abc', 'ending'));
     }
+    */
 }
