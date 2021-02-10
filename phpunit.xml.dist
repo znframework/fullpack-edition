@@ -77,4 +77,9 @@
 	<logging>
 		<log type="coverage-clover" target="build/logs/clover.xml"/>
 	</logging>
+
+    <php>
+        <ini name="memory_limit" value="2048M" />
+        <ini name="output_buffering" value="On" />
+    </php>
 </phpunit>
