@@ -217,7 +217,7 @@ class SelectTest extends DatabaseExtends
 
         $this->assertIsString($result[1]->name);
     }
-    /*
+   
 
     public function testTableNameResult()
     {
@@ -242,6 +242,7 @@ class SelectTest extends DatabaseExtends
         $this->assertIsString(json_decode($result)[0]->name);
     }
 
+    /*
     public function testJsonDecode()
     {
         DB::where('name', 'Micheal')->update('persons', 
