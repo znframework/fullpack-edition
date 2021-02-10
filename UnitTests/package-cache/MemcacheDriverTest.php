@@ -12,7 +12,7 @@ class MemcacheDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         }      
     }
 
@@ -28,7 +28,7 @@ class MemcacheDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         }      
     }
 
@@ -44,7 +44,7 @@ class MemcacheDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         }   
     }
 
@@ -60,7 +60,7 @@ class MemcacheDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         }   
     }
 
@@ -74,7 +74,7 @@ class MemcacheDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         } 
     }
 
@@ -90,7 +90,7 @@ class MemcacheDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         } 
     }
 
@@ -101,10 +101,12 @@ class MemcacheDriverTest extends CacheExtends
             $this->memcache()->insert('a', 1);
     
             $this->assertIsArray($this->memcache()->getMetaData('a'));
+
+            $this->assertEmpty($this->memcache()->getMetaData('unknown'));
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         } 
     }
 

@@ -16,7 +16,7 @@ class RedisDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+           $this->assertIsString($e->getMessage());
         }      
     }
 
@@ -34,7 +34,7 @@ class RedisDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         }      
     }
 
@@ -50,7 +50,7 @@ class RedisDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         }   
     }
 
@@ -66,7 +66,7 @@ class RedisDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         }   
     }
 
@@ -80,7 +80,7 @@ class RedisDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         } 
     }
 
@@ -96,7 +96,7 @@ class RedisDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         } 
     }
 
@@ -110,7 +110,7 @@ class RedisDriverTest extends CacheExtends
         }
         catch( \Exception $e )
         {
-            echo $e->getMessage();
+            $this->assertIsString($e->getMessage());
         } 
     }
 

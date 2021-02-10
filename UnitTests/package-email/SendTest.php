@@ -9,9 +9,16 @@ class SendTest extends EmailExtends
 {
     public function testSend()
     {
-        Email::attachment(self::default . 'package-email/attachments/file.txt')
-             ->attachment(self::default . 'package-email/attachments/icon.png')
-             ->to('znunittestmail@yandex.com')->send('Subject', 'Message');
+        try
+        {
+            Email::attachment(self::default . 'package-email/attachments/file.txt')
+            ->attachment(self::default . 'package-email/attachments/icon.png')
+            ->to('znunittestmail@yandex.com')->send('Subject', 'Message');
+        }
+        catch( \Exception $e )
+        {
+            $this->assertIsString($e->getMessage());
+        }
     }
 
     public function testContentType()
