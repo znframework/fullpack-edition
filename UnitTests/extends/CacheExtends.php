@@ -16,7 +16,7 @@ class CacheExtends extends \ZN\Test\GlobalExtends
             [
                 'memcache' =>
                 [
-                    'host'   => '127.0.0.2',
+                    'host'   => '127.0.0.1',
                     'port'   => '11211',
                     'weight' => '1',
                 ],
