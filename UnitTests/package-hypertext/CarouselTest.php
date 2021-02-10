@@ -31,6 +31,15 @@ class CarouselTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testCarouselIndicatorsItemArray()
+    {
+        $this->assertStringContainsString
+        (
+            '<ol class="carousel-indicators">', 
+            (string) Html::indicators()->item('slide1.jpg', ['class' => 'example'])->carousel('myCarousel')
+        );
+    }
+
     public function testCarouselPrevNext()
     {
         $this->assertStringContainsString

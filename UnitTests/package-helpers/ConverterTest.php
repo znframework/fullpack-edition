@@ -29,6 +29,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('1.000.000,00 £', Converter::money(1000000, '£'));
         $this->assertSame('1.000.000 $', Converter::money(1000000, '$', false));
         $this->assertSame('£ 1.000.000,00', Converter::money(1000000, '!£'));
+        $this->assertSame('1,00', Converter::money(1.0));
     }
 
     public function testMoneyToNumber()

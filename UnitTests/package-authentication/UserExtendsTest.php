@@ -25,7 +25,7 @@ class UserExtendsTest extends AuthenticationExtends
 
     public function testGetEmailTemplate()
     {
-        $this->assertEquals('message userx, passx, urlx', $this->userExtendsMock->mockGetEmailTemplate());
+        $this->assertEquals('message userx, passx, [urlx]urlx', $this->userExtendsMock->mockGetEmailTemplate());
     }
 
     public function testAutoMatchColumns()

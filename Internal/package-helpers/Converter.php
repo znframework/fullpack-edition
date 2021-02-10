@@ -382,12 +382,7 @@ class Converter
         {
             $hexRemaining = ( $i % 16 );
             $hexRemaining = str_replace( [10, 11, 12, 13, 14, 15], ['A', 'B', 'C', 'D', 'E', 'F'], $hexRemaining );
-            $hex          = ( floor( $i / 16) ).$hexRemaining;
-
-            if( $hex[0] == '0' )
-            {
-                $hex = $hex[1];
-            }
+            $hex          = ( floor( $i / 16) ) . $hexRemaining;
 
             if( chr($i) !== ' ' )
             {

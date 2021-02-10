@@ -2,7 +2,7 @@
 
 use Html;
 
-class BreadcrumbTest extends \PHPUnit\Framework\TestCase
+class BreadcrumbTest extends HypertextExtends
 {
     public function testSetURI()
     {
@@ -19,6 +19,15 @@ class BreadcrumbTest extends \PHPUnit\Framework\TestCase
         (
             '<nav aria-label="breadcrumb">', 
             (string) Html::breadcrumb(NULL, 2)
+        );
+    }
+
+    public function testBreadcrumbOlList()
+    {
+        $this->assertEquals
+        (
+            '<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Home</li></ol></nav>',
+            (string) Html::breadcrumb('Home/' . CURRENT_COPEN_PAGE, 2)
         );
     }
 }

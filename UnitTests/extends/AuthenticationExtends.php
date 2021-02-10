@@ -65,7 +65,7 @@ class AuthenticationExtends extends \ZN\Test\GlobalExtends
             {
                 $this->setEmailTemplate('message {user}, {pass}, {url}');
                 
-                return $this->getEmailTemplate(['user' => 'userx', 'pass' => 'passx', 'url' => 'urlx'], '');
+                return $this->getEmailTemplate(['user' => 'userx', 'pass' => 'passx', 'url' => '[urlx]'], '');
             }
 
             public function mockAutoMatchColumns($data)
