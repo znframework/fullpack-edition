@@ -4,9 +4,9 @@ class MemcacheDriverTest extends CacheExtends
 {
     public function testX()
     {
-        
+
     }
-    /*
+    
     public function testInsert()
     {
         try
@@ -115,6 +115,7 @@ class MemcacheDriverTest extends CacheExtends
         } 
     }
 
+    /*
     public function testConnectionException()
     {
         try
