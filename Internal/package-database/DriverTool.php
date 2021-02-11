@@ -11,7 +11,6 @@
 
 use stdClass;
 use ZN\Base;
-use ZN\Filesystem\Exception\IOException;
 
 class DriverTool extends DriverExtends
 {
@@ -230,6 +229,11 @@ class DriverTool extends DriverExtends
             $return .= $eol.$eol.$eol;
         }
 
+        if( ! trim($return) )
+        {
+            return false;
+        }
+
         if( empty($fileName) )
         {
             $fileName = 'db-backup-'.time().'-'.(md5(implode(',',$tables))).'.sql';
@@ -240,10 +244,7 @@ class DriverTool extends DriverExtends
             mkdir($path);
         }
 
-        if( ! file_put_contents(Base::suffix($path).$fileName, $return) )
-        {
-            throw new IOException('Error', 'fileNotWrite', $path.$fileName);
-        }
+        file_put_contents(Base::suffix($path) . $fileName, $return);
 
         return $this->getLang['backupTablesSuccess'];
     }
