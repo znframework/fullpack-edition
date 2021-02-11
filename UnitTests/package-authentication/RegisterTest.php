@@ -130,6 +130,18 @@ class RegisterTest extends AuthenticationExtends
         $this->assertEquals('Unknown error!', User::error());
     }
 
+    public function testUsernameError()
+    {
+        DB::where('username', 'robot@znframework.com')->delete('users');
+        
+        User::register
+        ([
+            'password' => '1234'
+        ]);
+
+        $this->assertEquals('The data should include the user name and password!', User::error());
+    }
+
     public function testActivationColumnActivationReturnLinkNotFoundException()
     {
         DB::where('username', 'robot')->delete('accounts');
