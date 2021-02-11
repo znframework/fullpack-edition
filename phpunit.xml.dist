@@ -100,7 +100,7 @@
                 <file>./Internal/package-zerocore/Output.php</file>
                 <file>./Internal/package-zerocore/Regex.php</file>
                 <file>./Internal/package-zerocore/Restoration.php</file>
-                <file>./Internal/package-zerocore/Request.php</file>
+                <file>./Internal/package-zerocore/Response.php</file>
                 <file>./Internal/package-zerocore/Robots.php</file>
                 <file>./Internal/package-zerocore/StaticAccess.php</file>
                 <file>./Internal/package-zerocore/Structure.php</file>
