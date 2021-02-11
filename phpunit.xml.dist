@@ -45,6 +45,7 @@
                 <directory>./Internal/package-database/Oracle</directory>
                 <directory>./Internal/package-database/ODBC</directory>
                 <directory>./Internal/package-database/PDO</directory>
+                <directory>./Internal/package-database/SQLServer</directory>
                 <file>./Internal/package-database/MDB.php</file>
                 <file>./Internal/package-database/MDBInterface.php</file>
                 <directory>./Internal/package-datatypes/Exception</directory>
