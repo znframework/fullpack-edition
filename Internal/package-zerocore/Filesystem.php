@@ -122,12 +122,12 @@ class Filesystem
                 return self::deleteEmptyFolder($name);
             }       
         }
-        else
+        else if( is_file($name) )
         {
             return unlink($name);
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -184,37 +184,29 @@ class Filesystem
         {
             $source = Base::suffix($source, DS);
             $target = Base::suffix($target, DS);
-
-            if( ! self::getFiles($source) )
+            
+            if( ! is_dir($target) )
             {
-                $emptyFilePath = $source . 'empty';
-
-                self::createFile($emptyFilePath);
-
-                return copy($emptyFilePath, $target);
+                self::createFolder($target);
             }
-            else
-            {
-                if( ! is_dir($target) && ! file_exists($target) )
-                {
-                    self::createFolder($target);
-                }
 
-                if( is_array($getFiles = self::getFiles($source)) ) foreach( $getFiles as $val )
+            if( is_array($getFiles = self::getFiles($source)) )
+            {
+                foreach( $getFiles as $val )
                 {
                     $sourceDir = $source.$val;
                     $targetDir = $target.$val;
-
+    
                     if( is_file($sourceDir) )
                     {
                         copy($sourceDir, $targetDir);
                     }
-
+    
                     self::copy($sourceDir, $targetDir);
                 }
+            } 
 
-                return true;
-            }
+            return true;
         }
         else
         {
