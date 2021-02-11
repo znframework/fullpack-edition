@@ -8,9 +8,10 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
 {
     protected $persons;
 
-    const sqlite   = ['driver'   => 'sqlite', 'database' => self::default . 'package-database/resources/testdb', 'password' => '1234'];
-    const mysqli   = ['driver' => 'mysqli'  , 'user' => 'mysqli'  , 'host' => 'localhost', 'database' => 'test', 'password' => 'mysqli'  , 'port' => 3306];
-    const postgres = ['driver' => 'postgres', 'user' => 'postgres', 'host' => 'localhost', 'database' => 'test', 'password' => 'postgres', 'port' => 5432];
+    const sqlite    = ['driver' => 'sqlite'   , 'database' => self::default . 'package-database/resources/testdb', 'password' => '1234'];
+    const mysqli    = ['driver' => 'mysqli'   , 'user' => 'mysqli'  , 'host' => 'localhost', 'database' => 'test', 'password' => 'mysqli'           , 'port' => 3306];
+    const postgres  = ['driver' => 'postgres' , 'user' => 'postgres', 'host' => 'localhost', 'database' => 'test', 'password' => 'postgres'         , 'port' => 5432];
+    const sqlserver = ['driver' => 'sqlserver', 'user' => 'sa'      , 'host' => 'localhost', 'database' => 'test', 'password' => '1Secure*Password1', 'port' => 1433];
 
     public function __construct()
     {
@@ -80,5 +81,10 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
     protected function mysqli($callback = NULL)
     {
         $this->driver($callback, 'MySQLi');
+    }
+
+    protected function sqlserver($callback = NULL)
+    {
+        $this->driver($callback, 'SQLServer');
     }
 }
