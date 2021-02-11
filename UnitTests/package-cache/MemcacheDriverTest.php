@@ -2,11 +2,6 @@
 
 class MemcacheDriverTest extends CacheExtends
 {
-    public function testInitialize()
-    {
-
-    }
-    /*
     public function testInsert()
     {
         try
@@ -131,5 +126,4 @@ class MemcacheDriverTest extends CacheExtends
             $this->assertIsString($e->getMessage());
         }
     }
-    */
 }
