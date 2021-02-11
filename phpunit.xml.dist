@@ -32,6 +32,7 @@
                 <file>./Internal/package-cache/Drivers/ApcDriver.php</file>
                 <file>./Internal/package-cache/Drivers/ApcuDriver.php</file>
                 <file>./Internal/package-cache/Drivers/WincacheDriver.php</file>
+                <file>./Internal/package-cache/Drivers/MemcacheDriver.php</file>
                 <directory>./Internal/package-comparison/Exception</directory>
                 <directory>./Internal/package-compression/Exception</directory>
                 <file>./Internal/package-compression/Drivers/LzfDriver.php</file>

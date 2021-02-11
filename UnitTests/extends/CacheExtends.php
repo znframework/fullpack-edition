@@ -5,8 +5,6 @@ use Config;
 
 class CacheExtends extends \ZN\Test\GlobalExtends
 {
-    protected $memcache;
-
     public function __construct()
     {
         parent::__construct();
@@ -31,19 +29,15 @@ class CacheExtends extends \ZN\Test\GlobalExtends
                 ]
             ]
         ]);    
-
-        try
-        {
-            $this->memcache = Cache::driver('memcache');
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }  
     }
 
     public function redis()
     {
         return Cache::driver('redis');
+    }
+
+    public function memcache()
+    {
+        return Cache::driver('memcache');
     }
 }
