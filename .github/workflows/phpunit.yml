@@ -69,9 +69,9 @@ jobs:
         options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
       mssql:
         image: microsoft/mssql-server-linux:2017-latest
-        env:
-          SA_PASSWORD: 1Secure*Password1
+        env:          
           ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: 1Secure*Password1
           MSSQL_PID: Developer
         ports:
           - 1433:1433
