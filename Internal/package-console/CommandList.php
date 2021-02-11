@@ -15,6 +15,13 @@ use ZN\Filesystem;
 class CommandList
 {
     /**
+     * Default variables
+     * 
+     * @var int
+     */
+    protected $commandNameCount = 0, $descriptionNameCount = 0;
+
+    /**
      * Magic constructor
      * 
      * @param 
@@ -86,6 +93,12 @@ class CommandList
      */
     protected function command($key, $command)
     {
-        return '| ' . $key . str_repeat(' ', $this->commandNameCount - strlen($key)) . ' | '. $command . str_repeat(' ', $this->descriptionNameCount - strlen($command)) . ' |' . EOL;
+        $nameCount        = $this->commandNameCount - strlen($key);
+        $descriptionCount = $this->descriptionNameCount - strlen($command);
+
+        $nameCount        = $nameCount < 0 ? 0 : $nameCount;
+        $descriptionCount = $descriptionCount < 0 ? 0 : $descriptionCount;
+
+        return '| ' . $key . str_repeat(' ', $nameCount) . ' | '. $command . str_repeat(' ', $descriptionCount) . ' |' . EOL;
     }
 }

@@ -28,36 +28,7 @@ class AuthenticationExtends extends \ZN\Test\GlobalExtends
             'verification'      => [DB::varchar(20)]
         ]);
         
-        Config::set('Auth', 
-        [
-            'encode'    => 'gost',
-            'spectator' => '',
-            'matching'  =>
-            [
-                'table'   => 'users',
-                'columns' =>
-                [
-                    'username'     => 'username',
-                    'password'     => 'password', 
-                    'email'        => '',              
-                    'active'       => 'active',      
-                    'banned'       => 'banned',       
-                    'activation'   => '',     
-                    'verification' => '',   
-                    'otherLogin'   => ['phone']         
-                ]
-            ],
-            'joining' =>
-            [
-                'column' => '',
-                'tables' => []
-            ],
-            'emailSenderInfo' =>
-            [
-                'name' => 'Robot',
-                'mail' => 'robot@znframework.com'
-            ]
-        ]);
+        $this->defaultConfig();
 
         $this->userExtendsMock = new Class extends UserExtends
         {
@@ -91,5 +62,73 @@ class AuthenticationExtends extends \ZN\Test\GlobalExtends
                 return $this->startPermanentUserSessionWithCookie('robot@znframework.com', '1234');
             }
         };  
+    }
+
+    public function defaultConfig()
+    {
+        Config::set('Auth', 
+        [
+            'encode'    => 'gost',
+            'spectator' => '',
+            'matching'  =>
+            [
+                'table'   => 'users',
+                'columns' =>
+                [
+                    'username'     => 'username',
+                    'password'     => 'password', 
+                    'email'        => '',              
+                    'active'       => 'active',      
+                    'banned'       => 'banned',       
+                    'activation'   => '',     
+                    'verification' => '',   
+                    'otherLogin'   => ['phone']         
+                ]
+            ],
+            'joining' =>
+            [
+                'column' => '',
+                'tables' => []
+            ],
+            'emailSenderInfo' =>
+            [
+                'name' => 'Robot',
+                'mail' => 'robot@znframework.com'
+            ]
+        ]);
+    }
+
+    public function activationConfig()
+    {
+        Config::set('Auth', 
+        [
+            'encode'    => 'gost',
+            'spectator' => '',
+            'matching'  =>
+            [
+                'table'   => 'accounts',
+                'columns' =>
+                [
+                    'username'     => 'username',
+                    'password'     => 'password', 
+                    'email'        => 'email',              
+                    'active'       => 'active',      
+                    'banned'       => 'banned',       
+                    'activation'   => 'activation',     
+                    'verification' => '',   
+                    'otherLogin'   => ['phone']         
+                ]
+            ],
+            'joining' =>
+            [
+                'column' => '',
+                'tables' => []
+            ],
+            'emailSenderInfo' =>
+            [
+                'name' => 'Robot',
+                'mail' => 'robot@znframework.com'
+            ]
+        ]);
     }
 }
