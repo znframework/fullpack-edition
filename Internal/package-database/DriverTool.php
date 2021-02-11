@@ -199,6 +199,11 @@ class DriverTool extends DriverExtends
 
             $fetchRow = $this->differentConnection->query('SHOW CREATE TABLE '.$table)->fetchRow();
 
+            if( ! $fetchRow )
+            {
+                continue;
+            }
+
             $fetchResult = $this->differentConnection->query('SELECT * FROM '.$table)->result();
 
             $return .= $eol.$eol.$fetchRow[1].";".$eol.$eol;
