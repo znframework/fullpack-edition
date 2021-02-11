@@ -56,4 +56,28 @@ class ForgeTest extends DatabaseExtends
     {
         $this->assertEquals('ALTER TABLE table CHANGE COLUMN id nid int;', (new \ZN\Database\DriverForge)->renameColumn('table', ['id' => 'nid int']));
     }
+
+    public function testDBForge()
+    {
+        $forge = new DBForge;
+
+        try
+        {
+            $forge->undefined(1);
+        }
+        catch( \Exception $e )
+        {
+            $this->assertEquals('Error: Call to undefined function `DBForge::undefined()`!', $e->getMessage());
+        }
+        
+        $forge->extras('extras');
+        $forge->createTempTable('temptable', ['id' => 'int']);
+        $forge->alterTable('temptable', ['createTable' => ['int']]);
+        $forge->startAutoIncrement('example');
+        $forge->addAutoIncrement('example');
+        $forge->createUniqueIndex('name', 'example', 'id');
+        $forge->createFulltextIndex('name', 'example', 'id');
+        $forge->dropColumn('example', 'id');
+        $forge->dropColumn('example', ['id' => 'int']);
+    }
 }
