@@ -2,25 +2,17 @@
 
 class MemcacheDriverTest extends CacheExtends
 {
-    public function testInitialize()
-    {
-
-    }
-    /*
     public function testInsert()
     {
-        try
+        if( $this->memcache )
         {
-            $this->memcache()->insert('example', 1);
+            $this->memcache->insert('myKey', 1);
     
-            $this->assertEquals(1, $this->memcache()->select('example'));
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }      
+            $this->assertEquals(1, $this->memcache->select('myKey'));
+        }  
     }
-    
+
+    /*
     public function testDelete()
     {
         try
