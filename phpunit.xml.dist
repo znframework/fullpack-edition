@@ -89,7 +89,6 @@
                 <file>./Internal/package-zerocore/Functions.php</file>
                 <file>./Internal/package-zerocore/Htaccess.php</file>
                 <file>./Internal/package-zerocore/Hypertext.php</file>
-                <file>./Internal/package-zerocore/Import.php</file>
                 <file>./Internal/package-zerocore/In.php</file>
                 <file>./Internal/package-zerocore/Ini.php</file>
                 <file>./Internal/package-zerocore/IS.php</file>
@@ -102,7 +101,6 @@
                 <file>./Internal/package-zerocore/Robots.php</file>
                 <file>./Internal/package-zerocore/Singleton.php</file>
                 <file>./Internal/package-zerocore/StaticAccess.php</file>
-                <file>./Internal/package-zerocore/Storage.php</file>
                 <file>./Internal/package-zerocore/Structure.php</file>
                 <file>./Internal/package-zerocore/Support.php</file>
                 <file>./Internal/package-zerocore/Tester.php</file>
