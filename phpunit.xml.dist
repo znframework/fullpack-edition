@@ -70,7 +70,44 @@
                 <directory>./Internal/package-storage/Exception</directory>
                 <directory>./Internal/package-validation/Exception</directory>
                 <directory>./Internal/package-xml/Exception</directory>
-                <directory>./Internal/package-zerocore</directory>
+                <directory>./Internal/package-zerocore/Ability</directory>
+                <directory>./Internal/package-zerocore/Config</directory>
+                <directory>./Internal/package-zerocore/Controller</directory>
+                <directory>./Internal/package-zerocore/ErrorHandling</directory>
+                <directory>./Internal/package-zerocore/Exception</directory>
+                <directory>./Internal/package-zerocore/Facades</directory>
+                <directory>./Internal/package-zerocore/Inclusion</directory>
+                <directory>./Internal/package-zerocore/Lang</directory>
+                <directory>./Internal/package-zerocore/Resources</directory>
+                <directory>./Internal/package-zerocore/Routing</directory>
+                <file>./Internal/package-zerocore/Butcher.php</file>
+                <file>./Internal/package-zerocore/Classes.php</file>
+                <file>./Internal/package-zerocore/Coalesce.php</file>
+                <file>./Internal/package-zerocore/Composer.php</file>
+                <file>./Internal/package-zerocore/Controller.php</file>
+                <file>./Internal/package-zerocore/Config.php</file>
+                <file>./Internal/package-zerocore/Functions.php</file>
+                <file>./Internal/package-zerocore/Htaccess.php</file>
+                <file>./Internal/package-zerocore/Hypertext.php</file>
+                <file>./Internal/package-zerocore/Import.php</file>
+                <file>./Internal/package-zerocore/In.php</file>
+                <file>./Internal/package-zerocore/Ini.php</file>
+                <file>./Internal/package-zerocore/IS.php</file>
+                <file>./Internal/package-zerocore/Kernel.php</file>
+                <file>./Internal/package-zerocore/Lang.php</file>
+                <file>./Internal/package-zerocore/Model.php</file>
+                <file>./Internal/package-zerocore/Output.php</file>
+                <file>./Internal/package-zerocore/Regex.php</file>
+                <file>./Internal/package-zerocore/Restoration.php</file>
+                <file>./Internal/package-zerocore/Robots.php</file>
+                <file>./Internal/package-zerocore/Singleton.php</file>
+                <file>./Internal/package-zerocore/StaticAccess.php</file>
+                <file>./Internal/package-zerocore/Storage.php</file>
+                <file>./Internal/package-zerocore/Structure.php</file>
+                <file>./Internal/package-zerocore/Support.php</file>
+                <file>./Internal/package-zerocore/Tester.php</file>
+                <file>./Internal/package-zerocore/Wizard.php</file>
+                <file>./Internal/package-zerocore/ZN.php</file>
             </exclude>
         </whitelist>
 	</filter>
