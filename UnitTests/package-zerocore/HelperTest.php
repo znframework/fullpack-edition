@@ -15,6 +15,9 @@ class HelperTest extends ZerocoreExtends
         Folder::delete(STORAGE_DIR . 'Logs/');
 
         Helper::report('subject', 'message');
+
+        # Append
+        Helper::report('subject', 'message');
     }
 
     public function testToConstant()
