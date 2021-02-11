@@ -107,7 +107,7 @@ class DB extends DriverMappingAbstract
             'UID'                   => $this->config['user'],
             'PWD'                   => $this->config['password'],
             'Database'              => $this->config['database'],
-            'ConnectionPooling'     => 0,
+            'ConnectionPooling'     => $this->config['pconnect'] === true ? 1 : 0,
             'CharacterSet'          => $charset,
             'Encrypt'               => $this->config['encode'],
             'ReturnDatesAsStrings'  => 1
