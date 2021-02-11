@@ -31,4 +31,11 @@ class DeleteTest extends DatabaseExtends
 
         $this->assertEquals("DELETE  QUICK  FROM example WHERE id =  '1' ", DB::stringQuery());
     }
+
+    public function testDeleteWithJoin()
+    {
+        DB::leftJoin('abc.id', 'xyz.id')->where('xyz.id', 1)->delete('xyz');
+
+        $this->assertEquals("DELETE  xyz  FROM xyz LEFT JOIN abc ON abc.id = xyz.id   WHERE xyz.id =  '1' ", DB::stringQuery());
+    }
 }

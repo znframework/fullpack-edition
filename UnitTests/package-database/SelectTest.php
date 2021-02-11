@@ -217,7 +217,6 @@ class SelectTest extends DatabaseExtends
 
         $this->assertIsString($result[1]->name);
     }
-   
 
     public function testTableNameResult()
     {
@@ -242,7 +241,6 @@ class SelectTest extends DatabaseExtends
         $this->assertIsString(json_decode($result)[0]->name);
     }
 
-    
     public function testJsonDecode()
     {
         DB::where('name', 'Micheal')->update('persons', 
@@ -443,14 +441,21 @@ class SelectTest extends DatabaseExtends
 
     public function testJoinWithDatabase()
     {
-        DB::join('database.addresses.username', 'addresses.username', 'left')->persons();
+        DB::join('database.addresses', 'addresses.username', 'left')->persons();
 
-        $this->assertEquals("SELECT  *  FROM persons  LEFT JOIN database.addresses.username ON addresses.username ", DB::stringQuery());
+        $this->assertEquals("SELECT  *  FROM persons  LEFT JOIN database.addresses ON addresses.username ", DB::stringQuery());
+    }
+
+    public function testTrans()
+    {
+        DB::transStart()->persons()->transEnd();
+
+        $this->assertEquals("SELECT  *  FROM persons ", DB::stringQuery());
     }
 
     public function testBasic()
     {
-        DB::transStart()->persons()->transEnd();
+        DB::basic()->persons();
 
         $this->assertEquals("SELECT  *  FROM persons ", DB::stringQuery());
     }
@@ -478,6 +483,13 @@ class SelectTest extends DatabaseExtends
         DB::distinct()->persons();
 
         $this->assertEquals("SELECT  DISTINCT  *  FROM persons ", DB::stringQuery());
+    }
+
+    public function testDistinctRow()
+    {
+        DB::distinctRow()->persons();
+
+        $this->assertEquals("SELECT  DISTINCTROW  *  FROM persons ", DB::stringQuery());
     }
 
     public function testStraightJoin()
@@ -647,11 +659,13 @@ class SelectTest extends DatabaseExtends
         $this->assertEquals(" INTEGER(11) ", DB::vartype('int', 11));
     }
 
-    public function testPropery()
+    public function testProperty()
     {
         $this->assertEquals(" PRIMARY KEY(id) ", DB::property('primarykey', 'id'));
 
         DB::property('primarykey', 'id', false);
+
+        $this->assertEquals(" PRIMARY KEY(id)  PRIMARY KEY ", DB::property(['primarykey' => 'id', 'primarykey']));
     }
 
     public function testDefaultValue()
@@ -659,6 +673,8 @@ class SelectTest extends DatabaseExtends
         $this->assertEquals(" DEFAULT(10) ", DB::defaultValue('10', true));
 
         DB::defaultValue('10', false);
+
+        $this->assertEquals(" DEFAULT(\"abc\") ", DB::defaultValue('abc', true));
     }
 
     public function testLike()

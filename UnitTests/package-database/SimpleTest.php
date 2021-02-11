@@ -4,6 +4,13 @@ use DB;
 
 class SimpleTest extends DatabaseExtends
 {
+    public function testSimpleRow()
+    {
+        DB::simpleRow('persons', 'id', 1);
+
+        $this->assertEquals("SELECT  *  FROM persons  WHERE id =  '1' ", DB::stringQuery());
+    }
+
     public function testSimpleResult()
     {
         DB::switchCase('name', []);

@@ -10,4 +10,11 @@ class PaginationTest extends DatabaseExtends
 
         $this->assertIsString($persons->pagination());
     }
+
+    public function testSetURI()
+    {
+        $persons = DB::limit('Home/main', 1)->persons();
+
+        $this->assertIsString($persons->pagination());
+    }
 }
