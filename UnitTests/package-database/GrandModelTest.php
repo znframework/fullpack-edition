@@ -76,11 +76,11 @@ class GrandModelTest extends DatabaseExtends
 
     public function testGrandUpdate()
     {
-        $this->persons->where('id', 5)->update
+        $this->persons->update
         ([
             'name'    => 'ZERONEED',
             'address' => 'Istanbul/Turkey'
-        ]);
+        ], 'id', 5);
 
         $this->assertSame("UPDATE persons SET name='ZERONEED',address='Istanbul/Turkey' WHERE id =  '5'", trim($this->persons->stringQuery()));
     }
@@ -94,7 +94,7 @@ class GrandModelTest extends DatabaseExtends
 
     public function testGrandDelete()
     {
-        $this->persons->where('id', 5)->delete();
+        $this->persons->delete('id', 5);
 
         $this->assertSame("DELETE  FROM persons WHERE id =  '5'", trim($this->persons->stringQuery()));
     }
@@ -164,5 +164,80 @@ class GrandModelTest extends DatabaseExtends
 
         # SQLite3 unsupported
         $this->assertSame("SELECT  *  FROM persons", trim($table->stringQuery()));
+    }
+
+    public function testGrandIsExists()
+    {
+        $this->assertIsBool($this->persons->isExists('name', 'Hulk'));
+    }
+
+    public function testGrandInsertCSV()
+    {
+        $this->assertIsBool($this->persons->insertCSV(self::default . 'package-database/resources/test.csv'));
+    }
+
+    public function testGrandColumns()
+    {
+        $this->assertIsArray($this->persons->columns());
+    }
+
+    public function testGrandTotalColumns()
+    {
+        $this->assertIsInt($this->persons->totalColumns());
+    }
+
+    public function testGrandIncrement()
+    {
+        $this->assertIsBool($this->persons->increment('surname'));
+    }
+
+    public function testGrandDecrement()
+    {
+        $this->assertIsBool($this->persons->decrement('surname'));
+    }
+
+    public function testGrandStatus()
+    {
+        $this->assertIsBool($this->persons->status());
+    }
+    
+    public function testTruncate()
+    {
+        $this->assertIsBool($this->persons->truncate());
+    }
+
+    public function testOptimize()
+    {
+        $this->persons->optimize();
+    }
+
+    public function testRepair()
+    {
+        $this->persons->repair();
+    }
+
+    public function testBackup()
+    {
+        $this->persons->backup('example', self::default . 'package-database/resources/');
+    }
+
+    public function testError()
+    {
+        $this->persons->error();
+    }
+
+    public function testGetDatabaseConnections()
+    {
+        $this->persons->mockGetDatabaseConnections();
+    }
+
+    public function testSetGrandTableName()
+    {
+        $this->persons->mockSetGrandTableName();
+    }
+
+    public function testGetGrandTableName()
+    {
+        $this->persons->mockGetGrandTableName();
     }
 }

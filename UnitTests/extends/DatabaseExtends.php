@@ -35,6 +35,21 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
                 'database' => \ZN\Test\GlobalExtends::default . 'package-database/resources/testdb',
                 'password' => '1234'
             ];
+
+            public function mockGetDatabaseConnections()
+            {
+                $this->getDatabaseConnections();
+            }
+
+            public function mockSetGrandTableName()
+            {
+                $this->setGrandTableName();
+            }
+
+            public function mockGetGrandTableName()
+            {
+                $this->getGrandTableName();
+            }
         };
     }
 

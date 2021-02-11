@@ -1,5 +1,6 @@
 <?php namespace ZN\Database;
 
+use Folder;
 use Migration;
 
 class MigrationTest extends DatabaseExtends
@@ -31,5 +32,18 @@ class MigrationTest extends DatabaseExtends
     public function testDeleteAll()
     {
         $this->assertIsBool(Migration::deleteAll());
+    }
+
+    public function testCovered()
+    {
+        Folder::delete(MODELS_DIR . 'Migrations/');
+
+        (new \ZN\Database\Migration)->addColumn(['id' => 'int']);
+        (new \ZN\Database\Migration)->dropColumn('id');
+        (new \ZN\Database\Migration)->modifyColumn(['id' => 'int']);
+        (new \ZN\Database\Migration)->renameColumn(['id' => 'id2 int']);
+        (new \ZN\Database\Migration)->truncate();
+        (new \ZN\Database\Migration)->path();
+        (new \ZN\Database\Migration)->version();
     }
 }
