@@ -35,4 +35,10 @@ class BaseTest extends ZerocoreExtends
         $this->assertNull(Base::headers('Cache-Control: no-cache'));
         $this->assertNull(Base::headers(['Cache-Control: no-cache']));
     }
+
+    public function testTrace()
+    {
+        $this->assertIsString(Base::trace('message', false, true));
+        $this->assertIsString(Base::trace('message', false, false));
+    }
 }

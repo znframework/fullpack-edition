@@ -318,12 +318,12 @@ class Base
      * 
      * @return void
      */
-    public static function trace(String $message)
+    public static function trace(String $message, $exit = true, $consoleEnabled = true)
     {
         # Shows console trace
-        if( defined('CONSOLE_ENABLED') )
+        if( $consoleEnabled && defined('CONSOLE_ENABLED') )
         {
-            self::consoleTrace('CONSOLE TRACE', $message);
+            self::consoleTrace('CONSOLE TRACE', $message, $exit);
         }
 
         $style  = 'border:solid 1px #E1E4E5;';
@@ -341,7 +341,12 @@ class Base
         $str .= $message;
         $str .= '</div>';
 
-        exit($str);
+        if( $exit )
+        {
+            exit($str);
+        }
+       
+        return $str;
     }
 
     /**
@@ -350,10 +355,15 @@ class Base
      * @param string $title
      * @param string $message
      */
-    public static function consoleTrace(String $title, String $message)
+    public static function consoleTrace(String $title, String $message, $exit = true)
     {
         $repeat = self::presuffix(str_repeat('-', strlen($message) + 2), '+');
-        $titleSpaceRepeat = str_repeat(' ', strlen($message) - strlen($title));
+
+        $spaceRepeatCount = strlen($message) - strlen($title);
+
+        $spaceRepeat = $spaceRepeatCount > 0 ? $spaceRepeatCount : 0;
+
+        $titleSpaceRepeat = str_repeat(' ', $spaceRepeat);
 
         $output  = $repeat . CRLF;
         $output .= '| '.$title . $titleSpaceRepeat .' |' . CRLF;
@@ -361,6 +371,11 @@ class Base
         $output .= '| ' . $message . ' |' . CRLF;
         $output .= $repeat;
 
-        exit($output);
+        if( $exit )
+        {
+            exit($output);
+        }
+       
+        return $output;
     }
 }

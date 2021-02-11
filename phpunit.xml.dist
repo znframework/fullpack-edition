@@ -83,6 +83,7 @@
                 <file>./Internal/package-zerocore/Butcher.php</file>
                 <file>./Internal/package-zerocore/Classes.php</file>
                 <file>./Internal/package-zerocore/Coalesce.php</file>
+                <file>./Internal/package-zerocore/Command.php</file>
                 <file>./Internal/package-zerocore/Composer.php</file>
                 <file>./Internal/package-zerocore/Controller.php</file>
                 <file>./Internal/package-zerocore/Config.php</file>
