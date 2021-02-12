@@ -36,7 +36,7 @@ class IS
         # 5.3.2[edited]
         if( in_array($method, self::$dataTypes) )
         {
-            return Filters::$method($parameters[0]);
+            return (bool) $method::{$parameters[0]}();
         }
 
         $methods = Datatype::splitUpperCase($realMethod = $method);
