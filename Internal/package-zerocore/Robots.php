@@ -50,10 +50,7 @@ class Robots
         }
 
         # The contents of the robot file are created.
-        if( ! self::putContent($robots) )
-        {
-            throw new Exception('Error', 'fileNotWrite', self::$file);
-        }
+        return (bool) self::putContent($robots);
     }
 
     /**
