@@ -87,8 +87,6 @@
                 <file>./Internal/package-zerocore/Command.php</file>
                 <file>./Internal/package-zerocore/Composer.php</file>
                 <file>./Internal/package-zerocore/Config.php</file>
-                <file>./Internal/package-zerocore/Functions.php</file>
-                <file>./Internal/package-zerocore/Htaccess.php</file>
                 <file>./Internal/package-zerocore/In.php</file>
                 <file>./Internal/package-zerocore/Kernel.php</file>
                 <file>./Internal/package-zerocore/ZN.php</file>

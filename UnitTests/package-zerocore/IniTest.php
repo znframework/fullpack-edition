@@ -5,7 +5,7 @@ class IniTest extends ZerocoreExtends
     public function testCall()
     {
         $this->assertNull(Ini::postMaxSize('10M'));
-        $this->assertEquals('40M', Ini::postMaxSize());
+        $this->assertIsString(Ini::postMaxSize());
 
         try
         {
