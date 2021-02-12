@@ -81,12 +81,7 @@
                 <directory>./Internal/package-zerocore/Lang</directory>
                 <directory>./Internal/package-zerocore/Resources</directory>
                 <directory>./Internal/package-zerocore/Routing</directory>
-                <file>./Internal/package-zerocore/Butcher.php</file>
-                <file>./Internal/package-zerocore/Classes.php</file>
-                <file>./Internal/package-zerocore/Coalesce.php</file>
                 <file>./Internal/package-zerocore/Command.php</file>
-                <file>./Internal/package-zerocore/Composer.php</file>
-                <file>./Internal/package-zerocore/Config.php</file>
                 <file>./Internal/package-zerocore/In.php</file>
                 <file>./Internal/package-zerocore/Kernel.php</file>
                 <file>./Internal/package-zerocore/ZN.php</file>
