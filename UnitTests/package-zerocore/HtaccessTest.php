@@ -6,12 +6,10 @@ class HtaccessTest extends ZerocoreExtends
 {
     public function testCreate()
     {
+        Config::htaccess('createFile', true);
+
         define('HTACCESS_CONFIG', Config::htaccess());
 
-        $this->assertFalse(Htaccess::create());
-        
-        File::delete('.htaccess');
-
-        $this->assertTrue(Htaccess::create());
+        Htaccess::create();
     }
 }
