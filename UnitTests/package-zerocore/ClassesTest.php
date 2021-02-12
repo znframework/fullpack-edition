@@ -4,9 +4,8 @@ class ClassesTest extends ZerocoreExtends
 {
     public function testClass()
     {
-        $this->assertIsString(Classes::class('CacheExtends'));
-        $this->assertIsString(Classes::class('ExampleClass'));
-        $this->assertIsString(Classes::class('zn\classestest'));
+        $this->assertIsString(Classes::class('example'));
+        $this->assertIsString(Classes::class('project\controllers\home'));
     }
 
     public function testReflection()
@@ -44,7 +43,12 @@ class ClassesTest extends ZerocoreExtends
 
     public function testPropertyExists()
     {
-        $this->assertTrue(Classes::methodExists('ZN\Database\DB', 'table'));
+        $this->assertTrue(Classes::propertyExists('ZN\Database\DB', 'table'));
+    }
+
+    public function testMethods()
+    {
+        $this->assertIsArray(Classes::methods('ZN\Database\DB', 'table'));
     }
 
     public function testVars()

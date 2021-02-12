@@ -1,7 +1,9 @@
 <?php namespace ZN;
 
+use File;
 use Folder;
 use Butcher;
+use Generate;
 
 class ButcherTest extends ZerocoreExtends
 {
@@ -10,6 +12,18 @@ class ButcherTest extends ZerocoreExtends
         Folder::copy(self::resources . 'theme.zip', BUTCHERY_DIR . 'theme.zip');
         Butcher::runDelete('Example');
         Butcher::runDelete('Example', 'external');
+    }
+
+    public function testRunMultiple()
+    {
+        Folder::create(BUTCHERY_DIR);
+        Folder::copy(self::resources . 'theme.zip', BUTCHERY_DIR . 'theme1.zip');
+        Folder::copy(self::resources . 'theme.zip', BUTCHERY_DIR . 'theme2.zip');
+        
+        File::zipExtract(BUTCHERY_DIR . 'theme1.zip');
+        File::zipExtract(BUTCHERY_DIR . 'theme2.zip');
+
+        Butcher::runDelete('multiple');
     }
 
     public function testExtract()
@@ -69,6 +83,8 @@ class ButcherTest extends ZerocoreExtends
         {
             $this->assertStringContainsString('[project]', $e->getMessage());
         }
+
+        $this->assertIsObject(Butcher::location('project'));
     }
 
     public function testDefaultProjectFileException()
@@ -81,5 +97,5 @@ class ButcherTest extends ZerocoreExtends
         {
             $this->assertEquals('`unknownfile.zip` file was not found!', $e->getMessage());
         }
-    }   
+    } 
 }

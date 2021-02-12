@@ -23,4 +23,15 @@ class ConfigTest extends ZerocoreExtends
         $this->assertIsString(Config::iniget('post_max_size'));
         $this->assertIsArray(Config::iniget(['post_max_size']));
     }
+
+    public function testIniGetAll()
+    {
+        $this->assertIsArray(Config::iniGetAll());
+        $this->assertIsArray(Config::iniGetAll('odbc'));
+    }
+
+    public function testIniRestore()
+    {
+        $this->assertNull(Config::iniRestore('post_max_size'));
+    }
 }
