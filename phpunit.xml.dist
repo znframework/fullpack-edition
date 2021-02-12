@@ -86,7 +86,6 @@
                 <file>./Internal/package-zerocore/Coalesce.php</file>
                 <file>./Internal/package-zerocore/Command.php</file>
                 <file>./Internal/package-zerocore/Composer.php</file>
-                <file>./Internal/package-zerocore/Controller.php</file>
                 <file>./Internal/package-zerocore/Config.php</file>
                 <file>./Internal/package-zerocore/Functions.php</file>
                 <file>./Internal/package-zerocore/Htaccess.php</file>
@@ -95,7 +94,6 @@
                 <file>./Internal/package-zerocore/Ini.php</file>
                 <file>./Internal/package-zerocore/IS.php</file>
                 <file>./Internal/package-zerocore/Kernel.php</file>
-                <file>./Internal/package-zerocore/Lang.php</file>
                 <file>./Internal/package-zerocore/ZN.php</file>
             </exclude>
         </whitelist>

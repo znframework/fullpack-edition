@@ -55,5 +55,23 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
         {
      
         };
+
+        $this->controllerMock = new class extends Controller
+        {
+            const restore = [];
+            const extract = true;
+
+            public function __construct()
+            {
+                Inclusion\Project\View::$data['example'] = 'Example';
+
+                parent::__construct();
+            }
+
+            public function run()
+            {
+                return $this->example;
+            }
+        };
     }
 }
