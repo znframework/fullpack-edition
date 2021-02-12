@@ -74,12 +74,9 @@ class Response
             header('Refresh:'.$time.'; url='.$url);
         }
 
-        if( $exit === true )
+        if( $exit === true && ! defined('ZN_REDIRECT_NOEXIT') )
         {
-            if( ! defined('ZN_REDIRECT_NOEXIT') )
-            {
-                exit;
-            }   
+            exit; 
         }
     }
 }

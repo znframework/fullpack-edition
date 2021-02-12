@@ -45,7 +45,7 @@ class Restoration
     {
         $restorationMachinesIP = self::getRestorationConfig()['machinesIP'];
 
-        if( PROJECT_MODE === 'restoration' || $manipulation !== NULL)
+        if( (defined('PROJECT_MODE') && PROJECT_MODE === 'restoration') || $manipulation !== NULL)
         {
             $ipv4 = Request::ipv4();
 

@@ -48,5 +48,10 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 return 'ExampleClass';
             }
         };
+
+        $this->modelMock = new class extends Model
+        {
+     
+        };
     }
 }

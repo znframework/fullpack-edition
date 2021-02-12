@@ -47,5 +47,6 @@ class OutputTest extends ZerocoreExtends
 
         $this->assertStringContainsString('integer</span> <span style="color:green;">1</span>', $result);
         $this->assertStringContainsString('integer</span> <span style="color:green;">1</span>', Output::display([1], [], true));
+        $this->assertStringContainsString('foo', Output::display((object)['zoo' => (object)['foo' => 'foo', true, 1]], [], true));
     }
 }

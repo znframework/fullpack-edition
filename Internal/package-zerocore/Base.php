@@ -341,7 +341,7 @@ class Base
         $str .= $message;
         $str .= '</div>';
 
-        if( $exit )
+        if( $exit === true && ! defined('ZN_REDIRECT_NOEXIT') )
         {
             exit($str);
         }
@@ -371,7 +371,7 @@ class Base
         $output .= '| ' . $message . ' |' . CRLF;
         $output .= $repeat;
 
-        if( $exit )
+        if( $exit === true && ! defined('ZN_REDIRECT_NOEXIT') )
         {
             exit($output);
         }
