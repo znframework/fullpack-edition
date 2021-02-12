@@ -92,7 +92,6 @@
                 <file>./Internal/package-zerocore/Hypertext.php</file>
                 <file>./Internal/package-zerocore/In.php</file>
                 <file>./Internal/package-zerocore/Ini.php</file>
-                <file>./Internal/package-zerocore/IS.php</file>
                 <file>./Internal/package-zerocore/Kernel.php</file>
                 <file>./Internal/package-zerocore/ZN.php</file>
             </exclude>
