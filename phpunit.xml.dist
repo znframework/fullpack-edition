@@ -97,8 +97,6 @@
                 <file>./Internal/package-zerocore/Kernel.php</file>
                 <file>./Internal/package-zerocore/Lang.php</file>
                 <file>./Internal/package-zerocore/Model.php</file>
-                <file>./Internal/package-zerocore/Output.php</file>
-                <file>./Internal/package-zerocore/Regex.php</file>
                 <file>./Internal/package-zerocore/Restoration.php</file>
                 <file>./Internal/package-zerocore/Response.php</file>
                 <file>./Internal/package-zerocore/ZN.php</file>

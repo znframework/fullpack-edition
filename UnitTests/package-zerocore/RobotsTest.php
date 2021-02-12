@@ -4,9 +4,30 @@ use File;
 
 class RobotsTest extends ZerocoreExtends
 {
-    public function testCreate()
+    public function testMulticreate()
     {
-        $this->assertFalse(Robots::create());
+        File::delete('robots.txt');
+        
+        Config::set('Robots', 
+        [
+            'createFile' => true,
+            'rules' => 
+            [
+                [
+                    'userAgent' => '*',
+                    'allow'     => [],
+                    'disallow'  =>
+                    [
+                        '/External/',
+                        '/Internal/',
+                        '/Projects/',
+                        '/Settings/'
+                    ]
+                ]
+            ]
+        ]);
+        
+        $this->assertTrue(Robots::create());
     }
 
     public function testRecreate()
@@ -16,26 +37,8 @@ class RobotsTest extends ZerocoreExtends
         $this->assertTrue(Robots::create());
     }
 
-    public function testMulticreate()
+    public function testCreate()
     {
-        File::delete('robots.txt');
-
-        Config::set('Robots', 
-        [
-            'rules' => 
-            [
-                'userAgent' => '*',
-                'allow'     => [],
-                'disallow'  =>
-                [
-                    '/External/',
-                    '/Internal/',
-                    '/Projects/',
-                    '/Settings/'
-                ]
-            ]
-        ]);
-
-        $this->assertTrue(Robots::create());
+        $this->assertFalse(Robots::create());
     }
 }
