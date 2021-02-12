@@ -296,6 +296,3 @@ class Restoration
         return Config::get('Project', 'restoration');
     }
 }
-
-# Alias Restoration
-class_alias('ZN\Restoration', 'Restoration');

@@ -31,8 +31,6 @@ class RestorationTest extends ZerocoreExtends
         $this->assertNull(Restoration::mode(['machinesIP' => '127.0.0.2']));
 
         $this->assertNull(Restoration::mode(['machinesIP' => '127.0.0.2', 'functions' => ['all', 'main' => 'x', 'main']]));
-
-        $this->assertNull(\Restoration::mode(['machinesIP' => '127.0.0.2']));
     }
 
     public function testStart()
