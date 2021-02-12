@@ -12,9 +12,11 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
         {
             public function mockCreateClassMapTopOutput(&$output)
             {
-                self::$path = 'unknown';
+                self::$path = 'unknownxxx';
 
                 $this->createClassMapTopOutput($output);
+
+                self::$path = PROJECT_DIR . 'ClassMap.php';
             }
 
             public function mockAliases()
