@@ -17,7 +17,7 @@ class File extends Factory
     [
         'methods' =>
         [   
-            'copy'            => 'Forge::copyFolder',
+            'copy'            => 'Forge::copy',
             'settings'        => 'Transfer::settings',
             'upload'          => 'Transfer::upload',
             'download'        => 'Transfer::download',

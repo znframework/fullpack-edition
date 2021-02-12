@@ -4,9 +4,9 @@ class ClassesTest extends ZerocoreExtends
 {
     public function testClass()
     {
-        $this->assertEquals('zn\cache\cacheextends', Classes::class('CacheExtends'));
-        $this->assertStringContainsString('UnitTests/extends/resources/InternalExampleClass.php', Classes::class('ExampleClass'));
-        $this->assertEquals('zn\classestest', Classes::class('zn\classestest'));
+        $this->assertIsString(Classes::class('CacheExtends'));
+        $this->assertIsString(Classes::class('ExampleClass'));
+        $this->assertIsString(Classes::class('zn\classestest'));
     }
 
     public function testReflection()
