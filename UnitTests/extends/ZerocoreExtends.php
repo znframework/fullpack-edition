@@ -32,5 +32,13 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 return $this->getClassNamespace($facade, $namespace);
             }
         };
+
+        $this->supportMock = new class extends Support
+        {
+            public function mockLoaded($name, $value, $func, $error)
+            {
+                return $this->_loaded($name, $value, $func, $error);
+            }
+        };
     }
 }
