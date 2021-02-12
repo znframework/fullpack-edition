@@ -22,12 +22,8 @@ function length($data) : Int
     {
         return strlen($data);
     }
-    else if( is_object($data) || is_array($data) )
-    {
-        return count($data);
-    }
-
-    return 0;
+    
+    return count((array) $data);
 }
 
 /**
