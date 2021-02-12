@@ -37,7 +37,7 @@ class Classes
     {
         if( ! is_object($object) )
         {
-            throw new InvalidArgumentException('Error', 'objectParameter', '2.($object)');
+            throw new Exception\InvalidArgumentException('Error', 'objectParameter', '2.($object)');
         }
 
         return is_a($object, self::_class($className));
