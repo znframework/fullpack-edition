@@ -293,14 +293,7 @@ class Htaccess
 
         $file = '.htaccess';
 
-        if( is_file($file) )
-        {
-            $getContents = trim(file_get_contents($file));
-        }
-        else
-        {
-            $getContents = '';
-        }
+        $getContents = is_file($file) ? trim(file_get_contents($file)) : '';
 
         $htaccess .= EOL . '#----------------------------------------------------------------------';
         $htaccess  = trim($htaccess);
@@ -310,9 +303,6 @@ class Htaccess
             return false;
         }
 
-        if( ! file_put_contents($file, trim($htaccess)) )
-        {
-            throw new \Exception('Error', 'fileNotWrite', $file);
-        }
+        return (bool) file_put_contents($file, trim($htaccess));
     }
 }
