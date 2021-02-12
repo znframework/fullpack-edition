@@ -73,6 +73,11 @@ class ButcherTest extends ZerocoreExtends
         $this->assertIsObject(Butcher::application('Frontend'));
     }
 
+    public function testCleanComments()
+    {
+        $this->assertIsObject(Butcher::cleanComments());
+    }
+
     public function testLocationException()
     {
         try
