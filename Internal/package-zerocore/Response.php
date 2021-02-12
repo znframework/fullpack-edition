@@ -76,7 +76,10 @@ class Response
 
         if( $exit === true )
         {
-            exit;
+            if( ! defined('ZN_REDIRECT_NOEXIT') )
+            {
+                exit;
+            }   
         }
     }
 }
