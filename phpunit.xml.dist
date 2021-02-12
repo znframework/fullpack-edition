@@ -106,7 +106,6 @@
                 <file>./Internal/package-zerocore/Structure.php</file>
                 <file>./Internal/package-zerocore/Support.php</file>
                 <file>./Internal/package-zerocore/Tester.php</file>
-                <file>./Internal/package-zerocore/Wizard.php</file>
                 <file>./Internal/package-zerocore/ZN.php</file>
             </exclude>
         </whitelist>
