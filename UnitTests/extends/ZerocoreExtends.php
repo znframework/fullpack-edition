@@ -40,5 +40,13 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 return $this->_loaded($name, $value, $func, $error);
             }
         };
+
+        $this->staticAccessMock = new class extends StaticAccess
+        {
+            public static function getClassName()
+            {
+                return 'ExampleClass';
+            }
+        };
     }
 }
