@@ -158,5 +158,15 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 $this->success = $success;
             }
         };
+
+        $this->baseControllerMock = new class extends Controller\Base
+        {
+            
+        };
+
+        $this->callControllerMock = new class extends Controller\Call
+        {
+            
+        };
     }
 }

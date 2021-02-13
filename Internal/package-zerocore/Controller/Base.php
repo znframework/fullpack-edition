@@ -25,8 +25,10 @@ class Base
     {
         if( ! isset($this->$class) )
         {
-            return $this->$class = Singleton::class($class);
+            $this->$class = Singleton::class($class);
         }
+
+        return $this->$class;
     }
 
     /**
