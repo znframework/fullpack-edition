@@ -116,7 +116,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             in_array(self::$errorCodes[$no] ?? NULL, $projectError['exitErrors'] ?? [], true) 
         )
         {
-            defined('ZN_REDIRECT_NOEXIT') || exit($table);
+            defined('ZN_REDIRECT_NOEXIT') || exit($table); // @codeCoverageIgnore
         }
 
         echo $table;
@@ -182,7 +182,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
         if( in_array($no, $projects['escapeErrors'], true) || in_array(self::$errorCodes[$no] ?? NULL, $projects['escapeErrors'], true) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         $wizardErrorData = self::getTemplateWizardErrorData($file, $line);
@@ -214,49 +214,6 @@ class Exceptions extends \Exception implements ExceptionsInterface
     }
 
     /**
-     * Trace finder
-     * 
-     * @param array $trace
-     * @param int   $p1 = 2
-     * @param int   $p2 = 0
-     * 
-     * @return array
-     */
-    protected static function traceFinder($trace, $p1 = 2, $p2 = 0)
-    {
-        if
-        (
-            isset($trace[$p1]['class']) &&
-            self::cleanInternalPrefixFromClassName($trace[$p1]['class']) === 'StaticAccess' &&
-            $trace[$p1]['function'] === '__callStatic'
-        )
-        {
-            $traceInfo = $trace[$p1];
-
-            $traceInfo['class']    = $trace[$p2]['class']    ?? $trace[$p1]['class'];
-            $traceInfo['function'] = $trace[$p2]['function'] ?? $trace[$p1]['function'];
-        }
-        else
-        {
-            $traceInfo = $trace[$p2] ?? self::traceFinder(debug_backtrace(2), 8, 6);
-        }
-
-        if( ! isset($traceInfo['class']) )
-        {
-            $traceInfo['class'] = $traceInfo['function'];
-        }
-
-        return
-        [
-            'class'    => self::cleanInternalPrefixFromClassName($traceInfo['class']),
-            'function' => $traceInfo['function'],
-            'file'     => $traceInfo['file'],
-            'line'     => $traceInfo['line'],
-            'trace'    => $trace
-        ];
-    }
-
-    /**
      * Throw finder
      * 
      * @param array $trace
@@ -270,12 +227,14 @@ class Exceptions extends \Exception implements ExceptionsInterface
         $classInfo = $trace[$p1];
         $fileInfo  = $trace[$p2];
 
+        // @codeCoverageIgnoreStart
         if( ! isset($classInfo['class']) && isset($classInfo['function']) )
         {
             $classInfo['class'] = $classInfo['function'];
             $fileInfo['file']   = $classInfo['file'];
             $fileInfo['line']   = $classInfo['line'];
         }
+        // @codeCoverageIgnoreEnd
 
         return
         [
@@ -293,6 +252,8 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * @param void
      * 
      * @return string|null
+     * 
+     * @codeCoverageIgnore
      */
     protected static function getTemplateWizardErrorData($file, $line)
     {
@@ -315,6 +276,8 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
     /**
      * Protected search error wizard file
+     * 
+     * @codeCoverageIgnore
      */
     protected static function searchErrorWizardFile($args, &$file, &$line)
     {
@@ -341,6 +304,8 @@ class Exceptions extends \Exception implements ExceptionsInterface
 
     /**
      * Protected is wizard or standart file exists
+     * 
+     * @codeCoverageIgnore
      */
     protected static function isWizardOrStandartFileExists(&$file, $trace)
     {
