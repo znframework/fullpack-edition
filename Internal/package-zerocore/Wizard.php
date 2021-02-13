@@ -106,16 +106,18 @@ class Wizard
      */
     protected static function callableJS()
     {
+        $array = [];
+
         if( self::$config['callableJS'] ?? true )
         {
             $array    =
             [
                 '/(function\((.*?)\)\s*)*(use\(.*?\)\s*)*\{\<(\s)/s' => 'function($2)$3{$4?>',  # Function
                 '/(\s)\>\}/s'                                        => '$1<?php }'
-            ];
-
-            return $array;
+            ];   
         }
+
+        return $array;
     }
 
     /**
