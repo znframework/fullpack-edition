@@ -73,7 +73,7 @@
                 <directory>./Internal/package-xml/Exception</directory>
                 <directory>./Internal/package-zerocore/Ability/Exception</directory>
                 <directory>./Internal/package-zerocore/Config</directory>
-                <directory>./Internal/package-zerocore/ErrorHandling</directory>
+                <directory>./Internal/package-zerocore/ErrorHandling/Resources</directory>
                 <directory>./Internal/package-zerocore/Facades</directory>
                 <directory>./Internal/package-zerocore/Inclusion</directory>
                 <directory>./Internal/package-zerocore/Lang</directory>
