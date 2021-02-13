@@ -76,7 +76,7 @@ class Response
 
         if( $exit === true && ! defined('ZN_REDIRECT_NOEXIT') )
         {
-            exit; 
+            exit; // @codeCoverageIgnore
         }
     }
 }
