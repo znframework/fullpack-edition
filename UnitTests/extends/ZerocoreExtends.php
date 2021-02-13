@@ -73,5 +73,26 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 return $this->example;
             }
         };
+
+        $this->configurableMock = new class
+        {
+            use Ability\Configurable;
+        };
+
+        $this->containerMock = new class
+        {
+            use Ability\Container;
+
+            public function __construct()
+            {
+                self::$container = new class
+                {
+                    public function run()
+                    {
+                        return true;
+                    }
+                };
+            }
+        }; 
     }
 }

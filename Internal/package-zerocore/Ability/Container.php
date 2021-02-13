@@ -65,13 +65,15 @@ trait Container
             throw new UnsupportedDriverException(NULL, ['%' => $origin, '#' => __CLASS__]);
         }
 
+        // @codeCoverageIgnoreStart
         return Singleton::class($class);
+        // @codeCoverageIgnoreEnd
     }
 
     /**
-     * Protected call
+     * Protected static call
      */
-    protected function call($method, $parameters)
+    protected static function call($method, $parameters)
     {
         if( method_exists(self::$container, $method) )
         {
