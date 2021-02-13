@@ -107,7 +107,7 @@ class Lang
 
             if( is_file($langDir) && ! IS::import($langDir) )
             {
-                self::$lang[$file] = require $langDir;
+                self::$lang[$file] = require $langDir; // @codeCoverageIgnore
             }
             elseif( is_file($commonLangDir) && ! IS::import($commonLangDir) )
             {
@@ -199,6 +199,7 @@ class Lang
         }
         else
         {
+            // @codeCoverageIgnoreStart
             if( $_SESSION[$defaultSystemLanguageData] !== $default )
             {
                 $_SESSION[$defaultSystemLanguageData] = $default;
@@ -206,6 +207,7 @@ class Lang
 
                 return $default;
             }
+            // @codeCoverageEnd
         }
 
         if( empty($_SESSION[$systemLanguageData]) )

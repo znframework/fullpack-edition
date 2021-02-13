@@ -35,4 +35,9 @@ class LangTest extends ZerocoreExtends
         $this->assertFalse(\Lang::default((object)['a' => 1])::select('errorsy'));
         $this->assertFalse(\Lang::default(['a' => 1])::select('errorsy'));
     }
+
+    public function testSelect()
+    {
+        $this->assertEquals('`%` table is not exists!', Lang::select('Database', 'tableNotExistsError', []));
+    }
 }
