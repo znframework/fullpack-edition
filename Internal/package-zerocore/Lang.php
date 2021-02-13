@@ -207,7 +207,7 @@ class Lang
 
                 return $default;
             }
-            // @codeCoverageEnd
+            // @codeCoverageIgnoreEnd
         }
 
         if( empty($_SESSION[$systemLanguageData]) )
