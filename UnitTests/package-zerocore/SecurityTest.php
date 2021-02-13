@@ -1,5 +1,7 @@
 <?php namespace ZN;
 
+use Post;
+
 class SecurityTest extends ZerocoreExtends
 {
     public function testValidCSSRFToken()
