@@ -153,6 +153,12 @@ class ZN
         # immediately after the auto installer.
         Base::layer('TopBottom');
 
+        # Enables the ob_gzhandler method if it is turned on.
+        define('HTACCESS_CONFIG', Config::get('Htaccess'));
+    
+        # OB process is starting.
+        Buffering::start();
+ 
         # Run Kernel
         try 
         { 
@@ -172,6 +178,9 @@ class ZN
         # Creates a table that calculates the operating performance of the system. 
         # To open this table, follow the steps below.
         In::benchmarkReport();
+
+        # The buffer is being turned off.
+        Buffering::end();
     }
 
     /**

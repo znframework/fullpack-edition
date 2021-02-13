@@ -33,12 +33,6 @@ class Kernel
         # Activates the project mode.
         In::projectMode();
 
-        # Enables the ob_gzhandler method if it is turned on.
-        define('HTACCESS_CONFIG', Config::get('Htaccess'));
-        
-        # OB process is starting.
-        Buffering::start();
-
         # Session process is starting.
         Storage::start();
        
@@ -358,9 +352,6 @@ class Kernel
         {
             Exceptions::restore(); Errors::restore();
         }
-
-        # The buffer is being turned off.
-        Buffering::end();
     }
 
     /**
