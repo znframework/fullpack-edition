@@ -21,12 +21,16 @@ class Controller
     {
         if( defined('static::restore') )
         {
+            // @codeCoverageIgnoreStart
             Restoration::mode(static::restore);
+            // @codeCoverageIgnoreEnd
         }
 
         if( defined('static::extract') || Config::starting('extractViewData') === true ) foreach( View::$data as $key => $val )
         {
+            // @codeCoverageIgnoreStart
             $this->$key = $val;
+            // @codeCoverageIgnoreEnd
         }
         
         View::getZNClassInstance($this);
