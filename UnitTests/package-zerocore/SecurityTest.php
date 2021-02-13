@@ -2,8 +2,15 @@
 
 class SecurityTest extends ZerocoreExtends
 {
-    public function testCreateNewInstance()
+    public function testValidCSSRFToken()
     {
         $this->assertFalse(Security::validCSRFToken('token', 'get'));
+    }
+
+    public function testCSRFToken()
+    {
+        Post::token('unknown');
+
+        $this->assertNull(Security::CSRFToken('redirect/page'));
     }
 }
