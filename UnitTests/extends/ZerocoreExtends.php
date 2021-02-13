@@ -159,6 +159,11 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
             }
         };
 
+        $this->revolvingMock = new class
+        {
+            use Ability\Revolving;
+        };
+
         $this->baseControllerMock = new class extends Controller\Base
         {
             
