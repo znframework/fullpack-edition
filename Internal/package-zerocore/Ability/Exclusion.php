@@ -69,10 +69,12 @@ trait Exclusion
      * @param void
      * 
      * @return void
+     * 
+     * @codeCoverageIgnore
      */
     public function continue()
     {
-        echo Exceptions::continue($this->getMessage(), $this->getFile(), $this->getLine()); // @codeCoverageIgnore
+        echo Exceptions::continue($this->getMessage(), $this->getFile(), $this->getLine());
     }
 
     /**

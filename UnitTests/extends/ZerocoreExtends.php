@@ -139,7 +139,7 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
 
         $this->functionalizationFalseMock = new class
         {
-            use Ability\Factory;
+            use Ability\Functionalization;
 
             const functionalization = [];
         };
