@@ -44,13 +44,13 @@ trait Driver
         # If the parent has a method of building a class, then that method is introduced.
         if( method_exists(get_parent_class() ?: '', '__construct'))
         {
-            parent::__construct();
+            parent::__construct(); // @codeCoverageIgnore
         }
         
         # If parent class does not contain driver constant, the operation is stopped.
         if( ! defined('static::driver') )
         {
-            throw new UndefinedConstException('[const driver] is required to use the [Driver Ability]!');
+            throw new UndefinedConstException('[const driver] is required to use the [Driver Ability]!'); // @codeCoverageIgnore
         }
 
         # 5.3.42|5.4.5|5.6.0[edited]

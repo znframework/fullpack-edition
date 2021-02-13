@@ -95,7 +95,7 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
             }
         }; 
 
-        $this->driverMock = new class extends Prompt\Processor
+        $this->driverMock = new class
         {
             use Ability\Driver;
 
@@ -106,7 +106,7 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 return $this->setNullDefaultDriverName();
             }
         };
-
+    
         $this->factoryFalseMock = new class
         {
             use Ability\Factory;
