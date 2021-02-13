@@ -72,6 +72,8 @@
                 <directory>./Internal/package-validation/Exception</directory>
                 <directory>./Internal/package-xml/Exception</directory>
                 <directory>./Internal/package-zerocore/Ability/Exception</directory>
+                <directory>./Internal/package-zerocore/Config</directory>
+                <directory>./Internal/package-zerocore/Controller</directory>
                 <directory>./Internal/package-zerocore/ErrorHandling</directory>
                 <directory>./Internal/package-zerocore/Exception</directory>
                 <directory>./Internal/package-zerocore/Facades</directory>
