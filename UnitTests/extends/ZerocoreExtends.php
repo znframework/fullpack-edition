@@ -94,5 +94,17 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 };
             }
         }; 
+
+        $this->driverMock = new class extends Prompt\Processor
+        {
+            use Ability\Driver;
+
+            const driver = ['options' => ['openssl'], 'namespace' => 'ZN\Cryptography\Drivers'];
+
+            public function mockSetNullDefaultDriverName()
+            {
+                return $this->setNullDefaultDriverName();
+            }
+        };
     }
 }
