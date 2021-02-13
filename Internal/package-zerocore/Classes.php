@@ -191,7 +191,7 @@ class Classes
         $flipClassMap        = array_flip($classMap['namespaces'] ?? []);
         $lowerClass          = $lowerInternalAccess.$lowerName;
 
-        # @codeCoverageIgnoreStart
+        // @codeCoverageIgnoreStart
         if( ! empty($flipClassMap[$lowerName]) )
         {
             return $flipClassMap[$lowerName];
@@ -204,7 +204,7 @@ class Classes
         {
             return $classMap['classes'][$lowerClass];
         }
-        # @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         else
         {
             return $name;
