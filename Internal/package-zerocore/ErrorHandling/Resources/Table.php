@@ -94,4 +94,4 @@ code{
         </div>
     </div>
 </div>
-<?php exit;
+<?php defined('ZN_REDIRECT_NOEXIT') || exit;

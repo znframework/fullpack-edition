@@ -49,6 +49,8 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * @param void
      * 
      * @return string
+     * 
+     * @codeCoverageIgnore
      */
     public function __toString()
     {
@@ -114,7 +116,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             in_array(self::$errorCodes[$no] ?? NULL, $projectError['exitErrors'] ?? [], true) 
         )
         {
-            exit($table);
+            defined('ZN_REDIRECT_NOEXIT') || exit($table);
         }
 
         echo $table;
@@ -194,7 +196,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
             'trace'   => $trace
         ];
 
-        ob_end_clean();
+        ob_end_clean(); 
         
         return Inclusion\View::use('Table', $exceptionData, true, __DIR__ . '/Resources/');
     }
