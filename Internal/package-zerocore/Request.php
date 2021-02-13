@@ -122,7 +122,7 @@ class Request
 
                 if( strlen($isLang) === 2 )
                 {
-                    $currentLang = $isLang;
+                    $currentLang = $isLang; // @codeCoverageIgnore
                 }
 
                 $currentUri = In::cleanURIPrefix($currentUri, $currentLang);
