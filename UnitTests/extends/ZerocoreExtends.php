@@ -106,5 +106,30 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 return $this->setNullDefaultDriverName();
             }
         };
+
+        $this->factoryFalseMock = new class
+        {
+            use Ability\Factory;
+        };
+
+        $this->factoryInvalidMethodMock = new class
+        {
+            use Ability\Factory;
+
+            const factory = 
+            [
+                'methods' => ['run']
+            ];
+        };
+
+        $this->factoryInvalidClassMock = new class
+        {
+            use Ability\Factory;
+
+            const factory = 
+            [
+                'methods' => ['read' => '12345::read']
+            ];
+        };
     }
 }

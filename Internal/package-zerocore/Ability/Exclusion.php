@@ -72,7 +72,7 @@ trait Exclusion
      */
     public function continue()
     {
-        echo Exceptions::continue($this->getMessage(), $this->getFile(), $this->getLine());
+        echo Exceptions::continue($this->getMessage(), $this->getFile(), $this->getLine()); // @codeCoverageIgnore
     }
 
     /**
