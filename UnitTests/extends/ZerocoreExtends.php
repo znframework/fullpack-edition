@@ -79,6 +79,11 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
             use Ability\Configurable;
         };
 
+        $this->speechMock = new class
+        {
+            use Ability\Speech;
+        };
+
         $this->containerMock = new class
         {
             use Ability\Container;
@@ -137,6 +142,21 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
             use Ability\Factory;
 
             const functionalization = [];
+        };
+
+        $this->informationMock = new class
+        {
+            use Ability\Information;
+
+            public function mockError($error)
+            {
+                $this->error = $error;
+            }
+
+            public function mockSuccess($success)
+            {
+                $this->success = $success;
+            }
         };
     }
 }
