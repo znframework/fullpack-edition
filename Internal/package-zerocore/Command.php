@@ -23,7 +23,6 @@ class Command extends Base
         # If the operation is executed via console, the code flow is not continue.  
         if( ! defined('CONSOLE_ENABLED') )
         {
-           
             throw new Exception('Commands', 'canNotCommandClass'); // @codeCoverageIgnore
         }
     }
