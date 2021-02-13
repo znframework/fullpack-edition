@@ -131,5 +131,12 @@ class ZerocoreExtends extends \ZN\Test\GlobalExtends
                 'methods' => ['read' => '12345::read']
             ];
         };
+
+        $this->functionalizationFalseMock = new class
+        {
+            use Ability\Factory;
+
+            const functionalization = [];
+        };
     }
 }

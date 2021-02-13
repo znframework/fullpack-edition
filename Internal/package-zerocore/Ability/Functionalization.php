@@ -32,5 +32,7 @@ trait Functionalization
         {
             return parent::__call($method, $parameters);
         }
+
+        return false;
     }
 }
