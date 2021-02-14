@@ -316,11 +316,13 @@ class Kernel
             {
                 $usableView = self::viewLoader($wizardPath);
             }
+            // @codeCoverageIgnoreStart
             # If the file can not be loaded, the attempt is made to load the file with the standard extension.
             elseif( is_file($viewPath) )
             {
-                $usableView = self::viewLoader($viewPath); // @codeCoverageIgnore
+                $usableView = self::viewLoader($viewPath);
             }
+            // @codeCoverageIgnoreEnd
         }
 
         # It is checked whether data is sent to the masterpage. 
@@ -342,11 +344,13 @@ class Kernel
         {
             (new Inclusion\Masterpage)->headData($data)->bodyContent($usableView)->use($data);
         }
+        // @codeCoverageIgnoreStart
         # Otherwise, it prints without using the masterpage.
         elseif( ! empty($usableView) )
         {
-            echo $usableView; // @codeCoverageIgnore
+            echo $usableView;
         }
+        // @codeCoverageIgnoreEnd
     }
     
     /** 
@@ -411,7 +415,7 @@ class Kernel
     {   
         if( empty(AUTOLOAD_DIR) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
         
         # It is specified whether the subfile scanning can be done or not.

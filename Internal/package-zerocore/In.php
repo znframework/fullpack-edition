@@ -37,6 +37,8 @@ class In
      * Changes project mode
      * 
      * @return void
+     * 
+     * @codeCoverageIgnore
      */
     public static function projectMode()
     {
@@ -81,6 +83,7 @@ class In
         # Gets the data from Config/Routing.php file.
         $routingRequestMethods = Config::get('Routing', 'requestMethods');
 
+        // @codeCoverageIgnoreStart
         # It decides which request methods are allowed or not.
         if( $requestMethodsByType = $routingRequestMethods[$authorizationType] )
         {
@@ -97,6 +100,7 @@ class In
                 }
             }
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -134,7 +138,7 @@ class In
     {
         if( self::isSubdomain() )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return (CURRENT_PROJECT === DEFAULT_PROJECT ? '' : Base::suffix(CURRENT_PROJECT));
@@ -241,7 +245,7 @@ class In
         {
             if( is_string($destruct) )
             {
-                self::startingController($destruct);
+                self::startingController($destruct); // @codeCoverageIgnore
             }
             elseif( is_array($destruct) )
             {
@@ -253,7 +257,7 @@ class In
                     }
                     else
                     {
-                        self::startingController($key, $val);
+                        self::startingController($key, $val); // @codeCoverageIgnore
                     }
                 }
             }
@@ -280,7 +284,7 @@ class In
         # Virtual Controller - Added[5.6.0]
         if( ! is_file($controllerFile) )
         {
-            $controllerFile = EXTERNAL_CONTROLLERS_DIR . $suffixExtension;
+            $controllerFile = EXTERNAL_CONTROLLERS_DIR . $suffixExtension; // @codeCoverageIgnore
         }
 
         if( is_file($controllerFile) )
@@ -292,16 +296,19 @@ class In
 
             Base::import($controllerFile);
 
+            // @codeCoverageIgnoreStart
             if( ! method_exists($controllerClass, $controllerFunc) || ! (new ReflectionMethod($controllerClass, $controllerFunc))->isPublic() )
             {
                 Helper::report('Error', Lang::default('ZN\CoreDefaultLanguage')::select('Error', 'callUserFuncArrayError', $controllerFunc), 'SystemCallUserFuncArrayError');
 
                 throw new Exception('Error', 'callUserFuncArrayError', $controllerFunc);
             }
+            // @codeCoverageIgnoreEnd
 
             $exclude = $controllerClass . '::exclude';
             $include = $controllerClass . '::include';
 
+            // @codeCoverageIgnoreStart
             // Note: Added Control 5.2.0
             if( defined($exclude) )
             {
@@ -310,7 +317,7 @@ class In
                     return false;
                 }
             }
-
+     
             // Note: Added Control 5.2.0
             if( defined($include) )
             {
@@ -319,6 +326,7 @@ class In
                     return false;
                 }
             }
+            // @codeCoverageIgnoreEnd
 
             # The reflection of the active controller is being taken.
             $reflector = new ReflectionClass($controllerClass);
@@ -332,7 +340,7 @@ class In
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 
@@ -352,7 +360,7 @@ class In
         # If the constructor method is not available, it skips this step.
         if( $function === '__construct' && ! method_exists($page, $function) )
         {
-            return $getExportParameters;
+            return $getExportParameters; // @codeCoverageIgnore
         }
 
         # The parameter reflection of the active controller method is being taken.
@@ -360,6 +368,7 @@ class In
    
         if( $getMethod->hasReturnType() )
         {
+            // @codeCoverageIgnoreStart
             if( IS::phpVersion('7.4') )
             {
                 $getReturnType = $getMethod->getReturnType()->getName();
@@ -367,7 +376,8 @@ class In
             else
             {
                 $getReturnType = (string) $getMethod->getReturnType();
-            }         
+            }     
+            // @codeCoverageIgnoreEnd    
         }
 
         # Resolving is started in case of the current match.
@@ -386,6 +396,7 @@ class In
                     $parameterType = NULL;
                 }
             }
+            // @codeCoverageIgnoreStart
             else
             {
                 preg_match
@@ -411,6 +422,7 @@ class In
                 # The controller is creating injections of the corresponding method.
                 $getExportParameters[] = $class;
             }
+            // @codeCoverageIgnoreEnd
         }
 
         # Parameters are being sent.
@@ -436,7 +448,7 @@ class In
     {
         if( empty(ROUTES_DIR) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         $externalRouteFiles = (array) glob(EXTERNAL_ROUTES_DIR . ($fix = '*.php'));
@@ -476,7 +488,7 @@ class In
             }
             else
             {
-                $requestUri = Singleton::class('ZN\Regex')->replace($key, $val, $requestUri, 'xi');
+                $requestUri = Singleton::class('ZN\Regex')->replace($key, $val, $requestUri, 'xi'); // @codeCoverageIgnore
             }
         }
 
