@@ -90,7 +90,7 @@ class PermissionExtends
             return $return[$ptype];
         }
 
-        return $return;
+        return $return; // @codeCoverageIgnore
     }
 
     /**
@@ -113,7 +113,7 @@ class PermissionExtends
             {
                 if( is_string(self::getJsonDataToDatabaseAfterConvertArray($subconfig, $roleId)) )
                 {
-                    $add = $subconfig;
+                    $add = $subconfig; // @codeCoverageIgnore
                 }
                 else
                 {
@@ -189,6 +189,7 @@ class PermissionExtends
 
             $rule = strpos($page[0], '!') === 0 ? substr($page, 1) : $page;
     
+            // @codeCoverageIgnoreStart
             if( $type === 'perm' )
             {
                 if( self::control($currentUrl, $rule, $process, $function) )
@@ -200,6 +201,7 @@ class PermissionExtends
                     self::$result = false;
                 }
             }
+            // @codeCoverageIgnoreEnd
             else
             {
 
@@ -267,7 +269,7 @@ class PermissionExtends
             }
             else
             {
-                Response::redirect($callback);
+                Response::redirect($callback); // @codeCoverageIgnore
             }
         }
     }
@@ -305,7 +307,7 @@ class PermissionExtends
             }
             else
             {
-                $subconfig = $json;
+                $subconfig = $json; // @codeCoverageIgnore
             }      
         }
 

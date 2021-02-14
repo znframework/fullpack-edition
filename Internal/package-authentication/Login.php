@@ -79,7 +79,7 @@ class Login extends UserExtends
 
         if( ! empty($this->activationColumn) )
         {
-            $activationControl = $r->{$this->activationColumn};
+            $activationControl = $r->{$this->activationColumn}; // @codeCoverageIgnore
         }
 
         if
@@ -88,7 +88,7 @@ class Login extends UserExtends
         {
             if( $this->spectator !== NULL )
             {
-                $password = $r->{$this->passwordColumn};
+                $password = $r->{$this->passwordColumn}; // @codeCoverageIgnore
             }
 
             if( ! empty($this->bannedColumn) && ! empty($bannedControl) )
@@ -98,14 +98,14 @@ class Login extends UserExtends
 
             if( ! empty($this->activationColumn) && empty($activationControl) )
             {
-                return $this->setErrorMessage('activationError');
+                return $this->setErrorMessage('activationError'); // @codeCoverageIgnore
             }
 
             $this->startUserSession($username, $password);
 
             if( ! empty($rememberMe) )
             {
-               $this->startPermanentUserSessionWithCookie($username, $password);
+               $this->startPermanentUserSessionWithCookie($username, $password); // @codeCoverageIgnore
             }
 
             if( ! empty($this->activeColumn) )
@@ -117,7 +117,7 @@ class Login extends UserExtends
         }
         else
         {
-            return $this->setErrorMessage('loginError');
+            return $this->setErrorMessage('loginError'); // @codeCoverageIgnore
         }
     }
 
@@ -145,7 +145,7 @@ class Login extends UserExtends
         }
         elseif( $this->userExists($cUsername, $cPassword) )
         {
-            $isLogin = $this->startUserSession($cUsername, $cPassword);
+            $isLogin = $this->startUserSession($cUsername, $cPassword); // @codeCoverageIgnore
         }
         else
         {
@@ -202,13 +202,15 @@ class Login extends UserExtends
 
     /**
      * Protected start permanent user session with cookie
+     * 
+     * @codeCoverageIgnore
      */
     protected function startPermanentUserSessionWithCookie($username, $password)
     {
         if( $this->cookieClass->select($uniqueUsernameKey = $this->getUniqueUsernameKey()) !== $username )
         {
             $this->cookieClass->insert($uniqueUsernameKey, $username);
-            $this->cookieClass->insert($this->getUniquePasswordKey(), $password);
+            $this->cookieClass->insert($this->getUniquePasswordKey(), $password); 
         }
     }
 

@@ -25,12 +25,12 @@ class MemoryUsage
 
         if( ! isset(Properties::$memtests[$restart]) )
         {
-            throw new Exception\InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'start']);        
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'start']); // @codeCoverageIgnore      
         }
 
         if( ! isset(Properties::$memtests[$resend]) )
         {
-            throw new Exception\InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'end']);
+            throw new Exception\InvalidParameterException(NULL, ['&' => 'calculatedMemory', '%' => $result, 'end']); // @codeCoverageIgnore
         }
 
         return Properties::$memtests[$resend] - Properties::$memtests[$restart];

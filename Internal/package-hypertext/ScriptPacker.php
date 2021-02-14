@@ -523,6 +523,7 @@ class ScriptPacker
      * inherent base36 support
      * characters: 0123456789abcdefghijklmnopqrstuvwxyz
      * 
+     * @codeCoverageIgnore
      */
     protected function encode36($charCode) 
     {

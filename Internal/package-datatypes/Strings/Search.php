@@ -70,7 +70,7 @@ class Search
             }
             else
             {
-                $function = 'mb_stristr';
+                $function = 'mb_stristr'; // @codeCoverageIgnore
             }
 
             return $function($str, $needle);
@@ -90,7 +90,7 @@ class Search
             return $function($str, $needle);
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**

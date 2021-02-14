@@ -37,6 +37,7 @@ class Upgrade
         {
             $return = self::fe();
         }
+        // @codeCoverageIgnoreStart
         elseif( ZN::$projectType === 'EIP' )
         {
             $return = self::eip();
@@ -49,6 +50,7 @@ class Upgrade
         {
             $return = self::eip('custom-edition');
         }
+        // @codeCoverageIgnoreEnd
 
         new Result($return);
     }
@@ -60,7 +62,7 @@ class Upgrade
     {
         if( ! empty(ZN::upgrade()) )
         {
-            $status = self::$lang['upgradeSuccess'];
+            $status = self::$lang['upgradeSuccess']; // @codeCoverageIgnore
         }
         else
         {
@@ -68,7 +70,7 @@ class Upgrade
 
             if( $upgradeError = ZN::upgradeError() )
             {
-                $status = $upgradeError;
+                $status = $upgradeError; // @codeCoverageIgnore
             }         
         }
 
@@ -77,6 +79,8 @@ class Upgrade
 
     /**
      * Proteted upgrade EIP
+     * 
+     * @codeCoverageIgnore
      */
     protected static function eip($tag = 'znframework')
     {

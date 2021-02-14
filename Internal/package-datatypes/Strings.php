@@ -80,7 +80,7 @@ class Strings extends Factory
     {
         if( empty($split) )
         {
-            return str_split($string, 1);
+            return str_split($string, 1); // @codeCoverageIgnore
         }
 
         return explode($split, $string);

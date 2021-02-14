@@ -195,11 +195,13 @@ class ScriptParser
 		
 	/**
 	 * reset
+	 * 
+	 * @codeCoverageIgnore
 	 */
 	public function reset() 
 	{
 		# clear the patterns collection so that this object may be re-used
-		$this->patterns = []; // @codeCoverageIgnore
+		$this->patterns = [];
 	}
 	
 	/**

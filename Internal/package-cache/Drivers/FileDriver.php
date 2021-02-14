@@ -97,7 +97,7 @@ class FileDriver extends DriverMappingAbstract
             return true;
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -135,7 +135,7 @@ class FileDriver extends DriverMappingAbstract
         }
         elseif( ! is_numeric($data['data']) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         $newValue = $data['data'] + $increment;
@@ -163,7 +163,7 @@ class FileDriver extends DriverMappingAbstract
         }
         elseif( ! is_numeric($data['data']) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         $newValue = $data['data'] - $decrement;
@@ -238,7 +238,7 @@ class FileDriver extends DriverMappingAbstract
 
             if( ! isset($data['ttl']) )
             {
-                return false;
+                return false; // @codeCoverageIgnore
             }
 
             return
@@ -248,7 +248,7 @@ class FileDriver extends DriverMappingAbstract
             ];
         }
 
-        return [];
+        return []; // @codeCoverageIgnore
     }
 
     /**
@@ -258,7 +258,7 @@ class FileDriver extends DriverMappingAbstract
     {
         if( ! is_dir($this->path) )
         {
-            mkdir($this->path, 0755);
+            mkdir($this->path, 0755); // @codeCoverageIgnore
         }
     }
 
@@ -280,9 +280,9 @@ class FileDriver extends DriverMappingAbstract
 
         if( $data['ttl'] > 0 && time() > $data['time'] + $data['ttl'] )
         {
-            unlink($this->path.$key);
+            unlink($this->path.$key); // @codeCoverageIgnore
 
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return $data;

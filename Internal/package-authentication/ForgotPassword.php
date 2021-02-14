@@ -102,14 +102,14 @@ class ForgotPassword extends UserExtends
                         return $this->setSuccessMessage('forgotPasswordSuccess');
                     }
 
-                    return $this->setErrorMessage('updateError');
+                    return $this->setErrorMessage('updateError'); // @codeCoverageIgnore
                 }
 
                 return $this->setSuccessMessage('forgotPasswordSuccess');
             }
             else
             {
-                return $this->setErrorMessage('emailError');
+                return $this->setErrorMessage('emailError'); // @codeCoverageIgnore
             }
         }
         else
@@ -127,12 +127,14 @@ class ForgotPassword extends UserExtends
 
         if( $this->updateUserPasswordByUsernameAndPassword($username, $password) )
         {
+            // @codeCoverageIgnoreStart
             if( $redirect !== NULL )
             {
                 new Redirect($redirect);
             }
 
             return $this->setSuccessMessage('updateProcessSuccess');
+            // @codeCoverageIgnoreEnd
         }
 
         return $this->setErrorMessage('forgotPasswordError');
@@ -162,7 +164,7 @@ class ForgotPassword extends UserExtends
     {
         if( ! empty($this->emailColumn) )
         {
-            $this->dbClass->where($this->emailColumn, $email);
+            $this->dbClass->where($this->emailColumn, $email); // @codeCoverageIgnore
         }
         else
         {
@@ -200,7 +202,7 @@ class ForgotPassword extends UserExtends
     {
         if( ! empty($this->emailColumn) )
         {
-            $this->dbClass->where($this->emailColumn, $email, 'and');
+            $this->dbClass->where($this->emailColumn, $email, 'and'); // @codeCoverageIgnore
         }
         else
         {

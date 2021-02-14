@@ -80,7 +80,7 @@ class RedisDriver extends DriverMappingAbstract
 
         if ( ! empty($serialized) )
         {
-            $this->serialized = array_flip($serialized);
+            $this->serialized = array_flip($serialized); // @codeCoverageIgnore
         }
 
         return true;
@@ -100,7 +100,7 @@ class RedisDriver extends DriverMappingAbstract
 
         if( $value !== false && isset($this->serialized[$key]) )
         {
-            return unserialize($value);
+            return unserialize($value); // @codeCoverageIgnore
         }
 
         return $value;
@@ -122,7 +122,7 @@ class RedisDriver extends DriverMappingAbstract
         {
             if( ! $this->redis->sIsMember($this->sMembersKey, $key) && ! $this->redis->sAdd($this->sMembersKey, $key) )
             {
-                return false;
+                return false; // @codeCoverageIgnore
             }
 
             if( ! isset($this->serialized[$key]) )
@@ -158,9 +158,9 @@ class RedisDriver extends DriverMappingAbstract
 
         if( isset($this->serialized[$key]) )
         {
-            $this->serialized[$key] = NULL;
+            $this->serialized[$key] = NULL; // @codeCoverageIgnore
 
-            $this->redis->sRemove($this->sMembersKey, $key);
+            $this->redis->sRemove($this->sMembersKey, $key); // @codeCoverageIgnore
         }
 
         return true;
@@ -236,7 +236,7 @@ class RedisDriver extends DriverMappingAbstract
             ];
         }
 
-        return [];
+        return []; // @codeCoverageIgnore
     }
 
     /**

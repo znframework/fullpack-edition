@@ -23,6 +23,8 @@ class OpensslDriver extends CryptoMapping
      * @param void
      * 
      * @return void
+	 * 
+	 * @codeCoverageIgnore
      */
 	public function __construct()
 	{
