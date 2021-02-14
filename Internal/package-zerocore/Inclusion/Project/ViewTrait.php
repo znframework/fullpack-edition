@@ -52,7 +52,7 @@ trait ViewTrait
     {
         if( ($return = self::call($method, $parameters)) !== NULL )
         {
-            return $return;
+            return $return; // @codeCoverageIgnore
         }
 
         return new self;
@@ -70,7 +70,7 @@ trait ViewTrait
     {
         if( ($return = self::call($method, $parameters)) !== NULL )
         {
-            return $return;
+            return $return; // @codeCoverageIgnore
         }
 
         return $this;
@@ -92,6 +92,7 @@ trait ViewTrait
             return self::$data[$method] ?? false;
         }
 
+        // @codeCoverageIgnoreStart
         # If the parameter of the invoked method contains a measurable value, 
         # a special operation is executed.
         if( self::isImportMethod($parameters[0], $resolve) )
@@ -111,6 +112,7 @@ trait ViewTrait
             # Getting the contents of the included file.
             self::$data[$method] = $isImportMethodContent = self::getImportMethod($getImportMethod, $resolve['parameter'], $getImportMethodParameters);
         }
+        // @codeCoverageIgnoreEnd
 
         # If the included file is not valid or has no content, 
         # the parameter is assumed to be a normal value.
@@ -138,6 +140,8 @@ trait ViewTrait
 
     /**
      * Protected get import method
+     * 
+     * @codeCoverageIgnore
      */
     protected static function getImportMethod($getImportMethod, $firstParameter, $getOtherParameters)
     {
@@ -146,6 +150,8 @@ trait ViewTrait
 
     /**
      * Protected get import method parameters
+     * 
+     * @codeCoverageIgnore
      */
     protected static function getImportMethodParameters($parameters)
     {

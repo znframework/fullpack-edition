@@ -63,7 +63,7 @@ class Properties
      */
     public static function recursive(Bool $recursive = true)
     {
-        self::$parameters['recursive'] = $recursive;
+        self::$parameters['recursive'] = $recursive; // @codeCoverageIgnore
     }
 
     /**

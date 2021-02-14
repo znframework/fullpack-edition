@@ -32,12 +32,12 @@ class Something
     {
         if( ! empty(Properties::$parameters['usable']) )
         {
-            $randomObGetContentsVariable = Properties::$parameters['usable'];
+            $randomObGetContentsVariable = Properties::$parameters['usable']; // @codeCoverageIgnore
         }
 
         if( ! empty(Properties::$parameters['data']) )
         {
-            $randomDataVariable = Properties::$parameters['data'];
+            $randomDataVariable = Properties::$parameters['data']; // @codeCoverageIgnore
         }
 
         Properties::$parameters = [];
@@ -63,7 +63,7 @@ class Something
         }
         elseif( $randomPageVariableExtension === 'eot' )
         {
-            $$return = self::_style($randomPageVariable, $randomPageVariableBaseUrl, true);
+            $$return = self::_style($randomPageVariable, $randomPageVariableBaseUrl, true); // @codeCoverageIgnore
         }
         else
         {
@@ -75,7 +75,7 @@ class Something
 
                 if( $randomObGetContentsVariable === false )
                 {
-                    echo $return; return;
+                    echo $return; return; // @codeCoverageIgnore
                 }
                 else
                 {

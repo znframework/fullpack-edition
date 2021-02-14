@@ -39,7 +39,7 @@ class Font extends BootstrapExtends
         {
             if( is_array($font) )
             {
-                $font = '';
+                $font = ''; // @codeCoverageIgnore
             }
 
             $f = self::_fontName($font);
@@ -63,6 +63,7 @@ class Font extends BootstrapExtends
 
                     if( is_file($isFontFile) )
                     {
+                        // @codeCoverageIgnoreStart
                         if( $of === 'eot' )
                         {
                             $str .= '<!--[if IE]>' . $eol;
@@ -70,6 +71,7 @@ class Font extends BootstrapExtends
                             $str .= '<![endif]-->';
                             $str .= $eol;
                         }
+                        // @codeCoverageIgnoreEnd
                         else
                         {
                             $str .= self::_face($f, $baseUrl . $fontExtension);
@@ -98,7 +100,7 @@ class Font extends BootstrapExtends
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 
@@ -112,6 +114,7 @@ class Font extends BootstrapExtends
         $sub  = NULL;
         $name = $divide[0];
 
+        // @codeCoverageIgnoreStart
         if( $sub = ($divide[1] ?? NULL) )
         {
             if( $name === $sub )
@@ -119,6 +122,7 @@ class Font extends BootstrapExtends
                 $sub = NULL;
             }
         }
+        // @codeCoverageIgnoreEnd
 
         return $name . $sub;
     }
@@ -132,7 +136,7 @@ class Font extends BootstrapExtends
 
         if( $extension !== NULL )
         {
-            $base = Base::suffix($baseUrl, '.' . $extension);
+            $base = Base::suffix($baseUrl, '.' . $extension); // @codeCoverageIgnore
         }
 
         return '@font-face{font-family:"' . Filesystem::removeExtension($f) . '"; src:url("' . $base . '") format("truetype")}' . EOL;

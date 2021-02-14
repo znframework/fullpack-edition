@@ -86,7 +86,7 @@ class Theme
 
                     if( is_file(THEMES_DIR . $suffix) )
                     {
-                        return self::getReplacePath($path, THEMES_DIR, $suffix, $orig);
+                        return self::getReplacePath($path, THEMES_DIR, $suffix, $orig); // @codeCoverageIgnore
                     }
                     elseif( is_file(EXTERNAL_THEMES_DIR . $suffix) )
                     {

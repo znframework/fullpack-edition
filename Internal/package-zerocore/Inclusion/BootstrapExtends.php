@@ -22,12 +22,14 @@ class BootstrapExtends
      */
     protected static function _parameters($arguments, $cdn)
     {
+        // @codeCoverageIgnoreStart
         if( ! empty(Properties::$parameters['usable']) )
         {
             $lastParam = Properties::$parameters['usable'];
 
             Properties::$parameters = [];
         }
+        // @codeCoverageIgnoreEnd
         else
         {
             $argumentCount = count($arguments) - 1;
@@ -66,7 +68,7 @@ class BootstrapExtends
         {
             if( is_array($script) )
             {
-                $script = '';
+                $script = ''; // @codeCoverageIgnore
             }
          
             if( IS::url($script) )
@@ -87,9 +89,9 @@ class BootstrapExtends
 
                 if( ! in_array($scriptFix . $script, Properties::$isImport) )
                 {
-                    if( is_file($scriptFile) )
+                    if( is_file($scriptFile) ) 
                     {
-                        $str .= static::tag(Request::getBaseURL($scriptFile));
+                        $str .= static::tag(Request::getBaseURL($scriptFile)); // @codeCoverageIgnore
                     }
                     elseif( $lowerLinkName = ($links[strtolower($script)] ?? NULL) )
                     {
@@ -105,7 +107,7 @@ class BootstrapExtends
         {
             if( $lastParam === true )
             {
-                return $str;
+                return $str; // @codeCoverageIgnore
             }
             else
             {
@@ -114,7 +116,7 @@ class BootstrapExtends
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 }

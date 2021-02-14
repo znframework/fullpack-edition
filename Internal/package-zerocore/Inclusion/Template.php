@@ -26,11 +26,11 @@ class Template
     {
         if( $return = View::use($page, $data, $obGetContents, TEMPLATES_DIR) )
         {
-            return $return;
+            return $return; // @codeCoverageIgnore
         }
         elseif( $return = View::use($page, $data, $obGetContents, EXTERNAL_TEMPLATES_DIR) )
         {
-            return $return;
+            return $return; // @codeCoverageIgnore
         }
         else
         {

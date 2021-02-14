@@ -32,10 +32,12 @@ class Handload
             {
                 require_once $file; # Local File
             }
+            // @codeCoverageIgnoreStart
             elseif( is_file($commonFile) )
             {
                 require_once $commonFile; # Common File
             }
+            // @codeCoverageIgnoreEnd
         }
     }
 }
