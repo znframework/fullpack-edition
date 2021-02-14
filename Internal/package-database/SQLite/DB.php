@@ -357,7 +357,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return [];
+            return []; // @codeCoverageIgnore
         }
     }
 

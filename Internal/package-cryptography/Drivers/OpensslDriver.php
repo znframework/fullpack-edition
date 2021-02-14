@@ -113,7 +113,7 @@ class OpensslDriver extends CryptoMapping
 
 		if( ! in_array($cipher, openssl_get_cipher_methods()) )
 		{
-			throw new InvalidCipherMethodException(NULL, $cipher);
+			throw new InvalidCipherMethodException(NULL, $cipher); // @codeCoverageIgnore
 		}
 
 		$iv = $settings['vector'] ?? $this->vectorSize($cipher, $key);
