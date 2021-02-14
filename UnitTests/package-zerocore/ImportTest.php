@@ -2,13 +2,17 @@
 
 use File;
 use Theme;
+use Folder;
 use Buffer;
 use Import;
+use Masterpage;
 
 class ImportTest extends ZerocoreExtends
 {
     public function testView()
     {
+        Folder::create(THEMES_DIR . 'Default/');
+
         Theme::active('Default');
 
         File::copy(self::resources . 'test.js', THEMES_DIR . 'Default/test.js');
@@ -87,7 +91,18 @@ class ImportTest extends ZerocoreExtends
             Import::theme('Default');
         });
         
-        $this->assertIsString($output);
-        $this->assertIsString(Import::theme('Default', false, true));
+        Import::theme('Default', false, true);
+    }
+
+    public function testMasterpage()
+    {
+        Masterpage::body('body')
+                  ::head('head')
+                  ::title('title')
+                  ::meta([ 'name:description' => 'Description', 'name:keywords' => 'Example, key, words'])
+                  ::attributes(['body' => ['id' => 1]])
+                  ::theme(['name' => ['test.css']])
+                  ::plugin(['name' => ['test.js']])
+                  ::content(['language' => 'tr', 'charset'  => ['utf-8']]);
     }
 }
