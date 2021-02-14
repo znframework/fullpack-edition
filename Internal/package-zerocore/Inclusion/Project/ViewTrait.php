@@ -89,7 +89,7 @@ trait ViewTrait
         # If the invoked method does not contain a parameter, it returns the current value.
         if( empty($parameters) )
         {
-            return self::$data[$method] ?? false;
+            return self::$data[$method] ?? false; // @codeCoverageIgnore
         }
 
         // @codeCoverageIgnoreStart

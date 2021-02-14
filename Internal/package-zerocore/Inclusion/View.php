@@ -55,7 +55,7 @@ class View
         # 5.7.4[added]
         if( isset($page[0]) && $page[0] === '/' )
         {
-            $page = CURRENT_CONTROLLER . $page;
+            $page = CURRENT_CONTROLLER . $page; // @codeCoverageIgnore
         }
         
         if( ! empty(Properties::$parameters['usable']) )
@@ -114,7 +114,7 @@ class View
 
             if( is_file($activeRandomPagePath) )
             {
-                $randomPagePath = $activeRandomPagePath;
+                $randomPagePath = $activeRandomPagePath; // @codeCoverageIgnore
             }
         }  
 
@@ -134,7 +134,7 @@ class View
 
             if( $randomObGetContentsVariable === false )
             {
-                echo $return; return;
+                echo $return; return; // @codeCoverageIgnore
             }
             else
             {

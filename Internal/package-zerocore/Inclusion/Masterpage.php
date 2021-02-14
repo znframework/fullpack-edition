@@ -42,6 +42,8 @@ class Masterpage
      * @param string $head
      * 
      * @return Masterpage
+     * 
+     * @codeCoverageIgnore
      */
     public function body(String $body) : Masterpage
     {
@@ -56,6 +58,8 @@ class Masterpage
      * @param mixed $head
      * 
      * @return Masterpage
+     * 
+     * @codeCoverageIgnore
      */
     public function head($head) : Masterpage
     {
@@ -70,6 +74,8 @@ class Masterpage
      * @param string $title
      * 
      * @return Masterpage
+     * 
+     * @codeCoverageIgnore
      */
     public function title(String $title) : Masterpage
     {
@@ -84,6 +90,8 @@ class Masterpage
      * @param array $meta
      * 
      * @return Masterpage
+     * 
+     * @codeCoverageIgnore
      */
     public function meta(Array $meta) : Masterpage
     {
@@ -98,6 +106,8 @@ class Masterpage
      * @param array $attributes
      * 
      * @return Masterpage
+     * 
+     * @codeCoverageIgnore
      */
     public function attributes(Array $attributes) : Masterpage
     {
@@ -112,6 +122,8 @@ class Masterpage
      * @param array $content
      * 
      * @return Masterpage
+     * 
+     * @codeCoverageIgnore
      */
     public function content(Array $content) : Masterpage
     {
@@ -152,7 +164,7 @@ class Masterpage
 
         if( ! empty(self::$settings) )
         {
-            Config::set('Masterpage', self::$settings);
+            Config::set('Masterpage', self::$settings); // @codeCoverageIgnore
         }
         
         $masterPageSet  = Config::get('Masterpage');
@@ -190,7 +202,7 @@ class Masterpage
         }
         else
         {
-            echo $bodyContent;
+            echo $bodyContent; // @codeCoverageIgnore
         }
 
         $randomFooterVariable  = EOL.'</body>'.EOL;
@@ -215,7 +227,7 @@ class Masterpage
         }
         else
         {
-            $header .= '<meta http-equiv="Content-Type" content="text/html; charset='.$contentCharset.'">'.EOL;
+            $header .= '<meta http-equiv="Content-Type" content="text/html; charset='.$contentCharset.'">'.EOL; // @codeCoverageIgnore
         }
 
         return $header;
@@ -235,7 +247,7 @@ class Masterpage
     protected function _bgImage($backgroundImage)
     {
         $bgImage = ( ! empty($backgroundImage) && is_file($backgroundImage) )
-                 ? ' background="'.Request::getBaseURL($backgroundImage).'" bgproperties="fixed"'
+                 ? ' background="'.Request::getBaseURL($backgroundImage).'" bgproperties="fixed"' // @codeCoverageIgnore
                  : '';
                  
         return $bgImage;
@@ -248,7 +260,7 @@ class Masterpage
     {
         if( ! empty($browserIcon) && is_file($browserIcon) )
         {
-           return '<link rel="shortcut icon" href="'.Request::getBaseURL($browserIcon).'" />'.EOL;
+           return '<link rel="shortcut icon" href="'.Request::getBaseURL($browserIcon).'" />'.EOL; // @codeCoverageIgnore
         }
 
         return NULL;
@@ -264,7 +276,7 @@ class Masterpage
             return '<title>'.$title.'</title>'.EOL;
         }
 
-        return NULL;
+        return NULL; // @codeCoverageIgnore
     }
 
     /**
@@ -301,10 +313,12 @@ class Masterpage
                 }
                 else
                 {
+                    // @codeCoverageIgnoreStart
                     foreach( $content as $key => $val )
                     {
                         $header .= "<meta $httpOrName=\"$name\" content=\"$val\">".EOL;
                     }
+                    // @codeCoverageIgnoreEnd
                 }
             }
         }
@@ -324,7 +338,7 @@ class Masterpage
             return Package::$type($theme, ($head[$type]['recursive'] ?? $masterPageSet[$type]['recursive']), true);
         }
 
-        return NULL;
+        return NULL; // @codeCoverageIgnore
     }
 
     /**
@@ -341,6 +355,7 @@ class Masterpage
             return false;
         }
 
+        // @codeCoverageIgnoreStart
         $params = $masterPageSet[$type];
 
         if( ! is_array($params) )
@@ -371,6 +386,7 @@ class Masterpage
         }
 
         return $header;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -389,16 +405,18 @@ class Masterpage
             }
             else
             {
+                // @codeCoverageIgnoreStart
                 # Multiple Masterpage
                 foreach( $page as $p )
                 {
                     $return .= View::use($p, NULL, true, $viewDirectory).EOL;
                 }
+                // @codeCoverageIgnoreEnd
             }
 
             return $return;
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 }

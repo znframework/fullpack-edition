@@ -60,10 +60,12 @@ class Properties
      * Recursive 
      * 
      * @param bool $recursive = true
+     * 
+     * @codeCoverageIgnore
      */
     public static function recursive(Bool $recursive = true)
     {
-        self::$parameters['recursive'] = $recursive; // @codeCoverageIgnore
+        self::$parameters['recursive'] = $recursive;
     }
 
     /**

@@ -62,7 +62,7 @@ class Package
             }
         }
 
-        return '';
+        return ''; // @codeCoverageIgnore
     }
 
     /**

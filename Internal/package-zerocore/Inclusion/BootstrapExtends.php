@@ -73,7 +73,7 @@ class BootstrapExtends
          
             if( IS::url($script) )
             {
-                $str .= static::tag($script);
+                $str .= static::tag($script); // @codeCoverageIgnore
             }
             else
             {
