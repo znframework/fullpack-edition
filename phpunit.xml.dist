@@ -26,7 +26,6 @@
                 <directory>./Internal/composer</directory>
                 <file>./Internal/autoload.php</file>
                 <directory>./Internal/package-authentication/Resources</directory>
-                <directory>./Internal/package-authentication/Exception</directory>       
                 <directory>./Internal/package-buffering/Exception</directory>
                 <directory>./Internal/package-cache/Exception</directory>>
                 <directory>./Internal/package-comparison/Exception</directory>
