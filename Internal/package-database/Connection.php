@@ -519,7 +519,7 @@ class Connection
 
         if( ($this->config['queryLog'] ?? NULL) === true )
         {
-            Logger::report('DatabaseQueries', $query, 'DatabaseQueries');
+            Logger::report('DatabaseQueries', $query, 'DatabaseQueries'); // @codeCoverageIgnore
         }
 
         $this->stringQueries[] = $this->stringQuery = $query;
