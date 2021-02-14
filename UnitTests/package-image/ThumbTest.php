@@ -122,4 +122,9 @@ class ThumbTest extends \ZN\Test\GlobalExtends
             Thumb::path(self::img)->colorize(80, 50, 60)->crop(350, 200)->create()
         );
     }
+
+    public function testRefresh()
+    {
+        $this->assertIsObject(Thumb::refresh());
+    }
 }

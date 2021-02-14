@@ -75,7 +75,7 @@ class MLExtends
 
         if( ! is_dir($this->appdir) )
         {
-            mkdir($this->appdir, 0755);
+            mkdir($this->appdir, 0755); // @codeCoverageIgnore
         }
 
         $getLang = Lang::get();

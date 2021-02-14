@@ -50,7 +50,7 @@ trait ViewCommonTrait
         {
             if( is_numeric($key) )
             {
-                $attribute .= ' '.$values;
+                $attribute .= ' '.$values; // @codeCoverageIgnore
             }
             else
             {
@@ -159,7 +159,7 @@ trait ViewCommonTrait
             return Buffering\Callback::do($content);
         }
 
-        throw new Exception\InvalidArgumentException('[$content] parameter must be [scalar] or [callable] type!');
+        throw new Exception\InvalidArgumentException('[$content] parameter must be [scalar] or [callable] type!'); // @codeCoverageIgnore
     }
 
     /**
@@ -179,7 +179,7 @@ trait ViewCommonTrait
             }
             else
             {
-                $result .= $part;
+                $result .= $part; // @codeCoverageIgnore
             }
 
             $result .= ' ';
@@ -190,6 +190,8 @@ trait ViewCommonTrait
 
     /**
      * Protected bootstrap class complement
+     * 
+     * @codeCoverageIgnore
      */
     protected function bootstrapClassComplement($class)
     {
@@ -209,11 +211,11 @@ trait ViewCommonTrait
     {
         if( $datatype === 'json' )
         {
-            $this->settings['serializer']['properties'] = 'dataType:"json",' . EOL;
+            $this->settings['serializer']['properties'] = 'dataType:"json",' . EOL; // @codeCoverageIgnore
         }
         elseif( is_array($datatype) )
         {
-            $this->settings['serializer']['properties'] = rtrim(ltrim(json_encode($datatype), '{'), '}') . ',' . PHP_EOL;
+            $this->settings['serializer']['properties'] = rtrim(ltrim(json_encode($datatype), '{'), '}') . ',' . PHP_EOL; // @codeCoverageIgnore
         }
     }
 
@@ -362,9 +364,9 @@ trait ViewCommonTrait
 
             if( isset($this->settings['attr'][$new]) )
             {
-                unset($this->settings['attr'][$new]);
+                unset($this->settings['attr'][$new]); // @codeCoverageIgnore
     
-                $this->settings['attr'][$oldEx[0]] = $oldEx[1]; 
+                $this->settings['attr'][$oldEx[0]] = $oldEx[1]; // @codeCoverageIgnore
             }
         } 
     }
@@ -407,7 +409,7 @@ trait ViewCommonTrait
                 }
                 else
                 {
-                    $this->settings['attr']['class'] .= ' form-control';
+                    $this->settings['attr']['class'] .= ' form-control'; // @codeCoverageIgnore
                 }
             }
         }
@@ -463,10 +465,12 @@ trait ViewCommonTrait
                 {
                     $class = $type;
                 }
+                // @codeCoverageIgnoreStart
                 elseif( $class !== $type )
                 {
                     $class = Base::prefix($class, $type . ' ');
                 }
+                // @codeCoverageIgnoreEnd
             }
 
             $return .= '<div class="' . $class . '">' . EOL;
@@ -541,7 +545,7 @@ trait ViewCommonTrait
     {
         if( $value = $this->settings['label']['value'] )
         {
-            $this->settings['label']['value'] = Base::prefix($value, $type . '-');
+            $this->settings['label']['value'] = Base::prefix($value, $type . '-'); // @codeCoverageIgnore
         }
         
         $return .= '<label'.$this->createAttribute('class', $this->settings['label']['value']).'>' . EOL;
@@ -584,7 +588,7 @@ trait ViewCommonTrait
         {
             if( Authorization\PermissionExtends::$roleId === NULL )
             {
-                throw new Exception\PermissionRoleIdException();
+                throw new Exception\PermissionRoleIdException(); // @codeCoverageIgnore
             }
 
             return Authorization\Process::use($perm, $return);
@@ -612,7 +616,7 @@ trait ViewCommonTrait
         }
         else if( ! is_scalar($element) )
         {
-            $element = 'nonscalar';
+            $element = 'nonscalar'; // @codeCoverageIgnore
         }
 
         $this->settings['attr'][strtolower($function)] = htmlentities($element, ENT_COMPAT);

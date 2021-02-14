@@ -54,7 +54,7 @@ class SendEmail extends UserExtends
 	{
         if( empty($this->usernameColumn) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
          
 		$users     = array_chunk($this->getUserDataResult(), $count);
@@ -89,7 +89,7 @@ class SendEmail extends UserExtends
     {
         if( ! empty($this->bannedColumn) )
         {
-        	$this->dbClass->where($this->bannedColumn, 0);
+        	$this->dbClass->where($this->bannedColumn, 0); // @codeCoverageIgnore
         }
         
         return $this->dbClass->get($this->tableName)->result();  

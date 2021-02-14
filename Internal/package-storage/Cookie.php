@@ -144,7 +144,8 @@ class Cookie implements CookieInterface, StorageInterface
         {
             $value = json_encode($value);
         }
-
+        
+        // @codeCoverageIgnoreStart
         if( setcookie($name, $value, time() + $this->time, $this->path, $this->domain, $this->secure, $this->httpOnly) )
         {
             $this->regenerateSessionId();
@@ -153,6 +154,7 @@ class Cookie implements CookieInterface, StorageInterface
 
             return true;
         }
+        // @codeCoverageIgnoreEnd
         else
         {
             throw new SetcookieException;
@@ -289,9 +291,7 @@ class Cookie implements CookieInterface, StorageInterface
     /**
      * Default Cookie Variable
      * 
-     * @param void
-     * 
-     * @return void
+     * @codeCoverageIgnore
      */
     protected function cookieDefaultVariable()
     {

@@ -57,6 +57,6 @@ class Select extends CartExtends
             }
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 }

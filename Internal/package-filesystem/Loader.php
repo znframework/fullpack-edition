@@ -35,6 +35,8 @@ class Loader
             case 'include'     : return include      $file;
             case 'include_once': return include_once $file;
         }
+
+        return false; // @codeCoverageIgnore
     }
 
     /**

@@ -308,6 +308,6 @@ class DateTimeCommon
             return Rounder::$round($return);
         }
         
-        return Rounder::average($return);
+        return Rounder::average($return); // @codeCoverageIgnore
     }
 }

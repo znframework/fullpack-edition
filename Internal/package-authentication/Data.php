@@ -46,13 +46,13 @@ class Data extends UserExtends
                 }
                 else
                 {
-                    return (object) $r;
+                    return (object) $r; // @codeCoverageIgnore
                 }
             }
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 

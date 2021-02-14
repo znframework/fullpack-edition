@@ -41,7 +41,7 @@ class ShortCommand
 
         if( strtolower($classEx[0]) === 'external' )
         {
-            $class = EXTERNAL_COMMANDS_NAMESPACE . $classEx[1];
+            $class = EXTERNAL_COMMANDS_NAMESPACE . $classEx[1]; // @codeCoverageIgnore
         }
         else
         {

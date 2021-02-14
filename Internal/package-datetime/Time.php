@@ -47,7 +47,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
         
         if( $time !== $validTime && $validTime === '01/00/00' )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return $this->checktime($timeEx[0] ?? NULL, $timeEx[1] ?? NULL, $timeEx[2] ?? NULL);
@@ -142,7 +142,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
             ($sec  < 0 || $sec  > 59 || ! is_numeric($sec)) 
         ) 
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return true;

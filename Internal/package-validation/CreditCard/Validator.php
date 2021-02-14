@@ -66,7 +66,7 @@ class Validator implements ValidatorInterface
             ( $year < date('Y') || ($year <= date('Y') && $month < date('m')) ) 
         ) 
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return true;
@@ -89,7 +89,7 @@ class Validator implements ValidatorInterface
             }
         }
 
-        return '';
+        return ''; // @codeCoverageIgnore
     }
 
     /**
