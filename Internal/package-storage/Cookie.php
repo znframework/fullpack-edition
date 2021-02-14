@@ -251,7 +251,7 @@ class Cookie implements CookieInterface, StorageInterface
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return true;

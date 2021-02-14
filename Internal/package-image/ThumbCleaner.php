@@ -40,7 +40,7 @@ class ThumbCleaner
 
             if( $origin === true )
             {
-                unlink($file);
+                unlink($file); // @codeCoverageIgnore
             }         
         }
     }

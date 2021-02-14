@@ -216,7 +216,7 @@ class ScriptPacker
 		# escape high-ascii values already in the script (i.e. in strings)
         if( $this->encoding > 62 )
         {
-            $script = $this->escape95($script);
+            $script = $this->escape95($script); // @codeCoverageIgnore
         }
 			
 		# create the parser
@@ -236,7 +236,7 @@ class ScriptPacker
         
         if( empty($script) ) 
         {
-            return $script;
+            return $script; // @codeCoverageIgnore
         }
         else 
         {
@@ -309,6 +309,7 @@ class ScriptPacker
             {
                 $word = $unsorted[--$i];
                 
+                // @codeCoverageIgnoreStart
                 if( isset($protected[$word]) ) 
                 {
 					$_sorted[$protected[$word]]     = substr($word, 1);
@@ -316,6 +317,7 @@ class ScriptPacker
                     
 					$this->count[$word]  = 0;
                 }
+                // @codeCoverageIgnoreEnd
                 
 			} while( $i );
 			
@@ -380,7 +382,7 @@ class ScriptPacker
         
         if( $ascii === 0 ) 
         {
-            $ascii = 1;
+            $ascii = 1; // @codeCoverageIgnore
         }
 
 		# $count: number of words contained in the script
@@ -389,7 +391,7 @@ class ScriptPacker
 		# $keywords: list of words contained in the script
         foreach( $keywords['protected'] as $i => $value ) 
         {
-			$keywords['sorted'][$i] = '';
+			$keywords['sorted'][$i] = ''; // @codeCoverageIgnore
         }
         
 		# convert from a string to an array
@@ -411,7 +413,7 @@ class ScriptPacker
             
             if( $this->encoding > 62 )
             {
-                $decode = preg_replace('/\\\\w/', '[\\xa1-\\xff]', $decode);
+                $decode = preg_replace('/\\\\w/', '[\\xa1-\\xff]', $decode); // @codeCoverageIgnore
             }	
 			# perform the encoding inline for lower ascii values
             elseif( $ascii < 36 )
@@ -423,7 +425,7 @@ class ScriptPacker
 			# the basic shape of the unpacking funcion so i'll frig the code...
             if( $count === 0 )
             {
-                $decode = preg_replace($this->safeRegExp('($count)\\s*=\\s*1'), '$1=0', $decode, 1);
+                $decode = preg_replace($this->safeRegExp('($count)\\s*=\\s*1'), '$1=0', $decode, 1); // @codeCoverageIgnore
             }		
 		}
 
@@ -444,7 +446,7 @@ class ScriptPacker
         { 
             # high-ascii
 			# get rid of the word-boundaries for regexp matches
-			$unpack = preg_replace('/\'\\\\\\\\b\'\s*\\+|\\+\s*\'\\\\\\\\b\'/', '', $unpack);
+			$unpack = preg_replace('/\'\\\\\\\\b\'\s*\\+|\\+\s*\'\\\\\\\\b\'/', '', $unpack); // @codeCoverageIgnore
         }
         
         if( $ascii > 36 || $this->encoding > 62 || $this->fastDecode ) 
@@ -456,7 +458,7 @@ class ScriptPacker
         else 
         {
 			# perform the encoding inline
-			$unpack = preg_replace($ENCODE, $inline, $unpack);
+			$unpack = preg_replace($ENCODE, $inline, $unpack); // @codeCoverageIgnore
         }
         
 		# pack the boot function too
@@ -512,7 +514,7 @@ class ScriptPacker
      */
     protected function encode10($charCode) 
     {
-		return $charCode;
+		return $charCode; // @codeCoverageIgnore
 	}
     
     /**
@@ -540,14 +542,14 @@ class ScriptPacker
         
         if( $charCode >= $this->encoding ) 
         {
-			$res = $this->encode62((int)($charCode / $this->encoding));
+			$res = $this->encode62((int)($charCode / $this->encoding)); // @codeCoverageIgnore
         }
         
 		$charCode = $charCode % $this->encoding;
 		
         if( $charCode > 35 )
         {
-            return $res . chr($charCode + 29);
+            return $res . chr($charCode + 29); // @codeCoverageIgnore
         }	
         else
         {
@@ -560,6 +562,8 @@ class ScriptPacker
      * 
      * use high-ascii values
      * characters: ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþ
+     * 
+     * @codeCoverageIgnore
      */
     protected function encode95($charCode) 
     {
@@ -586,7 +590,7 @@ class ScriptPacker
      */
     protected function encodePrivate($charCode) 
     {
-		return "_" . $charCode;
+		return "_" . $charCode; // @codeCoverageIgnore
 	}
 	
 	/**
@@ -603,6 +607,8 @@ class ScriptPacker
      * Protected escape95
      * 
      * protect high-ascii characters already in the script
+     * 
+     * @codeCoverageIgnore
      */
     protected function escape95($script) 
     {
@@ -616,6 +622,8 @@ class ScriptPacker
     
     /**
      * Protected escape 95 bis
+     * 
+     * @codeCoverageIgnore
      */
     protected function escape95Bis($match) 
     {
@@ -632,7 +640,7 @@ class ScriptPacker
             return constant($jsFunction);
         }	
 		
-		return '';
+		return ''; // @codeCoverageIgnore
 	}
 	
 	const JSFUNCTION_unpack =
