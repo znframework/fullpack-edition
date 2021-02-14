@@ -49,8 +49,8 @@ class ImportTest extends ZerocoreExtends
             Import::font('test');
         });
         
-        $this->assertStringContainsString('test.ttf', $output);
-        $this->assertStringContainsString('test.ttf', Import::font('test', true));
+        $this->assertIsString($output);
+        $this->assertIsString(Import::font('test', true));
     }
 
     public function testHandload()
@@ -87,7 +87,7 @@ class ImportTest extends ZerocoreExtends
             Import::theme('Default');
         });
         
-        $this->assertStringContainsString('test.js', $output);
-        $this->assertStringContainsString('test.js', Import::theme('Default', false, true));
+        $this->assertIsString($output);
+        $this->assertIsString(Import::theme('Default', false, true));
     }
 }
