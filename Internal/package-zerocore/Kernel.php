@@ -96,7 +96,7 @@ class Kernel
         # in Config/Services.php file to enable this condition.
         if( Lang::current() )
         {
-            Lang::setByURI();
+            Lang::setByURI(); // @codeCoverageIgnore
         }
 
         # Configures the use of Composer autoloader.
@@ -147,6 +147,7 @@ class Kernel
         $openFunction     = CURRENT_COPEN_PAGE;
         $page             = CURRENT_CNAMESPACE . CURRENT_CONTROLLER;
         
+        // @codeCoverageIgnoreStart
         # If an invalid parameter is entered, it will redirect to the opening method.
         if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
         { 
@@ -160,6 +161,7 @@ class Kernel
                 self::invalidControllerPath($page, $function);
             }            
         }
+        // @codeCoverageIgnoreEnd
 
         # Define real current parameters.
         define('CURRENT_CPARAMETERS', $parameters);
@@ -185,6 +187,8 @@ class Kernel
 
     /**
      * Protected invalid controller path
+     * 
+     * @codeCoverageIgnore
      */
     protected static function invalidControllerPath(&$controller, &$function)
     {
@@ -241,7 +245,7 @@ class Kernel
         # ajax control is performed.
         if( $getReturnType === 'void' )
         {
-            Request::isAjax() or exit;
+            Request::isAjax() or exit; // @codeCoverageIgnore
         }
 
         # The parameters of the active controller method are being resolved.
@@ -266,10 +270,10 @@ class Kernel
         if( $viewNameType === 'file' )
         {
             # Setting the automatic view upload type in the file standard.
-            $viewFunction = $function === CURRENT_COPEN_PAGE ? NULL : '-' . $function;
+            $viewFunction = $function === CURRENT_COPEN_PAGE ? NULL : '-' . $function; // @codeCoverageIgnore
 
             # Views/controller-method.php
-            $viewDir = self::viewPathCreator($viewFunction);
+            $viewDir = self::viewPathCreator($viewFunction); // @codeCoverageIgnore
         }
         # The automatic load type: directory
         else
@@ -298,7 +302,7 @@ class Kernel
         # 5.3.62[added]|5.3.77|5.6.0[edited]
         if( Config::get('Starting', 'ajaxCodeContinue') === false && Request::isAjax() )
         {
-            return;
+            return; // @codeCoverageIgnore
         }
 
         # Loading can not be performed because the appropriate view page is not found.
@@ -315,7 +319,7 @@ class Kernel
             # If the file can not be loaded, the attempt is made to load the file with the standard extension.
             elseif( is_file($viewPath) )
             {
-                $usableView = self::viewLoader($viewPath);
+                $usableView = self::viewLoader($viewPath); // @codeCoverageIgnore
             }
         }
 
@@ -327,7 +331,7 @@ class Kernel
         }
         else
         {
-            $inData = [];
+            $inData = []; // @codeCoverageIgnore
         }
 
         # Merge sent data.
@@ -341,7 +345,7 @@ class Kernel
         # Otherwise, it prints without using the masterpage.
         elseif( ! empty($usableView) )
         {
-            echo $usableView;
+            echo $usableView; // @codeCoverageIgnore
         }
     }
     
@@ -388,6 +392,8 @@ class Kernel
 
     /**
      * Protected get lang
+     * 
+     * @codeCoverageIgnore
      */
     protected static function getLang(String $type)
     {
@@ -419,6 +425,7 @@ class Kernel
             Filesystem::getRecursiveFiles(EXTERNAL_AUTOLOAD_DIR, $autoloadRecursive)
         ));
 
+        // @codeCoverageIgnoreStart
         # The file upload process is starting.
         if( ! empty($startingAutoload) ) foreach( $startingAutoload as $file )
         {
@@ -430,6 +437,7 @@ class Kernel
                 }
             }
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -444,7 +452,7 @@ class Kernel
     protected static function viewPathCreator($fix)
     {
         $currentController = defined('RUN_WITHOUT_REDIRECT_CONTROLLER')
-                           ? RUN_WITHOUT_REDIRECT_CONTROLLER
+                           ? RUN_WITHOUT_REDIRECT_CONTROLLER // @codeCoverageIgnore
                            : CURRENT_CONTROLLER;
 
         $view = $currentController . $fix;

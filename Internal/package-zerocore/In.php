@@ -17,9 +17,6 @@ use ZN\ErrorHandling\Exceptions;
 use ZN\Inclusion\Project\View;
 use ZN\Inclusion\Project\Masterpage;
 
-/**
- * @codeCoverageIgnore
- */
 class In
 {
     /**
