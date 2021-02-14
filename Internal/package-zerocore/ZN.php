@@ -14,6 +14,9 @@ use ZN\Services\Restful;
 use ZN\Protection\Separator;
 use ZN\ErrorHandling\Exceptions;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ZN
 {
     /**
