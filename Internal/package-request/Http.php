@@ -218,16 +218,6 @@ class Http implements HttpInterface
     }
 
     /**
-     * Request CURL
-     * 
-     * @return bool
-     */
-    public static function isCurl() : Bool
-    {
-        return Request::isCurl();
-    }
-
-    /**
      * Get Browser Lang
      * 
      * @param string $default = 'en'

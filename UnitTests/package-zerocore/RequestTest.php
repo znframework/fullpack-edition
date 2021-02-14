@@ -4,13 +4,6 @@ use Lang;
 
 class RequestTest extends ZerocoreExtends
 {
-    public function testIsCurl()
-    {
-        $_SERVER['HTTP_COOKIE'] = true;
-
-        $this->assertFalse(Request::isCurl());
-    }
-
     public function testIsMethod()
     {
         $this->assertFalse(Request::isMethod('x'));

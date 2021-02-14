@@ -19,18 +19,6 @@ class Request
     public static $lang = NULL;
 
     /**
-     * Request CURL
-     * 
-     * @return bool
-     */
-    public static function isCurl() : Bool
-    {
-        return ! empty($_SERVER['HTTP_COOKIE'])
-               ? false
-               : true;
-    }
-
-    /**
      * Request method type
      * 
      * @param string ...$methods

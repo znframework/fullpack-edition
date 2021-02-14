@@ -50,11 +50,4 @@ class HttpOptionsTest extends \PHPUnit\Framework\TestCase
 
         $this->assertIsString($http::connection());
     }
-
-    public function testIsCurl()
-    {
-        $http = new Http;
-
-        $this->assertIsBool($http::isCurl());
-    }
 }

@@ -78,7 +78,6 @@
                 <directory>./Internal/package-zerocore/Inclusion/Exception</directory>
                 <directory>./Internal/package-zerocore/Lang</directory>
                 <directory>./Internal/package-zerocore/Resources</directory>
-                <directory>./Internal/package-zerocore/Routing</directory>
             </exclude>
         </whitelist>
 	</filter>
