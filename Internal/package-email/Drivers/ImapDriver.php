@@ -15,6 +15,9 @@ use ZN\DateTime\Date;
 use ZN\Email\DriverMappingAbstract;
 use ZN\Email\Exception\IMAPConnectException;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ImapDriver extends DriverMappingAbstract
 {
     /**

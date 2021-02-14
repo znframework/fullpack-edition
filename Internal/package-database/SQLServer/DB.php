@@ -16,6 +16,9 @@ use ZN\ErrorHandling\Errors;
 use ZN\Database\Exception\ConnectionErrorException;
 use ZN\Database\DriverMappingAbstract;
 
+/**
+ * @codeCoverageIgnore
+ */
 class DB extends DriverMappingAbstract
 {
     /**

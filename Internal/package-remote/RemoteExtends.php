@@ -9,6 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+/**
+ * @codeCoverageIgnore
+ */
 class RemoteExtends
 {
     /**

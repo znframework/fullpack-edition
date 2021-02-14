@@ -22,7 +22,7 @@ class DBForge extends DriverForge
      */
     public function truncate($table)
     { 
-        return 'DELETE FROM '.$table; 
+        return 'DELETE FROM '.$table.';'; 
     }
     
     /**

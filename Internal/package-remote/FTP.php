@@ -21,7 +21,9 @@ use ZN\Remote\Exception\FolderChangeNameException;
 use ZN\Remote\Exception\FileRemoteUploadException;
 use ZN\Remote\Exception\FileRemoteDownloadException;
 
-
+/**
+ * @codeCoverageIgnore
+ */
 class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
 {
     /**

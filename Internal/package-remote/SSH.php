@@ -20,6 +20,9 @@ use ZN\Remote\Exception\FolderNotFoundException;
 use ZN\Remote\Exception\FolderAllreadyException;
 use ZN\Remote\Exception\InvalidArgumentException;
 
+/**
+ * @codeCoverageIgnore
+ */
 class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
 {
     /**
