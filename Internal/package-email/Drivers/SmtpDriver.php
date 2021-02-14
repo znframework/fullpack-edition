@@ -245,7 +245,7 @@ class SmtpDriver extends DriverMappingAbstract
 
         if( $this->user === '' && $this->password === '' )
         {
-            throw new SMTPEmptyUserPasswordException;
+            throw new SMTPEmptyUserPasswordException; // @codeCoverageIgnore
         }
 
         $this->setData('AUTH LOGIN');
@@ -325,7 +325,7 @@ class SmtpDriver extends DriverMappingAbstract
 
         if( (int) substr($reply, 0, 3) !== $resp )
         {
-            throw new SMTPConnectException(NULL, $reply);
+            throw new SMTPConnectException(NULL, $reply); // @codeCoverageIgnore
         }
 
         if( $cmd === 'quit' )
