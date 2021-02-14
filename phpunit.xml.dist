@@ -79,10 +79,6 @@
                 <directory>./Internal/package-zerocore/Lang</directory>
                 <directory>./Internal/package-zerocore/Resources</directory>
                 <directory>./Internal/package-zerocore/Routing</directory>
-                <file>./Internal/package-zerocore/Htaccess.php</file>
-                <file>./Internal/package-zerocore/In.php</file>
-                <file>./Internal/package-zerocore/Kernel.php</file>
-                <file>./Internal/package-zerocore/ZN.php</file>
             </exclude>
         </whitelist>
 	</filter>
