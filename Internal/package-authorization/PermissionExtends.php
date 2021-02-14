@@ -272,6 +272,8 @@ class PermissionExtends
                 Response::redirect($callback); // @codeCoverageIgnore
             }
         }
+
+        return false; // @codeCoverageIgnore
     }
 
     /**
