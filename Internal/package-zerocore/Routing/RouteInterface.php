@@ -68,13 +68,6 @@ interface RouteInterface
     public function ajax();
 
     /**
-     * Restful
-     * 
-     * @return Route
-     */
-    public function restful();
-
-    /**
      * Callback
      * 
      * @param callable $callback
