@@ -66,13 +66,13 @@ class Config
     private static function _config($file)
     {
         if( ! defined('PROJECT_TYPE') )
-        {
-            return false;
+        { 
+            return false; // @codeCoverageIgnore
         }
 
         if( CONFIG_DIR === NULL )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
         
         if( empty(self::$config[$file]) )
@@ -84,7 +84,7 @@ class Config
             (
                 is_array($set = Base::import(SETTINGS_DIR . $path)) ? $set : [], 
                 $conf  
-            ) : $conf;
+            ) : $conf; // @codeCoverageIgnore
         }
     }
 
@@ -297,7 +297,7 @@ class Config
         }
         elseif( is_object($default) )
         {
-            return get_object_vars($default);
+            return get_object_vars($default); // @codeCoverageIgnore
         }
         else
         {

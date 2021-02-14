@@ -55,7 +55,7 @@ class Update extends CartExtends
                 }
                 else
                 {
-                    array_push(Properties::$items, $data);
+                    array_push(Properties::$items, $data); // @codeCoverageIgnore
                 }
             }
 

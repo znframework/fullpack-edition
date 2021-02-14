@@ -455,7 +455,7 @@ class Job implements JobInterface, CrontabIntervalInterface
             }
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**

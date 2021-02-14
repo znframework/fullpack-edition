@@ -28,6 +28,8 @@ class Server
      * OS
      * 
      * @return string
+     * 
+     * @codeCoverageIgnore
      */
     public static function os() : String
     {

@@ -172,7 +172,7 @@ class Table extends HtmlHelpersAbstract
 
         if( isset($elements[0][0]) && is_array($elements[0][0]))
         {
-            $elements = $elements[0];
+            $elements = $elements[0]; // @codeCoverageIgnore
         }
 
         foreach( $elements as $key => $element )
@@ -192,8 +192,8 @@ class Table extends HtmlHelpersAbstract
 
                 if( strpos($val, 'th:') === 0 )
                 {
-                    $rowType = 'th';
-                    $val = substr($val, 3);
+                    $rowType = 'th';        // @codeCoverageIgnore
+                    $val = substr($val, 3); // @codeCoverageIgnore
                 }
                 else
                 {

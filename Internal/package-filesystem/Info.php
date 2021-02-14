@@ -278,26 +278,28 @@ class Info
             }
         }
 
-        // BYTES
+        # BYTES
         if( $type === "b" )
         {
             return  $size;
         }
-        // KILO BYTES
+        # KILO BYTES
         if( $type === "kb" )
         {
             return round($size / 1024, $decimal);
         }
-        // MEGA BYTES
+        # MEGA BYTES
         if( $type === "mb" )
         {
             return round($size / (1024 * 1024), $decimal);
         }
-        // GIGA BYTES
+        # GIGA BYTES
         if( $type === "gb" )
         {
             return round($size / (1024 * 1024 * 1024), $decimal);
         }
+
+        return $size;  // @codeCoverageIgnore
     }
 
     /**

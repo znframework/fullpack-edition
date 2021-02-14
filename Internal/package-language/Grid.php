@@ -218,7 +218,7 @@ class Grid extends MLExtends
             {
                 if( stristr($key, $searchWord) )
                 {
-                    $newWords[$key] = $val;
+                    $newWords[$key] = $val; // @codeCoverageIgnore
                 }
                 else
                 {
@@ -228,13 +228,13 @@ class Grid extends MLExtends
                     {
                         if( stristr($v, $searchWord) )
                         {
-                            $newValues = array_merge($newValues, $val);
+                            $newValues = array_merge($newValues, $val); // @codeCoverageIgnore
                         }
                     }
 
                     if( ! empty($newValues) )
                     {
-                        $newWords[$key] = $newValues;
+                        $newWords[$key] = $newValues; // @codeCoverageIgnore
                     }
                 }
             }
@@ -293,7 +293,7 @@ class Grid extends MLExtends
 
         if( ! empty($pagination) && ! empty($totalRows) )
         {
-            $table .= '<tr><th>P</th><td colspan="'.($languageCount + 3).'">'.$pagination.'</td></tr>';
+            $table .= '<tr><th>P</th><td colspan="'.($languageCount + 3).'">'.$pagination.'</td></tr>'; // @codeCoverageIgnore
         }
 
         $table .= '</tbody>';
@@ -309,6 +309,7 @@ class Grid extends MLExtends
     {
         $styleElementConfig = $this->gridConfig['styleElement'] ?? NULL;
 
+        // @codeCoverageIgnoreStart
         if( ! empty($styleElementConfig) )
         {
             $attributes = NULL;
@@ -323,6 +324,7 @@ class Grid extends MLExtends
 
             return $style->open().$attributes.$style->close();
         }
+        // @codeCoverageIgnoreEnd
 
         return NULL;
     }

@@ -37,7 +37,7 @@ class Process extends PermissionExtends
     {
         if( ! empty(self::$content) )
         {
-            $content = ob_get_contents();
+            $content = ob_get_contents(); // @codeCoverageIgnore
         }
         else
         {

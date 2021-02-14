@@ -106,7 +106,7 @@ class CDN implements CDNInterface
         }
         else
         {
-            return $data;
+            return $data; // @codeCoverageIgnore
         }
     }
 

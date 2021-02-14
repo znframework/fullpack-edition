@@ -103,7 +103,7 @@ class Butcher
             throw new Exception\FileNotFoundException($this->defaultProjectFile);
         }
 
-        return $this;
+        return $this; // @codeCoverageIgnore
     }
 
     /**
@@ -330,7 +330,7 @@ class Butcher
             return $this->getLangValue('extractThemeSuccess');
         }
 
-        return $this->getLangValue('cantExtractTheme');
+        return $this->getLangValue('cantExtractTheme'); // @codeCoverageIgnore
     }
 
     /**
@@ -347,14 +347,16 @@ class Butcher
 
             return true;
         }
+        // @codeCoverageIgnoreStart
         elseif( ! file_exists($target) )
         {
             Filesystem::zipExtract($source, $target);
 
             return true;
         }
+        // @codeCoverageIgnoreEnd
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -364,7 +366,7 @@ class Butcher
     {
         if( $case === 'normal' )
         {
-            return $directory;
+            return $directory; // @codeCoverageIgnore
         }
 
         $directory = str_replace([' ', '_'], '-', $directory);
@@ -408,7 +410,7 @@ class Butcher
             return $case . $this->inc++;
         }
 
-        return $this->incrementCase($case);
+        return $this->incrementCase($case); // @codeCoverageIgnore
     }
 
     /**
@@ -421,7 +423,7 @@ class Butcher
             return $case . rand($match['min'] ?? 0, $match['max'] ?? 0);
         }
 
-        return $this->incrementCase($case); 
+        return $this->incrementCase($case); // @codeCoverageIgnore
     }
 
     /**
@@ -599,7 +601,7 @@ class Butcher
             return true;
         }
         
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -659,7 +661,7 @@ class Butcher
         
         if( ! file_exists($return) && $dir !== CONFIG_DIR )
         {
-            Filesystem::createFolder($return);
+            Filesystem::createFolder($return); // @codeCoverageIgnore
         }
 
         return $return;
@@ -685,7 +687,7 @@ class Butcher
             return require $configFile;
         }
 
-        return [];
+        return []; // @codeCoverageIgnore
     }
     
     /**
@@ -697,7 +699,7 @@ class Butcher
         {
             if( $this->application !== NULL )
             {
-                $return = PROJECTS_DIR . $this->application . '/Resources/Themes/';
+                $return = PROJECTS_DIR . $this->application . '/Resources/Themes/'; // @codeCoverageIgnore
             }
             else
             {
@@ -711,7 +713,7 @@ class Butcher
         
         if( ! file_exists($return) )
         {
-            Filesystem::createFolder($return);
+            Filesystem::createFolder($return); // @codeCoverageIgnore
         }
 
         return $return;
@@ -815,7 +817,7 @@ class Butcher
                 );
             }
             
-            return $data;
+            return $data; // @codeCoverageIgnore
 
         }, $body));
     }
@@ -868,8 +870,8 @@ class Butcher
 
         if( ! file_exists($sectionsDirectory) )
         {
-            Filesystem::createFolder($sectionsDirectory);
-            file_put_contents($sectionsDirectory . 'body.wizard.php', '@view');
+            Filesystem::createFolder($sectionsDirectory); // @codeCoverageIgnore
+            file_put_contents($sectionsDirectory . 'body.wizard.php', '@view'); // @codeCoverageIgnore
         }
     }
 

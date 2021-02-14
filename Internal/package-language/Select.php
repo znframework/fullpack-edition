@@ -32,7 +32,7 @@ class Select extends MLExtends
 
             if( is_file($this->externalLang) )
             {
-                $eread  = file_get_contents($this->externalLang);
+                $eread  = file_get_contents($this->externalLang); // @codeCoverageIgnore
             }
 
             $read                = json_decode($read  ?? '', true);
@@ -107,7 +107,7 @@ class Select extends MLExtends
                 return json_decode($read, true);
             }   
 
-            return [];
+            return []; // @codeCoverageIgnore
         }
     }
 

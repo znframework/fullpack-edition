@@ -199,7 +199,7 @@ class ScriptParser
 	public function reset() 
 	{
 		# clear the patterns collection so that this object may be re-used
-		$this->patterns = [];
+		$this->patterns = []; // @codeCoverageIgnore
 	}
 	
 	/**
@@ -222,7 +222,7 @@ class ScriptParser
 	{
 		if( empty($arguments) ) 
 		{
-			return '';
+			return ''; // @codeCoverageIgnore
 		}
 		
 		$i = 1; $j = 0;
@@ -264,6 +264,8 @@ class ScriptParser
 				$i += $pattern[self::LENGTH];
 			}
 		}
+
+		return ''; // @codeCoverageIgnore
 	}
 	
 	/**
@@ -359,7 +361,7 @@ class ScriptParser
 		} 
 		else 
 		{
-			$temp = '';
+			$temp = ''; // @codeCoverageIgnore
 		}
 
 		$this->buffer['i']++;

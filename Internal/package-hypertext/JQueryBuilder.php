@@ -68,7 +68,7 @@ class JQueryBuilder extends BuilderExtends
         }
         else
         {
-            $this->selector = Buffering\Callback::do($selector);
+            $this->selector = Buffering\Callback::do($selector); // @codeCoverageIgnore
         }
         
 

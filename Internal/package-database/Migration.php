@@ -297,6 +297,7 @@ class Migration implements MigrationInterface
             return false;
         }
 
+        // @codeCoverageIgnoreStart
         $name = $this->classFix.$this->getTableName();
 
         if( $version <= 0 )
@@ -307,6 +308,7 @@ class Migration implements MigrationInterface
         $name .= $this->getValidVersionNumber($version);
 
         return Singleton::class($name);
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -332,7 +334,7 @@ class Migration implements MigrationInterface
             return $this->createMigrateFile($name, $file);
         }
         
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -344,7 +346,7 @@ class Migration implements MigrationInterface
 
         if( $version === 'all' && is_dir($getVersionDirectory) )
         {
-            Filesystem::deleteFolder($getVersionDirectory);
+            Filesystem::deleteFolder($getVersionDirectory); // @codeCoverageIgnore
         }
     }
 
@@ -455,13 +457,13 @@ class Migration implements MigrationInterface
 
         if( (int)$numeric > 999 || (int)$numeric < 0 )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         switch( $length )
         {
             case 1 : $numeric = '00'.$numeric; break;
-            case 2 : $numeric = '0' .$numeric; break;
+            case 2 : $numeric = '0' .$numeric; break; // @codeCoverageIgnore
         }
 
         if( $numeric === '000' )

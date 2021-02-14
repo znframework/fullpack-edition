@@ -77,6 +77,8 @@ class DateTimeCommon
         {
             return $this->set('{'.ltrim($method, $methodType).'}');
         }
+
+        return false; // @codeCoverageIgnore
     }
 
     /**

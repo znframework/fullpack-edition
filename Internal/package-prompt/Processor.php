@@ -50,7 +50,7 @@ class Processor implements ProcessorInterface
             case 'cli' : 
             case 'cgi' : return $name;
 
-            default    : return $sapi;
+            default    : return $sapi; // @codeCoverageIgnore
         }
     }
 

@@ -87,8 +87,8 @@ class GrandVision extends DatabaseDefinitions
 
         if( is_array($database) )
         {
-            $configs  = $database;
-            $database = $connection;
+            $configs  = $database;   // @codeCoverageIgnore
+            $database = $connection; // @codeCoverageIgnore
         }
 
         $configs['database'] = $database ?: $this->defaultDatabaseName;
@@ -157,7 +157,7 @@ class GrandVision extends DatabaseDefinitions
 
         if( is_array(($database[0] ?? NULL)) )
         {
-            $databases = $database[0];
+            $databases = $database[0]; // @codeCoverageIgnore
         }
 
         if( empty($database) )

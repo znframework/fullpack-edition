@@ -49,7 +49,7 @@ class File
     {
         if( ! empty($app) )
         {
-            $this->settings['application'] = $app;
+            $this->settings['application'] = $app; // @codeCoverageIgnore
         }
 
         $file = $this->path($name, $type);
@@ -59,7 +59,7 @@ class File
             return unlink($file);
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -80,7 +80,7 @@ class File
 
         if( empty($name) )
         {
-            $this->error = Errors::message('Error', 'emptyParameter', '1.(name)');
+            $this->error = Errors::message('Error', 'emptyParameter', '1.(name)'); // @codeCoverageIgnore
         }
         
         # Start Generate
@@ -98,7 +98,7 @@ class File
         # Class Name
         if( ! empty($this->settings['name']) )
         {
-            $name = $this->settings['name'];
+            $name = $this->settings['name']; // @codeCoverageIgnore
         }
 
         $controller .= $this->settings['object']." ".$name;
@@ -180,7 +180,7 @@ class File
             }
         }
         
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -193,7 +193,7 @@ class File
     {
         if( ! empty($this->settings['alias']) )
         {
-            $controller .= EOL.EOL.'class_alias("'.Base::suffix($namespace, '\\').$name.'", "'.$this->settings['alias'].'");';
+            $controller .= EOL.EOL.'class_alias("'.Base::suffix($namespace, '\\').$name.'", "'.$this->settings['alias'].'");'; // @codeCoverageIgnore
         }
     }
 
@@ -330,7 +330,7 @@ class File
         if( ! empty($this->settings['implements']) )
         {
             $controller .= " implements ".( is_array($this->settings['implements'])
-                                            ? implode(', ', $this->settings['implements'])
+                                            ? implode(', ', $this->settings['implements']) // @codeCoverageIgnore
                                             : $this->settings['implements']
                                           );
         }
@@ -351,7 +351,7 @@ class File
             }
             else
             {
-                $controller .= HT."use ".$this->settings['traits'].";".EOL;
+                $controller .= HT."use ".$this->settings['traits'].";".EOL; // @codeCoverageIgnore
             }
 
             $controller .= EOL;

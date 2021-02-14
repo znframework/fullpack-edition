@@ -45,7 +45,7 @@ class DBUser extends DriverUser
     {
         if( ! empty($this->postgreQuoteOptions[strtoupper($option)]) )
         {
-            $value = Base::presuffix($value, '\'');
+            $value = Base::presuffix($value, '\''); // @codeCoverageIgnore
         }
 
         $this->parameters['option'] = $option.' '.$value;
