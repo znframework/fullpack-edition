@@ -248,7 +248,7 @@ class Register extends UserExtends
         }
         else
         {
-            return $this->setErrorMessage('emailError');
+            return $this->setErrorMessage('emailError'); // @codeCoverageIgnore
         }
     }
 

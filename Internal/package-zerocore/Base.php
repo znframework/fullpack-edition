@@ -22,7 +22,7 @@ class Base
     {
         if( IS::phpVersion('8') )
         {
-            return is_object($object);
+            return is_object($object); // @codeCoverageIgnore
         }
         else
         {
@@ -343,7 +343,7 @@ class Base
 
         if( $exit === true && ! defined('ZN_REDIRECT_NOEXIT') )
         {
-            exit($str);
+            exit($str); // @codeCoverageIgnore
         }
        
         return $str;
@@ -373,7 +373,7 @@ class Base
 
         if( $exit === true && ! defined('ZN_REDIRECT_NOEXIT') )
         {
-            exit($output);
+            exit($output); // @codeCoverageIgnore
         }
        
         return $output;

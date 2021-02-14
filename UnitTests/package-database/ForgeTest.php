@@ -75,6 +75,7 @@ class ForgeTest extends DatabaseExtends
         $forge->alterTable('temptable', ['createTable' => ['int']]);
         $forge->startAutoIncrement('example');
         $forge->addAutoIncrement('example');
+        $forge->addAutoIncrement('example', 'column', 2);
         $forge->createUniqueIndex('name', 'example', 'id');
         $forge->createFulltextIndex('name', 'example', 'id');
         $forge->dropColumn('example', 'id');

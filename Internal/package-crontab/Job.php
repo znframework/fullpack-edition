@@ -120,7 +120,7 @@ class Job implements JobInterface, CrontabIntervalInterface
         }
         else
         {
-            $this->crontabCommands = FILES_DIR . $this->fileName;
+            $this->crontabCommands = FILES_DIR . $this->fileName; // @codeCoverageIgnore
         }
 
         $this->createCrontabDirectoryIfNotExists();
@@ -378,7 +378,7 @@ class Job implements JobInterface, CrontabIntervalInterface
     {
         if( ! is_dir($crontabDirectory = pathinfo($this->crontabCommands, PATHINFO_DIRNAME)) )
         {
-            Filesystem::createFolder($crontabDirectory);
+            Filesystem::createFolder($crontabDirectory); // @codeCoverageIgnore
         }
     }
 
@@ -469,7 +469,7 @@ class Job implements JobInterface, CrontabIntervalInterface
         {
             if( ! stristr($job, $cmd) )
             {
-                $jobs[$key] = $job;
+                $jobs[$key] = $job; // @codeCoverageIgnore
             }
         }
 

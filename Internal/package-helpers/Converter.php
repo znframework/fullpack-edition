@@ -251,7 +251,7 @@ class Converter
 
         if( strlen($remaining) === 1 )
         {
-            $remaining .= '0';
+            $remaining .= '0'; // @codeCoverageIgnore
         }
 
         $moneyFormat = $left . substr($moneyFormat,0,-1).($float === true ? ','.$remaining : '') . $right;

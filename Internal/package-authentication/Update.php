@@ -106,7 +106,7 @@ class Update extends UserExtends
                 {
                     if( ! $this->updateUserData($this->tableName, $this->usernameColumn, $username, $data) )
                     {
-                        return $this->setErrorMessage('registerUnknownError');
+                        return $this->setErrorMessage('registerUnknownError'); // @codeCoverageIgnore
                     }
                 }
 
@@ -115,7 +115,7 @@ class Update extends UserExtends
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 

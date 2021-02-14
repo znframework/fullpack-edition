@@ -49,7 +49,7 @@ class Reflect
             return $this->call($parameters, $method);
         }
 
-        return $this->call($parameters)->$method();
+        return $this->call($parameters)->$method(); // @codeCoverageIgnore
     }
     
     /**

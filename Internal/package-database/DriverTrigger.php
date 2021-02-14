@@ -74,7 +74,7 @@ class DriverTrigger
     {
         if( is_array($args[0]) )
         {
-            $args = $args[0];
+            $args = $args[0]; // @codeCoverageIgnore
         }
 
         $this->body = 'BEGIN '.implode('; ', $args).';'.' END;';

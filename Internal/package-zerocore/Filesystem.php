@@ -323,7 +323,7 @@ class Filesystem
 
         if( ! $cond && strstr($pattern, '*') === false )
         {
-            $pattern .= "/*";
+            $pattern .= "/*"; // @codeCoverageIgnore
         }
 
         return glob($pattern);
@@ -338,7 +338,7 @@ class Filesystem
 
         if( empty($path) )
         {
-            $path = '.';
+            $path = '.'; // @codeCoverageIgnore
         }
 
         if( $pathType === true )

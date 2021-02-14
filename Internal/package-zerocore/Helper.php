@@ -54,7 +54,7 @@ class Helper
 
             if( date('Y.m.d')  >  $endDate )
             {
-                unlink($logDir.Base::suffix($destination, $extension));
+                unlink($logDir.Base::suffix($destination, $extension)); // @codeCoverageIgnore
             }
         }
 

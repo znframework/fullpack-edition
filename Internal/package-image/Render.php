@@ -120,7 +120,7 @@ class Render implements RenderInterface
         # If the same output was previously output, no re-creation is performed.
         if( ! $this->isRefreshThumbImageCreation($set['refresh'] ?? NULL) && $this->isThumbFileExists($getThumbFilePath) )
         {
-            return $this->getThumbFileURL($getThumbFilePath);
+            return $this->getThumbFileURL($getThumbFilePath);  // @codeCoverageIgnore
         }
         
         # Fill background with color.
@@ -181,7 +181,7 @@ class Render implements RenderInterface
 
             if( ! empty($set['watermark'][2])) 
             {
-                $set['filters'][] = ['margin', [$set['watermark'][2]]];
+                $set['filters'][] = ['margin', [$set['watermark'][2]]]; // @codeCoverageIgnore
             }
 
             $set['filters'][] = ['mix', [$set['watermark'][0]]];

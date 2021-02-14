@@ -51,7 +51,7 @@ class Converter
 
         if( ! is_file($file) )
         {
-            throw new Exception\FileNotFoundException(NULL, $file);
+            throw new Exception\FileNotFoundException(NULL, $file); // @codeCoverageIgnore
         }
 
         $row  = 1;

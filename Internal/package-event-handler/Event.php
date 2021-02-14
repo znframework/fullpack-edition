@@ -137,6 +137,6 @@ class Event implements EventInterface
             return true;
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 }

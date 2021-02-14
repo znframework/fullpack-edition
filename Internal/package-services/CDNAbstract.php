@@ -59,7 +59,7 @@ abstract class CDNAbstract
 
             if( ! is_object($result) )
             {
-                throw new Exception\BadRequestURLException(NULL, $this->address);
+                throw new Exception\BadRequestURLException(NULL, $this->address); // @codeCoverageIgnore
             }
 
             $this->putJsonContent($result);

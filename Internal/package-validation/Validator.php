@@ -341,11 +341,11 @@ class Validator implements ValidatorInterface
         }
         elseif( $no[9] != $tenth )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
         elseif( $no[10] != $elewenth )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
         else
         {

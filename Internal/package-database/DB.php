@@ -1554,7 +1554,7 @@ class DB extends Connection
             }
             else
             {
-                $values .= Base::suffix($value, ',');
+                $values .= Base::suffix($value, ','); // @codeCoverageIgnore
             }
         }
 
@@ -1615,7 +1615,7 @@ class DB extends Connection
 
             if( $this->_exp($key) )
             {
-                $key = $this->_clearExp($key);
+                $key = $this->_clearExp($key); // @codeCoverageIgnore
             }
             else
             {
@@ -1918,7 +1918,7 @@ class DB extends Connection
 
         if( ! empty($url) )
         {
-            $settings['url'] = $url;
+            $settings['url'] = $url; // @codeCoverageIgnore
         }
 
         $return = $output === true
@@ -2372,7 +2372,7 @@ class DB extends Connection
             }
             else
             {
-                $this->select .= ',' . $selectFunctions;
+                $this->select .= ',' . $selectFunctions; // @codeCoverageIgnore
             }
         }
 
@@ -2412,7 +2412,7 @@ class DB extends Connection
 
             if( $cacheResult = $cache->driver($driver)->select($this->_cacheQuery()) )
             {
-                $this->results = $cacheResult;
+                $this->results = $cacheResult; // @codeCoverageIgnore
             }
             else
             {
@@ -2449,7 +2449,7 @@ class DB extends Connection
 
                 if( $find = preg_grep('/(^id$)/i', array_keys($data)) )
                 {
-                    $current = current($find); unset($data[$current]);
+                    $current = current($find); unset($data[$current]); // @codeCoverageIgnore
                 }
             }
         }
@@ -2515,11 +2515,11 @@ class DB extends Connection
 
             if( $joinType === 'inner' )
             {
-                $joinTables = $this->_p($table).', '.$this->joinTable;
+                $joinTables = $this->_p($table).', '.$this->joinTable; // @codeCoverageIgnore
             }
             elseif( $joinType === 'right' )
             {
-                $joinTables = $this->joinTable;
+                $joinTables = $this->joinTable; // @codeCoverageIgnore
             }
             else
             {
@@ -2655,17 +2655,19 @@ class DB extends Connection
     {
         $con = [];
 
+        // @codeCoverageIgnoreStart
         if( isset($conditions[0][0]) && is_array($conditions[0][0]) )
         {
             $con        = Arrays\GetElement::last($conditions);
             $conditions = $conditions[0];
         }
+        // @codeCoverageEnd
 
         $getLast = Arrays\GetElement::last($conditions);
 
         if( is_string($con) )
         {
-            $conjunction = $con;
+            $conjunction = $con; // @codeCoverageIgnore
         }
         else
         {
@@ -2721,6 +2723,8 @@ class DB extends Connection
      * @param string $str
      * 
      * @return string
+     * 
+     * @codeCoverageIgnore
      */
     protected function _whereHavingConjuctionClean($str)
     {
@@ -2864,7 +2868,7 @@ class DB extends Connection
 
         if( is_array($columns) ) foreach( $columns as $v )
         {
-            $newColumns[$v] = "$v + $incdec";
+            $newColumns[$v] = "$v + $incdec"; // @codeCoverageIgnore
         }
         else
         {
@@ -2886,14 +2890,14 @@ class DB extends Connection
 
         if( $this->string === true )
         {
-            return $updateQuery;
+            return $updateQuery; // @codeCoverageIgnore
         }
 
         if( $this->transaction === true )
         {
-            $this->transactionQueries[] = $updateQuery;
+            $this->transactionQueries[] = $updateQuery; // @codeCoverageIgnore
 
-            return $this;
+            return $this; // @codeCoverageIgnore
         }
 
         return $this->db->query($updateQuery);

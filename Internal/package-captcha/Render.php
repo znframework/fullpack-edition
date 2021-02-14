@@ -280,7 +280,7 @@ class Render implements RenderInterface
 
         if( ! $this->getCode() )
         {
-            return '';
+            return ''; // @codeCoverageIgnore
         }
 
         # Clean Captcha Images
@@ -341,7 +341,7 @@ class Render implements RenderInterface
     {
         if( ! is_dir($this->path) )
         {
-            mkdir($this->path);
+            mkdir($this->path); // @codeCoverageIgnore
         } 
     }
     
@@ -433,7 +433,7 @@ class Render implements RenderInterface
 
             if( ! isset($gridSpaceYC))
             {
-                $gridIntervalY  = (($this->sizeHeightC / $gridSpaceXC) * $gridIntervalX / 2);
+                $gridIntervalY  = (($this->sizeHeightC / $gridSpaceXC) * $gridIntervalX / 2); // @codeCoverageIgnore
 
             } 
             else 
@@ -522,7 +522,7 @@ class Render implements RenderInterface
                     case 'jpeg':
                     case 'jpg' : $file = imagecreatefromjpeg($backgroundImageC); break;
                     case 'png' : $file = imagecreatefrompng($backgroundImageC);  break;
-                    case 'gif' : $file = imagecreatefromgif($backgroundImageC);  break;
+                    case 'gif' : $file = imagecreatefromgif($backgroundImageC);  break; // @codeCoverageIgnore
                     default    : $file = imagecreatefromjpeg($backgroundImageC);
                 }
             }
@@ -587,7 +587,7 @@ class Render implements RenderInterface
     {
         if( $convert = (Image\Properties::$colors[$color] ?? NULL) )
         {
-            return $convert;
+            return $convert; // @codeCoverageIgnore
         }
 
         return $color;

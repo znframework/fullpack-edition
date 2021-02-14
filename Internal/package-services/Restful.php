@@ -79,6 +79,8 @@ class Restful implements RestfulInterface
      * Get request headers
      * 
      * @return array
+     * 
+     * @codeCoverageIgnore
      */
     public function getRequestHeaders() : Array
     {

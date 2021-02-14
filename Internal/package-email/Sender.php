@@ -494,7 +494,7 @@ class Sender implements SenderInterface
     {
         if( $content = Inclusion\Template::use($table, (array) $column, true) )
         {
-            $this->message($content);
+            $this->message($content); // @codeCoverageIgnore
         }
         else
         {
@@ -506,7 +506,7 @@ class Sender implements SenderInterface
 
             if( $column === NULL )
             {
-                $this->error[] = $this->getLang('email:templateColumnError', '1.($table)');
+                $this->error[] = $this->getLang('email:templateColumnError', '1.($table)'); // @codeCoverageIgnore
             }
         
             $whereColumn = $columnEx[0];
@@ -514,7 +514,7 @@ class Sender implements SenderInterface
             
             if( $whereValue === NULL )
             {
-                $this->error[] = $this->getLang('email:templateValueError', '2.($column)');
+                $this->error[] = $this->getLang('email:templateValueError', '2.($column)'); // @codeCoverageIgnore
             }
             
             if( empty($this->error) )
@@ -641,7 +641,7 @@ class Sender implements SenderInterface
         }
         else if( ! $fileContent = file_get_contents($file) )
         {
-            $this->error[] = $this->getLang('email:attachmentUnreadable', $file);
+            $this->error[] = $this->getLang('email:attachmentUnreadable', $file); // @codeCoverageIgnore
         }
 
         $this->attachments[] =
@@ -702,7 +702,7 @@ class Sender implements SenderInterface
             }
             else
             {
-                return ! $this->error[] = $this->getLang('email:noFrom');
+                return ! $this->error[] = $this->getLang('email:noFrom'); // @codeCoverageIgnore
             }
         }
 
@@ -740,7 +740,7 @@ class Sender implements SenderInterface
 
         if( empty($send) )
         {
-            return ! $this->error[] = $this->getLang('email:noSend');
+            return ! $this->error[] = $this->getLang('email:noSend'); // @codeCoverageIgnore
         }
 
         $this->defaultVariables();
@@ -890,7 +890,7 @@ class Sender implements SenderInterface
         }
         else
         {
-            $this->header = $header.$body;
+            $this->header = $header.$body; // @codeCoverageIgnore
         }
 
         return true;

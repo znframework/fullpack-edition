@@ -274,7 +274,7 @@ class Info
             }
             else
             {
-                $size += $fileSize;
+                $size += $fileSize; // @codeCoverageIgnore
             }
         }
 
@@ -368,7 +368,7 @@ class Info
         }
         else
         {
-            return $owner;
+            return $owner; // @codeCoverageIgnore
         }
     }
 
@@ -396,7 +396,7 @@ class Info
         }
         else
         {
-            return $group;
+            return $group; // @codeCoverageIgnore
         }
     }
 
@@ -574,7 +574,7 @@ class Info
 
         if( ! function_exists($validType) || $validType === NULL )
         {
-            throw new Exception\UndefinedFunctionException(NULL, get_called_class().'::'.$type.'()');
+            throw new Exception\UndefinedFunctionException(NULL, get_called_class().'::'.$type.'()'); // @codeCoverageIgnore
         }
 
         if( $validType($file) )
@@ -582,6 +582,6 @@ class Info
             return true;
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 }

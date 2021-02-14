@@ -97,7 +97,7 @@ class RemoveElement
 
                 if( $i === $arrayCount )
                 {
-                    break;
+                    break; // @codeCoverageIgnore
                 }
             }
         }

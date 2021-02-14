@@ -71,7 +71,7 @@ trait Factory
 
         if( $factory !== NULL )
         {
-            return $factory::class($class)->$method(...$parameters); // $codeCoverageIgnore
+            return $factory::class($class)->$method(...$parameters); // @codeCoverageIgnore
         }
         # It can call the desired method of another class.
         # That is, it opens the way to a mixed class design 

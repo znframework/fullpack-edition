@@ -178,12 +178,12 @@ class URI implements URIInterface
 
                 if( $index > $countSegArr )
                 {
-                    $index = $countSegArr;
+                    $index = $countSegArr; // @codeCoverageIgnore
                 }
 
                 if( $index < 0 )
                 {
-                    $index = $countSegArr + $index + 1;
+                    $index = $countSegArr + $index + 1; // @codeCoverageIgnore
                 }
 
                 for( $i = 1; $i <= $index; $i++ )
@@ -209,7 +209,7 @@ class URI implements URIInterface
             }
             else
             {
-                return false;
+                return false; // @codeCoverageIgnore
             }
         }
         else
@@ -462,7 +462,7 @@ class URI implements URIInterface
                 return $str[count($str) - 1];
             }
 
-            return $str[0];
+            return $str[0]; // @codeCoverageIgnore
         }
     }
 

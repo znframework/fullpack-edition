@@ -322,7 +322,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 
@@ -423,6 +423,6 @@ class DB extends DriverMappingAbstract
             return pg_version($this->connect);
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 }

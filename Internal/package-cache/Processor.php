@@ -166,7 +166,7 @@ class Processor implements ProcessorInterface
         }
         else
         {
-            return $select;
+            return $select; // @codeCoverageIgnore
         }
     }
 

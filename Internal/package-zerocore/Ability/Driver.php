@@ -58,7 +58,7 @@ trait Driver
                   $this->config['driver']                         ?? # class name driver
                   $this->getDriverNameFromDriverConstant()        ?: # define config
                   $this->getDefaultDriverNameFromDriverConstant() ?: # define default
-                  static::driver['options'][0]                    ?? # The value set as the first option
+                  static::driver['options'][0]                    ?? // @codeCoverageIgnore
                   $this->setNullDefaultDriverName();                 # Default driver name is NULL
 
         # It checks whether the selected driver is a valid driver.

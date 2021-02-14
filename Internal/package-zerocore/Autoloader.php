@@ -59,7 +59,7 @@ class Autoloader
         # lookup in the directories that are defined.
         if( ! is_file(self::$path) )
         {
-            self::createClassMap();
+            self::createClassMap(); // @codeCoverageIgnore
         }
 
         # Getting information from the class map of the class being called according to ZN's autoloader.
@@ -139,7 +139,7 @@ class Autoloader
         # Default class map directory.
         # Applies to custom edition and individual package usage.
         [
-            'directoryScanning' => true,
+            'directoryScanning' => true, // @codeCoverageIgnore
             'classMap'          => [REAL_BASE_DIR]
         ];
 
@@ -515,6 +515,7 @@ class Autoloader
         {
             $getFacadeName = $match['name'] === true ? $onlyClassName : $match['name'];
 
+            // @codeCoverageIgnoreStart
             if( ! is_file($facadeClassPath = self::getFacadeClassFilePath($file, $onlyClassName)) )
             {
                 # If constants are used in the scanned class, these constants are taken.
@@ -526,6 +527,7 @@ class Autoloader
                 # Creates facade class.
                 file_put_contents($facadeClassPath, $getFacadeContent);
             }   
+            // @codeCoverageIgnoreEnd
 
             $classes['classes'][strtolower($getFacadeName)] = $facadeClassPath;
   
@@ -633,11 +635,11 @@ class Autoloader
         if( ! is_dir(self::$staticAccessDirectory) )
         {
             # Created Resources/Statics/ directory.
-            mkdir(self::$staticAccessDirectory, $directoryPermission, true);
+            mkdir(self::$staticAccessDirectory, $directoryPermission, true); // @codeCoverageIgnore
 
             # Access to this directory via URL is blocked.
             # It is assumed that the system is running on apache.
-            file_put_contents(self::$staticAccessDirectory . '.htaccess', 'Deny from all');
+            file_put_contents(self::$staticAccessDirectory . '.htaccess', 'Deny from all'); // @codeCoverageIgnore
         }
     }
 
@@ -778,10 +780,12 @@ class Autoloader
             {
                 require_once self::$path;
             }
-            catch( \Throwable $e )
+            // @codeCoverageIgnoreStart
+            catch( \Throwable $e ) 
             {
                 self::restart();
             }
+            // @codeCoverageIgnoreEnd
 
             return $classMap;
         }
