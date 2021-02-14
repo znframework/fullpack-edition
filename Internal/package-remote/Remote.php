@@ -11,9 +11,6 @@
 
 use ZN\Ability\Container;
 
-/**
- * @codeCoverageIgnore
- */
 class Remote
 {
     use Container;
