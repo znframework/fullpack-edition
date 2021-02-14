@@ -11,6 +11,9 @@
 
 use ZN\Request;
 
+/**
+ * @codeCoverageIgnore
+ */
 class MethodFilter
 {
     public function __construct($filters, $get, $config, $class)

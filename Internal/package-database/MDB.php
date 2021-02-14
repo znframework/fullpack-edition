@@ -22,6 +22,9 @@ use MongoDB\Driver\ReadPreference;
 use MongoDB\Driver\Exception\RuntimeException;
 use ZN\Database\Exception\OrderByInvalidSecondArgumentException;
 
+/**
+ * @codeCoverageIgnore
+ */
 class MDB implements MDBInterface
 {
     /**

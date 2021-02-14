@@ -28,17 +28,9 @@
                 <directory>./Internal/package-authentication/Resources</directory>
                 <directory>./Internal/package-authentication/Exception</directory>       
                 <directory>./Internal/package-buffering/Exception</directory>
-                <directory>./Internal/package-cache/Exception</directory>
-                <file>./Internal/package-cache/Drivers/ApcDriver.php</file>
-                <file>./Internal/package-cache/Drivers/ApcuDriver.php</file>
-                <file>./Internal/package-cache/Drivers/WincacheDriver.php</file>
-                <file>./Internal/package-cache/Drivers/MemcacheDriver.php</file>
+                <directory>./Internal/package-cache/Exception</directory>>
                 <directory>./Internal/package-comparison/Exception</directory>
                 <directory>./Internal/package-compression/Exception</directory>
-                <file>./Internal/package-compression/Drivers/LzfDriver.php</file>
-                <file>./Internal/package-compression/Drivers/RarDriver.php</file>
-                <file>./Internal/package-console/Run.php</file>
-                <file>./Internal/package-console/Environment.php</file>
                 <directory>./Internal/package-crontab/Exception</directory>
                 <directory>./Internal/package-cryptography/Exception</directory>
                 <directory>./Internal/package-database/Exception</directory>
@@ -46,8 +38,6 @@
                 <directory>./Internal/package-database/ODBC</directory>
                 <directory>./Internal/package-database/PDO</directory>
                 <directory>./Internal/package-database/SQLServer</directory>
-                <file>./Internal/package-database/MDB.php</file>
-                <file>./Internal/package-database/MDBInterface.php</file>
                 <directory>./Internal/package-datatypes/Exception</directory>
                 <directory>./Internal/package-datetime/Exception</directory>
                 <directory>./Internal/package-email/Exception</directory>
@@ -55,12 +45,10 @@
                 <directory>./Internal/package-event-handler/Exception</directory>
                 <directory>./Internal/package-filesystem/Exception</directory>
                 <directory>./Internal/package-generator/Exception</directory>
-                <file>./Internal/package-generator/Databases.php</file>
                 <directory>./Internal/package-helpers/Exception</directory>  
                 <directory>./Internal/package-hypertext/Resources</directory>
                 <directory>./Internal/package-hypertext/Exception</directory>
                 <file>./Internal/package-hypertext/JavascriptValidationFunctions.php</file>
-                <file>./Internal/package-hypertext/Sheet.php</file>
                 <directory>./Internal/package-image/Exception</directory>
                 <directory>./Internal/package-payment</directory>
                 <directory>./Internal/package-protection/Exception</directory>

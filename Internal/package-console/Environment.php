@@ -12,6 +12,8 @@
 /**
  * @command environment
  * @description environment key value
+ * 
+ * @codeCoverageIgnore
  */
 class Environment
 {

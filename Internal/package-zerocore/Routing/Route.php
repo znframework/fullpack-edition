@@ -50,6 +50,8 @@ class Route extends FilterProperties implements RouteInterface
      * Magic Constructor
      * 
      * Get route configuration.
+     * 
+     * @codeCoverageIgnore
      */
     public function __construct()
     {
@@ -58,6 +60,8 @@ class Route extends FilterProperties implements RouteInterface
 
     /**
      * Magic Destructor
+     * 
+     * @codeCoverageIgnore
      */
     public function __destruct()
     {
@@ -220,6 +224,8 @@ class Route extends FilterProperties implements RouteInterface
      * @param string $function
      * @param string $lang
      * @param report
+     * 
+     * @codeCoverageIgnore
      */
     public function redirectShow404(String $function, String $lang = 'callUserFuncArrayError', String $report = 'SystemCallUserFuncArrayError')
     {
@@ -251,10 +257,12 @@ class Route extends FilterProperties implements RouteInterface
         {
             $routeString = Singleton::class('ZN\Regex')->special2classic($this->route);
         }
+        // @codeCoverageIgnoreStart
         elseif( $configPatternType === 'special' )
         {
             $routeString = $this->route;
         }
+        // @codeCoverageIgnoreEnd
 
         # 5.3.21[edited] is empty
         if( trim($routeString, '/') )
@@ -281,15 +289,18 @@ class Route extends FilterProperties implements RouteInterface
                 $column  = $select = $match['column'];
                 $dbClass = Singleton::class('ZN\Database\DB');
 
+                // @codeCoverageIgnoreStart
                 # Json, Serial or Separator
                 if( $decoder !== NULL )
                 {
                     $column .= ' like';
                     $value   = $dbClass->like($value, 'inside');
                 }
+                // @codeCoverageIgnoreEnd
 
                 $return = $dbClass->select($select)->where($column, $value)->get($match['table'])->value();
 
+                // @codeCoverageIgnoreStart
                 # Json, Serial or Separator
                 if( $decoder !== NULL )
                 {
@@ -309,6 +320,7 @@ class Route extends FilterProperties implements RouteInterface
                         Lang::set($newRow);
                     }
                 }
+                // @codeCoverageIgnoreEnd
 
                 return $return;
 
@@ -345,9 +357,9 @@ class Route extends FilterProperties implements RouteInterface
 
         foreach( $matchAll as $key => $val )
         {
-            $key++;
+            $key++; // @codeCoverageIgnore
 
-            $newMatch[] = "$$key";
+            $newMatch[] = "$$key"; // @codeCoverageIgnore
         }
 
         $changeRoute = str_replace($matchAll, $newMatch, $route);

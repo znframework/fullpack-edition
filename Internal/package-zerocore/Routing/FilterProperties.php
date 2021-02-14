@@ -75,18 +75,6 @@ class FilterProperties
     }
 
     /**
-     * Restful
-     * 
-     * @return Route
-     */
-    public function restful()
-    {
-        $this->filters['restful'] = true;
-
-        return $this;
-    }
-
-    /**
      * Callback
      * 
      * @param callable $callback

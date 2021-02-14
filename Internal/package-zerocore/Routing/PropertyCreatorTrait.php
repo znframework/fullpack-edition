@@ -9,6 +9,9 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+/**
+ * @codeCoverageIgnore
+ */
 trait PropertyCreatorTrait
 {
     public function __call($method, $parameters)

@@ -14,6 +14,9 @@ use ZN\Config;
 use ZN\Filesystem;
 use ZN\DataTypes\Arrays;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Databases extends DatabaseDefinitions
 {   
     /**

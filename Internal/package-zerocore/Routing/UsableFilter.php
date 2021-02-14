@@ -12,6 +12,9 @@
 use ZN\Base;
 use ZN\Request;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UsableFilter
 {
     public function __construct($filters, $get, $config, $class)

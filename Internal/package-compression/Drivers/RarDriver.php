@@ -14,6 +14,9 @@ use ZN\Support;
 use ZN\Singleton;
 use ZN\Compression\DriverMappingAbstract;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RarDriver extends DriverMappingAbstract
 {
     /**

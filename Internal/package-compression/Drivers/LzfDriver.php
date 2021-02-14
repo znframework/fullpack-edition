@@ -12,6 +12,9 @@
 use ZN\Support;
 use ZN\Compression\DriverMappingAbstract;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LzfDriver extends DriverMappingAbstract
 {
     /**

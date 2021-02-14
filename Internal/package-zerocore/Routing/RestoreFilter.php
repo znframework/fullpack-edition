@@ -12,6 +12,9 @@
 use ZN\Config;
 use ZN\Restoration;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RestoreFilter
 {
     public function __construct($filters, $get, $config)

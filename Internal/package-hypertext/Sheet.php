@@ -11,6 +11,9 @@
 
 use ZN\Singleton;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Sheet
 {
     /**

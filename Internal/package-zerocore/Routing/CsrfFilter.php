@@ -11,6 +11,9 @@
 
 use ZN\Security;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CsrfFilter
 {
     public function __construct($filters, $get, $config)

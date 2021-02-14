@@ -11,6 +11,9 @@
 
 use ZN\Helper;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Run
 {
     /**

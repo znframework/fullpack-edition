@@ -36,18 +36,22 @@ class Filter
 
             if( $get !== NULL )
             {
+                // @codeCoverageIgnoreStart
                 $class = 'ZN\Routing\\' . ucfirst($filter) . 'Filter';
 
                 if( class_exists($class) )
                 {       
                     new $class($filters, $get, $config, $this);
                 }        
+                // @codeCoverageIgnoreEnd
             }
         }
     }
 
     /**
      * Protected Redirect Invalid Request
+     * 
+     * @codeCoverageIgnore
      */
     public function redirectRequest($direct = NULL)
     {
