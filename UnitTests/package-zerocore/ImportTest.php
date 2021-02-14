@@ -14,6 +14,7 @@ class ImportTest extends ZerocoreExtends
         Folder::create(THEMES_DIR . 'Default/');
 
         Theme::active('Default');
+        Theme::matchElement();
 
         File::copy(self::resources . 'test.js', THEMES_DIR . 'Default/test.js');
         File::copy(self::resources . 'test.css', THEMES_DIR . 'Default/test.css');
