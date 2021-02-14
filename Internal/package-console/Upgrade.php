@@ -57,12 +57,14 @@ class Upgrade
 
     /**
      * Protected upgrade FE
+     * 
+     * @codeCoverageIgnore
      */
     protected static function fe()
     {
         if( ! empty(ZN::upgrade()) )
         {
-            $status = self::$lang['upgradeSuccess']; // @codeCoverageIgnore
+            $status = self::$lang['upgradeSuccess'];
         }
         else
         {
@@ -70,7 +72,7 @@ class Upgrade
 
             if( $upgradeError = ZN::upgradeError() )
             {
-                $status = $upgradeError; // @codeCoverageIgnore
+                $status = $upgradeError; 
             }         
         }
 
