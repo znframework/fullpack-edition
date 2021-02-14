@@ -104,9 +104,6 @@ class ZN
         # PHP shows code errors.
         ini_set('display_errors', true); error_reporting(1);
         
-        # The system starts the load time.
-        define('START_BENCHMARK', microtime(true));
-
         # ZN Version
         define('ZN_VERSION', $version);
 
@@ -127,7 +124,7 @@ class ZN
 
         # Defines constants required for system and user.
         self::defineDirectoryConstants();
-
+       
         # Enables class loading by automatically activating the object call.
         Autoloader::register();
         
@@ -139,25 +136,6 @@ class ZN
         {
             return false;
         }
-
-        # The code to be written to this layer runs before the system files are 
-        # loaded. For this reason, you can not use ZN libraries.
-        Base::layer('Top');
-
-        # Enables route filters.
-        Singleton::class('ZN\Routing\Route')->filter();
-
-        # You can use system constants and libraries in this layer since the code 
-        # to write to this layer is used immediately after the auto loader. 
-        # All Config files can be configured on this layer since this layer runs 
-        # immediately after the auto installer.
-        Base::layer('TopBottom');
-
-        # Enables the ob_gzhandler method if it is turned on.
-        define('HTACCESS_CONFIG', Config::get('Htaccess'));
-    
-        # OB process is starting.
-        Buffering::start();
  
         # Run Kernel
         try 
@@ -171,16 +149,6 @@ class ZN
                 Exceptions::table($e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
             }   
         }
-
-        # The system finishes the load time.
-        define('FINISH_BENCHMARK', microtime(true));
-
-        # Creates a table that calculates the operating performance of the system. 
-        # To open this table, follow the steps below.
-        In::benchmarkReport();
-
-        # The buffer is being turned off.
-        Buffering::end();
     }
 
     /**
