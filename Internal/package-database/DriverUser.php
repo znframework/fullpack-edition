@@ -194,7 +194,7 @@ class DriverUser
     {
         if( isset($this->resources[$resource]) )
         {
-            $resource  = $this->resources[$resource];
+            $resource  = $this->resources[$resource]; // @codeCoverageIgnore
         }
 
         $this->resource = ' '.$resource.' '.$count.' ';
@@ -210,7 +210,7 @@ class DriverUser
     {
         if( strtolower($type) === 'interval' )
         {
-            $type = 'INTERVAL '.$n.' DAY ';
+            $type = 'INTERVAL '.$n.' DAY '; // @codeCoverageIgnore
         }
 
         $this->passwordExpire = ' PASSWORD EXPIRE '.$type.' ';
@@ -351,11 +351,11 @@ class DriverUser
 
         if( $pass === 'old:')
         {
-            $pass = 'OLD_PASSWORD(\''.$pass.'\')';
+            $pass = 'OLD_PASSWORD(\''.$pass.'\')'; // @codeCoverageIgnore
         }
         elseif( $pass === 'new:' )
         {
-            $pass = 'PASSWORD(\''.$pass.'\')';
+            $pass = 'PASSWORD(\''.$pass.'\')'; // @codeCoverageIgnore
         }
         else
         {
@@ -383,10 +383,10 @@ class DriverUser
                 return ' \''.$string.'\' ';
             }
 
-            return ' '.$string.' ';
+            return ' '.$string.' '; // @codeCoverageIgnore
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -408,7 +408,7 @@ class DriverUser
         {
             if( ! empty($this->type) )
             {
-                $grantType = $this->type;
+                $grantType = $this->type; // @codeCoverageIgnore
             }
 
             if( ! empty($this->select) )
@@ -448,6 +448,8 @@ class DriverUser
 
     /**
      * Protected Name
+     * 
+     * @codeCoverageIgnore
      */
     protected function _name($name)
     {

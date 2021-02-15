@@ -97,9 +97,7 @@ class GrandModel
     /**
      * Magic constructor
      * 
-     * @param void
-     * 
-     * @return void
+     * @codeCoverageIgnore
      */
     public function __construct()
     {
@@ -550,7 +548,7 @@ class GrandModel
         }
         else
         {
-            $this->grandTable = $this->getGrandTableName();
+            $this->grandTable = $this->getGrandTableName(); // @codeCoverageIgnore
         }
     }
 
@@ -610,6 +608,7 @@ class GrandModel
 
         if( $func === 'update' )
         {
+            // @codeCoverageIgnoreStart
             # 5.3.7[added]
             if( ! empty($this->options) )
             {
@@ -618,10 +617,11 @@ class GrandModel
 
                 $this->options = [];
             }
+            // @codeCoverageIgnoreEnd
 
             if( ! isset($params[1]) )
             {
-                return false;
+                return false; // @codeCoverageIgnore
             }
 
             return $this->where($col, $params[1])->$func($params[0]);
@@ -654,11 +654,11 @@ class GrandModel
         }
         else if( method_exists($this->connectForge, $method) )
         {
-            return $this->connectForge->$method(...$parameters);
+            return $this->connectForge->$method(...$parameters); // @codeCoverageIgnore
         }
         else if( method_exists($this->connectTool, $method) )
         {
-            return $this->connectTool->$method(...$parameters);
+            return $this->connectTool->$method(...$parameters); // @codeCoverageIgnore
         }
 
         return false;
@@ -699,7 +699,7 @@ class GrandModel
         }
         else
         {
-            $get = $this->_get();
+            $get = $this->_get(); // @codeCoverageIgnore
         }
 
         return $get;
