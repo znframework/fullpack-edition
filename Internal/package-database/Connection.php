@@ -565,11 +565,13 @@ class Connection
             $return = false;
         }
 
+        // @codeCoverageIgnoreStart
         if( stripos(trim($getLast), 'as') === 0 )
         {
             $asparam .= $getLast;
             array_pop($args);
         }
+        // @codeCoverageIgnoreEnd
 
         $args = $type.'('.rtrim(implode(',', $args), ',').')'.$asparam;
 
