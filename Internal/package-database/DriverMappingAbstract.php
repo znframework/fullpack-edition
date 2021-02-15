@@ -87,7 +87,7 @@ abstract class DriverMappingAbstract
      * 
      * @return array
      * 
-     * @coveCoverageIgnore
+     * @codeCoverageIgnore
      */
     public function resultArray()
     {
@@ -103,9 +103,9 @@ abstract class DriverMappingAbstract
     {
         if( ! empty($this->query) )
         {
-            $data = $this->fetchAssoc(); // @coveCoverageIgnore
+            $data = $this->fetchAssoc(); // @codeCoverageIgnore
 
-            return (object) $data; // @coveCoverageIgnore
+            return (object) $data; // @codeCoverageIgnore
         }
         else
         {
@@ -136,14 +136,14 @@ abstract class DriverMappingAbstract
         {
             return $this->statements('foreignkey', $column);
         }
-        // @coveCoverageIgnoreStart
+        // @codeCoverageIgnoreStart
         elseif( $column === NULL )
         {
             return $this->statements('foreignkey');
         }
        
         return $this->statements('foreignkey') . ' ' . $this->references($column, $references);
-        // @coveCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -261,16 +261,16 @@ abstract class DriverMappingAbstract
         {
             if( strstr($isstate, '%') )
             {
-                $vartype = str_replace('%', $len, $isstate); // @coveCoverageIgnore
+                $vartype = str_replace('%', $len, $isstate); // @codeCoverageIgnore
 
-                return $this->cvartype($vartype); // @coveCoverageIgnore
+                return $this->cvartype($vartype); // @codeCoverageIgnore
             }
 
             return $this->cvartype($isstate, $len, $type);
         }
         else
         {
-            return false; // @coveCoverageIgnore
+            return false; // @codeCoverageIgnore
         }
     }
 
@@ -298,7 +298,7 @@ abstract class DriverMappingAbstract
             return  $this->cvartype($isvartype, $len, $type);
         }
         
-        return false; // @coveCoverageIgnore
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -332,6 +332,6 @@ abstract class DriverMappingAbstract
             return $row;
         }
         
-        return $row; // @coveCoverageIgnore
+        return $row; // @codeCoverageIgnore
     }
 }

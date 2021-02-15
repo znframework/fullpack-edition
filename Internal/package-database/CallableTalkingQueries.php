@@ -29,7 +29,7 @@ trait CallableTalkingQueries
         # Is Function Elements
         if( in_array($method, $this->functionElements) )
         {
-            $functionMethod = $method; // @coveCoverageIgnore
+            $functionMethod = $method; // @codeCoverageIgnore
         }
         else
         {
@@ -49,7 +49,7 @@ trait CallableTalkingQueries
         # Math Functions
         if( $functionMethod !== NULL )
         {
-            return $this->callMathMethod($functionMethod, $parameters); // @coveCoverageIgnore
+            return $this->callMathMethod($functionMethod, $parameters); // @codeCoverageIgnore
         }
         # Variable Types
         elseif( $vartypeMethod !== NULL )
@@ -226,7 +226,7 @@ trait CallableTalkingQueries
     /**
      * Protected call math method
      * 
-     * @coveCoverageIgnore
+     * @codeCoverageIgnore
      */
     protected function callMathMethod($functionMethod, $parameters)
     {
