@@ -86,6 +86,8 @@ abstract class DriverMappingAbstract
      * Result Array 
      * 
      * @return array
+     * 
+     * @coveCoverageIgnore
      */
     public function resultArray()
     {
@@ -101,9 +103,9 @@ abstract class DriverMappingAbstract
     {
         if( ! empty($this->query) )
         {
-            $data = $this->fetchAssoc();
+            $data = $this->fetchAssoc(); // @coveCoverageIgnore
 
-            return (object) $data;
+            return (object) $data; // @coveCoverageIgnore
         }
         else
         {
@@ -134,12 +136,14 @@ abstract class DriverMappingAbstract
         {
             return $this->statements('foreignkey', $column);
         }
+        // @coveCoverageIgnoreStart
         elseif( $column === NULL )
         {
             return $this->statements('foreignkey');
         }
        
         return $this->statements('foreignkey') . ' ' . $this->references($column, $references);
+        // @coveCoverageIgnoreEnd
     }
 
     /**
@@ -257,16 +261,16 @@ abstract class DriverMappingAbstract
         {
             if( strstr($isstate, '%') )
             {
-                $vartype = str_replace('%', $len, $isstate);
+                $vartype = str_replace('%', $len, $isstate); // @coveCoverageIgnore
 
-                return $this->cvartype($vartype);
+                return $this->cvartype($vartype); // @coveCoverageIgnore
             }
 
             return $this->cvartype($isstate, $len, $type);
         }
         else
         {
-            return false;
+            return false; // @coveCoverageIgnore
         }
     }
 
@@ -294,7 +298,7 @@ abstract class DriverMappingAbstract
             return  $this->cvartype($isvartype, $len, $type);
         }
         
-        return false;
+        return false; // @coveCoverageIgnore
     }
 
     /**
@@ -328,6 +332,6 @@ abstract class DriverMappingAbstract
             return $row;
         }
         
-        return $row;
+        return $row; // @coveCoverageIgnore
     }
 }

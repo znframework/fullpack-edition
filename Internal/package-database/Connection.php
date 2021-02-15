@@ -490,6 +490,7 @@ class Connection
 
             $secureParams = [];
 
+            // @coveCoverageIgnoreStart
             if( is_numeric(key($secure)) )
             {
                 $strex  = explode('?', $query);
@@ -504,6 +505,7 @@ class Connection
 
                 $query = $newstr;
             }
+            // @coveCoverageIgnoreEnd
             else
             {
                 foreach( $this->secure as $k => $v )
@@ -550,11 +552,13 @@ class Connection
             $return = true;
             $as     = Arrays\GetElement::last($args);
 
+            // @coveCoverageIgnoreStart
             if( stripos(trim($as), 'as') === 0 )
             {
                 $asparam .= $as;
                 array_pop($args);
             }
+            // @coveCoverageIgnoreEnd
         }
         else
         {
@@ -629,12 +633,14 @@ class Connection
      */
     protected function _runQuery($query, $type = 'query')
     {
+        // @coveCoverageIgnoreStart
         if( $this->string === true )
         {
             $this->string = NULL;
 
             return $query;
         }
+        // @coveCoverageIgnoreEnd
 
         if( $this->transaction === true )
         {
