@@ -11,7 +11,7 @@ class GrandModelTest extends DatabaseExtends
                ->address([DB::text()])
                ->create(DB::encoding());
 
-        $this->assertSame("CREATE TABLE persons(id   INTEGER(11)  PRIMARY KEY  AUTOINCREMENT, name   VARCHAR(255)  NULL, address   TEXT) CHARACTER SET utf8 COLLATE utf8_general_ci ;", trim($this->persons->stringQuery()));
+        $this->assertSame("CREATE TABLE persons(id   INTEGER  PRIMARY KEY  AUTOINCREMENT, name   VARCHAR(255)  NULL, address   TEXT) CHARACTER SET utf8 COLLATE utf8_general_ci ;", trim($this->persons->stringQuery()));
     }
 
     public function testGrandInsert()

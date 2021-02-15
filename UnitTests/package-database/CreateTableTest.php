@@ -13,7 +13,7 @@ class CreateTableTest extends DatabaseExtends
             'name' => [DB::varchar(50),] 
         ]);
 
-        $this->assertSame("CREATE TABLE contents(id   INTEGER(11)  PRIMARY KEY, name   VARCHAR(50))", trim(DBForge::stringQuery()));
+        $this->assertSame("CREATE TABLE contents(id   INTEGER  PRIMARY KEY, name   VARCHAR(50))", trim(DBForge::stringQuery()));
     }
 
     public function testCreateTableExtras()
@@ -24,7 +24,7 @@ class CreateTableTest extends DatabaseExtends
             'name' => [DB::varchar(50),] 
         ], 'Extras Query');
 
-        $this->assertSame("CREATE TABLE contents(id   INTEGER(11)  PRIMARY KEY, name   VARCHAR(50)) Extras Query;", trim(DBForge::stringQuery()));
+        $this->assertSame("CREATE TABLE contents(id   INTEGER  PRIMARY KEY, name   VARCHAR(50)) Extras Query;", trim(DBForge::stringQuery()));
     }
 
     public function testCreateTableOptionParameters()
@@ -33,6 +33,6 @@ class CreateTableTest extends DatabaseExtends
                ->column('name', [DB::varchar(50), DB::notNull(), DB::collate('utf8_unicode_ci')])
                ->createTable('contents');
 
-        $this->assertSame("CREATE TABLE contents(id   INTEGER(11)  NOT NULL  AUTOINCREMENT, name   VARCHAR(50)  NOT NULL COLLATE utf8_unicode_ci)", trim(DBForge::stringQuery()));
+        $this->assertSame("CREATE TABLE contents(id   INTEGER  NOT NULL  AUTOINCREMENT, name   VARCHAR(50)  NOT NULL COLLATE utf8_unicode_ci)", trim(DBForge::stringQuery()));
     }
 }

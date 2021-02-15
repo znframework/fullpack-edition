@@ -59,24 +59,24 @@ class DB extends DriverMappingAbstract
      */
     protected $variableTypes =
     [
-        'int'           => 'INTEGER',
-        'smallint'      => 'SMALLINT',
-        'tinyint'       => 'TINYINT',
-        'mediumint'     => 'INTEGER',
-        'bigint'        => 'BIGINT',
+        'int'           => ':INTEGER',
+        'smallint'      => ':SMALLINT',
+        'tinyint'       => ':TINYINT',
+        'mediumint'     => ':INTEGER',
+        'bigint'        => ':BIGINT',
         'decimal'       => 'DECIMAL',
-        'double'        => 'DOUBLE PRECISION',
+        'double'        => 'FLOAT',
         'float'         => 'FLOAT',
         'char'          => 'CHAR',
         'varchar'       => 'VARCHAR',
-        'tinytext'      => 'VARCHAR(255)',
-        'text'          => 'VARCHAR(65535)',
-        'mediumtext'    => 'VARCHAR(16277215)',
-        'longtext'      => 'VARCHAR(16277215)',
-        'date'          => 'DATE',
-        'datetime'      => 'UTCDATETIME',
-        'time'          => 'TIME',
-        'timestamp'     => 'TIMESTAMP'
+        'tinytext'      => ':VARCHAR(255)',
+        'text'          => ':VARCHAR(65535)',
+        'mediumtext'    => ':VARCHAR(16277215)',
+        'longtext'      => ':VARCHAR(16277215)',
+        'date'          => ':DATE',
+        'datetime'      => ':DATETIME',
+        'time'          => ':TIME',
+        'timestamp'     => ':TIMESTAMP'
     ];
 
     /**

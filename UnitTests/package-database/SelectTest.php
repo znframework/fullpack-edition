@@ -656,7 +656,7 @@ class SelectTest extends DatabaseExtends
 
     public function testVartype()
     {
-        $this->assertEquals(" INTEGER(11) ", DB::vartype('int', 11));
+        $this->assertEquals(" INTEGER ", DB::vartype('int', 11));
     }
 
     public function testProperty()

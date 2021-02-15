@@ -95,7 +95,7 @@ class TalkingQueriesTest extends DatabaseExtends
     {
         DBForge::accountsCreate(['id' => [DB::int(11), DB::autoIncrement(), DB::primaryKey()]]);
 
-        $this->assertSame("CREATE TABLE accounts(id   INTEGER(11)  AUTOINCREMENT  PRIMARY KEY)", trim(DBForge::stringQuery()));
+        $this->assertSame("CREATE TABLE accounts(id   INTEGER  AUTOINCREMENT  PRIMARY KEY)", trim(DBForge::stringQuery()));
     }
 
     public function testDropTable()

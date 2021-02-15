@@ -283,9 +283,18 @@ abstract class DriverMappingAbstract
     {
         $vartype = strtolower($vartype);
 
-        return   ! empty( $isvartype = ($this->variableTypes[$vartype] ?? NULL) )
-                 ? $this->cvartype($isvartype, $len, $type)
-                 : false;
+        if( $isvartype = ($this->variableTypes[$vartype] ?? NULL) )
+        {
+            if( strpos($isvartype, ':') === 0 )
+            {
+                $len = NULL;
+                $isvartype = substr($isvartype, 1);
+            }
+    
+            return  $this->cvartype($isvartype, $len, $type);
+        }
+        
+        return false;
     }
 
     /**
