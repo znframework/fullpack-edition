@@ -120,7 +120,7 @@ class DB extends DriverMappingAbstract
 
         if( empty($this->connect) )
         {
-            throw new ConnectionErrorException(NULL, sqlsrv_errors(SQLSRV_ERR_ERRORS)['message']);
+            throw new ConnectionErrorException(NULL, sqlsrv_errors(SQLSRV_ERR_ERRORS)[0]['message']);
         }
     }
 
