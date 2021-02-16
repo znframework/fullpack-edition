@@ -2,7 +2,7 @@
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
-         bootstrap="bootstrap"
+         bootstrap="UnitTests/bootstrap"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
