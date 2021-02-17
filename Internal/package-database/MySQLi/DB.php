@@ -135,6 +135,7 @@ class DB extends DriverMappingAbstract
         $port = $this->config['port'] ?: 3306;
         $ssl  = $this->config['ssl'] ?? NULL;
 
+        set_error_handler(function(){});
         if( ! empty($ssl['key']) || ! empty($ssl['cert']) || ! empty($ssl['ca']) || ! empty($ssl['capath']) || ! empty($ssl['cipher']) )
         {
             $this->connect = new MySQLi;
@@ -147,7 +148,8 @@ class DB extends DriverMappingAbstract
         {
             $this->connect = new MySQLi($host, $user, $pass, $db, $port);
         }
-
+        restore_error_handler();
+        
         if( $this->connect->connect_errno )
         {
             throw new ConnectionErrorException(NULL, $this->connect->connect_error);
