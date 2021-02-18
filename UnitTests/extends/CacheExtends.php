@@ -40,4 +40,9 @@ class CacheExtends extends \ZN\Test\GlobalExtends
     {
         return Cache::driver('memcache');
     }
+
+    public function apc()
+    {
+        return Cache::driver('apc');
+    }
 }
