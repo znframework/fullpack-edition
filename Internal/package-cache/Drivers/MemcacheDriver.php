@@ -15,9 +15,6 @@ use ZN\ErrorHandling\Errors;
 use ZN\Cache\DriverMappingAbstract;
 use ZN\Cache\Exception\UnsupportedDriverException;
 
-/**
- * @codeCoverageIgnore
- */
 class MemcacheDriver extends DriverMappingAbstract
 {
     /**

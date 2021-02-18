@@ -151,7 +151,7 @@ class DB extends DriverMappingAbstract
         
         if( $this->connect->connect_errno )
         {
-            throw new ConnectionErrorException(NULL, $this->connect->connect_error);
+            throw new ConnectionErrorException(NULL, $this->connect->connect_error); // @codeCoverageIgnore
         }
 
         if( ! empty($this->config['charset']  ) ) $this->query("SET NAMES '".$this->config['charset']."'");  
@@ -202,7 +202,7 @@ class DB extends DriverMappingAbstract
     {
         if( empty($query) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return (bool) ($this->query = $this->connect->multi_query($query));
@@ -218,7 +218,6 @@ class DB extends DriverMappingAbstract
         $this->connect->autocommit(false);
 
         return $this->connect->begin_transaction();
-
     }
 
     /**
@@ -232,6 +231,8 @@ class DB extends DriverMappingAbstract
         {
             return $this->connect->autocommit(true);
         }
+
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -245,6 +246,8 @@ class DB extends DriverMappingAbstract
         {
             return $this->connect->autocommit(true);
         }
+
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -345,7 +348,7 @@ class DB extends DriverMappingAbstract
     {
         if( empty($this->query) )
         {
-            return $data;
+            return $data; // @codeCoverageIgnore
         }
 
         return $this->connect->real_escape_string($data);
