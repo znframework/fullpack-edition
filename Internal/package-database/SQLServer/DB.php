@@ -111,8 +111,8 @@ class DB extends DriverMappingAbstract
             'PWD'                   => $this->config['password'],
             'Database'              => $this->config['database'],
             'ConnectionPooling'     => $this->config['pconnect'] === true ? 1 : 0,
-            'CharacterSet'          => $charset,
-            'Encrypt'               => $this->config['encode'],
+            'CharacterSet'          => $charset ?: 'utf-8',
+            'Encrypt'               => $this->config['encode'] ?: false,
             'ReturnDatesAsStrings'  => 1
         ];
 
