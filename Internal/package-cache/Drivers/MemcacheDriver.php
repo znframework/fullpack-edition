@@ -13,7 +13,7 @@ use Memcached;
 use ZN\Support;
 use ZN\ErrorHandling\Errors;
 use ZN\Cache\DriverMappingAbstract;
-use ZN\Cache\Exception\UnsupportedDriverException;
+use ZN\Cache\Exception\ConnectionRefusedException;
 
 class MemcacheDriver extends DriverMappingAbstract
 {
@@ -28,7 +28,7 @@ class MemcacheDriver extends DriverMappingAbstract
     {
         parent::__construct();
         
-        Support::library('Memcached', 'Memcache');
+        Support::library('Memcached', 'Memcached');
 
         $this->memcache = new Memcached;
 
@@ -38,14 +38,10 @@ class MemcacheDriver extends DriverMappingAbstract
                   ? $settings
                   : $config['memcache'];
         
-        $connect = $this->memcache->addServer($config['host'], $config['port'], $config['weight']);
-        
-        if( empty($connect) )
+        if( ! $this->memcache->addServer($config['host'], $config['port'], $config['weight']) )
         {
-            throw new UnsupportedDriverException(NULL, 'Memcache');
+            throw new ConnectionRefusedException(NULL, 'Memcached connection error!'); // @codeCoverageIgnore
         }
-
-        return true;
     }
 
     /**
