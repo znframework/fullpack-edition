@@ -420,7 +420,7 @@ class DB extends DriverMappingAbstract
     {
         if( is_resource($this->connect) )
         {
-            return pg_version($this->connect);
+            return pg_version($this->connect)['client'];
         }
 
         return false; // @codeCoverageIgnore

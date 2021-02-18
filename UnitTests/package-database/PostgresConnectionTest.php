@@ -248,7 +248,7 @@ class PostgresConnectionTest extends DatabaseExtends
     {
         $this->postgres(function($db)
         {
-            $this->assertIsArray($db->version());
+            $this->assertIsString($db->version());
         });
     }
 }
