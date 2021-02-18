@@ -11,7 +11,7 @@ class DatabaseExtends extends \ZN\Test\GlobalExtends
     const sqlite    = ['driver' => 'sqlite'   , 'database' => self::default . 'package-database/resources/testdb', 'password' => '1234'];
     const mysqli    = ['driver' => 'mysqli'   , 'user' => 'root'  , 'host' => '127.0.0.1', 'database' => 'test', 'password' => ''           , 'port' => 3306];
     const postgres  = ['driver' => 'postgres' , 'user' => 'postgres', 'host' => 'localhost', 'database' => 'test', 'password' => 'postgres'         , 'port' => 5432];
-    const sqlserver = ['driver' => 'sqlserver', 'user' => 'sa'      , 'host' => 'localhost', 'database' => 'test', 'password' => '1Secure*Password1', 'port' => 1433];
+    const sqlserver = ['driver' => 'sqlserver', 'user' => 'sa'      , 'host' => '127.0.0.1', 'database' => 'test', 'password' => 'P@ssw0rd', 'port' => 1433];
 
     public function __construct()
     {
