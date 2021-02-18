@@ -128,23 +128,4 @@ class RedisDriverTest extends CacheExtends
             $this->assertIsString($e->getMessage());
         }
     }
-
-    public function testPasswordException()
-    {
-        try
-        {
-            new Drivers\RedisDriver
-            ([
-                'password' => NULL,
-                'host'     => '127.0.0.1',
-                'port'     => 6379,
-                'timeout'  => 0
-            ]);
-            
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
-    }
 }
