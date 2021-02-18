@@ -26,7 +26,7 @@ class Processor implements ProcessorInterface
      */
     const driver =
     [
-        'options'   => ['file', 'apc', 'memcache', 'redis', 'wincache'],
+        'options'   => ['file', 'apc', 'memcache', 'redis'],
         'namespace' => 'ZN\Cache\Drivers',
         'config'    => 'Storage:cache',
         'default'   => 'ZN\Cache\CacheDefaultConfiguration'
