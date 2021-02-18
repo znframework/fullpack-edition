@@ -139,13 +139,4 @@ interface ProcessorInterface
      * @return array
      */
     public function info($info) : Array;
-
-    /**
-     * Get meta data
-     * 
-     * @param string $key
-     * 
-     * @return array
-     */
-    public function getMetaData(String $key) : Array;
 }

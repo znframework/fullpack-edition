@@ -75,15 +75,6 @@ class RedisDriver extends DriverMappingAbstract
         {
             throw new AuthenticationFailedException; // @codeCoverageIgnore
         }
-
-        $serialized = $this->redis->sMembers($this->sMembersKey);
-
-        if ( ! empty($serialized) )
-        {
-            $this->serialized = array_flip($serialized); // @codeCoverageIgnore
-        }
-
-        return true;
     }
 
     /**
@@ -96,14 +87,7 @@ class RedisDriver extends DriverMappingAbstract
      */
     public function select($key, $compressed = NULL)
     {
-        $value = $this->redis->get($key);
-
-        if( $value !== false && isset($this->serialized[$key]) )
-        {
-            return unserialize($value); // @codeCoverageIgnore
-        }
-
-        return $value;
+        return $this->redis->get($key);
     }
 
     /**
@@ -118,27 +102,6 @@ class RedisDriver extends DriverMappingAbstract
      */
     public function insert($key, $data, $time, $compressed)
     {
-        if( is_array($data) || is_object($data) )
-        {
-            if( ! $this->redis->sIsMember($this->sMembersKey, $key) && ! $this->redis->sAdd($this->sMembersKey, $key) )
-            {
-                return false; // @codeCoverageIgnore
-            }
-
-            if( ! isset($this->serialized[$key]) )
-            {
-                $this->serialized[$key] = true;
-            }
-
-            $data = serialize($data);
-        }
-        elseif( isset($this->serialized[$key]) )
-        {
-            $this->serialized[$key] = NULL;
-
-            $this->redis->sRemove($this->sMembersKey, $key);
-        }
-
         return $this->redis->set($key, $data, $time);
     }
 
@@ -151,19 +114,7 @@ class RedisDriver extends DriverMappingAbstract
      */
     public function delete($key)
     {
-        if( $this->redis->delete($key) !== 1 )
-        {
-            return false;
-        }
-
-        if( isset($this->serialized[$key]) )
-        {
-            $this->serialized[$key] = NULL; // @codeCoverageIgnore
-
-            $this->redis->sRemove($this->sMembersKey, $key); // @codeCoverageIgnore
-        }
-
-        return true;
+        return $this->redis->delete($key);
     }
 
     /**
@@ -214,29 +165,6 @@ class RedisDriver extends DriverMappingAbstract
     public function info($type = NULL)
     {
         return $this->redis->info();
-    }
-
-    /**
-     * Get meta data
-     * 
-     * @param string $key
-     * 
-     * @return array
-     */
-    public function getMetaData($key)
-    {
-        $data = $this->select($key);
-
-        if( $data !== false )
-        {
-            return
-            [
-                'expire' => time() + $this->redis->ttl($key),
-                'data'   => $data
-            ];
-        }
-
-        return []; // @codeCoverageIgnore
     }
 
     /**

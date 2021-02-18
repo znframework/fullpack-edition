@@ -126,31 +126,4 @@ class WincacheDriver extends DriverMappingAbstract
     {
         return wincache_ucache_info(true);
     }
-
-    /**
-     * Get meta data
-     * 
-     * @param string $key
-     * 
-     * @return array
-     */
-    public function getMetaData($key)
-    {
-        if( $stored = wincache_ucache_info(false, $key) )
-        {
-            $age      = $stored['ucache_entries'][1]['age_seconds'];
-            $ttl      = $stored['ucache_entries'][1]['ttl_seconds'];
-            $hitcount = $stored['ucache_entries'][1]['hitcount'];
-
-            return
-            [
-                'expire'    => $ttl - $age,
-                'hitcount'  => $hitcount,
-                'age'       => $age,
-                'ttl'       => $ttl
-            ];
-        }
-
-        return [];
-    }
 }

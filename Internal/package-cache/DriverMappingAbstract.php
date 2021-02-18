@@ -97,15 +97,6 @@ abstract class DriverMappingAbstract
      * @return array
      */
     abstract public function info($type);
-    
-    /**
-     * Get meta data
-     * 
-     * @param string $key
-     * 
-     * @return array
-     */
-    abstract public function getMetaData($key);
 
     /**
      * Close

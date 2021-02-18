@@ -97,22 +97,6 @@ class MemcacheDriverTest extends CacheExtends
         } 
     }
 
-    public function testGetMetaData()
-    {
-        try
-        {
-            $this->memcache()->insert('a', 1);
-    
-            $this->assertIsArray($this->memcache()->getMetaData('a'));
-
-            $this->assertEmpty($this->memcache()->getMetaData('unknown'));
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        } 
-    }
-
     public function testConnectionException()
     {
         try

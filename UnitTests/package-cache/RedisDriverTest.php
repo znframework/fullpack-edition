@@ -100,20 +100,6 @@ class RedisDriverTest extends CacheExtends
         } 
     }
 
-    public function testGetMetaData()
-    {
-        try
-        {
-            $this->redis()->insert('a', 1);
-    
-            $this->assertIsArray($this->redis()->getMetaData('a'));
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        } 
-    }
-
     public function testConnectionException()
     {
         try

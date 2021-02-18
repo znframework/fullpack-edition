@@ -217,41 +217,6 @@ class FileDriver extends DriverMappingAbstract
     }
 
     /**
-     * Get meta data
-     * 
-     * @param string $key
-     * 
-     * @return array
-     */
-    public function getMetaData($key)
-    {
-        if( ! file_exists($this->path.$key) )
-        {
-            return [];
-        }
-
-        $data = unserialize(file_get_contents($this->path.$key));
-
-        if( is_array($data) )
-        {
-            $mtime = filemtime($this->path.$key);
-
-            if( ! isset($data['ttl']) )
-            {
-                return false; // @codeCoverageIgnore
-            }
-
-            return
-            [
-                'expire' => $mtime + $data['ttl'],
-                'mtime'  => $mtime
-            ];
-        }
-
-        return []; // @codeCoverageIgnore
-    }
-
-    /**
      * Protected create cache directory if not exists
      */
     protected function createCacheDirectoryIfNotExists()

@@ -9,7 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use Memcache;
+use Memcached;
 use ZN\Support;
 use ZN\ErrorHandling\Errors;
 use ZN\Cache\DriverMappingAbstract;
@@ -31,9 +31,9 @@ class MemcacheDriver extends DriverMappingAbstract
     {
         parent::__construct();
         
-        Support::func('memcache_add_server', 'Memcache');
+        Support::library('Memcached', 'Memcache');
 
-        $this->memcache = new Memcache;
+        $this->memcache = new Memcached;
 
         $config = $this->config['driverSettings'];
 
@@ -41,7 +41,7 @@ class MemcacheDriver extends DriverMappingAbstract
                   ? $settings
                   : $config['memcache'];
         
-        $connect = $this->memcache->addServer($config['host'], $config['port'], true, $config['weight']);
+        $connect = $this->memcache->addServer($config['host'], $config['port'], $config['weight']);
         
         if( empty($connect) )
         {
@@ -61,11 +61,7 @@ class MemcacheDriver extends DriverMappingAbstract
      */
     public function select($key, $compressed = NULL)
     {
-        $data = $this->memcache->get($key);
-
-        return ( is_array($data) )
-               ? $data[0]
-               : $data;
+        return $this->memcache->get($key);
     }
 
     /**
@@ -80,12 +76,7 @@ class MemcacheDriver extends DriverMappingAbstract
      */
     public function insert($key, $var, $time, $compressed)
     {
-        if( $compressed !== true )
-        {
-            $var = [$var, time(), $time];
-        }
-
-        return $this->memcache->set($key, $var, 0, $time);
+        return $this->memcache->set($key, $var, $time);
     }
 
     /**
@@ -148,39 +139,5 @@ class MemcacheDriver extends DriverMappingAbstract
     public function info($type = NULL)
     {
         return $this->memcache->getStats() ?: [];
-    }
-
-    /**
-     * Get meta data
-     * 
-     * @param string $key
-     * 
-     * @return array
-     */
-    public function getMetaData($key)
-    {
-        $stored = $this->memcache->get($key) ?: [];
-
-        if( count($stored) !== 3 )
-        {
-            return [];
-        }
-
-        list($data, $time, $expire) = $stored;
-
-        return
-        [
-            'expire' => $time + $expire,
-            'mtime'  => $time,
-            'data'   => $data
-        ];
-    }
-
-    /**
-     * Close
-     */
-    public function close()
-    {
-        $this->memcache->close();
     }
 }

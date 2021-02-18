@@ -26,7 +26,7 @@ class Processor implements ProcessorInterface
      */
     const driver =
     [
-        'options'   => ['file', 'apc', 'apcu', 'memcache', 'redis', 'wincache'],
+        'options'   => ['file', 'memcache', 'redis', 'wincache'],
         'namespace' => 'ZN\Cache\Drivers',
         'config'    => 'Storage:cache',
         'default'   => 'ZN\Cache\CacheDefaultConfiguration'
@@ -267,18 +267,6 @@ class Processor implements ProcessorInterface
         return $this->driver->info($type);
     }
 
-    /**
-     * Get meta data
-     * 
-     * @param string $key
-     * 
-     * @return array
-     */
-    public function getMetaData(String $key) : Array
-    {
-        return $this->driver->getMetaData($key);
-    }
-    
     /**
      * Destructor magic method
      */
