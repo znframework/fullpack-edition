@@ -17,9 +17,6 @@ use ZN\ErrorHandling\Errors;
 use ZN\Database\DriverMappingAbstract;
 use ZN\Database\Exception\ConnectionErrorException;
 
-/**
- * @codeCoverageIgnore
- */
 class DB extends DriverMappingAbstract
 {
     /**
@@ -135,6 +132,7 @@ class DB extends DriverMappingAbstract
         $port = $this->config['port'] ?: 3306;
         $ssl  = $this->config['ssl'] ?? NULL;
 
+        // @codeCoverageIgnoreStart
         set_error_handler(function(){});
         if( ! empty($ssl['key']) || ! empty($ssl['cert']) || ! empty($ssl['ca']) || ! empty($ssl['capath']) || ! empty($ssl['cipher']) )
         {
@@ -144,6 +142,7 @@ class DB extends DriverMappingAbstract
             $this->connect->ssl_set($ssl['key'] ?? NULL, $ssl['cert'] ?? NULL, $ssl['ca'] ?? NULL, $ssl['capath'] ?? NULL, $ssl['cipher'] ?? NULL); 
             $this->connect->real_connect($host, $user, $pass, $db, $port, NULL, MYSQLI_CLIENT_SSL);
         }  
+        // // @codeCoverageIgnoreEnd
         else
         {
             $this->connect = new MySQLi($host, $user, $pass, $db, $port);
@@ -424,12 +423,12 @@ class DB extends DriverMappingAbstract
      */
     public function close()
     {
-        if( empty($this->query) )
+        if( ! empty($this->connect) )
         {
-            return false;
+            return $this->connect->close();
         }
 
-        return $this->connect->close();
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -439,6 +438,6 @@ class DB extends DriverMappingAbstract
      */
     public function version()
     {
-        return $this->connect->server_version ?? 0;
+        return (string) ($this->connect->server_version ?? 0);
     }
 }

@@ -92,7 +92,7 @@ class DB extends DriverMappingAbstract
         $this->config = $config;
 
         $server =   ( ! empty($this->config['server']) )
-                    ? $this->config['server']
+                    ? $this->config['server'] // @codeCoverageIgnore
                     : $this->config['host'];
 
         if( ! empty($this->config['port']) )
@@ -401,7 +401,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 
