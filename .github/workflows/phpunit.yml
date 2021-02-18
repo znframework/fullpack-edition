@@ -67,19 +67,7 @@ jobs:
           - 5432:5432
         options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
 
-      mssql:
-        image: microsoft/mssql-server-linux:2017-latest
-        env:
-          SA_PASSWORD: P@ssw0rd
-          ACCEPT_EULA: Y
-          MSSQL_PID: Developer
-        ports:
-          - 1433:1433
-
     steps:
-      - name: Create database for MSSQL Server
-        run: sqlcmd -S localhost -U sa -P P@ssw0rd -Q "CREATE DATABASE test"
-
       - name: Checkout
         uses: actions/checkout@v2
 
