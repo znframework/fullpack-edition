@@ -142,7 +142,7 @@ class DB extends DriverMappingAbstract
             $this->connect->ssl_set($ssl['key'] ?? NULL, $ssl['cert'] ?? NULL, $ssl['ca'] ?? NULL, $ssl['capath'] ?? NULL, $ssl['cipher'] ?? NULL); 
             $this->connect->real_connect($host, $user, $pass, $db, $port, NULL, MYSQLI_CLIENT_SSL);
         }  
-        // // @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         else
         {
             $this->connect = new MySQLi($host, $user, $pass, $db, $port);
