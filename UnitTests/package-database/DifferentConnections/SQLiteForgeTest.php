@@ -18,7 +18,7 @@ class SQLiteForgeDCTest extends DatabaseExtends
         $forge->dropTable('example');
         $forge->dropTable('example2');
 
-        $this->assertTrue($forge->createTable('example', 
+        $this->assertTrue($forge->extras(NULL)->createTable('example', 
         [
             'id'   => [$db->int(11), $db->primaryKey(), $db->autoIncrement()],
             'name' => $db->varchar(255)

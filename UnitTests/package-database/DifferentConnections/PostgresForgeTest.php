@@ -18,7 +18,7 @@ class PostgresForgeDCTest extends DatabaseExtends
         $forge->dropTable('example');
         $forge->dropTable('example2');
 
-        $this->assertTrue($forge->createTable('example', 
+        $this->assertTrue($forge->extras(NULL)->createTable('example', 
         [
             'id'   => [$db->autoIncrement(), $db->primaryKey()],
             'name' => $db->varchar(255)
