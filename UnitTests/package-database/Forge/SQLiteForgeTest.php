@@ -2,7 +2,7 @@
 
 use DB, DBTool, DBForge;
 
-class SQLiteForgeDCTest extends DatabaseExtends
+class SQLiteForgeTest extends DatabaseExtends
 {
     public function testDatabase()
     {

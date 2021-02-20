@@ -48,6 +48,8 @@ class DBUser extends Connection
      * @param string $host
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function host(String $host) : DBUser
     {
@@ -76,6 +78,8 @@ class DBUser extends Connection
      * @param string $authString
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function identifiedBy(String $authString) : DBUser
     {
@@ -90,6 +94,8 @@ class DBUser extends Connection
      * @param string $hashString
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function identifiedByPassword(String $hashString) : DBUser
     {
@@ -106,6 +112,8 @@ class DBUser extends Connection
      * @param string $authString 
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function identifiedWith(String $authPlugin, String $type, String $authString) : DBUser
     {
@@ -121,6 +129,8 @@ class DBUser extends Connection
      * @param string $authString 
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function identifiedWithBy(String $authPlugin, String $authString) : DBUser
     {
@@ -136,6 +146,8 @@ class DBUser extends Connection
      * @param string $hashString 
      *
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function identifiedWithAs(String $hashPlugin, String $hashString) : DBUser
     {
@@ -148,6 +160,8 @@ class DBUser extends Connection
      * Required
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function required() : DBUser
     {
@@ -160,6 +174,8 @@ class DBUser extends Connection
      * With
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function with() : DBUser
     {
@@ -175,8 +191,10 @@ class DBUser extends Connection
      * @param string $value
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
-    public function option(String $name, String $value) : DBUser
+    public function option(String $name, String $value = NULL) : DBUser
     {
         $this->user->option($name, $value);
 
@@ -191,6 +209,8 @@ class DBUser extends Connection
      * @param string $condition - [and|or]
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function encode(String $type, String $string, String $condition = NULL) : DBUser
     {
@@ -206,6 +226,8 @@ class DBUser extends Connection
      * @param string $count    
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function resource(String $resource, $count = 0) : DBUser
     {
@@ -235,6 +257,8 @@ class DBUser extends Connection
      * @param string $type - [lock|unlock]
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function lock(String $type = 'lock') : DBUser
     {
@@ -249,6 +273,8 @@ class DBUser extends Connection
      * @param string $type - [lock|unlock]
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function unlock(String $type = 'unlock') : DBUser
     {
@@ -263,6 +289,8 @@ class DBUser extends Connection
      * @param string $type - [TABLE|FUNCTION|PROCEDURE]
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function type(String $type = 'TABLE') : DBUser
     {
@@ -289,6 +317,8 @@ class DBUser extends Connection
      * Grant Option
      * 
      * @return DBUser
+     * 
+     * @codeCoverageIgnore
      */
     public function grantOption() : DBUser
     {
@@ -393,6 +423,8 @@ class DBUser extends Connection
      * @param string $pass
      * 
      * @return bool
+     * 
+     * @codeCoverageIgnore
      */
     public function setPassword(String $user = NULL, String $pass = NULL)
     {

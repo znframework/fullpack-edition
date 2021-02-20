@@ -2,7 +2,7 @@
 
 use DB, DBTool, DBForge;
 
-class PostgresForgeDCTest extends DatabaseExtends
+class PostgresForgeTest extends DatabaseExtends
 {
     public function testDatabase()
     {

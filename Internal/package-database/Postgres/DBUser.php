@@ -9,7 +9,6 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use ZN\Base;
 use ZN\Database\DriverUser;
 
 class DBUser extends DriverUser
@@ -19,36 +18,49 @@ class DBUser extends DriverUser
      * 
      * @var array
      */
-    protected $postgreQuoteOptions =
+    protected $options =
     [
         'PASSWORD',
         'VALID UNTIL'
     ];
 
     /**
-     * Sets name
+     * Protected role names
      * 
-     * @param string
+     * @var array
      */
-    public function name($name)
+    protected $roleNames = 
+    [
+        'current' => 'CURRENT_USER',
+        'session' => 'SESSION_USER',
+        'public'  => 'PUBLIC'
+    ];
+
+    /**
+     * Grant Option
+     * 
+     * @var string
+     */
+    protected $grantOption;
+
+    /**
+     * Sets Auth Password
+     * 
+     * @param string $password
+     */
+    public function password($password)
     {
-        $this->name = $name;
+        $this->option('password', $password);
     }
 
     /**
-     * Sets option
+     * Password Expire
      * 
-     * @param string $option
-     * @param string $value
+     * @param string $date
      */
-    public function option($option, $value)
+    public function passwordExpire(String $date, $n = NULL)
     {
-        if( ! empty($this->postgreQuoteOptions[strtoupper($option)]) )
-        {
-            $value = Base::presuffix($value, '\''); // @codeCoverageIgnore
-        }
-
-        $this->parameters['option'] = $option.' '.$value;
+        $this->option('valid until', $date);
     }
 
     /**
@@ -60,10 +72,8 @@ class DBUser extends DriverUser
      */
     public function create($user)
     {
-        $query = 'CREATE USER '.
-                 $user.
-                 ( ! empty($this->parameters['option']) ? ' '.$this->parameters['option'] : '' );
-
+        $query = 'CREATE USER ' . $user . $this->implodeOption();
+                 
         $this->_resetQuery();
 
         return $query;
@@ -78,7 +88,7 @@ class DBUser extends DriverUser
      */
     public function drop($user)
     {
-        $query = 'DROP USER '.$user;
+        $query = 'DROP USER ' . $user;
 
         $this->_resetQuery();
 
@@ -92,14 +102,89 @@ class DBUser extends DriverUser
      * 
      * @return string
      */
-    public function alter($user)
+    public function alter($role = 'current')
     {
-        $query = 'ALTER USER '.
-                 $user.
-                 ( ! empty($this->parameters['option']) ? ' '.$this->parameters['option'] : '' );
+        $query = 'ALTER USER ' . ($this->roleNames[$role] ?? $role) . $this->implodeOption();
 
         $this->_resetQuery();
 
         return $query;
+    }
+
+    /**
+     * Grant
+     * 
+     * @param string $name 
+     * @param string $type
+     * @param string $select
+     * 
+     * @return bool
+     */
+    public function grant($name, $type, $select)
+    {
+        $query = 'GRANT ' . $name . ' ON ' . ($this->type ?: $type) . ($this->select ?: $select) . ' TO ' . $this->name . $this->grantOption . ';';
+      
+        $this->_resetQuery();
+
+        return $query;
+    }
+
+    /**
+     * Revoke
+     * 
+     * @param string $name 
+     * @param string $type
+     * @param string $select
+     * 
+     * @return bool
+     */
+    public function revoke($name, $type, $select)
+    {
+        $query = 'REVOKE ' . $name . ' ON ' . ($this->type ?: $type) . ($this->select ?: $select) . ' FROM ' . $this->name . ';';
+
+        $this->_resetQuery();
+
+        return $query;
+    }
+
+    /**
+     * Rename
+     * 
+     * @param string $oldName
+     * @param string $newName
+     */
+    public function rename($oldName, $newName)
+    {
+        $query = 'ALTER USER ' . $oldName.' RENAME TO ' . $newName . ';';
+
+        return $query;
+    }
+
+    /**
+     * Name
+     */
+    public function name($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Grant Option
+     */
+    public function grantOption()
+    {
+        $this->grantOption = ' WITH GRANT OPTION ';
+    }
+
+    /**
+     * Reset Query
+     */
+    protected function _resetQuery()
+    {
+        $this->parameters  = [];
+        $this->select      = NULL;
+        $this->name        = NULL;
+        $this->type        = NULL;
+        $this->grantOption = NULL;
     }
 }

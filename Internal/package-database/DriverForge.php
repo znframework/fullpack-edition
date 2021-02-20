@@ -19,8 +19,6 @@ class DriverForge
      * @param mixed $extras
      * 
      * @return mixed
-     * 
-     * @codeCoverageIgnore
      */
     public function extras($extras)
     {
@@ -74,8 +72,6 @@ class DriverForge
      * @param string $extras
      * 
      * @return string
-     * 
-     * @codeCoverageIgnore
      */
     public function createTempTable($table, $columns, $extras)
     {
@@ -190,8 +186,6 @@ class DriverForge
      * @param int    $start = 0
      * 
      * @return string
-     * 
-     * @codeCoverageIgnore
      */
     public function startAutoIncrement($table, $start = 0)
     {
@@ -442,7 +436,7 @@ class DriverForge
     {
         if( is_array($extras) )
         {
-            $extraCodes = ' ' . implode(' ', $extras) . ';'; // @codeCoverageIgnore
+            $extraCodes = ' ' . implode(' ', $extras) . ';';
         }
         elseif( is_string($extras) )
         {

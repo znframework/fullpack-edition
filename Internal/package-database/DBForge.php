@@ -48,7 +48,7 @@ class DBForge extends Connection
             case 'Alter'   : $method = 'alterTable' ; break;
             case 'Rename'  : $method = 'renameTable'; break;
             case 'Truncate': $method = 'truncate'   ; break;
-            default        : Support::classMethod(get_called_class(), $originMethodName); // @codeCoverageIgnore
+            default        : Support::classMethod(get_called_class(), $originMethodName);
         }
 
         return $this->$method($table, ...$parameters);
@@ -133,8 +133,6 @@ class DBForge extends Connection
      * @param string $extras
      * 
      * @return bool
-     * 
-     * @codeCoverageIgnore
      */
     public function createTempTable(String $table = NULL, Array $columns = NULL, $extras = NULL)
     {
@@ -164,8 +162,6 @@ class DBForge extends Connection
      * @param mixed  $condition
      * 
      * @return bool
-     * 
-     * @codeCoverageIgnore
      */
     public function alterTable(String $table = NULL, Array $condition = NULL)
     {
@@ -228,8 +224,6 @@ class DBForge extends Connection
      * @param int    $start = 0
      * 
      * @return bool
-     * 
-     * @codeCoverageIgnore
      */
     public function startAutoIncrement(String $table, Int $start = 0)
     {
@@ -247,8 +241,6 @@ class DBForge extends Connection
      * @param int    $start = 0
      * 
      * @return bool
-     * 
-     * @codeCoverageIgnore
      */
     public function addAutoIncrement(String $table, String $column = 'id', Int $start = NULL)
     {
@@ -445,7 +437,7 @@ class DBForge extends Connection
             {
                 if( ! is_numeric($key) )
                 {
-                    $col = $key; // @codeCoverageIgnore
+                    $col = $key;
                 }
 
                 $query = $this->forge->dropColumn($this->_p($table), $col);
