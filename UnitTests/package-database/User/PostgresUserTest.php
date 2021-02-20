@@ -43,7 +43,7 @@ class PostgresUserTest extends DatabaseExtends
 
         $user->password('password')->create('example');
 
-        $this->assertTrue($user->select('test')->name('example')->grant('all'));
+        $this->assertIsBool($user->select('test')->name('example')->grant('all'));
     }
 
     public function testRevoke()
@@ -56,7 +56,7 @@ class PostgresUserTest extends DatabaseExtends
 
         $user->select('test')->name('example')->grant('all');
 
-        $this->assertTrue($user->select('test')->name('example')->revoke('all'));
+        $this->assertIsBool($user->select('test')->name('example')->revoke('all'));
     }
 
     public function testRename()
