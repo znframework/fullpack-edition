@@ -59,4 +59,17 @@ class DBForge extends DriverForge
     {
         return 'ALTER TABLE ' . $table . ' ADD ' . $this->_extractColumn($columns) . ';';
     }
+
+    /**
+     * Drop index
+     * 
+     * @param string $indexName
+     * @param string $table
+     * 
+     * @return string
+     */
+    public function dropIndex($indexName, $table)
+    {
+        return 'DROP INDEX ' . $indexName . ';';
+    }
 }

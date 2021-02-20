@@ -54,7 +54,7 @@ class DBForge extends DriverForge
      */
     public function renameColumn($table, $column)
     { 
-        return false;
+        return 'ALTER TABLE '.$table.' RENAME COLUMN ' . $this->_syntax($column, 'TO') . ';';
     }
 
     /**
@@ -68,5 +68,18 @@ class DBForge extends DriverForge
     public function addColumn($table, $columns)
     {
         return 'ALTER TABLE ' . $table . ' ADD ' . $this->_extractColumn($columns) . ';';
+    }
+
+    /**
+     * Drop index
+     * 
+     * @param string $indexName
+     * @param string $table
+     * 
+     * @return string
+     */
+    public function dropIndex($indexName, $table)
+    {
+        return 'DROP INDEX ' . $indexName . ';';
     }
 }

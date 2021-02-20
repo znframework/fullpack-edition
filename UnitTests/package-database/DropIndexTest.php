@@ -8,6 +8,6 @@ class DropIndexTest extends DatabaseExtends
     {
         DBForge::dropIndex('departmentCI', 'departments', 'description');
 
-        $this->assertSame("ALTER TABLE departments DROP INDEX departmentCI;", trim(DBForge::stringQuery()));
+        $this->assertSame("DROP INDEX departmentCI;", trim(DBForge::stringQuery()));
     }
 }

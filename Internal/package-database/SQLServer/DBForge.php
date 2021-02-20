@@ -31,7 +31,7 @@ class DBForge extends DriverForge
      */
     public function renameColumn($table, $column)
     { 
-        return 'ALTER TABLE '.$table.' RENAME COLUMN '.key($column).' TO '.current($column).';';
+        return "sp_rename '$table." . key($column) . "', '" . current($column) . "', 'COLUMN';";
     }
 
     /**
@@ -46,6 +46,74 @@ class DBForge extends DriverForge
      */
     public function dropIndex($indexName, $table)
     {
-        return 'DROP INDEX ' . $indexName . '.' . $table . ';';
+        return 'DROP INDEX ' . $table . '.' . $indexName . ';';
+    }
+
+    /**
+     * Rename Table
+     * 
+     * @param string $name
+     * @param string $newname
+     * 1
+     * @return string
+     */
+    public function renameTable($name, $newName)
+    {
+        return "sp_rename '$name', '$newName';";
+    }
+
+    /**
+     * Add Column
+     * 
+     * @param string $table
+     * @param array  $columns
+     * 
+     * @return string
+     */
+    public function addColumn($table, $columns)
+    {
+        return 'ALTER TABLE ' . $table . ' ADD ' . $this->_extractColumn($columns) . ';';
+    }
+
+    /**
+     * MOdify Column
+     * 
+     * @param string $table
+     * @param array  $columns
+     * 
+     * @return string
+     */
+    public function modifyColumn($table, $columns)
+    {
+        return 'ALTER TABLE ' . $table . ' ALTER COLUMN ' . $this->_extractColumn($columns) . ';';
+    }
+
+    /**
+     * Drop Column
+     * 
+     * @param string $table
+     * @param array  $columns
+     * 
+     * @return string
+     */
+    public function dropColumn($table, $column)
+    {
+        return 'ALTER TABLE ' . $table . ' DROP COLUMN ' . $column . ';';
+    }
+
+    /**
+     * Create index
+     *
+     * 5.7.4[added]
+     * 
+     * @param string $indexName
+     * @param string $table
+     * @param string $columns
+     * 
+     * @return string
+     */
+    public function createFulltextIndex($indexName, $table, $columns)
+    {
+        return false;
     }
 }

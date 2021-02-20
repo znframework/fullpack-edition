@@ -314,7 +314,7 @@ class DB extends DriverMappingAbstract
         {
             $error = sqlsrv_errors(SQLSRV_ERR_ERRORS)[0] ?? [];
 
-            return ! empty($error['code']) ? ($error['message'] ?: false) : false;
+            return ! empty($error['code']) ? ($error['code'] === 15477 ? false : ($error['message'] ?: false)) : false;
         }
         else
         {
@@ -391,23 +391,6 @@ class DB extends DriverMappingAbstract
     }
 
     /**
-     * Closes a previously opened database connection
-     * 
-     * @return bool
-     */
-    public function close()
-    {
-        if( ! empty($this->connect) )
-        {
-            return sqlsrv_close($this->connect);
-        }
-        else
-        {
-            return false; // @codeCoverageIgnore
-        }
-    }
-
-    /**
      * Returns the version of the MySQL server as an integer
      * 
      * @return int
@@ -430,7 +413,7 @@ class DB extends DriverMappingAbstract
      * @param int $start = NULL
      * @param int $limit = 0
      * 
-     * @return string
+     * @return DB
      */
     public function limit($start = NULL, Int $limit = 0)
     {
@@ -444,11 +427,7 @@ class DB extends DriverMappingAbstract
     }
 
     /**
-     * Clean Limit
-     * 
-     * @param string 
-     * 
-     * @return string
+     * Protected Clean Limit
      */
     public function cleanLimit($data)
     {
@@ -456,11 +435,7 @@ class DB extends DriverMappingAbstract
     }
 
     /**
-     * Get Limit Values
-     * 
-     * @param string 
-     * 
-     * @return array
+     * Protected Get Limit Values
      */
     public function getLimitValues($data)
     {

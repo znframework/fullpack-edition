@@ -8,8 +8,7 @@ class RenameColumnTest extends DatabaseExtends
     public function testRenameColumn()
     {
         DBForge::renameColumn('ExapleTable', ['phone mobile_phone' => [DB::int(), DB::notNull()]]);
-
-        # Unsported SQLite3
-        $this->assertSame("", trim(DBForge::stringQuery()));
+        
+        $this->assertSame("ALTER TABLE ExapleTable RENAME COLUMN phone mobile_phone TO  INTEGER   NOT NULL ;", trim(DBForge::stringQuery()));
     }
 }

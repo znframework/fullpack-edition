@@ -396,23 +396,6 @@ class DB extends DriverMappingAbstract
     }
 
     /**
-     * Closes a previously opened database connection
-     * 
-     * @return bool
-     */
-    public function close()
-    {
-        if( ! empty($this->connect) )
-        {
-            @$this->connect->close();
-        }
-        else
-        {
-            return false; // @codeCoverageIgnore
-        }
-    }
-
-    /**
      * Returns the version of the MySQL server as an integer
      * 
      * @return int

@@ -45,17 +45,14 @@ abstract class DriverMappingAbstract
     public function fetchAssoc(){}
     public function fetchRow(){}
     public function affectedRows(){}
-    public function close(){}
     public function version(){}
 
     /**
-     * Clean Limit
+     * Protected Clean Limit
      * 
      * @param string $data
      * 
-     * @return string
-     * 
-     * @codeCoverageIgnore
+     * @return array
      */
     public function cleanLimit($data)
     {
@@ -63,13 +60,11 @@ abstract class DriverMappingAbstract
     }
 
     /**
-     * Get Limit Values
+     * Protected Get Limit Values
      * 
      * @param string $data
      * 
      * @return array
-     * 
-     * @codeCoverageIgnore
      */
     public function getLimitValues($data)
     {
@@ -94,9 +89,7 @@ abstract class DriverMappingAbstract
     }
 
     /**
-     * Get insert extras by driver
-     * 
-     * @return string
+     * protected get insert extras by drvier
      * 
      * @codeCoverageIgnore
      */
@@ -332,6 +325,26 @@ abstract class DriverMappingAbstract
     }
 
     /**
+     * Closes a previously opened database connection
+     * 
+     * @return bool
+     */
+    public function close()
+    {
+        if( ! empty($this->connect) )
+        {
+            $this->query   = NULL;
+            $this->connect = NULL;
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
      * Variable Types
      * 
      * @param string $vartype = NULL
@@ -356,15 +369,6 @@ abstract class DriverMappingAbstract
         }
         
         return false; // @codeCoverageIgnore
-    }
-
-    /**
-     * Close Connection
-     */
-    public function closeConnection()
-    {
-        $this->query   = NULL;
-        $this->connect = NULL;
     }
 
     /**

@@ -1721,19 +1721,19 @@ class DB extends Connection
      */
     public function result(String $type = 'object', $usageRow = false)
     {
-        $this->_resultCache($type);
+        $this->_resultCache($type, $results);
 
-        if( empty((array) $this->results) )
+        if( empty($results) )
         {
-            $this->results = $this->db->result($type, $this->jsonDecode ?? NULL, $usageRow);
+            $results = $this->db->result($type, $this->jsonDecode ?? NULL, $usageRow);
         }
 
         if( $type === 'json' )
         {
-            return Json::encode($this->results);
+            return Json::encode($results);
         }
 
-        return $this->results;
+        return $results;
     }
 
     /**
@@ -2403,7 +2403,7 @@ class DB extends Connection
      * 
      * @param string $type
      */
-    protected function _resultCache($type)
+    protected function _resultCache($type, &$results = [])
     {
         if( ! empty($this->caching) )
         {
@@ -2413,11 +2413,11 @@ class DB extends Connection
 
             if( $cacheResult = $cache->driver($driver)->select($this->_cacheQuery()) )
             {
-                $this->results = $cacheResult; // @codeCoverageIgnore
+                $results = $cacheResult; // @codeCoverageIgnore
             }
             else
             {
-                $cache->driver($driver)->insert($this->_cacheQuery(), $this->results = $this->db->result($type), $this->caching['time'] ?? 0);
+                $cache->driver($driver)->insert($this->_cacheQuery(), $results = $this->db->result($type), $this->caching['time'] ?? 0);
             }
         }
     }

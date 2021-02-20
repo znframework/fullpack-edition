@@ -19,13 +19,6 @@ use ZN\Database\Exception\InvalidArgumentException;
 class Connection
 {
     /**
-     * Keeps results
-     * 
-     * @var array
-     */
-    protected $results;
-
-    /**
      * Keeps database drivers
      * 
      * @var array
@@ -651,6 +644,13 @@ class Connection
             return $this;
         }
 
+        if( empty($query) )
+        {
+            $this->stringQuery = NULL;
+
+            return false;
+        }
+
         $this->db->$type($this->_querySecurity($query), $this->secure);
 
         return ! (bool) $this->db->error();
@@ -711,6 +711,6 @@ class Connection
      */
     public function __destruct()
     {
-        $this->results = NULL; $this->db->close(); $this->db->closeConnection();
+        $this->db->close();
     }
 }

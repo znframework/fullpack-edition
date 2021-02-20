@@ -146,8 +146,7 @@ class GrandModelTest extends DatabaseExtends
     {
         $this->persons->address(['address2', DB::text()])->rename();
 
-        # SQLite3 unsupported
-        $this->assertSame("", trim($this->persons->stringQuery()));
+        $this->assertSame("ALTER TABLE persons RENAME COLUMN address TO address2  TEXT ;", trim($this->persons->stringQuery()));
     }
 
     public function testGrandDropColumn()

@@ -395,23 +395,6 @@ class DB extends DriverMappingAbstract
     }
 
     /**
-     * Closes a previously opened database connection
-     * 
-     * @return bool
-     */
-    public function close()
-    {
-        if( is_resource($this->connect) )
-        {
-            return pg_close($this->connect);
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
      * Returns the version of the MySQL server as an integer
      * 
      * @return int
@@ -427,9 +410,7 @@ class DB extends DriverMappingAbstract
     }
 
     /**
-     * Get insert extras by driver
-     * 
-     * @return string
+     * protected get insert extras by drvier
      * 
      * @codeCoverageIgnore
      */
