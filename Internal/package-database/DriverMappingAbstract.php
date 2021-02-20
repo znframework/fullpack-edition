@@ -49,6 +49,63 @@ abstract class DriverMappingAbstract
     public function version(){}
 
     /**
+     * Clean Limit
+     * 
+     * @param string $data
+     * 
+     * @return string
+     * 
+     * @codeCoverageIgnore
+     */
+    public function cleanLimit($data)
+    {
+        return preg_replace('/limit\s+[0-9]+(\s*OFFSET\s*[0-9]+)*/xi', '', $data);
+    }
+
+    /**
+     * Get Limit Values
+     * 
+     * @param string $data
+     * 
+     * @return array
+     * 
+     * @codeCoverageIgnore
+     */
+    public function getLimitValues($data)
+    {
+        preg_match('/limit\s+(?<limit>[0-9]+)(\s*OFFSET\s*(?<start>[0-9]+))*/xi', $data, $match);
+
+        return $match;
+    }
+
+    /**
+     * Limit
+     * 
+     * @param int $start = NULL
+     * @param int $limit = 0
+     * 
+     * @return DB
+     * 
+     * @codeCoverageIgnore
+     */
+    public function limit($start = NULL, Int $limit = 0)
+    {
+        return ' LIMIT '. ( ! empty($limit) ? $limit . ' OFFSET ' . $start. ' ' : $start );
+    }
+
+    /**
+     * Get insert extras by driver
+     * 
+     * @return string
+     * 
+     * @codeCoverageIgnore
+     */
+    public function getInsertExtrasByDriver()
+    {
+        return false;
+    }
+
+    /**
      * Result
      * 
      * @param string $type = 'object'

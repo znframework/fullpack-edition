@@ -205,7 +205,7 @@ class DB extends DriverMappingAbstract
             return false;
         }
 
-        return pg_last_oid($this->query) ?: $this->fetchRow()[0] ?? false;
+        return pg_last_oid($this->query) ?: ($this->fetchArray()['id'] ?? NULL) ?: $this->fetchRow()[0] ?? false;
     }
 
     /**
@@ -424,5 +424,17 @@ class DB extends DriverMappingAbstract
         }
 
         return false; // @codeCoverageIgnore
+    }
+
+    /**
+     * Get insert extras by driver
+     * 
+     * @return string
+     * 
+     * @codeCoverageIgnore
+     */
+    public function getInsertExtrasByDriver()
+    {
+        return ' RETURNING id;';
     }
 }

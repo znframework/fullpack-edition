@@ -245,7 +245,9 @@ class DB extends DriverMappingAbstract
      */
     public function numRows()
     {
-        return false;
+        $this->query('select @@RowCount');
+
+        return $this->fetchRow()[0] ?? false;
     }
 
     /**
@@ -420,5 +422,54 @@ class DB extends DriverMappingAbstract
         {
             return false; // @codeCoverageIgnore
         }
+    }
+
+    /**
+     * Limit
+     * 
+     * @param int $start = NULL
+     * @param int $limit = 0
+     * 
+     * @return DB
+     */
+    public function limit($start = NULL, Int $limit = 0)
+    {
+        if( $limit === 0 )
+        {
+            $limit = $start;
+            $start = 0;
+        }
+
+        return ' OFFSET ' . $start . ' ROWS FETCH NEXT ' . $limit . ' ROWS ONLY';
+    }
+
+    /**
+     * Clean Limit
+     * 
+     * @param string 
+     * 
+     * @return string
+     * 
+     * @codeCoverageIgnore
+     */
+    public function cleanLimit($data)
+    {
+        return preg_replace('/OFFSET\s+[0-9]+\s+ROWS\sFETCH\sNEXT\s+[0-9]+\s+ROWS\sONLY/xi', '', $data);
+    }
+
+    /**
+     * Get Limit Values
+     * 
+     * @param string 
+     * 
+     * @return array
+     * 
+     * @codeCoverageIgnore
+     */
+    public function getLimitValues($data)
+    {
+        preg_match('/OFFSET\s+(?<start>[0-9]+)\s+ROWS\sFETCH\sNEXT\s+(?<limit>[0-9]+)\s+ROWS\sONLY/xi', $data, $match);
+
+        return $match;
     }
 }
