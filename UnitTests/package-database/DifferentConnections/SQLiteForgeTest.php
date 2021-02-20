@@ -47,7 +47,6 @@ class SQLiteForgeDCTest extends DatabaseExtends
             'date' => $db->datetime()
         ]));
         
-        $this->assertContains('date', $db->example()->columns());
         $this->assertIsBool($forge->renameColumn('example', ['date' => 'address']));
         $this->assertContains('address', $db->example()->columns());
         $this->assertFalse($forge->modifyColumn('example', 
