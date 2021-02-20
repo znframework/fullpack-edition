@@ -430,7 +430,7 @@ class DB extends DriverMappingAbstract
      * @param int $start = NULL
      * @param int $limit = 0
      * 
-     * @return DB
+     * @return string
      */
     public function limit($start = NULL, Int $limit = 0)
     {
@@ -449,8 +449,6 @@ class DB extends DriverMappingAbstract
      * @param string 
      * 
      * @return string
-     * 
-     * @codeCoverageIgnore
      */
     public function cleanLimit($data)
     {
@@ -463,8 +461,6 @@ class DB extends DriverMappingAbstract
      * @param string 
      * 
      * @return array
-     * 
-     * @codeCoverageIgnore
      */
     public function getLimitValues($data)
     {

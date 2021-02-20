@@ -233,4 +233,36 @@ class SQLServerConnectionTest extends DatabaseExtends
             $this->assertIsString($db->version());
         });
     }
+
+    public function testLimit()
+    {
+        $this->sqlserver(function($db)
+        {
+            $this->assertEquals(' OFFSET 1 ROWS FETCH NEXT 5 ROWS ONLY', $db->limit(1, 5));
+            $this->assertEquals(' OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY', $db->limit(5));
+        });
+    }
+
+    public function testCleanLimit()
+    {
+        $this->sqlserver(function($db)
+        {
+            $this->assertEquals('', $db->cleanLimit('OFFSET 1 ROWS FETCH NEXT 5 ROWS ONLY'));
+        });
+    }
+
+    public function testGetLimitValues()
+    {
+        $this->sqlserver(function($db)
+        {
+            $this->assertEquals
+            ([
+                'OFFSET 1 ROWS FETCH NEXT 5 ROWS ONLY',
+                'start' => '1',
+                1 => '1',
+                'limit' => '5',
+                2 => '5'
+            ], $db->getLimitValues('OFFSET 1 ROWS FETCH NEXT 5 ROWS ONLY'));
+        });
+    }
 }
