@@ -119,7 +119,7 @@ class DB extends DriverMappingAbstract
     {
         if( empty($query) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return $this->connect->exec($query);
