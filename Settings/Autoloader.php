@@ -47,7 +47,7 @@
         EXTERNAL_MODELS_DIR,
         COMMANDS_DIR,
         EXTERNAL_COMMANDS_DIR,
-        'UnitTests/'
+        INTERNAL_DIR . 'package-tests/'
     ],
 
     /*

@@ -2,7 +2,7 @@
 
 class GlobalExtends extends \PHPUnit\Framework\TestCase
 {
-    const default = 'UnitTests/';
+    const default = 'Internal/package-tests/';
 
     public function __construct()
     {

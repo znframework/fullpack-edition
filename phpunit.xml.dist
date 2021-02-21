@@ -2,7 +2,7 @@
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
-         bootstrap="UnitTests/bootstrap"
+         bootstrap="Internal/package-tests/bootstrap"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -14,7 +14,7 @@
 >
     <testsuites>
         <testsuite name="ZN">
-            <directory suffix="Test.php">UnitTests</directory>
+            <directory suffix="Test.php">Internal/package-tests</directory>
         </testsuite>
     </testsuites>
 
@@ -22,8 +22,9 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./Internal</directory>
             <exclude>
-                <directory>./UnitTests/extends</directory>
                 <directory>./Internal/composer</directory>
+                <directory>./Internal/package-composer</directory>
+                <directory>./Internal/package-tests</directory>
                 <file>./Internal/autoload.php</file>
                 <directory>./Internal/package-authentication/Resources</directory>    
                 <directory>./Internal/package-hypertext/Resources</directory>  
