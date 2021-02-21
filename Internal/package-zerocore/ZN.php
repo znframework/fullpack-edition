@@ -788,7 +788,7 @@ class ZN
                         {
                             # If the changes are in the project directory, they are ignored.
                             # If the changes are in the unit tests directory, they are ignored.
-                            if( strpos($file->filename, PROJECTS_DIR) !== 0 && strpos($file->filename, 'UnitTests/') !== 0 )
+                            if( strpos($file->filename, PROJECTS_DIR) !== 0 && strpos($file->filename, 'Internal/package-tests/') !== 0 )
                             {
                                 $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
                             }
