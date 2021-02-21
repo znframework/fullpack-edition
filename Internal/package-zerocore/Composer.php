@@ -52,7 +52,7 @@ class Composer
     {
         if( is_file(self::$path) )
         {
-            require self::$path;
+            require self::$path; // @codeCoverageIgnore
         }
     }
 
