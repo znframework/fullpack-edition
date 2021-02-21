@@ -117,7 +117,7 @@ class DB extends DriverMappingAbstract
 
         if( empty($this->connect) )
         {
-            throw new ConnectionErrorException(NULL, sqlsrv_errors(SQLSRV_ERR_ERRORS)[0]['message']);
+            throw new ConnectionErrorException(NULL, sqlsrv_errors(SQLSRV_ERR_ERRORS)[0]['message']); // @codeCoverageIgnore
         }
     }
 
@@ -133,7 +133,7 @@ class DB extends DriverMappingAbstract
     {
         if( empty($query) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return sqlsrv_query($this->connect, $query);
@@ -218,7 +218,7 @@ class DB extends DriverMappingAbstract
     {
         if( empty($this->query) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         $columns = [];
@@ -259,7 +259,7 @@ class DB extends DriverMappingAbstract
     {
         if( empty($this->query) )
         {
-            return [];
+            return []; // @codeCoverageIgnore
         }
 
         $columns = [];
@@ -287,7 +287,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return 0;
+            return 0; // @codeCoverageIgnore
         }
     }
 
@@ -335,7 +335,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return [];
+            return []; // @codeCoverageIgnore
         }
     }
 
@@ -352,7 +352,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return [];
+            return []; // @codeCoverageIgnore
         }
     }
 
@@ -369,7 +369,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return [];
+            return []; // @codeCoverageIgnore
         }
     }
 
@@ -386,7 +386,7 @@ class DB extends DriverMappingAbstract
         }
         else
         {
-            return 0;
+            return 0; // @codeCoverageIgnore
         }
     }
 
@@ -414,6 +414,8 @@ class DB extends DriverMappingAbstract
      * @param int $limit = 0
      * 
      * @return DB
+     * 
+     * @codeCoverageIgnore
      */
     public function limit($start = NULL, Int $limit = 0)
     {
@@ -428,6 +430,8 @@ class DB extends DriverMappingAbstract
 
     /**
      * Protected Clean Limit
+     * 
+     * @codeCoverageIgnore
      */
     public function cleanLimit($data)
     {
@@ -436,6 +440,8 @@ class DB extends DriverMappingAbstract
 
     /**
      * Protected Get Limit Values
+     * 
+     * @codeCoverageIgnore
      */
     public function getLimitValues($data)
     {
