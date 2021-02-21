@@ -27,12 +27,7 @@ class Including
 
         if( count($including) > count($array) )
         {
-            throw new LogicException
-            (
-                'DataTypes',
-                'array:notExceedLength',
-                ['%' => '2.($including)', '#' => '1.($array)']
-            );
+            return $newArray;
         }
 
         foreach( $array as $key => $val )

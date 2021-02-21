@@ -15,16 +15,9 @@ class ExcludeIncludeTest extends \PHPUnit\Framework\TestCase
 
     public function testExcludeLogicException()
     {
-        try
-        {
-            $array = ['foo'];
+        $array = ['foo'];
 
-            $array = Arrays::exclude($array, ['bar', 'BAZ', 'zoo']);
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
+        $this->assertEmpty(Arrays::exclude($array, ['bar', 'BAZ', 'zoo']));
     }
 
     public function testInclude()
@@ -38,15 +31,8 @@ class ExcludeIncludeTest extends \PHPUnit\Framework\TestCase
 
     public function testIncludeLogicException()
     {
-        try
-        {
-            $array = ['foo'];
+        $array = ['foo'];
 
-            $array = Arrays::include($array, ['bar', 'BAZ', 'zoo']);
-        }
-        catch( \Exception $e )
-        {
-            $this->assertIsString($e->getMessage());
-        }
+        $this->assertEmpty(Arrays::include($array, ['bar', 'BAZ', 'zoo']));
     }
 }
