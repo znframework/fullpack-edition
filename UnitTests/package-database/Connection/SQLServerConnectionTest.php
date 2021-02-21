@@ -39,6 +39,7 @@ class SQLServerConnectionTest extends DatabaseExtends
         $this->assertIsArray($db->example2()->columnData());
         $this->assertEquals(['id', 'name'], $db->example2()->columns());
         $this->assertEquals(3, $db->example2()->totalRows());
+        $this->assertEquals(2, $db->example2()->totalColumns());
         $this->assertIsString($db->version());
         $this->assertEquals(['1', 'zn'], $db->example2()->fetchRow());
         $this->assertEquals(['1', 'zn', 'id' => '1', 'name' => 'zn'], $db->example2()->fetchArray());

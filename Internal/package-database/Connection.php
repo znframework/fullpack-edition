@@ -234,6 +234,8 @@ class Connection
      * @param string $table
      * 
      * @return Connection
+     * 
+     * @codeCoverageIgnore
      */
     public function table(String $table) : Connection
     {

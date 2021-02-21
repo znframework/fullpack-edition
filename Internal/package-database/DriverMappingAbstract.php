@@ -148,14 +148,16 @@ abstract class DriverMappingAbstract
      * Row
      * 
      * @return object|false
+     * 
+     * @codeCoverageIgnore
      */
     public function row()
     {
         if( ! empty($this->query) )
         {
-            $data = $this->fetchAssoc(); // @codeCoverageIgnore
+            $data = $this->fetchAssoc();
 
-            return (object) $data; // @codeCoverageIgnore
+            return (object) $data;
         }
         else
         {
