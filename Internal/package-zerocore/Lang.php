@@ -111,7 +111,7 @@ class Lang
             }
             elseif( is_file($commonLangDir) && ! IS::import($commonLangDir) )
             {
-                self::$lang[$file] = require $commonLangDir;
+                self::$lang[$file] = require $commonLangDir; // @codeCoverageIgnore
             }
             elseif( ! empty(self::$default) && empty(self::$lang[$file]) )
             {
