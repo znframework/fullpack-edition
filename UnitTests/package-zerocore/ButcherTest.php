@@ -100,7 +100,7 @@ class ButcherTest extends ZerocoreExtends
         }
         catch( \Exception $e )
         {
-            $this->assertEquals('`unknownfile.zip` file was not found!', $e->getMessage());
+            $this->assertEquals('Error: `unknownfile.zip` file was not found!', $e->getMessage());
         }
     } 
 }

@@ -32,7 +32,7 @@ class LangTest extends \PHPUnit\Framework\TestCase
 
     public function testSelect()
     {
-        $this->assertSame('Operation failed!', Lang::select('Error', 'error'));
-        $this->assertSame('`TEST` Invalid Command!', Lang::select('Commands', 'invalidCommand', ['%' => 'TEST']));
+        $this->assertSame('Operation failed!', Lang::default('ZN\CoreDefaultLanguage')::select('Error', 'error'));
+        $this->assertSame('`TEST` Invalid Command!', Lang::default('ZN\CoreDefaultLanguage')::select('Commands', 'invalidCommand', ['%' => 'TEST']));
     }
 }
