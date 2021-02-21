@@ -27,8 +27,6 @@ class Connection
     [
         'odbc'      => 'ODBC', 
         'mysqli'    => 'MySQLi',
-        'pdo'       => 'PDO',
-        'pdo:mysql' => 'PDO',
         'oracle'    => 'Oracle',
         'postgres'  => 'Postgres',
         'sqlite'    => 'SQLite',
