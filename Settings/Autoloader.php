@@ -112,5 +112,5 @@
     |
     */
 
-    'composer' => true
+    'composer' => 'Internal/package-composer/autoload.php'
 ];

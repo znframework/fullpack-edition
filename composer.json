@@ -1,6 +1,6 @@
 {
     "name": "znframework/fullpack-edition",
-    "version": "6.1.0",
+    "version": "6.1.1",
     "type": "project",
     "description": "ZN Framework Fullpack Edition",
     "keywords": ["zn","fullpack"],
@@ -15,6 +15,10 @@
             "role": "Developer"
         }
     ],
+    "config": 
+    { 
+        "vendor-dir": "Internal/package-composer/"    
+    },
     "require": 
     {
         "php": ">=7.2"
@@ -26,7 +30,7 @@
     "scripts": 
     {
         "post-create-project-cmd": ["php zerocore generate-project-key"],
-        "build": ["docker-compose up"],
+        "build": ["docker-compose up -d --build znframework", "docker-compose up"],
         "test": "phpunit"
     }
 }
