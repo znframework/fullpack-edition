@@ -3,7 +3,7 @@
 use CDN;
 use File;
 
-class LinkTest extends \PHPUnit\Framework\TestCase
+class LinkTest extends \ZN\Test\GlobalExtends
 {
     public function testLink()
     {
@@ -27,7 +27,7 @@ class LinkTest extends \PHPUnit\Framework\TestCase
 
     public function testSetJsonFile()
     {
-        $this->assertStringContainsString('keyframes.min.js', CDN::setJsonFile($jsonFile = 'UnitTests/package-services/example.json')
+        $this->assertStringContainsString('keyframes.min.js', CDN::setJsonFile($jsonFile = self::default . 'package-services/example.json')
              ->links()['jquerykeyframes']);
 
         File::delete($jsonFile);

@@ -621,7 +621,7 @@ class SelectTest extends DatabaseExtends
     {
         DB::status('persons');
 
-        $this->assertEquals("SHOW TABLE STATUS FROM UnitTests/package-authentication/resources/testdb LIKE 'persons'", DB::stringQuery());
+        $this->assertStringContainsString("SHOW TABLE STATUS FROM", DB::stringQuery());
     }
 
     public function testFetchArray()
