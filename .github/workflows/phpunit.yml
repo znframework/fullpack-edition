@@ -9,11 +9,9 @@ on:
       - 'Internal/**'
       - 'Projects/**'
       - 'Settings/**'
-      - 'UnitTests/**'
       - composer.json
       - DockerFile
       - docker-compose.yml
-      - bootstrap
       - zerocore 
       - '**.php'
       - phpunit.xml.dist
@@ -26,11 +24,9 @@ on:
       - 'Internal/**'
       - 'Projects/**'
       - 'Settings/**'
-      - 'UnitTests/**'
       - composer.json
       - DockerFile
       - docker-compose.yml
-      - bootstrap
       - zerocore 
       - '**.php'
       - phpunit.xml.dist
@@ -116,7 +112,7 @@ jobs:
           php zerocore environment SMTP_PASSWORD ${{ secrets.SMTP_PASSWORD }}
 
       - name: Check PHPUnit tests
-        run: script -e -c "vendor/bin/phpunit -v"
+        run: script -e -c "Internal/package-composer/bin/phpunit -v"
 
       - if: matrix.php-versions == '7.4'
         name: Run coveralls
