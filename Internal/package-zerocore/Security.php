@@ -43,23 +43,9 @@ class Security
      */
     public static function CSRFToken(String $uri = NULL, String $type = 'post', $name = 'token')
     {
-        switch( $type )
+        if( ! self::validCSRFToken($name, $type) )
         {
-            case 'post': $method = $_POST; break;
-            case 'get' : $method = $_GET;  break;
-        }
-
-        if( $method ?? NULL )
-        {
-            Storage::start();
-
-            $mtoken = $method[$name]   ?? self::createHashCode(16);
-            $stoken = $_SESSION[$name] ?? self::createHashCode(8);
-
-            if( $mtoken !== $stoken )
-            {
-                Response::redirect($uri);
-            }
+            Response::redirect($uri);
         }
     }
 
