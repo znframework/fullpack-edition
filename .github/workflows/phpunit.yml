@@ -10,8 +10,6 @@ on:
       - 'Projects/**'
       - 'Settings/**'
       - composer.json
-      - DockerFile
-      - docker-compose.yml
       - zerocore 
       - '**.php'
       - phpunit.xml.dist
@@ -25,8 +23,6 @@ on:
       - 'Projects/**'
       - 'Settings/**'
       - composer.json
-      - DockerFile
-      - docker-compose.yml
       - zerocore 
       - '**.php'
       - phpunit.xml.dist
