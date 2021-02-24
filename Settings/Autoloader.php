@@ -112,5 +112,5 @@
     |
     */
 
-    'composer' => 'Internal/package-composer/autoload.php'
+    'composer' => is_file($file = 'Internal/package-composer/autoload.php') ? $file : true
 ];
