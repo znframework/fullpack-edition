@@ -106,6 +106,7 @@ jobs:
         run: |
           composer update --ansi --no-interaction
           php zerocore environment SMTP_PASSWORD ${{ secrets.SMTP_PASSWORD }}
+          composer create-project znframework/package-tests Internal/package-tests
 
       - name: Check PHPUnit tests
         run: script -e -c "Internal/package-composer/bin/phpunit -v"
