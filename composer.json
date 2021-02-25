@@ -1,6 +1,5 @@
 {
     "name": "znframework/fullpack-edition",
-    "version": "6.1.5",
     "type": "project",
     "description": "ZN Framework Fullpack Edition",
     "keywords": ["zn","fullpack"],
