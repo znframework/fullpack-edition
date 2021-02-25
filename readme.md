@@ -17,7 +17,7 @@
 <a href="//packagist.org/packages/znframework/znframework" rel="nofollow">
 	<img src="https://img.shields.io/github/release-date/znframework/fullpack-edition?style=flat-square" style="max-width:100%;"></a>
 <a href="//packagist.org/packages/znframework/znframework" rel="nofollow">
-	<img src="https://img.shields.io/github/v/release/znframework/znframework?style=flat-square&color=00BFFF" style="max-width:100%;"></a>
+	<img src="https://img.shields.io/github/v/release/znframework/fullpack-edition?style=flat-square&color=00BFFF" style="max-width:100%;"></a>
 <a href="//packagist.org/packages/znframework/znframework" rel="nofollow">
 	<img src="https://img.shields.io/github/license/znframework/znframework?style=flat-square" style="max-width:100%;"></a>
 </p>
