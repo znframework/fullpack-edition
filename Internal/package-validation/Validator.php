@@ -173,7 +173,7 @@ class Validator implements ValidatorInterface
     {
         if( empty($data) )
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
         
         return $data === Singleton::class('ZN\Captcha\Render')->getCode();
