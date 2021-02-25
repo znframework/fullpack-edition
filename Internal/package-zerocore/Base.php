@@ -126,9 +126,9 @@ class Base
         {
             define($constant, true);
 
-            if( is_file($file = PROJECT_TYPE === 'SE' ? REAL_BASE_DIR . $file : $file) )
+            if( is_file($file) )
             {
-                return require $file;
+                return require self::prefix($file, REAL_BASE_DIR);
             }
 
             return false;

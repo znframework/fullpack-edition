@@ -149,14 +149,14 @@ class Kernel
         
         // @codeCoverageIgnoreStart
         # If an invalid parameter is entered, it will redirect to the opening method.
-        if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
+        if( self::methodNotExists($page, $function) )
         { 
             array_unshift($parameters, $function);
             
             $function = $openFunction;
       
             # If the request is invalid, it will be redirected.
-            if( ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic() )
+            if( self::methodNotExists($page, $function) )
             {  
                 self::invalidControllerPath($page, $function);
             }            
@@ -183,6 +183,16 @@ class Kernel
         
         # The operation of the system core is completes.
         self::end();
+    }
+
+    /**
+     * Protected if method not exists
+     * 
+     * @codeCoverageIgnore
+     */
+    protected static function methodNotExists($page, $function)
+    {
+        return ! method_exists($page, $function) || ! (new ReflectionMethod($page, $function))->isPublic();
     }
 
     /**
