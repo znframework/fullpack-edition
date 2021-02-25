@@ -171,6 +171,11 @@ class Validator implements ValidatorInterface
      */
     public static function captcha(String $data) : Bool
     {
+        if( empty($data) )
+        {
+            return false;
+        }
+        
         return $data === Singleton::class('ZN\Captcha\Render')->getCode();
     }
 
