@@ -305,6 +305,3 @@ class Config
         }
     }
 }
-
-# Alias Config
-class_alias('ZN\Config', 'Config');
