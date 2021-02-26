@@ -766,13 +766,7 @@ class ZN
             return $updatedFiles;
         }
 
-        usort($return, function($data1, $data2){ return strcmp($data1->name, $data2->name); });
-
-        rsort($return);
-
-        $lastest = $return[0];
-
-        self::$lastestVersion = $lastest->name;
+        self::$lastestVersion = $return[0]->name;
  
         if( ZN_VERSION < self::$lastestVersion ) foreach( $return as $version )
         {
@@ -787,8 +781,8 @@ class ZN
                         if( ! empty($file->raw_url) )
                         {
                             # If the changes are in the project directory, they are ignored.
-                            # If the changes are in the unit tests directory, they are ignored.
-                            if( strpos($file->filename, PROJECTS_DIR) !== 0 && strpos($file->filename, 'Internal/package-tests/') !== 0 )
+                            # If the changes are in the settings directory, they are ignored.
+                            if( strpos($file->filename, PROJECTS_DIR) !== 0 && strpos($file->filename, SETTINGS_DIR) !== 0 )
                             {
                                 $updatedFiles[$file->filename] = file_get_contents($file->raw_url);
                             }
