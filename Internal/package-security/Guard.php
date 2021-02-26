@@ -17,6 +17,8 @@ class Guard extends Factory
     [
         'methods' =>
         [
+            'timeonstay'         => 'TimeOnStay::create',
+            'validtimeonstay'    => 'TimeOnStay::valid',
             'ncencode'           => 'NastyCode::encode',
             'injectionencode'    => 'Injection::encode',
             'injectiondecode'    => 'Injection::decode',
