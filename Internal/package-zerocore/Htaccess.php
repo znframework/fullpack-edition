@@ -296,6 +296,11 @@ class Htaccess
 
         $file = '.htaccess';
 
+        if( defined('ZN_SHARED_DIR') )
+        {
+            $file = ZN_SHARED_DIR . $file;
+        }
+
         $getContents = is_file($file) ? trim(file_get_contents($file)) : '';
 
         $htaccess .= EOL . '#----------------------------------------------------------------------';

@@ -54,11 +54,26 @@ class Robots
     }
 
     /**
+     * Protected get file path
+     */
+    protected static function getFilePath()
+    {
+        $file = self::$file;
+
+        if( defined('ZN_SHARED_DIR') )
+        {
+            $file = ZN_SHARED_DIR . $file; // @codeCoverageIgnore
+        }
+
+        return $file;
+    }
+
+    /**
      * Protected put robots content
      */
     protected static function putContent($robots)
     {
-        return file_put_contents(self::$file, trim($robots));
+        return file_put_contents(self::getFilePath(), trim($robots));
     }
 
     /**
@@ -66,9 +81,9 @@ class Robots
      */
     protected static function getContent()
     {
-        if( is_file(self::$file) )
+        if( is_file($file = self::getFilePath()) )
         {
-           return trim(file_get_contents(self::$file));
+           return trim(file_get_contents($file));
         }
         
         return '';
