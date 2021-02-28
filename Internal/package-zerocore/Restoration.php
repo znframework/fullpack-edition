@@ -240,7 +240,7 @@ class Restoration
     protected static function deleteClassMapIfExists($project)
     {
         # 5.7.2.6[fixed]
-        if( file_exists($classMapFile = self::getRestoreProjectDirectory($project) . 'ClassMap.php') )
+        if( file_exists($classMapFile = self::getRestoreProjectDirectory($project) . 'map.php') )
         {
             unlink($classMapFile);
         }

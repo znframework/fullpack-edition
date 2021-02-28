@@ -30,7 +30,7 @@ class Autoloader
      * 
      * @var string
      */
-    protected static $path = PROJECT_DIR . 'ClassMap.php';
+    protected static $path = PROJECT_DIR . 'map.php';
 
     /**
      * Keep static access directory
@@ -367,7 +367,7 @@ class Autoloader
      */
     protected static function getClassesAndNamespacesOutput($type, $classMaps, &$classMapPage)
     {
-         # Get the class and namespace array information from the Project/Any/ClassMap.php file
+         # Get the class and namespace array information from the Project/Any/map.php file
          $configClassMap = self::getClassMapContent();
 
         # Getting class paths to print on the class map.
