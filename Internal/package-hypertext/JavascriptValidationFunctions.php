@@ -34,6 +34,24 @@ function <?php echo $ZNValidationCaptcha ?>(element, message)
 </script>
 <?php endif; ?>
 
+<?php if( $ZNValidationAnswer ?? NULL ): ?>
+<script>
+function <?php echo $ZNValidationAnswer ?>(element, message) 
+{
+    var value = element.value;
+
+    if( value !== '<?php echo $_SESSION[md5('answerToQuestion')] ?>' ) 
+    {
+        element.setCustomValidity(message);
+    }
+    else
+    {
+        element.setCustomValidity('');
+    }
+}
+</script>
+<?php endif; ?>
+
 <?php if( $ZNValidationMatch ?? NULL ): ?>
 <script>
 function <?php echo $ZNValidationMatch ?>(element, matchElementName, message) 

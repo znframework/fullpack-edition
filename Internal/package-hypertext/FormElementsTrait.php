@@ -155,6 +155,16 @@ trait FormElementsTrait
     }
 
     /**
+     * Captcha control
+     * 
+     * @return string
+     */
+    public function vAnswer()
+    {
+        return $this->setJavascriptValidation('ZNValidationAnswer', 'answer');
+    }
+
+    /**
      * Match control
      * 
      * @return string
