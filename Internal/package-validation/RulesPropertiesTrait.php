@@ -285,4 +285,16 @@ trait RulesPropertiesTrait
 
         return $this;
     }
+
+    /**
+     * Answer
+     * 
+     * @return Data
+     */
+    public function answer() : Data
+    {
+        $this->settings['config'][] = 'answer';
+
+        return $this;
+    }
 }

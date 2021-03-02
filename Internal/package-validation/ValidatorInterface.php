@@ -93,6 +93,24 @@ interface ValidatorInterface
     public static function captcha(String $data) : Bool;
 
     /**
+     * Question
+     * 
+     * @array $question
+     * 
+     * @return string
+     */
+    public static function question(Array $questions = []);
+
+    /**
+     * Answer control
+     * 
+     * @param string $data
+     * 
+     * @return bool
+     */
+    public static function answer(String $data) : Bool;
+
+    /**
      * Match password.
      * 
      * @param string $data
