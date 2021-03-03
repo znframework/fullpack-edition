@@ -226,10 +226,6 @@ class In
             # Report log
             Helper::report('Benchmarking Test Result', $benchResult, 'BenchmarkTestResults');
         }
-
-        # The layer that came in after the whole system.
-        # The codes to be executed after the system runs are written to this layer.
-        Base::layer('Bottom');
     }
 
     /**

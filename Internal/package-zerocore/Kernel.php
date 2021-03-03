@@ -39,18 +39,8 @@ class Kernel
         # OB process is starting.
         Buffering::start();
 
-        # The code to be written to this layer runs before the system files are 
-        # loaded. For this reason, you can not use ZN libraries.
-        Base::layer('Top');
-
         # Enables route filters.
         Singleton::class('ZN\Routing\Route')->filter();
-
-        # You can use system constants and libraries in this layer since the code 
-        # to write to this layer is used immediately after the auto loader. 
-        # All Config files can be configured on this layer since this layer runs 
-        # immediately after the auto installer.
-        Base::layer('TopBottom');
 
         # Session process is starting.
         Storage::start();
@@ -66,10 +56,6 @@ class Kernel
         {
             date_default_timezone_set($timezone);
         }
-
-        # The codes to be written to this layer will run just before the kernel comes into play. 
-        # However, htaccess is enabled after Autoloder and Header configurations.
-        Base::layer('MiddleTop');
         
         # Enables defined ini configurations.
         if( $iniset = Config::get('Ini') )
@@ -136,11 +122,6 @@ class Kernel
     {
         # The kernel is starting.
         self::start();
-
-        # This layer works only after the initialization codes of the core have been switched on.
-        # Additional rotations, vendor downloads, startup files will be added to the codes 
-        # running on the other layer before this layer.
-        Base::layer('Middle');
         
         $parameters       = CURRENT_CFPARAMETERS;
         $function         = CURRENT_CFUNCTION;
@@ -174,12 +155,7 @@ class Kernel
         self::callController($page, $function, CURRENT_CPARAMETERS);
         
         # The view is automatically loading.
-        self::viewAutoload($wizardPath, $viewPath);          
-
-        # This layer comes into play after your core works.
-        # The codes in the other layer will run before this layer.
-        # This layer only enters the kernel immediately before the end codes.
-        Base::layer('MiddleBottom');
+        self::viewAutoload($wizardPath, $viewPath);    
         
         # The operation of the system core is completes.
         self::end();
@@ -373,10 +349,6 @@ class Kernel
     public static function end()
     {
         In::startingConfig('destructors');
-
-        # In this layer, all the processes, including the kernel end codes, are executed.
-        # Code to try immediately after the core is placed on this layer.
-        Base::layer('BottomTop');
 
         if( PROJECT_CONFIG['log']['createFile'] === true && $errorLast = Errors::last() )
         {

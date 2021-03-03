@@ -43,7 +43,6 @@ class ZN
         'STARTING_DIR'    => 'Starting/',
         'AUTOLOAD_DIR'    => 'Starting/Autoload/',
         'HANDLOAD_DIR'    => 'Starting/Handload/',
-        'LAYERS_DIR'      => 'Starting/Layers/',
         'RESOURCES_DIR'   => 'Resources/',
         'FILES_DIR'       => 'Resources/Files/',
         'TEMPLATES_DIR'   => 'Resources/Templates/',

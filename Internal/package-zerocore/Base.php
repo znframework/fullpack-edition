@@ -85,31 +85,6 @@ class Base
     }
 
     /**
-     * layer
-     * 
-     * Loads the layer files.
-     * 
-     * @param string $layer
-     * 
-     * @return void
-     * 
-     */
-    public static function layer(String $layer)
-    {
-        $path = $layer . '.php';
-
-        if( is_file($require = (LAYERS_DIR . $path)) )
-        {
-            self::import($require);
-        }
-
-        if( is_file($require = (EXTERNAL_LAYERS_DIR . $path)) )
-        {
-            self::import($require);
-        }
-    }
-
-    /**
      * import
      * 
      * Include files once. Performance is better than require_once function.
