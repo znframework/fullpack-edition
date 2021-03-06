@@ -1725,7 +1725,7 @@ class DB extends Connection
 
         if( empty($results) )
         {
-            $results = $this->db->result($type, $this->jsonDecode ?? NULL, $usageRow);
+            $results = $this->results = ($this->results ?? $this->db->result($type, $this->jsonDecode ?? NULL, $usageRow));
         }
 
         if( $type === 'json' )
