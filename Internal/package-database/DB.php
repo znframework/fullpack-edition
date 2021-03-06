@@ -1829,7 +1829,7 @@ class DB extends Connection
      */
     public function row($printable = 0)
     {
-        $result = $this->result('array', true);
+        $result = $this->result('object', true);
 
         if( $printable < 0 )
         {
