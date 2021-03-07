@@ -40,6 +40,15 @@ interface DataInterface
     public function messages(Array $settings);
 
     /**
+     * Add errors
+     * 
+     * @param string $error
+     * 
+     * @return self
+     */
+    public function addError(String $error);
+
+    /**
      * Get error
      * 
      * @param string $name = 'array' - options[array|string]

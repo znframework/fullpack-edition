@@ -388,19 +388,8 @@ class Paginator implements PaginatorInterface
             $this->removeLinkFromPagingationBar($prevLink);
         }
 
-        # Add next link.
-        if( $this->isNextLink($this->getPerPage(), $startRowNumber) )
-        {
-            $this->addNextLink($startRowNumber, $nextLink);
-        }
-        # Remove next link.
-        else
-        {
-            $this->removeLinkFromPagingationBar($nextLink);
-        }
-
         # Generate pagination bar.
-        return $this->generatePaginationBar($prevLink, $this->getNumberLinks($this->getPerPage(), $startRowNumber), $nextLink);
+        return $this->generatePaginationBar($prevLink, $this->getNumberLinks($this->getPerPage(), $startRowNumber));
     }
 
     /**
@@ -606,6 +595,8 @@ class Paginator implements PaginatorInterface
 
     /**
      * Protected is next link
+     * 
+     * @codeCoverageIgnore
      */
     protected function isNextLink($perPage, $startRowNumber)
     {
@@ -617,13 +608,68 @@ class Paginator implements PaginatorInterface
      */
     protected function getNumberLinks($perPage, $startRowNumber, $startIndexNumber = 1)
     {
+        $links       = NULL;
         $numberLinks = NULL;
+        $lastPage    = ceil($this->settings['totalRows'] / $this->limit);  
+        $countLinks  = $this->settings['countLinks'];
+        $current     = floor((int) $startRowNumber / $this->limit);
+        $startIndexNumber = $current + 1;
+
+        if( $countLinks % 2 == 0 )
+        {
+            $countLinks += 1;
+        }
+
+        $middle = ceil($countLinks / 2);
+        $step   = $middle - 1;
+        
+        if( $lastPage == $perPage )
+        {   
+            if( $this->isAdvancedNextLink($startRowNumber) )
+            {
+                $this->addNextLink($startRowNumber, $nextLink);
+                $this->addLastLink($lastLink);
+                
+                $links = $nextLink . $lastLink;
+            }
+
+            $startIndexNumber = $startIndexNumber - $step;
+            
+            $progressCount = $lastPage - $current - $step - 1;
+
+            if( $progressCount >= 0 )
+            {
+                $perPage = $perPage - $progressCount;
+            }     
+            else
+            {
+                $startIndexNumber += $progressCount;
+            }
+        }
+        else if( $startIndexNumber <= $middle )
+        {
+            $progressCount = $step - ($middle - $startIndexNumber);
+
+            $perPage = $perPage - $progressCount;
+
+            $startIndexNumber = 1;
+        }
+        else
+        {
+            $startIndexNumber = $startIndexNumber - $step;
+            $perPage = $perPage - $step;
+        }
+
+        if( $startIndexNumber < 1 )
+        {
+            $startIndexNumber = 1;
+        }
 
         for( $i = $startIndexNumber; $i <= $perPage; $i++ )
         {
             $page = ($i - 1) * $this->limit;
 
-            if( $i - 1 == floor((int) $startRowNumber / $this->limit) )
+            if( $i - 1 == $current )
             {
                 $currentLink = $this->getStyleClassAttributes('current');
             }
@@ -635,7 +681,7 @@ class Paginator implements PaginatorInterface
             $numberLinks .= $this->getLink($page, $currentLink, $i);
         }
 
-        return $numberLinks;
+        return $numberLinks . $links;
     }
 
     /**

@@ -150,6 +150,18 @@ class Data implements DataInterface
     }
 
     /**
+     * Add errors
+     * 
+     * @param string $error
+     * 
+     * @return self
+     */
+    public function addError(String $error)
+    {
+        $this->errors[][$this->index] = $error . '<br>'; $this->index++;
+    }
+
+    /**
      * It checks the data.
      * 
      * @param string $submit = NULL
