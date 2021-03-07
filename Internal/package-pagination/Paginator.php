@@ -608,23 +608,40 @@ class Paginator implements PaginatorInterface
      */
     protected function getNumberLinks($perPage, $startRowNumber, $startIndexNumber = 1)
     {
+        # It keeps the links to be added to the end of the bar.
         $links       = NULL;
+
+        # It keeps the links to be formed.
         $numberLinks = NULL;
+
+        # It keeps the last page information.
         $lastPage    = ceil($this->settings['totalRows'] / $this->limit);  
+
+        # It keeps the number of links to be displayed in pagination.
         $countLinks  = $this->settings['countLinks'];
+
+        # It keeps the active page number.
         $current     = floor((int) $startRowNumber / $this->limit);
+
+        # Holds the pagination start number.
         $startIndexNumber = $current + 1;
 
+        # If the number of paging links is selected even, it is increased by one and converted to an odd number.
         if( $countLinks % 2 == 0 )
         {
             $countLinks += 1;
         }
 
+        # TThe number of links the active page will be centered on the bar.
         $middle = ceil($countLinks / 2);
+
+        # The number of connections before the centered section.
         $step   = $middle - 1;
         
+        # Actions performed towards the end of the paging bar.
         if( $lastPage == $perPage )
         {   
+            # Next page button is added to the paging bar.
             if( $this->isAdvancedNextLink($startRowNumber) )
             {
                 $this->addNextLink($startRowNumber, $nextLink);
@@ -633,54 +650,72 @@ class Paginator implements PaginatorInterface
                 $links = $nextLink . $lastLink;
             }
 
+            # Determines the paging start by the number of steps.
             $startIndexNumber = $startIndexNumber - $step;
             
+            # The number of progress in the paging bar.
             $progressCount = $lastPage - $current - $step - 1;
 
+            # If there has been progress in the paging bar, it retracts the page break number as much as the amount of progress.
             if( $progressCount >= 0 )
             {
                 $perPage = $perPage - $progressCount;
             }     
+            # If there is no progress on the paging bar, it adds the value of the progress amount to the page starting value.
             else
             {
                 $startIndexNumber += $progressCount;
             }
         }
+        # Actions related to the beginning of paging.
         else if( $startIndexNumber <= $middle )
         {
+            # The number of progress in the paging bar.
             $progressCount = $step - ($middle - $startIndexNumber);
 
+            # Subtracts the number of progress from the page break value.
             $perPage = $perPage - $progressCount;
 
+            # Sets the starting counting number to start.
             $startIndexNumber = 1;
         }
+        # The middle part of the pagination related actions.
         else
         {
+            # It starts from behind by the average number of steps.
             $startIndexNumber = $startIndexNumber - $step;
+
+            # It ends as early as the average number of steps.
             $perPage = $perPage - $step;
         }
 
+        # If the pagination start count is less than 1, it equals 1.
         if( $startIndexNumber < 1 )
         {
             $startIndexNumber = 1;
         }
 
+        # Creates pagination links.
         for( $i = $startIndexNumber; $i <= $perPage; $i++ )
         {
             $page = ($i - 1) * $this->limit;
 
+            # Active page link.
             if( $i - 1 == $current )
             {
                 $currentLink = $this->getStyleClassAttributes('current');
             }
+            # Other page links.
             else
             {
                 $currentLink = $this->getStyleClassLinkAttributes('links');;
             }
 
+            # Added pagination links.
             $numberLinks .= $this->getLink($page, $currentLink, $i);
         }
 
+        # Return pagination links.
         return $numberLinks . $links;
     }
 
