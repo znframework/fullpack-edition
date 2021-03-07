@@ -616,7 +616,11 @@ trait FormElementsTrait
                 if( $method::$name() === $default )
                 {
                     $this->checked();
-                }    
+                }  
+                else if( $method::all() )
+                {
+                    unset($this->settings['attr']['checked']);
+                } 
                 // @codeCoverageIgnoreEnd
             }
             else
