@@ -12,6 +12,9 @@
 use ZN\Support;
 use ZN\Cache\DriverMappingAbstract;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ApcDriver extends DriverMappingAbstract
 {
     /**

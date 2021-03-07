@@ -15,6 +15,9 @@ use ZN\ErrorHandling\Errors;
 use ZN\Cache\DriverMappingAbstract;
 use ZN\Cache\Exception\ConnectionRefusedException;
 
+/**
+ * @codeCoverageIgnore
+ */
 class MemcacheDriver extends DriverMappingAbstract
 {
     /**

@@ -17,6 +17,9 @@ use ZN\Cache\Exception\ConnectionRefusedException;
 use ZN\Cache\Exception\AuthenticationFailedException;
 use ZN\Cache\DriverMappingAbstract;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RedisDriver extends DriverMappingAbstract
 {
     /**
