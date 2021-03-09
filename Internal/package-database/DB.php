@@ -699,11 +699,35 @@ class DB extends Connection
      */
     public function limit($start = NULL, Int $limit = 0) : DB
     {
-        $start = (int) ($start ?? URI::segment(-1));
+        if( $start < 0 )
+        {
+            $start = $this->paging(is_numeric($segment = URI::segment($start)) ? $segment : 1, $limit);
+
+            $this->paging = 'page';
+        }
+        else if( $start === NULL )
+        {
+            $start = URI::segment(-1);
+        }
+
+        $start = (int) $start;
 
         $this->limit = $this->db->limit($start, $limit);
         
         return $this;
+    }
+
+    /**
+     * Protected paging
+     */
+    protected function paging($start, $limit)
+    {
+        if( $start == 0 )
+        {
+            return 1;
+        }
+
+        return ($start - 1) * $limit;
     }
 
     /**
@@ -1297,12 +1321,14 @@ class DB extends Connection
         $caching    = $this->caching;           $this->caching    = [];
         $tableName  = $this->tableName;         $this->tableName  = '';
         $jsonDecode = $this->jsonDecode;        $this->jsonDecode = [];
+        $paging     = $this->paging ?? 'row';
 
         return (new self($this->config))->_query($query, $secure, 
         [
             'caching'    => $caching, 
             'tableName'  => $tableName,
-            'jsonDecode' => $jsonDecode
+            'jsonDecode' => $jsonDecode,
+            'paging'     => $paging
         ]);
     }
 
@@ -1916,6 +1942,12 @@ class DB extends Connection
         $settings['totalRows'] = $this->totalRows(true);
         $settings['limit']     = ! empty($limit) ? $limit : $pagcon['limit'];
         $settings['start']     = $start ?? $pagcon['start'];
+        $settings['paging']    = $this->paging;
+
+        if( $settings['paging'] === 'page' )
+        {
+            $settings['start'] = floor($settings['start'] / $settings['limit'] + 1);
+        }
 
         if( ! empty($url) )
         {
@@ -2893,6 +2925,7 @@ class DB extends Connection
         $this->caching     = $data['caching']    ?? [];
         $this->tableName   = $data['tableName']  ?? '';
         $this->jsonDecode  = $data['jsonDecode'] ?? [];
+        $this->paging      = $data['paging']     ?? 'page';
 
         if( empty($this->caching) || ! Singleton::class('ZN\Cache\Processor')->select($this->_cacheQuery()) )
         {

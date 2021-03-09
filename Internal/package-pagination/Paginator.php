@@ -62,6 +62,13 @@ class Paginator implements PaginatorInterface
     protected $type = 'classic';
 
     /**
+     * Default pagination type
+     * 
+     * @var string
+     */
+    protected $paging = 'row';
+
+    /**
      * Default limit value
      * 
      * @var int
@@ -195,6 +202,20 @@ class Paginator implements PaginatorInterface
     public function type(String $type) : Paginator
     {
         $this->settings['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Paging
+     * 
+     * @param string $paging - options[row|page]
+     * 
+     * @return Paginator
+     */
+    public function paging(String $paging) : Paginator
+    {
+        $this->settings['paging'] = $paging;
 
         return $this;
     }
@@ -354,7 +375,7 @@ class Paginator implements PaginatorInterface
         }
 
         # Gets information about which recording to start the paging process.
-        $startRowNumber = $this->getStartRowNumber($start);
+        $startRowNumber = $this->convertPaging($this->getStartRowNumber($start));
 
         # If the limit is set to 0, 1 is accepted.
         $this->limit = $this->limit === 0 ? 1 : $this->limit;
@@ -434,7 +455,7 @@ class Paginator implements PaginatorInterface
             return 1;
         }
         
-        return floor( $startRowNumber / $this->limit + 1);
+        return floor($startRowNumber / $this->limit + 1);
     }
 
     /**
@@ -773,7 +794,36 @@ class Paginator implements PaginatorInterface
             $attr = ' class="page-link"';
         }
 
-        return '<a href="'.$this->checkGetRequest($var).'"'.$this->getAttributesForAjaxProcess($var).$attr.'>'.$val.'</a>';
+        $href       = $this->checkGetRequest($this->getPaging($var));
+        $attributes = $this->getAttributesForAjaxProcess($var) . $attr;
+
+        return  '<a href="' . $href . '"' . $attributes . '>' . $val . '</a>';
+    }
+
+    /**
+     * Protectded get paging
+     */
+    protected function getPaging($row)
+    {
+        return $this->paging === 'row' ? $row : $this->getPageIndex($row);
+    }
+
+    /**
+     * Protectded convert paging
+     */
+    public function convertPaging($row)
+    {
+        if( $this->paging === 'row' )
+        {
+            return $row;
+        }
+
+        if( $row == 0 )
+        {
+            return 1;
+        }
+
+        return ($row - 1) * $this->limit;
     }
 
     /**

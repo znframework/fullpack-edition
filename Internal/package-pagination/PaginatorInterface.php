@@ -48,6 +48,15 @@ interface PaginatorInterface
     public function type(String $type) : Paginator;
 
     /**
+     * Paging
+     * 
+     * @param string $paging - options[row|page]
+     * 
+     * @return Paginator
+     */
+    public function paging(String $paging) : Paginator;
+
+    /**
      * Sets the total number of records.
      * 
      * @param int $totalRows
