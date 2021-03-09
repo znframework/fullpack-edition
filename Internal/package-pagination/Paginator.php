@@ -377,19 +377,8 @@ class Paginator implements PaginatorInterface
      */
     protected function createBasicPaginationBar($startRowNumber)
     {
-        # Add prev link.
-        if( $this->isPrevLink($startRowNumber) )
-        {
-            $this->addPrevLink($startRowNumber, $prevLink);
-        }
-        # Remove prev link.
-        else
-        {
-            $this->removeLinkFromPagingationBar($prevLink);
-        }
-
         # Generate pagination bar.
-        return $this->generatePaginationBar($prevLink, $this->getNumberLinks($this->getPerPage(), $startRowNumber));
+        return $this->generatePaginationBar($this->getNumberLinks($this->getPerPage(), $startRowNumber));
     }
 
     /**
@@ -397,17 +386,6 @@ class Paginator implements PaginatorInterface
      */
     protected function createAdvancedPaginationBar($startRowNumber)
     {
-        # Add prev link.
-        if( $this->isAdvancedPrevLink($startRowNumber) )
-        {
-            $this->addPrevLink($startRowNumber, $prevLink);
-        }
-        # Remove prev link.
-        else
-        {
-            $this->removeLinkFromPagingationBar($prevLink);
-        }
-
         # Add first, next, last links.
         if( $this->isAdvancedNextLink($startRowNumber) )
         {
@@ -424,20 +402,10 @@ class Paginator implements PaginatorInterface
 
             $pageIndex = $this->getPageIndexWithoutNextLinks();
         }
-        
-        # On the first page, remove the first link.
-        if( $this->isFirstLink($startRowNumber, $pageIndex) )
-        {
-            $this->removeLinkFromPagingationBar($firstLink);
-        }
-        else
-        {
-            $this->addFirstLink($firstLink);
-        }
 
         $advancedPerPage = $this->getAdvancedPerPage($pageIndex, $nextLink, $lastLink);
         
-        return $this->generatePaginationBar($firstLink, $prevLink, $this->getNumberLinks($advancedPerPage, $startRowNumber, $pageIndex), $nextLink, $lastLink);
+        return $this->generatePaginationBar($this->getNumberLinks($advancedPerPage, $startRowNumber, $pageIndex), $nextLink, $lastLink);
     }
 
     /**
@@ -562,30 +530,6 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Protected is first link
-     */
-    protected function isFirstLink($startRowNumber, $pageIndex)
-    {
-        return $pageIndex < 1 || $startRowNumber == 0;
-    }
-
-    /**
-     * Protected is advanced prev link
-     */
-    protected function isAdvancedPrevLink($startRowNumber)
-    {
-        return $startRowNumber > 0;
-    }
-
-    /**
-     * Protected is prev link
-     */
-    protected function isPrevLink($startRowNumber)
-    {
-        return $startRowNumber != 0;
-    }
-
-    /**
      * Protected is advanced next link
      */
     protected function isAdvancedNextLink($startRowNumber)
@@ -594,22 +538,15 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Protected is next link
-     * 
-     * @codeCoverageIgnore
-     */
-    protected function isNextLink($perPage, $startRowNumber)
-    {
-        return $startRowNumber < (($perPage - 1) * $this->limit);
-    }
-
-    /**
      * Protected get number links
      */
     protected function getNumberLinks($perPage, $startRowNumber, $startIndexNumber = 1)
     {
         # It keeps the links to be added to the end of the bar.
-        $links       = NULL;
+        $afterLinks  = NULL;
+
+        # It keeps the links to be added to the begin of the bar.
+        $beforeLinks = NULL;
 
         # It keeps the links to be formed.
         $numberLinks = NULL;
@@ -641,15 +578,6 @@ class Paginator implements PaginatorInterface
         # Actions performed towards the end of the paging bar.
         if( $lastPage == $perPage )
         {   
-            # Next page button is added to the paging bar.
-            if( $this->isAdvancedNextLink($startRowNumber) )
-            {
-                $this->addNextLink($startRowNumber, $nextLink);
-                $this->addLastLink($lastLink);
-                
-                $links = $nextLink . $lastLink;
-            }
-
             # Determines the paging start by the number of steps.
             $startIndexNumber = $startIndexNumber - $step;
             
@@ -665,6 +593,21 @@ class Paginator implements PaginatorInterface
             else
             {
                 $startIndexNumber += $progressCount;
+            }
+
+            # Next page button is added to the paging bar.
+            if( $this->isAdvancedNextLink($startRowNumber) )
+            {
+                $this->addNextLink($startRowNumber, $nextLink);
+           
+                $afterLinks = $nextLink;
+
+                if( $perPage != $lastPage )
+                {
+                    $this->addLastLink($lastLink);
+                
+                    $afterLinks .= $lastLink;
+                }
             }
         }
         # Actions related to the beginning of paging.
@@ -694,6 +637,22 @@ class Paginator implements PaginatorInterface
         {
             $startIndexNumber = 1;
         }
+        
+        # If there has been progress in counting, add prev link.
+        if( $current > 0 )
+        {
+            $this->addPrevLink($startRowNumber, $prevLink);
+           
+            $beforeLinks = $prevLink;
+        }
+
+        # If the progress is too advanced for the first page to appear, add first link.
+        if( $startIndexNumber > 1 )
+        {
+            $this->addFirstLink($firstLink);
+           
+            $beforeLinks = $firstLink . $beforeLinks;
+        }
 
         # Creates pagination links.
         for( $i = $startIndexNumber; $i <= $perPage; $i++ )
@@ -716,7 +675,7 @@ class Paginator implements PaginatorInterface
         }
 
         # Return pagination links.
-        return $numberLinks . $links;
+        return $beforeLinks . $numberLinks . $afterLinks;
     }
 
     /**
