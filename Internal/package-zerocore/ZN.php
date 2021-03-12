@@ -331,7 +331,12 @@ class ZN
 
         # The use of SSL are automatically checked for correct operation of the system.
         # In particular, it allows the URL library to automatically detect the http prefix.
-        define('SSL_STATUS', ((($_SERVER['HTTPS'] ?? NULL) === 'on' && $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http') . '://');
+        define('SSL_STATUS', 
+        ( 
+            ( ! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443 
+            ? 'https' 
+            : 'http' 
+        ) . '://');
 
         # The ZN Framework contains a constant namespace for the controllers.
         define('PROJECT_CONTROLLER_NAMESPACE', 'Project\Controllers\\');
