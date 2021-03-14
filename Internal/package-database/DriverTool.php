@@ -221,7 +221,7 @@ class DriverTool extends DriverExtends
 
                     if ( isset($v) )
                     {
-                        $return.= '"' . addslashes($v) . '", ' ;
+                        $return.= '"' . addslashes(stripslashes($v)) . '", ' ;
                     }
                     else
                     {
