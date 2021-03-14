@@ -31,7 +31,7 @@ class FileList
 
         if( ! is_dir($path) )
         {
-            throw new FolderNotFoundException($path);
+            throw new FolderNotFoundException(NULL, $path);
         }
 
         return Filesystem::getFiles($path, $extension, $pathType);

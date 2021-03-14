@@ -177,7 +177,7 @@ class Filesystem
     {
         if( ! file_exists($source) )
         {
-            throw new FolderNotFoundException($source);
+            throw new FolderNotFoundException(NULL, $source);
         }
 
         if( is_dir($source) )
@@ -303,12 +303,23 @@ class Filesystem
 
             if( ! empty($files) ) foreach( $files as $v )
             {
+                # Is file
                 if( is_file($v) )
                 {
                     $getRecursiveFiles[] = $v;
                 }
+                # Is directory
                 elseif( is_dir($v) )
                 {
+                    # If the directory is empty go to the next step
+                    if( ! self::getRecursiveFiles($v, false) )
+                    {
+                        $getRecursiveFiles[] = $v . DS;
+
+                        continue;
+                    }
+
+                    # If the directory is full, continue with directory recursion.
                     self::getRecursiveFiles($v, $allFiles, $getRecursiveFiles);
                 }
             }

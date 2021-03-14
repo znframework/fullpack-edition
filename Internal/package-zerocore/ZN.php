@@ -376,9 +376,6 @@ class ZN
         define('DIRECTORY_INDEX', GET_DIRS['DIRECTORY_INDEX']);
         define('BASE_DIR', Base::suffix(ltrim(explode(DIRECTORY_INDEX, $_SERVER['SCRIPT_NAME'])[0], '/')));
 
-        # It keeps path of the files needed for the system.
-        define('ZEROCORE', INTERNAL_DIR . 'ZN/');
-
         # The system gives the knowledge of the actual root directory.
         define('REAL_BASE_DIR', self::getCurrentWorkingDirectory());
     }

@@ -17,6 +17,8 @@ use ZN\Lang;
 /**
  * @command upgrade
  * @description upgrade
+ * 
+ * @codeCoverageIgnore
  */
 class Upgrade
 {
@@ -37,28 +39,16 @@ class Upgrade
         {
             $return = self::fe();
         }
-        // @codeCoverageIgnoreStart
-        elseif( ZN::$projectType === 'EIP' )
-        {
-            $return = self::eip();
-        }
-        elseif( ZN::$projectType === 'SE' )
-        {
-            $return = self::eip('single-edition');
-        }
         else
         {
-            $return = self::eip('custom-edition');
+            $return = self::upgrade();
         }
-        // @codeCoverageIgnoreEnd
 
         new Result($return);
     }
 
     /**
      * Protected upgrade FE
-     * 
-     * @codeCoverageIgnore
      */
     protected static function fe()
     {
@@ -81,47 +71,20 @@ class Upgrade
 
     /**
      * Proteted upgrade EIP
-     * 
-     * @codeCoverageIgnore
      */
-    protected static function eip($tag = 'znframework')
+    protected static function upgrade()
     {
-        if( $return = Restful::useragent(true)->get('https://api.github.com/repos/znframework/'.$tag.'/tags') )
+        $open   = popen('composer update 2>&1', 'r');
+        
+        $result = fread($open, 2048);
+
+        pclose($open);
+
+        if( empty($result) )
         {
-            if( ! isset($return->message) )
-            {
-                $lastest = $return[0];
-
-                $lastVersionData = $lastest->name ?? ZN_VERSION;
-
-                $open   = popen('composer update 2>&1', 'r');
-                $result = fread($open, 2048);
-                pclose($open);
-
-                if( empty($result) )
-                {
-                    $status = self::$lang['composerUpdate'];
-                }
-                else
-                {
-                    if( ZN_VERSION !== $lastVersionData )
-                    {                   
-                        File::replace(DIRECTORY_INDEX, ZN_VERSION, $lastVersionData);
-                    
-                        $status = self::$lang['upgradeSuccess'];
-                    }
-                    else
-                    {
-                        $status = self::$lang['alreadyVersion'];
-                    }
-                }
-            }
-            else
-            {
-                $status = $return->message;
-            }
-
-            return $status;
+            return self::$lang['composerUpdate'];
         }
+        
+        return self::$lang['upgradeSuccess'];
     }
 }
