@@ -21,16 +21,18 @@ class Template
      * @param bool   $obGetContents = false
      * 
      * @return mixed
+     * 
+     * @codeCoverageIgnore
      */
     public static function use(String $page, Array $data = NULL, Bool $obGetContents = false)
     {
         if( $return = View::use($page, $data, $obGetContents, TEMPLATES_DIR) )
         {
-            return $return; // @codeCoverageIgnore
+            return $return;
         }
         elseif( $return = View::use($page, $data, $obGetContents, EXTERNAL_TEMPLATES_DIR) )
         {
-            return $return; // @codeCoverageIgnore
+            return $return;
         }
         else
         {
