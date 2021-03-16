@@ -187,12 +187,16 @@ class ForgotPassword extends UserExtends
      */
     protected function sendForgotPasswordEmail($receiver, $message)
     {
-        return Singleton::class('ZN\Email\Sender')
-                        ->sender($this->senderMail, $this->senderName)
-                        ->receiver($receiver, $receiver)
-                        ->subject($this->getLang['newYourPassword'])
-                        ->content($message)
-                        ->send();
+        $return = Singleton::class('ZN\Email\Sender')
+                           ->sender($this->senderMail, $this->senderName)
+                           ->receiver($receiver, $receiver)
+                           ->subject(Properties::$setEmailTemplateSubject ?? $this->getLang['newYourPassword'])
+                           ->content($message)
+                           ->send();
+
+        Properties::$setEmailTemplateSubject = NULL;
+
+        return $return;
     }
 
     /**

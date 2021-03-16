@@ -47,4 +47,11 @@ class Properties
      * @var string
      */
     public static $setEmailTemplate = NULL;
+
+    /**
+     * Keeps set email subject. [6.7.0]
+     * 
+     * @var string
+     */
+    public static $setEmailTemplateSubject = NULL;
 }

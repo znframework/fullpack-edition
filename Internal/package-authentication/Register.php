@@ -239,8 +239,10 @@ class Register extends UserExtends
 
         $emailclass->sender($this->senderMail, $this->senderName)
                    ->receiver($user, $user)
-                   ->subject($this->getLang['activationProcess'])
+                   ->subject(Properties::$setEmailTemplateSubject ?? $this->getLang['activationProcess'])
                    ->content($message);
+
+        Properties::$setEmailTemplateSubject = NULL;
 
         if( $emailclass->send() )
         {
