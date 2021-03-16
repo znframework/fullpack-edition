@@ -492,11 +492,11 @@ class Sender implements SenderInterface
      */
     public function template(String $table, $column, Array $data = []) : Sender
     {
-        if( $content = Inclusion\Template::use($table, (array) $column, true) )
+        if( is_array($column) && ($content = Inclusion\Template::use($table, $column, true)) )
         {
             $this->message($content); // @codeCoverageIgnore
         }
-        else
+        else if( is_scalar($column) )
         {
             $tableEx  = explode(':', $table);
             $columnEx = explode(':', $column); 
