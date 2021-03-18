@@ -13,5 +13,9 @@ use ZN\Exception;
 
 class InvalidArgumentException extends Exception
 {
-    
+    const lang = 
+    [
+        'tr' => '[%] yöntemini parametresiz kullanamazsınız!',
+        'en' => 'You cannot use the [%] method without parameters!'
+    ];
 }

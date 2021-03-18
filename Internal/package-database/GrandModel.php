@@ -609,22 +609,26 @@ class GrandModel
         if( $func === 'update' )
         {
             // @codeCoverageIgnoreStart
-            # 5.3.7[added]
             if( ! empty($this->options) )
             {
-                $params[1] = $params[0];
+                $params[1] = $params[0] ?? NULL;
                 $params[0] = $this->options;
 
                 $this->options = [];
             }
+            
+            if( ! is_array($params[0] ?? NULL) || ! is_scalar($params[1] ?? []) )
+            {
+                throw new Exception\InvalidArgumentException(NULL, get_called_class()  . '::update(array $data, scalar $value)');
+            }
             // @codeCoverageIgnoreEnd
 
-            if( ! isset($params[1]) )
-            {
-                return false; // @codeCoverageIgnore
-            }
-
             return $this->where($col, $params[1])->$func($params[0]);
+        }
+
+        if( ! is_scalar($params[0] ?? []) )
+        {
+            throw new Exception\InvalidArgumentException(NULL, get_called_class()  . '::' . $method . '(scalar $value)'); // @codeCoverageIgnore
         }
 
         return $this->where($col, $params[0])->$func();
