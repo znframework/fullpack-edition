@@ -9,13 +9,13 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
-use stdClass;
 use ZN\Base;
 use ZN\Helper;
 use ZN\Config;
 use ZN\Datatype;
 use ZN\Singleton;
 use ZN\Filesystem;
+use ZN\DataTypes\Objects;
 use ZN\Helpers\Exception\LogicException;
 use ZN\Helpers\Exception\InvalidArgumentException;
 
@@ -489,13 +489,11 @@ class Converter
      * 
      * @param array $var
      * 
-     * @return stdClass
+     * @return object
      */
-    public static function toObjectRecursive(Array $var) : stdClass
+    public static function toObjectRecursive(Array $var)
     {
-        $object = new stdClass;
-
-        return self::objectRecursive((array) $var, $object);
+        return new Objects($var);
     }
 
     /**
@@ -508,27 +506,5 @@ class Converter
     public static function toConstant(String $var, String $prefix = NULL, String $suffix = NULL)
     {
         return Helper::toConstant($var, $prefix, $suffix);
-    }
-
-    /**
-     * Protected Object Recursive
-     */
-    protected static function objectRecursive(Array $array, stdClass &$std) : stdClass
-    {
-        foreach( $array as $key => $value )
-        {
-            if( is_array($value) )
-            {
-                $std->$key = new stdClass;
-
-                self::objectRecursive($value, $std->$key);
-            }
-            else
-            {
-                $std->$key = $value;
-            }
-        }
-
-        return $std;
     }
 }
