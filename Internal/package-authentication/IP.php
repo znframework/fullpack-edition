@@ -14,7 +14,7 @@ use ZN\Request\Request;
 class IP
 {
     /**
-     * IP v4
+     * IP v4.
      * 
      * @param void
      * 
