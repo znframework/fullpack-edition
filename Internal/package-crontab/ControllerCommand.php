@@ -19,7 +19,7 @@ class ControllerCommand
      * @param string $path
      * @param string & $command
      */
-    public function __construct(String $path, & $command)
+    public function __construct(string $path, & $command)
     {
         $datas      = Structure::data($path);
         $controller = $datas['page'];

@@ -27,7 +27,7 @@ interface CURLInterface
      * 
      * @return CURL
      */
-    public function init(String $url = NULL) : CURL;
+    public function init(string $url = NULL) : CURL;
 
     /**
      * Execute
@@ -43,7 +43,7 @@ interface CURLInterface
      * 
      * @return String
      */
-    public function escape(String $str) : String;
+    public function escape(string $str) : string;
 
     /**
      * Unescape
@@ -52,7 +52,7 @@ interface CURLInterface
      * 
      * @return string
      */
-    public function unescape(String $str) : String;
+    public function unescape(string $str) : string;
 
     /**
      * Info
@@ -61,21 +61,21 @@ interface CURLInterface
      * 
      * @return mixed
      */
-    public function info(String $opt = NULL);
+    public function info(string $opt = NULL);
 
     /**
      * Error
      * 
      * @return string
      */
-    public function error() : String;
+    public function error() : string;
 
     /**
      * Error Number
      * 
      * @return int
      */
-    public function errno() : Int;
+    public function errno() : int;
 
     /**
      * Pause
@@ -84,14 +84,14 @@ interface CURLInterface
      * 
      * @return string
      */
-    public function pause($bitmask = 0) : Int;
+    public function pause($bitmask = 0) : int;
 
     /**
      * Reset
      * 
      * @return bool
      */
-    public function reset() : Bool;
+    public function reset() : bool;
 
     /**
      * Option
@@ -101,14 +101,14 @@ interface CURLInterface
      * 
      * @return CURL
      */
-    public function option(String $options, $value) : CURL;
+    public function option(string $options, $value) : CURL;
 
     /**
      * Close
      * 
      * @return bool
      */
-    public function close() : Bool;
+    public function close() : bool;
 
     /**
      * Error Value
@@ -117,7 +117,7 @@ interface CURLInterface
      * 
      * @return string
      */
-    public function errval(Int $errno = 0) : String;
+    public function errval(int $errno = 0) : string;
 
     /**
      * Version

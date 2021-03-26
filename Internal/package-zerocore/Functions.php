@@ -16,7 +16,7 @@
  * 
  * @return int
  */
-function length($data) : Int
+function length($data) : int
 {
     if( is_scalar($data) )
     {
@@ -36,7 +36,7 @@ function length($data) : Int
  * 
  * @return mixed
  */
-function against($data, Array $match)
+function against($data, array $match)
 {
     $match = ZN\Datatype::multikey($match);
 
@@ -78,7 +78,7 @@ function CSRFInput()
  * 
  * @return mixed
  */
-function output($data, Array $settings = NULL, Bool $content = false)
+function output($data, array $settings = NULL, bool $content = false)
 {
     return ZN\Output::display($data, $settings, $content);
 }
@@ -95,7 +95,7 @@ function output($data, Array $settings = NULL, Bool $content = false)
  * 
  * @return void
  */
-function redirect(String $url = NULL, Int $time = 0, Array $data = NULL, Bool $exit = true)
+function redirect(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true)
 {
     ZN\Response::redirect($url, $time, $data, $exit);
 }

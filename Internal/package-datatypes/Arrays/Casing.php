@@ -22,7 +22,7 @@ class Casing
      * 
      * @return array
      */
-    public static function use(Array $array, String $type = 'lower', String $keyval = 'all') : Array
+    public static function use(array $array, string $type = 'lower', string $keyval = 'all') : array
     {
         return Datatype::caseArray($array, $type, $keyval);
     }
@@ -34,7 +34,7 @@ class Casing
      * 
      * @return array
      */
-    public static function lowerKeys(Array $array) : Array
+    public static function lowerKeys(array $array) : array
     {
         return array_change_key_case($array);
     }
@@ -46,7 +46,7 @@ class Casing
      * 
      * @return array
      */
-    public static function titleKeys(Array $array) : Array
+    public static function titleKeys(array $array) : array
     {
         return self::use($array, 'title', 'key');
     }
@@ -58,7 +58,7 @@ class Casing
      * 
      * @return array
      */
-    public static function upperKeys(Array $array) : Array
+    public static function upperKeys(array $array) : array
     {
         return array_change_key_case($array, CASE_UPPER);
     }
@@ -70,7 +70,7 @@ class Casing
      * 
      * @return array
      */
-    public static function lowerValues(Array $array) : Array
+    public static function lowerValues(array $array) : array
     {
         return self::use($array, 'lower', 'value');
     }
@@ -82,7 +82,7 @@ class Casing
      * 
      * @return array
      */
-    public static function titleValues(Array $array) : Array
+    public static function titleValues(array $array) : array
     {
         return self::use($array, 'title', 'value');
     }
@@ -94,7 +94,7 @@ class Casing
      * 
      * @return array
      */
-    public static function upperValues(Array $array) : Array
+    public static function upperValues(array $array) : array
     {
         return self::use($array, 'upper', 'value');
     }
@@ -106,7 +106,7 @@ class Casing
      * 
      * @return array
      */
-    public static function lower(Array $array) : Array
+    public static function lower(array $array) : array
     {
         return self::use($array, 'lower', 'all');
     }
@@ -118,7 +118,7 @@ class Casing
      * 
      * @return array
      */
-    public static function title(Array $array) : Array
+    public static function title(array $array) : array
     {
         return self::use($array, 'title', 'all');
     }
@@ -130,7 +130,7 @@ class Casing
      * 
      * @return array
      */
-    public static function upper(Array $array) : Array
+    public static function upper(array $array) : array
     {
         return self::use($array, 'upper', 'all');
     }

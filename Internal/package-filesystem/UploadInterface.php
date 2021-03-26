@@ -18,7 +18,7 @@ interface UploadInterface
      * 
      * @return bool
      */
-    public function isFile(String $name) : Bool;
+    public function isFile(string $name) : bool;
     
     /**
      * Settings
@@ -27,7 +27,7 @@ interface UploadInterface
      * 
      * @return Upload
      */
-    public function settings(Array $settings = []) : Upload;
+    public function settings(array $settings = []) : Upload;
 
     /**
      * Sets extensions
@@ -63,7 +63,7 @@ interface UploadInterface
      * 
      * @return Upload
      */
-    public function encode(String $hash = 'md5') : Upload;
+    public function encode(string $hash = 'md5') : Upload;
 
     /**
      * Sets prefix
@@ -72,7 +72,7 @@ interface UploadInterface
      * 
      * @return Upload
      */
-    public function prefix(String $prefix) : Upload;
+    public function prefix(string $prefix) : Upload;
 
     /**
      * Sets maxsize
@@ -90,7 +90,7 @@ interface UploadInterface
      * 
      * @return Upload
      */
-    public function encodeLength(Int $encodeLength = 8) : Upload;
+    public function encodeLength(int $encodeLength = 8) : Upload;
 
     /**
      * Sets target
@@ -99,7 +99,7 @@ interface UploadInterface
      * 
      * @return Upload
      */
-    public function target(String $target) : Upload;
+    public function target(string $target) : Upload;
 
     /**
      * Sets source
@@ -108,7 +108,7 @@ interface UploadInterface
      * 
      * @return Upload
      */
-    public function source(String $source = 'upload') : Upload;
+    public function source(string $source = 'upload') : Upload;
 
     /**
      * Start file upload
@@ -118,7 +118,7 @@ interface UploadInterface
      * 
      * @return bool
      */
-    public  function start(String $fileName = 'upload', String $rootDir = NULL) : Bool;
+    public  function start(string $fileName = 'upload', string $rootDir = NULL) : bool;
 
     /**
      * Gets info
@@ -127,7 +127,7 @@ interface UploadInterface
      * 
      * @return object|false
      */
-    public function info(String $info = NULL);
+    public function info(string $info = NULL);
 
     /**
      * Gets error

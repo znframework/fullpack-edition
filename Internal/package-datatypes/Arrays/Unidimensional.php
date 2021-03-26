@@ -21,7 +21,7 @@ class Unidimensional
      * 
      * @return array
      */
-    public static function do(Array $array, Bool $preserveKey = true) : Array
+    public static function do(array $array, bool $preserveKey = true) : array
     {
         return iterator_to_array
         (

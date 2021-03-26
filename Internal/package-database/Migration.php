@@ -81,7 +81,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function upAll(String ...$migrations) : Bool
+    public function upAll(String ...$migrations) : bool
     {
         $this->runMigrateAll('up', $migrations);
 
@@ -95,7 +95,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function downAll(String ...$migrations) : Bool
+    public function downAll(String ...$migrations) : bool
     {
         $this->runMigrateAll('down', $migrations);
 
@@ -109,7 +109,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function createTable(Array $data) : Bool
+    public function createTable(array $data) : bool
     {
         $this->forge->createTable($this->getTableName(), $data);
 
@@ -123,7 +123,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function dropTable() : Bool
+    public function dropTable() : bool
     {
         $this->forge->dropTable($this->getTableName());
 
@@ -137,7 +137,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function addColumn(Array $column) : Bool
+    public function addColumn(array $column) : bool
     {
         $this->forge->addColumn($this->getTableName(), $column);
 
@@ -151,7 +151,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function dropColumn($column) : Bool
+    public function dropColumn($column) : bool
     {
         $this->forge->dropColumn($this->getTableName(), $column);
 
@@ -165,7 +165,7 @@ class Migration implements MigrationInterface
      * 
      * @param bool
      */
-    public function modifyColumn(Array $column) : Bool
+    public function modifyColumn(array $column) : bool
     {
         $this->forge->modifyColumn($this->getTableName(), $column);
 
@@ -179,7 +179,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function renameColumn(Array $column) : Bool
+    public function renameColumn(array $column) : bool
     {
         $this->forge->renameColumn($this->getTableName(), $column);
 
@@ -193,7 +193,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function truncate() : Bool
+    public function truncate() : bool
     {
         $this->forge->truncate($this->getTableName());
 
@@ -207,7 +207,7 @@ class Migration implements MigrationInterface
      * 
      * @return Migration
      */
-    public function path(String $path = NULL) : Migration
+    public function path(string $path = NULL) : Migration
     {
         $this->path = Base::suffix($path);
 
@@ -222,7 +222,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function create(String $name, Int $ver = 0) : Bool
+    public function create(string $name, int $ver = 0) : bool
     {
         if( $version = $this->getValidVersionNumber($ver) )
         {
@@ -248,7 +248,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function delete(String $name, Int $ver = 0) : Bool
+    public function delete(string $name, int $ver = 0) : bool
     {
         if( $version = $this->getValidVersionNumber($ver) )
         {
@@ -271,7 +271,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function deleteAll() : Bool
+    public function deleteAll() : bool
     {
         if( is_dir($this->path) )
         {
@@ -290,7 +290,7 @@ class Migration implements MigrationInterface
      * 
      * @return object
      */
-    public function version(Int $version = 0)
+    public function version(int $version = 0)
     {
         if( empty($this->migrateTableName) )
         {
@@ -495,7 +495,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    protected function createMigrateFile(String $name, String $file) : Bool
+    protected function createMigrateFile(string $name, string $file) : bool
     {
         $eol  = EOL;
         $str  = '<?php'.$eol;

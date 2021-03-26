@@ -25,7 +25,7 @@ class URL implements URLInterface
      * 
      * @return self
      */
-    public static function lang(String $lang)
+    public static function lang(string $lang)
     {
         Request::$lang = $lang;
 
@@ -39,7 +39,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function base(String $uri = NULL) : String
+    public static function base(string $uri = NULL) : string
     {
         return Request::getBaseURL($uri);
     }
@@ -51,7 +51,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function site(String $uri = NULL) : String
+    public static function site(string $uri = NULL) : string
     {
         return Request::getSiteURL($uri);
     }
@@ -63,7 +63,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function sites(String $uri = NULL) : String
+    public static function sites(string $uri = NULL) : string
     {
         return str_replace(SSL_STATUS, Http::fix(true), self::site($uri));
     }
@@ -75,7 +75,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function host(String $uri = NULL) : String
+    public static function host(string $uri = NULL) : string
     {
         return Request::getHostName($uri);
     }
@@ -87,7 +87,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function current(String $fix = NULL) : String
+    public static function current(string $fix = NULL) : string
     {
         $currentUrl = Request::getHostName(Server::data('requestUri'));
 
@@ -106,7 +106,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function prev() : String
+    public static function prev() : string
     {
         return $_SERVER['HTTP_REFERER'] ?? '';
     }
@@ -121,7 +121,7 @@ class URL implements URLInterface
      * 
      * @return mixed
      */
-    public static function buildQuery($data, String $numericPrefix = NULL, String $separator = NULL, String $enctype = '+') : String
+    public static function buildQuery($data, string $numericPrefix = NULL, string $separator = NULL, string $enctype = '+') : string
     {
         $rfc = $enctype === '+' ? PHP_QUERY_RFC1738 : PHP_QUERY_RFC3986;
 
@@ -136,7 +136,7 @@ class URL implements URLInterface
      * 
      * @return mixed
      */
-    public static function parse(String $url, $component = 1)
+    public static function parse(string $url, $component = 1)
     {
         return parse_url($url, Helper::toConstant($component, 'PHP_URL_'));
     }

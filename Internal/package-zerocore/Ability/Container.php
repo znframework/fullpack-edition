@@ -56,7 +56,7 @@ trait Container
      * 
      * @return ZN\Singleton
      */
-    public static function driver(String $class)
+    public static function driver(string $class)
     {
         $class = Datatype::divide(__CLASS__, '\\', 0, -1) . ucfirst($origin = $class);
 

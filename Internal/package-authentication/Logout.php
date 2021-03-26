@@ -21,7 +21,7 @@ class Logout extends UserExtends
      * 
      * @return void
      */
-    public function do(String $redirectUrl = NULL, Int $time = 0)
+    public function do(string $redirectUrl = NULL, int $time = 0)
     {
         if( $this->isUserStateActive() !== NULL )
         {

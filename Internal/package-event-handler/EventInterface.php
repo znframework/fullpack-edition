@@ -19,7 +19,7 @@ interface EventInterface
      * 
      * @return bool
      */
-    public static function run(String $event, Array $parameters = []) : Bool;
+    public static function run(string $event, array $parameters = []) : bool;
 
     /**
      * Insert a listener.
@@ -44,7 +44,7 @@ interface EventInterface
      * 
      * @return array|callback
      */
-    public static function get(String $event, Int $priority = NULL);
+    public static function get(string $event, int $priority = NULL);
 
     /**
      * Delete a listener.
@@ -54,5 +54,5 @@ interface EventInterface
      * 
      * @return bool
      */
-    public static function remove(String $event, Int $priority = NULL) : Bool;
+    public static function remove(string $event, int $priority = NULL) : bool;
 }

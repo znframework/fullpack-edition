@@ -40,7 +40,7 @@ class Script
      * 
      * @return string
      */
-    public static function encode(String $str) : String
+    public static function encode(string $str) : string
     {
         return preg_replace
         (
@@ -57,7 +57,7 @@ class Script
      * 
      * @return string
      */
-    public static function decode(String $str) : String
+    public static function decode(string $str) : string
     {
         return preg_replace
         (

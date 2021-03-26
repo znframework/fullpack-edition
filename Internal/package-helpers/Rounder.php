@@ -21,7 +21,7 @@ class Rounder
      * 
      * @return float
      */
-    public static function average(Float $number, Int $count = 0) : Float
+    public static function average(Float $number, int $count = 0) : Float
     {
         return round($number, $count);
     }
@@ -34,7 +34,7 @@ class Rounder
      * 
      * @return float
      */
-    public static function down(Float $number, Int $count = 0) : Float
+    public static function down(Float $number, int $count = 0) : Float
     {
         if( $count === 0 )
         {
@@ -65,7 +65,7 @@ class Rounder
      * 
      * @return float
      */
-    public static function up(Float $number, Int $count = 0) : Float
+    public static function up(Float $number, int $count = 0) : Float
     {
         if( $count === 0 )
         {

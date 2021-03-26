@@ -106,7 +106,7 @@ class Http implements HttpInterface
      * @param int    $code
      * @param string $version = '1.1'
      */
-    public static function response(Int $code, String $version = '1.1')
+    public static function response(int $code, string $version = '1.1')
     {
         header("HTTP/$version " . self::code($code));
     }
@@ -118,7 +118,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function fix(Bool $security = false) : String
+    public static function fix(bool $security = false) : string
     {
         return ( $security === false )
                ? 'http://'
@@ -130,7 +130,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function host() : String
+    public static function host() : string
     {
         return Server::data('host');
     }
@@ -140,7 +140,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function userAgent() : String
+    public static function userAgent() : string
     {
         return Server::data('userAgent');
     }
@@ -150,7 +150,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function accept() : String
+    public static function accept() : string
     {
         return Server::data('accept');
     }
@@ -160,7 +160,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function language() : String
+    public static function language() : string
     {
         return Server::data('acceptLanguage');
     }
@@ -170,7 +170,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function encoding() : String
+    public static function encoding() : string
     {
         return Server::data('acceptEncoding');
     }
@@ -180,7 +180,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function cookie() : String
+    public static function cookie() : string
     {
         return Server::data('cookie');
     }
@@ -190,7 +190,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function connection() : String
+    public static function connection() : string
     {
         return Server::data('connection');
     }
@@ -202,7 +202,7 @@ class Http implements HttpInterface
      * 
      * @returm bool
      */
-    public static function isRequestMethod(...$methods) : Bool
+    public static function isRequestMethod(...$methods) : bool
     {
         return Request::isMethod(...$methods);
     }
@@ -212,7 +212,7 @@ class Http implements HttpInterface
      * 
      * @param bool
      */
-    public static function isAjax() : Bool
+    public static function isAjax() : bool
     {
         return Request::isAjax();
     }
@@ -224,7 +224,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function browserLang(String $default = 'en') : String
+    public static function browserLang(string $default = 'en') : string
     {
         return strtolower(substr(($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? $default), 0, 2));
     }
@@ -236,7 +236,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function code($code = 200) : String
+    public static function code($code = 200) : string
     {
         $messages = Datatype::multikey(self::$messages);
 
@@ -255,7 +255,7 @@ class Http implements HttpInterface
      * 
      * @return string
      */
-    public static function message(String $message) : String
+    public static function message(string $message) : string
     {
         return self::code($message);
     }
@@ -267,7 +267,7 @@ class Http implements HttpInterface
      * 
      * @return Http
      */
-    public static function name(String $name) : Http
+    public static function name(string $name) : Http
     {
         self::$settings['name'] = $name;
 
@@ -295,7 +295,7 @@ class Http implements HttpInterface
      * 
      * @return Http
      */
-    public static function input(String $input) : Http
+    public static function input(string $input) : Http
     {
         if( in_array($input, self::$types) )
         {
@@ -316,7 +316,7 @@ class Http implements HttpInterface
      * 
      * @return mixed
      */
-    public static function select(String $name = NULL)
+    public static function select(string $name = NULL)
     {
         $name  = self::$settings['name']  ?? $name;
         $input = self::$settings['input'] ?? false;
@@ -334,7 +334,7 @@ class Http implements HttpInterface
      * 
      * @return bool
      */
-    public static function insert(String $name = NULL, $value = NULL) : Bool
+    public static function insert(string $name = NULL, $value = NULL) : bool
     {
         $name  = self::$settings['name']  ?? $name;
         $input = self::$settings['input'] ?? false;
@@ -352,7 +352,7 @@ class Http implements HttpInterface
      * 
      * @return bool
      */
-    public static function delete(String $name = NULL) : Bool
+    public static function delete(string $name = NULL) : bool
     {
         $name  = self::$settings['name']  ?? $name;
         $input = self::$settings['input'] ?? false;

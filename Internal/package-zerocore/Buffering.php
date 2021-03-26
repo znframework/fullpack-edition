@@ -44,7 +44,7 @@ class Buffering
      * 
      * @return mixed
      */
-    public static function code(String $randomBufferClassCallbackCode, Array $randomBufferClassCallbackData = NULL)
+    public static function code(string $randomBufferClassCallbackCode, array $randomBufferClassCallbackData = NULL)
     {
         if( is_array($randomBufferClassCallbackData) )
         {
@@ -70,7 +70,7 @@ class Buffering
      * 
      * @return string
      */
-    public static function file(String $randomBufferClassPagePath, Array $randomBufferClassDataVariable = NULL) : String
+    public static function file(string $randomBufferClassPagePath, array $randomBufferClassDataVariable = NULL) : string
     {
         if( ! is_file($randomBufferClassPagePath) )
         {

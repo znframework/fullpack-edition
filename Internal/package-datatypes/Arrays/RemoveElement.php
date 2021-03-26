@@ -19,7 +19,7 @@ class RemoveElement
      * 
      * @return array
      */
-    public static function key(Array $array, $keys) : Array
+    public static function key(array $array, $keys) : array
     {
         if( ! is_array($keys) )
         {
@@ -44,7 +44,7 @@ class RemoveElement
      * 
      * @return array
      */
-    public static function value(Array $array, $values) : Array
+    public static function value(array $array, $values) : array
     {
         return self::element($array, $values);
     }
@@ -58,7 +58,7 @@ class RemoveElement
      * 
      * @return array
      */
-    public static function use(Array $array, $keys = [], $values = []) : Array
+    public static function use(array $array, $keys = [], $values = []) : array
     {
         if( ! empty($keys) )
         {
@@ -81,7 +81,7 @@ class RemoveElement
      * 
      * @return array
      */
-    public static function last(Array $array, Int $count = 1, $type = 'array_pop') : Array
+    public static function last(array $array, int $count = 1, $type = 'array_pop') : array
     {
         if( $count <= 1 )
         {
@@ -113,7 +113,7 @@ class RemoveElement
      * 
      * @return array
      */
-    public static function first(Array $array, Int $count = 1) : Array
+    public static function first(array $array, int $count = 1) : array
     {
         return self::last($array, $count, 'array_shift');
     }
@@ -126,7 +126,7 @@ class RemoveElement
      * 
      * @return array
      */
-    public static function element(Array $array, $object) : Array
+    public static function element(array $array, $object) : array
     {
         if( ! is_array($object) )
         {

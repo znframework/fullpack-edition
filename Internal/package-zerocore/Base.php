@@ -67,7 +67,7 @@ class Base
      *
      * @return mixed
      */
-    public static function illustrate(String $const, $value = '')
+    public static function illustrate(string $const, $value = '')
     {
         if( ! defined($const) )
         {
@@ -93,7 +93,7 @@ class Base
      * 
      * @return mixed
      */
-    public static function import(String $file)
+    public static function import(string $file)
     {
         $constant = 'ImportFilePrefix' . $file;
 
@@ -119,7 +119,7 @@ class Base
      * 
      * @return string
      */
-    public static function host() : String
+    public static function host() : string
     {
         if( isset($_SERVER['HTTP_X_FORWARDED_HOST']) )
         {
@@ -153,7 +153,7 @@ class Base
      * 
      * @return string
      */
-    public static function removePrefix(String $data = NULL, String $fix = '/') : String
+    public static function removePrefix(string $data = NULL, string $fix = '/') : string
     {
         if( strpos($data, $fix) === 0 ) 
         {
@@ -171,7 +171,7 @@ class Base
      * 
      * @return string
      */
-    public static function removeSuffix(String $data = NULL, String $fix = '/') : String
+    public static function removeSuffix(string $data = NULL, string $fix = '/') : string
     {
         if( strrpos($data, $fix) === ($start = strlen($data) - strlen($fix)) ) 
         {
@@ -189,7 +189,7 @@ class Base
      * 
      * @return string
      */
-    public static function removePresuffix(String $data = NULL, String $fix = '/') : String
+    public static function removePresuffix(string $data = NULL, string $fix = '/') : string
     {
         return self::removeSuffix(self::removePrefix($data, $fix), $fix);
     }
@@ -204,7 +204,7 @@ class Base
      * 
      * @return string
      */
-    public static function suffix(String $string = NULL, String $fix = '/') : String
+    public static function suffix(string $string = NULL, string $fix = '/') : string
     {
         return self::prefix($string, $fix, __FUNCTION__);
     }
@@ -219,7 +219,7 @@ class Base
      * 
      * @return string
      */
-    public static function prefix(String $string = NULL, String $fix = '/', $type = __FUNCTION__) : String
+    public static function prefix(string $string = NULL, string $fix = '/', $type = __FUNCTION__) : string
     {
         $stringFix = $type === 'prefix' ? $fix . $string : $string . $fix;
 
@@ -255,7 +255,7 @@ class Base
      * 
      * @return string
      */
-    public static function presuffix(String $string = NULL, String $fix = '/') : String
+    public static function presuffix(string $string = NULL, string $fix = '/') : string
     {
         return self::suffix(self::prefix(empty($string) ? $fix . $string . $fix : $string, $fix), $fix);
     }
@@ -293,7 +293,7 @@ class Base
      * 
      * @return void
      */
-    public static function trace(String $message, $exit = true, $consoleEnabled = true)
+    public static function trace(string $message, $exit = true, $consoleEnabled = true)
     {
         # Shows console trace
         if( $consoleEnabled && defined('CONSOLE_ENABLED') )
@@ -330,7 +330,7 @@ class Base
      * @param string $title
      * @param string $message
      */
-    public static function consoleTrace(String $title, String $message, $exit = true)
+    public static function consoleTrace(string $title, string $message, $exit = true)
     {
         $repeat = self::presuffix(str_repeat('-', strlen($message) + 2), '+');
 

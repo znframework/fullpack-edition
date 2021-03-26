@@ -85,7 +85,7 @@ trait StorageCommonMethods
      * 
      * @return $this
      */
-    public function encode(String $nameAlgo = NULL, String $valueAlgo = NULL)
+    public function encode(string $nameAlgo = NULL, string $valueAlgo = NULL)
     {
         $this->encode['name']  = $nameAlgo;
         $this->encode['value'] = $valueAlgo;
@@ -100,7 +100,7 @@ trait StorageCommonMethods
      * 
      * @return $this
      */
-    public function decode(String $nameAlgo)
+    public function decode(string $nameAlgo)
     {
         $this->encode['name'] = $nameAlgo;
 
@@ -114,7 +114,7 @@ trait StorageCommonMethods
      * 
      * @return $this
      */
-    public function regenerate(Bool $regenerate = true)
+    public function regenerate(bool $regenerate = true)
     {
         $this->regenerate = $regenerate;
 

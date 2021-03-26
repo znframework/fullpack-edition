@@ -100,7 +100,7 @@ class Upload implements UploadInterface
      * 
      * @return bool
      */
-    public function isFile(String $name) : Bool
+    public function isFile(string $name) : bool
     {
         $file = Method::files($name);
 
@@ -119,7 +119,7 @@ class Upload implements UploadInterface
      * 
      * @return Upload
      */
-    public function settings(Array $settings = []) : Upload
+    public function settings(array $settings = []) : Upload
     {
         foreach( $settings as $key => $val )
         {
@@ -184,7 +184,7 @@ class Upload implements UploadInterface
      * 
      * @return Upload
      */
-    public function encode(String $hash = 'md5') : Upload
+    public function encode(string $hash = 'md5') : Upload
     {
         $this->settings['encode'] = $hash;
 
@@ -198,7 +198,7 @@ class Upload implements UploadInterface
      * 
      * @return Upload
      */
-    public function prefix(String $prefix) : Upload
+    public function prefix(string $prefix) : Upload
     {
         $this->settings['prefix'] = $prefix;
 
@@ -226,7 +226,7 @@ class Upload implements UploadInterface
      * 
      * @return Upload
      */
-    public function encodeLength(Int $encodeLength = 8) : Upload
+    public function encodeLength(int $encodeLength = 8) : Upload
     {
         $this->settings['encodeLength'] = $encodeLength;
 
@@ -240,7 +240,7 @@ class Upload implements UploadInterface
      * 
      * @return Upload
      */
-    public function target(String $target) : Upload
+    public function target(string $target) : Upload
     {
         $this->settings['target'] = $target;
 
@@ -254,7 +254,7 @@ class Upload implements UploadInterface
      * 
      * @return Upload
      */
-    public function source(String $source = 'upload') : Upload
+    public function source(string $source = 'upload') : Upload
     {
         $this->settings['source'] = $source;
 
@@ -269,7 +269,7 @@ class Upload implements UploadInterface
      * 
      * @return bool
      */
-    public  function start(String $fileName = 'upload', String $rootDir = NULL) : Bool
+    public  function start(string $fileName = 'upload', string $rootDir = NULL) : bool
     {
         $fileName = $this->settings['source'] ?? $fileName;
         $rootDir  = $this->settings['target'] ?? $rootDir ?? $this->uploadDirectory;
@@ -314,7 +314,7 @@ class Upload implements UploadInterface
      * 
      * @return object|false
      */
-    public function info(String $info = NULL)
+    public function info(string $info = NULL)
     {
         if( ! empty($_FILES[$this->file]) )
         {

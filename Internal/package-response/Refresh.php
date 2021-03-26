@@ -19,7 +19,7 @@ class Refresh extends Redirect
      * @param array  $data = NULL
      * @param bool   $exit = false
      */
-    public function __construct(String $url = NULL, Int $time = 0, Array $data = NULL, Bool $exit = false)
+    public function __construct(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = false)
     {
         if( $url !== NULL )
         {

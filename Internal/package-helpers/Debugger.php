@@ -49,7 +49,7 @@ class Debugger
      * 
      * @return object
      */
-    public function parent(Int $index = 1) : stdClass
+    public function parent(int $index = 1) : stdClass
     {
         return $this->_layer($this->debug, $index, $index + 1);
     }

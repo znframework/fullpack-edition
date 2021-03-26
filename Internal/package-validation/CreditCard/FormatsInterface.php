@@ -16,5 +16,5 @@ interface FormatsInterface
      * 
      * @return array
      */
-    public static function getList() : Array;
+    public static function getList() : array;
 }

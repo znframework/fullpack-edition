@@ -20,7 +20,7 @@ class Element
      * 
      * @return string
      */
-    public static function removeFirst(String $str, String $separator = '/', Int $index = 0) : String
+    public static function removeFirst(string $str, string $separator = '/', int $index = 0) : string
     {
         return self::remove($str, $separator, abs($index));
     }
@@ -34,7 +34,7 @@ class Element
      * 
      * @return string
      */
-    public static function removeLast(String $str, String $separator = '/', Int $index = 0) : String
+    public static function removeLast(string $str, string $separator = '/', int $index = 0) : string
     {
         return self::remove($str, $separator, -abs($index));
     }
@@ -48,7 +48,7 @@ class Element
      * 
      * @return string
      */
-    public static function remove(String $str, String $separator = '/', Int $index = 0) : String
+    public static function remove(string $str, string $separator = '/', int $index = 0) : string
     {
         $strEx = explode($separator, $str);
 

@@ -19,7 +19,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function card(String $data, String $type = NULL) : Bool;
+    public static function card(string $data, string $type = NULL) : bool;
 
     /**
      * Is valid cvc
@@ -27,7 +27,7 @@ interface ValidatorInterface
      * @param int    $cvc
      * @param string $type
      */
-    public static function cvc(Int $cvc, String $type = NULL) : Bool;
+    public static function cvc(int $cvc, string $type = NULL) : bool;
 
     /**
      * Is valid date
@@ -37,5 +37,5 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function date(String $year, String $month) : Bool;
+    public static function date(string $year, string $month) : bool;
 }

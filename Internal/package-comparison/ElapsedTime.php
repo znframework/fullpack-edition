@@ -19,7 +19,7 @@ class ElapsedTime
      * 
      * @return float
      */
-    public static function calculate(String $result, Int $decimal = 4) : Float
+    public static function calculate(string $result, int $decimal = 4) : Float
     {
         $resend  = $result."_end";
         $restart = $result."_start";

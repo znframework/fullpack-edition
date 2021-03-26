@@ -37,7 +37,7 @@ class ImapDriver extends DriverMappingAbstract
     /**
      * Magic Constructor
      */
-    public function __construct(Array $config = [])
+    public function __construct(array $config = [])
     {
         Support::func('imap_mail');
 
@@ -75,7 +75,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return self
      */
-    public static function new(Array $config = [])
+    public static function new(array $config = [])
     {
         return new self($config);
     }
@@ -87,7 +87,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return object
      */
-    public function mail(Int $mailId)
+    public function mail(int $mailId)
     {
         $overview  = imap_fetch_overview($this->connect, $mailId, FT_UID);
         $structure = imap_fetchstructure($this->connect, $mailId, FT_UID);
@@ -129,7 +129,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return array
      */
-    public function list(String $flag = 'all') : Array
+    public function list(string $flag = 'all') : array
     {
         return imap_search($this->connect, strtoupper($flag), SE_UID);
     }
@@ -141,7 +141,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return bool
      */
-    public function delete($mailId) : Bool
+    public function delete($mailId) : bool
     {
         $return = imap_delete($this->connect, $mailId, FT_UID);
 
@@ -158,7 +158,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return bool
      */
-    public function move($mailId, String $folder = 'Spam') : Bool
+    public function move($mailId, string $folder = 'Spam') : bool
     {
         if( ! in_array($folder, ['Spam', 'Trash', 'Drafts', 'Sent']) )
         {
@@ -179,7 +179,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return bool
      */
-    public function createFolder(String $folder) : Bool
+    public function createFolder(string $folder) : bool
     {
         return imap_createmailbox($this->connect, $this->utf7FolderEncoder($folder));
     }
@@ -191,7 +191,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return bool
      */
-    public function deleteFolder(String $folder) : Bool
+    public function deleteFolder(string $folder) : bool
     {
         return imap_deletemailbox($this->connect, $this->utf7FolderEncoder($folder));
     }
@@ -203,7 +203,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return bool
      */
-    public function renameFolder(String $name, String $newName) : Bool
+    public function renameFolder(string $name, string $newName) : bool
     {
         $host = '{' . $this->host . '}';
 
@@ -218,7 +218,7 @@ class ImapDriver extends DriverMappingAbstract
      * 
      * @return bool
      */
-    public function changeStatus($mailId, String $status) : Bool
+    public function changeStatus($mailId, string $status) : bool
     {
         $status = ucfirst(strtolower($status));
 
@@ -235,7 +235,7 @@ class ImapDriver extends DriverMappingAbstract
         return imap_setflag_full($this->connect, $mailId, '\\' . $status, ST_UID);
     }
 
-    public function error() : String
+    public function error() : string
     {
         return imap_last_error();
     }
@@ -243,7 +243,7 @@ class ImapDriver extends DriverMappingAbstract
     /**
      * Protected Utf7 Folder Encoder
      */
-    protected function utf7FolderEncoder($folder) : String
+    protected function utf7FolderEncoder($folder) : string
     {
         return imap_utf7_encode('{' . $this->host . '}' . $folder);
     }
@@ -251,7 +251,7 @@ class ImapDriver extends DriverMappingAbstract
     /**
      * Protected connection
      */
-    protected function connection(Array $config = [])
+    protected function connection(array $config = [])
     {
         if( empty($config) )
         {

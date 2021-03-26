@@ -76,7 +76,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function manipulation(Array $rules, String $type = 'none') : String
+    public static function manipulation(array $rules, string $type = 'none') : string
     {
         $query = NULL;
 
@@ -108,7 +108,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function buildQuery(Array $data, String $separator = '/', String $type = 'none') : String
+    public static function buildQuery(array $data, string $separator = '/', string $type = 'none') : string
     {
         $query = NULL;
 
@@ -136,7 +136,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function get($get = 1, $index = 1, Bool $while = false) : String
+    public static function get($get = 1, $index = 1, bool $while = false) : string
     {
         if( ! IS::char($index) )
         {
@@ -225,7 +225,7 @@ class URI implements URIInterface
      * 
      * @return int
      */
-    public static function getNameCount(String $get, $segArr = NULL) : Int
+    public static function getNameCount(string $get, $segArr = NULL) : int
     {
         $segArr = $segArr ?? self::segmentArray();
 
@@ -246,7 +246,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function getNameAll(String $get, $segArr = NULL) : String
+    public static function getNameAll(string $get, $segArr = NULL) : string
     {
         $segArr = $segArr ?? self::segmentArray();
 
@@ -277,7 +277,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function getByIndex(Int $get = 1, Int $index = 1, $segArr = NULL) : String
+    public static function getByIndex(int $get = 1, int $index = 1, $segArr = NULL) : string
     {
         $segArr =  $segArr ?? self::segmentArray();
 
@@ -322,7 +322,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function getByName(String $get, $index = NULL, $segArr = NULL) : String
+    public static function getByName(string $get, $index = NULL, $segArr = NULL) : string
     {
         $segArr = $segArr ?? self::segmentArray();
         
@@ -356,7 +356,7 @@ class URI implements URIInterface
      * 
      * @return array
      */
-    public static function segmentArray() : Array
+    public static function segmentArray() : array
     {
         $segmentEx  = self::$data ?? Arrays\RemoveElement::element(explode('/', self::_cleanPath()), '');
 
@@ -370,7 +370,7 @@ class URI implements URIInterface
      * 
      * @return int
      */
-    public static function totalSegments() : Int
+    public static function totalSegments() : int
     {
         $segmentEx     = array_diff(self::segmentArray(), ['', ' ']);
         $totalSegments = count($segmentEx);
@@ -383,7 +383,7 @@ class URI implements URIInterface
      * 
      * @return int
      */
-    public static function segmentCount() : Int
+    public static function segmentCount() : int
     {
         return self::totalSegments();
     }
@@ -395,7 +395,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function segment(Int $seg = 1) : String
+    public static function segment(int $seg = 1) : string
     {
         $segments = self::segmentArray();
 
@@ -428,7 +428,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function currentSegment() : String
+    public static function currentSegment() : string
     {
         return self::current(false);
     }
@@ -440,7 +440,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function current(Bool $isPath = true) : String
+    public static function current(bool $isPath = true) : string
     {
         $currentPagePath = str_replace(Lang::get().'/', '', Base::currentPath());
 
@@ -473,7 +473,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function active(Bool $fullPath = false) : String
+    public static function active(bool $fullPath = false) : string
     {
         return Request::getActiveURI($fullPath);
     }
@@ -485,7 +485,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function base(String $uri = NULL) : String
+    public static function base(string $uri = NULL) : string
     {
         return In::cleanInjection(BASE_DIR . $uri);
     }
@@ -497,7 +497,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function prev(Bool $isPath = true) : String
+    public static function prev(bool $isPath = true) : string
     {
         if( ! isset($_SERVER['HTTP_REFERER']) )
         {

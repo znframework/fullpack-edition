@@ -28,7 +28,7 @@ class Save
      * 
      * @return bool
      */
-    public static function do(String $file, String $data) : Bool
+    public static function do(string $file, string $data) : bool
     {
         $file = Base::suffix($file, self::$extension);
 

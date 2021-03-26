@@ -27,7 +27,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function card(String $type) : Data
+    public function card(string $type) : Data
     {
         $this->settings['config']['card'] = $type;
 
@@ -41,7 +41,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function cvc(String $type) : Data
+    public function cvc(string $type) : Data
     {
         $this->settings['config']['cvc'] = $type;
 
@@ -67,7 +67,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function method(String $method) : Data
+    public function method(string $method) : Data
     {
         $this->settings['method'] = $method;
 
@@ -81,7 +81,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function value(String $value) : Data
+    public function value(string $value) : Data
     {
         $this->settings['value'] = $value;
 
@@ -119,7 +119,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function match(String $match) : Data
+    public function match(string $match) : Data
     {
         $this->settings['config']['match'] = $match;
 
@@ -133,7 +133,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function matchPassword(String $match) : Data
+    public function matchPassword(string $match) : Data
     {
         $this->settings['config']['matchPassword'] = $match;
 
@@ -148,7 +148,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function compare(Int $min = NULL, Int $max = NULL) : Data
+    public function compare(int $min = NULL, int $max = NULL) : Data
     {
         $this->settings['config']['minchar'] = $min;
         $this->settings['config']['maxchar'] = $max;
@@ -222,7 +222,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function pattern(String $pattern, String $char = NULL) : Data
+    public function pattern(string $pattern, string $char = NULL) : Data
     {
         $this->settings['config']['pattern'] = Base::presuffix($pattern).$char;
 
@@ -236,7 +236,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function phone(String $design = NULL) : Data
+    public function phone(string $design = NULL) : Data
     {
         if( empty($design) )
         {

@@ -21,14 +21,14 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function background(Int $x, Int $y, String $color = 'white', String $align = 'center') : Thumb;
+    public function background(int $x, int $y, string $color = 'white', string $align = 'center') : Thumb;
 
     /**
      * Watermark.
      * 
      * @return Thumb
      */
-    public function watermark(String $source, String $align = NULL, $margin = 0) : Thumb;
+    public function watermark(string $source, string $align = NULL, $margin = 0) : Thumb;
 
     /**
      * Refresh image filtering.
@@ -44,7 +44,7 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function path(String $file) : Thumb;
+    public function path(string $file) : Thumb;
 
     /**
      * Sets image quality
@@ -53,7 +53,7 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function quality(Int $quality) : Thumb;
+    public function quality(int $quality) : Thumb;
 
     /**
      * Crop image
@@ -63,7 +63,7 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function crop(Int $x, Int $y) : Thumb;
+    public function crop(int $x, int $y) : Thumb;
 
     /**
      * Sets image size
@@ -73,7 +73,7 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function size(Int $width, Int $height) : Thumb;
+    public function size(int $width, int $height) : Thumb;
 
     /**
      * Sets image resize
@@ -83,7 +83,7 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function resize(Int $width, Int $height) : Thumb;
+    public function resize(int $width, int $height) : Thumb;
 
     /**
      * Sets image proportional size
@@ -93,7 +93,7 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function prosize(Int $width, Int $height = 0) : Thumb;
+    public function prosize(int $width, int $height = 0) : Thumb;
 
     /**
      * Create new image
@@ -102,7 +102,7 @@ interface ThumbInterface
      * 
      * @return string
      */
-    public function create(String $path) : String;
+    public function create(string $path) : string;
 
     /**
      * Get proportional size
@@ -112,7 +112,7 @@ interface ThumbInterface
      * 
      * @return object|false
      */
-    public function getProsize(Int $width, Int $height);
+    public function getProsize(int $width, int $height);
 
     /**
      * Clean thumb files
@@ -120,5 +120,5 @@ interface ThumbInterface
      * @param string $ile
      * @param bool   $origin = false
      */
-    public function clean(String $path, Bool $origin = false);
+    public function clean(string $path, bool $origin = false);
 }

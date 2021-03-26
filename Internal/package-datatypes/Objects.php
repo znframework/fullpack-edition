@@ -18,7 +18,7 @@ class Objects
      * 
      * @param array $array
      */
-    public function __construct(Array $array)
+    public function __construct(array $array)
     {
         self::objectRecursive($array, $this);
     }
@@ -26,7 +26,7 @@ class Objects
      /**
      * Protected Object Recursive
      */
-    protected static function objectRecursive(Array $array, &$std)
+    protected static function objectRecursive(array $array, &$std)
     {
         foreach( $array as $key => $value )
         {

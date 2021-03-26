@@ -24,7 +24,7 @@ class Type extends EncodeExtends
      * @return string
      */
 
-    public static function create(String $data, String $type = 'md5') : String
+    public static function create(string $data, string $type = 'md5') : string
     {
         $algos = ['golden', 'super'];
 

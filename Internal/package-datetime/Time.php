@@ -40,7 +40,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function check(String $time) : Bool
+    public function check(string $time) : bool
     {
         $timeEx    = explode(':', $this->convert($time, '{hour}:{minute}:{second}'));
         $validTime = implode('/', $timeEx);
@@ -60,7 +60,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function isPast(String $time) : Bool
+    public function isPast(string $time) : bool
     {
         return $this->compare($time, '<', $this->set('{hour}:{minute}:{second}'));
     }
@@ -72,7 +72,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function current(String $clock = '%H:%M:%S') : String
+    public function current(string $clock = '%H:%M:%S') : string
     {
         return $this->_datetime($clock);
     }
@@ -84,7 +84,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function default(String $time = '{hour}:{minute}:{second}') : String
+    public function default(string $time = '{hour}:{minute}:{second}') : string
     {
         return $this->_datetime($time);
     }
@@ -97,7 +97,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function convert(String $date, String $format = '%d-%B-%Y %A, %H:%M:%S') : String
+    public function convert(string $date, string $format = '%d-%B-%Y %A, %H:%M:%S') : string
     {
         return $this->_datetime($format, strtotime($date));
     }
@@ -107,7 +107,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function standart() : String
+    public function standart() : string
     {
         return strftime("%d %B %Y %A, %H:%M:%S");
     }
@@ -115,7 +115,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected next
      */
-    protected function next(String $time = NULL, $type = 'hour', $signal = '+') : String
+    protected function next(string $time = NULL, $type = 'hour', $signal = '+') : string
     {
         $calculate = $this->calculate($time ?? $this->default(), $signal . '1' . $type);
 
@@ -125,7 +125,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected prev
      */
-    protected function prev(String $time = NULL, $type = 'hour') : String
+    protected function prev(string $time = NULL, $type = 'hour') : string
     {
         return $this->next($time, $type, '-');
     }

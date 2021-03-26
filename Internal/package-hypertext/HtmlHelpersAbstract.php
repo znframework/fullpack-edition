@@ -18,5 +18,5 @@ abstract class HtmlHelpersAbstract
      * 
      * @return string
      */
-    abstract public function create(...$elements) : String;
+    abstract public function create(...$elements) : string;
 }

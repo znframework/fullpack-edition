@@ -31,7 +31,7 @@ class Server
      * 
      * @codeCoverageIgnore
      */
-    public static function os() : String
+    public static function os() : string
     {
         if( stristr(PHP_OS, 'WIN') )
         {
@@ -64,7 +64,7 @@ class Server
      * 
      * @return mixed
      */
-    public static function data(String $type = NULL)
+    public static function data(string $type = NULL)
     {
         $server =
         [

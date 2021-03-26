@@ -22,7 +22,7 @@ class Limiter
      * 
      * @return string
      */
-    public static function word(String $str, Int $limit = 100, String $endChar = '...', Bool $stripTags = true, String $encoding = "utf-8") : String
+    public static function word(string $str, int $limit = 100, string $endChar = '...', bool $stripTags = true, string $encoding = "utf-8") : string
     {
         $str = trim($str);
 
@@ -56,7 +56,7 @@ class Limiter
      * 
      * @return string
      */
-    public static function char(String $str, Int $limit = 500, String $endChar = '...',  Bool $stripTags = false, String $encoding = "utf-8") : String
+    public static function char(string $str, int $limit = 500, string $endChar = '...',  bool $stripTags = false, string $encoding = "utf-8") : string
     {
         $str = trim($str);
 

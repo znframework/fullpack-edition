@@ -41,7 +41,7 @@ abstract class CDNAbstract
      * 
      * @param string $jsonFile
      */
-    public function setJsonFile(String $jsonFile)
+    public function setJsonFile(string $jsonFile)
     {
         $this->jsonFile = $jsonFile;
     }
@@ -51,7 +51,7 @@ abstract class CDNAbstract
      * 
      * @return array
      */
-    public function getLinks() : Array
+    public function getLinks() : array
     {
         if( ! $this->isJsonCheck() || $this->refresh === true )
         {
@@ -78,7 +78,7 @@ abstract class CDNAbstract
      * 
      * @return string|false
      */
-    public function getLink(String $key, String $version = 'latest')
+    public function getLink(string $key, string $version = 'latest')
     {
         $return = $this->getLinks()[$key] ?? false;
 

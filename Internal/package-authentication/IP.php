@@ -20,7 +20,7 @@ class IP
      * 
      * @return string
      */
-    public static function v4() : String
+    public static function v4() : string
     {
         return Request::ipv4();
     }

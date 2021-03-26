@@ -51,7 +51,7 @@ class Properties
      * 
      * @param bool $usable = true
      */
-    public static function usable(Bool $usable = true)
+    public static function usable(bool $usable = true)
     {
         self::$parameters['usable'] = $usable;
     }
@@ -63,7 +63,7 @@ class Properties
      * 
      * @codeCoverageIgnore
      */
-    public static function recursive(Bool $recursive = true)
+    public static function recursive(bool $recursive = true)
     {
         self::$parameters['recursive'] = $recursive;
     }
@@ -73,7 +73,7 @@ class Properties
      * 
      * @param array $data
      */
-    public static function data(Array $data)
+    public static function data(array $data)
     {
         self::$parameters['data'] = $data;
     }

@@ -68,7 +68,7 @@ class Html
      * 
      * @return string
      */
-    public function ul(Callable $list, Array $attributes = [], $type = 'ul') : String
+    public function ul(callable $list, array $attributes = [], $type = 'ul') : string
     {
         return $this->_multiElement($type, Buffering\Callback::do($list, [new $this]), $attributes);
     }
@@ -81,7 +81,7 @@ class Html
      * 
      * @return string
      */
-    public function ol(Callable $list, Array $attributes = []) : String
+    public function ol(callable $list, array $attributes = []) : string
     {
         return $this->ul($list, $attributes, 'ol');
     }
@@ -126,7 +126,7 @@ class Html
      * 
      * @return string
      */
-    public function image(String $src, Int $width = NULL, Int $height = NULL, Array $attributes = []) : String
+    public function image(string $src, int $width = NULL, int $height = NULL, array $attributes = []) : string
     {
         if( ! IS::url($src) )
         {
@@ -168,7 +168,7 @@ class Html
      * 
      * @return string
      */
-    public function label(String $for, $value = NULL, String $form = NULL, Array $attributes = []) : String
+    public function label(string $for, $value = NULL, string $form = NULL, array $attributes = []) : string
     {
         if( ! empty($for) )
         {
@@ -192,7 +192,7 @@ class Html
      * 
      * @return string
      */
-    public function anchor(String $url, $value = NULL, Array $attributes = []) : String
+    public function anchor(string $url, $value = NULL, array $attributes = []) : string
     {
         if( $url === ':void' )
         {
@@ -216,7 +216,7 @@ class Html
      * 
      * @return string
      */
-    public function button($value = NULL, Array $attributes = []) : String
+    public function button($value = NULL, array $attributes = []) : string
     {
         $this->settings['attr']['type'] = $this->settings['attr']['type'] ?? 'button';
 
@@ -232,7 +232,7 @@ class Html
      * 
      * @return string
      */
-    public function mailTo(String $mail, String $value = NULL, Array $attributes = []) : String
+    public function mailTo(string $mail, string $value = NULL, array $attributes = []) : string
     {
         if( ! IS::email($mail) )
         {
@@ -255,7 +255,7 @@ class Html
      * 
      * @return string
      */
-    public function font($str, String $size = NULL, String $color = NULL, String $face = NULL, Array $attributes = []) : String
+    public function font($str, string $size = NULL, string $color = NULL, string $face = NULL, array $attributes = []) : string
     {
         if( ! empty($size) )
         {
@@ -282,7 +282,7 @@ class Html
      * 
      * @return string
      */
-    public function br(Int $count = 1) : String
+    public function br(int $count = 1) : string
     {
         return str_repeat($this->_singleElement(__FUNCTION__), $count);
     }
@@ -294,7 +294,7 @@ class Html
      * 
      * @return string
      */
-    public function script(String $path) : String
+    public function script(string $path) : string
     {
         if( ! IS::url($path) )
         {
@@ -314,7 +314,7 @@ class Html
      * 
      * @return string
      */
-    public function link(String $path) : String
+    public function link(string $path) : string
     {
         if( ! IS::url($path) )
         {
@@ -335,7 +335,7 @@ class Html
      * 
      * @return string
      */
-    public function space(Int $count = 4) : String
+    public function space(int $count = 4) : string
     {
         return str_repeat("&nbsp;", $count);
     }
@@ -349,7 +349,7 @@ class Html
      * 
      * @return string
      */
-    public function heading($str, Int $type = 3, Array $attributes = []) : String
+    public function heading($str, int $type = 3, array $attributes = []) : string
     {
         return $this->_multiElement('h'.$type, $str, $attributes);
     }
@@ -363,7 +363,7 @@ class Html
      * 
      * @return string
      */
-    public function element(String $element, $str = NULL, Array $attributes = []) : String
+    public function element(string $element, $str = NULL, array $attributes = []) : string
     {
         return $this->_multiElement($element, $str, $attributes);
     }
@@ -376,7 +376,7 @@ class Html
      * 
      * @return string
      */
-    public function multiAttr($str, Array $array = []) : String
+    public function multiAttr($str, array $array = []) : string
     {
         $perm  = $this->settings['attr']['perm'] ?? NULL;
     
@@ -420,7 +420,7 @@ class Html
      * 
      * @return string
      */
-    public function meta($name, String $content = NULL)
+    public function meta($name, string $content = NULL)
     {
         if( ! is_array($name) )
         {

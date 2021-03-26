@@ -51,7 +51,7 @@ class Generate extends File implements GenerateInterface
      * 
      * @return bool
      */
-    public function project(String $name) : Bool
+    public function project(string $name) : bool
     {
         return Project::generate($name);
     }
@@ -80,7 +80,7 @@ class Generate extends File implements GenerateInterface
      * @param string $databaes = '*'
      * @param array  $tables   = NULL
      */
-    public function deleteVision(String $database = '*', Array $tables = NULL)
+    public function deleteVision(string $database = '*', array $tables = NULL)
     {
         (new GrandVision)->delete($database, $tables);
     }

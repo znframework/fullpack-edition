@@ -21,7 +21,7 @@ class File
      * 
      * @return string
      */
-    public static function do(String $randomBufferClassPagePath, Array $randomBufferClassDataVariable = NULL) : String
+    public static function do(string $randomBufferClassPagePath, array $randomBufferClassDataVariable = NULL) : string
     {
         if( ! is_file($randomBufferClassPagePath) )
         {

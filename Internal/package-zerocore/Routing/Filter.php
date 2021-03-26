@@ -23,7 +23,7 @@ class Filter
      * @param array  $filters
      * @param array  $config
      */
-    public function __construct(String $filter, Array $filters, Array $config)
+    public function __construct(string $filter, array $filters, array $config)
     {
         $this->config  = $config;
         $this->filters = $filters;

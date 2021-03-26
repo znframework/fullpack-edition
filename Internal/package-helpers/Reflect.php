@@ -60,7 +60,7 @@ class Reflect
      * 
      * @return object
      */
-    public function annotation(String $class, String $function = NULL) : stdClass
+    public function annotation(string $class, string $function = NULL) : stdClass
     {
         if( strstr($class, '::') )
         {

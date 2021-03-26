@@ -20,7 +20,7 @@ class GetElement
      * 
      * @return array
      */
-    public static function last(Array $array, Int $count = 1, Bool $preserveKey = false)
+    public static function last(array $array, int $count = 1, bool $preserveKey = false)
     {
         if( $count <= 1 )
         {
@@ -43,7 +43,7 @@ class GetElement
      * 
      * @return array
      */
-    public static function first(Array $array, Int $count = 1, Bool $preserveKey = false)
+    public static function first(array $array, int $count = 1, bool $preserveKey = false)
     {
         if( $count <= 1 )
         {
@@ -67,7 +67,7 @@ class GetElement
      * 
      * @return array
      */
-    public static function pick(Array $arrays, String $pick) : Array
+    public static function pick(array $arrays, string $pick) : array
     {
         $values = [];
     

@@ -95,7 +95,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function check(String $date) : Bool
+    public function check(string $date) : bool
     {
         $dateEx    = explode('/', $this->convert($date, '{year}/{monthNumber}/{dayNumber}'));
         $validDate = implode('/', $dateEx);
@@ -117,7 +117,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function current(String $date = 'd.m.Y') : String
+    public function current(string $date = 'd.m.Y') : string
     {
         return $this->_datetime($date);
     }
@@ -129,7 +129,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function default(String $date = '{year}/{monthNumber0}/{dayNumber0}') : String
+    public function default(string $date = '{year}/{monthNumber0}/{dayNumber0}') : string
     {
         return $this->_datetime($date);
     }
@@ -142,7 +142,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function convert(String $date, String $format = 'd-m-Y H:i:s') : String
+    public function convert(string $date, string $format = 'd-m-Y H:i:s') : string
     {
         return $this->_datetime($format, strtotime($date));
     }
@@ -152,7 +152,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function standart() : String
+    public function standart() : string
     {
         return $this->_datetime("d F Y l, H:i:s");
     }
@@ -164,7 +164,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function isPast(String $date) : Bool
+    public function isPast(string $date) : bool
     {
         return $this->compare($date, '<', $this->set('Y/m/d'));
     }
@@ -178,7 +178,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function isWeekend(String $date = NULL) : Bool
+    public function isWeekend(string $date = NULL) : bool
     {
         $weekDayNumber = $this->convert($date ?? $this->default(), '{weekDayNumber}');
 
@@ -190,7 +190,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function today(String $date = NULL, $type = 'dayName') : String
+    public function today(string $date = NULL, $type = 'dayName') : string
     {
         $type = '{'.$type.'}';
 
@@ -207,7 +207,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function todayNumber(String $date = NULL) : String
+    public function todayNumber(string $date = NULL) : string
     {
         return $this->today($date, 'dayNumber');
     }
@@ -221,7 +221,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function yesterday(String $date = NULL) : String
+    public function yesterday(string $date = NULL) : string
     {
         return $this->prev($date, 'day');
     }
@@ -235,7 +235,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function tomorrow(String $date = NULL) : String
+    public function tomorrow(string $date = NULL) : string
     {
         return $this->next($date, 'day');
     }
@@ -243,7 +243,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected next
      */
-    protected function next(String $date = NULL, $type = 'day', $unit = 'day', $signal = '+') : String
+    protected function next(string $date = NULL, $type = 'day', $unit = 'day', $signal = '+') : string
     {
         $calculate = $this->calculate($date ?? $this->default(), $signal . '1' . $unit, 'Y/m/d');
 
@@ -253,7 +253,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected prev
      */
-    protected function prev(String $date = NULL, $type = 'day' , $unit = 'day') : String
+    protected function prev(string $date = NULL, $type = 'day' , $unit = 'day') : string
     {
         return $this->next($date, $type, $unit, '-');
     }

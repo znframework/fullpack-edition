@@ -18,7 +18,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function trim(String $data) : String;
+    public static function trim(string $data) : string;
 
     /**
      * Nasty code clean.
@@ -27,7 +27,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function nc(String $data) : String;
+    public static function nc(string $data) : string;
 
     /**
      * Encode html tags.
@@ -36,7 +36,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function html(String $data) : String;
+    public static function html(string $data) : string;
 
     /**
      * Encode cross site scripting.
@@ -45,7 +45,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function xss(String $data) : String;
+    public static function xss(string $data) : string;
 
     /**
      * Encode injection data.
@@ -54,7 +54,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function injection(String $data) : String;
+    public static function injection(string $data) : string;
 
     /**
      * Encode script tags.
@@ -63,7 +63,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function script(String $data) : String;
+    public static function script(string $data) : string;
 
     /**
      * Encode PHP tags.
@@ -72,7 +72,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function php(String $data) : String;
+    public static function php(string $data) : string;
 
     /**
      * Empty control.
@@ -81,7 +81,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function required(String $data) : Bool;
+    public static function required(string $data) : bool;
 
     /**
      * Control captcha code.
@@ -90,7 +90,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function captcha(String $data) : Bool;
+    public static function captcha(string $data) : bool;
 
     /**
      * Question
@@ -99,7 +99,7 @@ interface ValidatorInterface
      * 
      * @return string
      */
-    public static function question(Array $questions = []);
+    public static function question(array $questions = []);
 
     /**
      * Answer control
@@ -108,7 +108,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function answer(String $data) : Bool;
+    public static function answer(string $data) : bool;
 
     /**
      * Match password.
@@ -118,7 +118,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function matchPassword(String $data, String $check) : Bool;
+    public static function matchPassword(string $data, string $check) : bool;
 
     /**
      * Match.
@@ -128,7 +128,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function match(String $data, String $check) : Bool;
+    public static function match(string $data, string $check) : bool;
 
     /**
      * Pattern.
@@ -138,7 +138,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function pattern(String $data, String $check) : Bool;
+    public static function pattern(string $data, string $check) : bool;
 
     /**
      * Checks whether the grant is between the specified values.
@@ -149,7 +149,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function between(Float $value, Float $min, Float $max) : Bool;
+    public static function between(Float $value, Float $min, Float $max) : bool;
 
    /**
      * Checks whether the grant is between the specified values.
@@ -160,7 +160,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function betweenBoth(Float $value, Float $min, Float $max) : Bool;
+    public static function betweenBoth(Float $value, Float $min, Float $max) : bool;
 
     /**
      * Checks whether the donation has phone information.
@@ -170,7 +170,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function phone(String $data, String $pattern = NULL) : Bool;
+    public static function phone(string $data, string $pattern = NULL) : bool;
 
     /**
      * The data should be numeric.
@@ -179,7 +179,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function numeric($data) : Bool;
+    public static function numeric($data) : bool;
 
     /**
      * Checks whether the verb is alphabetic.
@@ -188,7 +188,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function alnum(String $data) : Bool;
+    public static function alnum(string $data) : bool;
 
     /**
      * Controls whether the verb is alphanumeric.
@@ -197,7 +197,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function alpha(String $data) : Bool;
+    public static function alpha(string $data) : bool;
 
     /**
      * The citizenship identification number checks.
@@ -206,7 +206,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function identity($no) : Bool;
+    public static function identity($no) : bool;
 
     /**
      * Checks whether the email is an e-mail.
@@ -215,7 +215,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function email(String $data) : Bool;
+    public static function email(string $data) : bool;
 
     /**
      * Checks whether the data is url.
@@ -224,7 +224,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function url(String $data) : Bool;
+    public static function url(string $data) : bool;
 
     /**
      * Checks whether the data is special char.
@@ -233,7 +233,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function specialChar(String $data) : Bool;
+    public static function specialChar(string $data) : bool;
 
     /**
      * Makes the maximum character limit.
@@ -243,7 +243,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function maxchar(String $data, Int $char) : Bool;
+    public static function maxchar(string $data, int $char) : bool;
 
     /**
      * Makes the minimum character limit.
@@ -253,5 +253,5 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function minchar(String $data, Int $char) : Bool;
+    public static function minchar(string $data, int $char) : bool;
 }

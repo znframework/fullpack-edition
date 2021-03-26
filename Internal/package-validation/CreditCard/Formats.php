@@ -324,7 +324,7 @@ class Formats implements FormatsInterface
      * 
      * @return array
      */
-    public static function getList() : Array
+    public static function getList() : array
     {
         return get_class_vars(self::class);
     }

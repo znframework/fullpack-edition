@@ -19,7 +19,7 @@ interface CryptoInterface
      * 
      * @return string
      */
-    public function encrypt(String $data, $settings = []) : String;
+    public function encrypt(string $data, $settings = []) : string;
 
     /**
      * It decrypts the data.
@@ -29,7 +29,7 @@ interface CryptoInterface
      * 
      * @return string
      */
-    public function decrypt(String $data, $settings = []) : String;
+    public function decrypt(string $data, $settings = []) : string;
 
     /**
      * Generates a random password.
@@ -38,5 +38,5 @@ interface CryptoInterface
      * 
      * @return string
      */
-    public function keygen(Int $length = 8) : String;
+    public function keygen(int $length = 8) : string;
 }

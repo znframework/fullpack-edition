@@ -20,7 +20,7 @@ class ThumbCleaner
      * @param bool   $origin = false
      * @param string $path   = NULL
      */
-    public static function clean(String $file, Bool $origin = false, String $path = NULL)
+    public static function clean(string $file, bool $origin = false, string $path = NULL)
     {
         if( is_file($file) )
         {

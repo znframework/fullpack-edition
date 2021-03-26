@@ -25,7 +25,7 @@ trait BootstrapComponents
      * 
      * @return string|this
      */
-    public function group($code = '', String $class = '')
+    public function group($code = '', string $class = '')
     {
         if( is_string($code) )
         {
@@ -56,7 +56,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function label(String $for = NULL, String $value = NULL, String $class = NULL)
+    public function label(string $for = NULL, string $value = NULL, string $class = NULL)
     {
         $this->settings['label']['for'  ] = $for;
         $this->settings['label']['value'] = $value;
@@ -72,7 +72,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function col(String $size)
+    public function col(string $size)
     {
         $this->settings['col']['size'] = $size;
 
@@ -95,7 +95,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function helptext(String $content, String $class = '')
+    public function helptext(string $content, string $class = '')
     {
         $this->settings['help']['text'] = $this->getHTMLClass()
                                                ->class('help-block' . Base::prefix($class, ' '))
@@ -112,7 +112,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function helptext4(String $content, String $class = '')
+    public function helptext4(string $content, string $class = '')
     {
         $this->settings['help']['text'] = $this->getHTMLClass()
                                                ->class('form-text text-muted' . Base::prefix($class, ' '))
@@ -128,7 +128,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function modal(String $selector)
+    public function modal(string $selector)
     {
         $this->settings['attr']['data-toggle'] = 'modal';
         $this->settings['attr']['data-target'] = Base::prefix($selector, '#');
@@ -144,7 +144,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function modalbox(String $id, Array $data = [], $template = 'standart')
+    public function modalbox(string $id, array $data = [], $template = 'standart')
     {
         $attr = $this->settings['attr'] ?? [];
         
@@ -171,7 +171,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function modalbox4(String $id, Array $data = [])
+    public function modalbox4(string $id, array $data = [])
     {
         return $this->modalbox($id, $data, 'standart4');
     }
@@ -184,7 +184,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function toast(String $id, Array $data = [], $template = 'standart')
+    public function toast(string $id, array $data = [], $template = 'standart')
     {
         $attr = $this->settings['attr'] ?? [];
         
@@ -210,7 +210,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function toastEvent(String $selector, $content = '')
+    public function toastEvent(string $selector, $content = '')
     {
         return $this->usePropertyScripts($selector, $content, 'toast');
     }
@@ -223,7 +223,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function popover(String $placement, $content = NULL)
+    public function popover(string $placement, $content = NULL)
     {
         if( is_string($content) )
         {
@@ -241,7 +241,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function popoverEvent(String $selector, $content = NULL)
+    public function popoverEvent(string $selector, $content = NULL)
     {
         return $this->usePropertyOptions($selector, $content, 'popover');
     }
@@ -255,7 +255,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function tooltip(String $placement, $content = NULL, Bool $html = NULL)
+    public function tooltip(string $placement, $content = NULL, bool $html = NULL)
     {
         if( is_string($content) )
         {
@@ -273,7 +273,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function tooltipEvent(String $selector, $content = NULL)
+    public function tooltipEvent(string $selector, $content = NULL)
     {
         return $this->usePropertyOptions($selector, $content, 'tooltip');
     }
@@ -285,7 +285,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function carousel(String $id = NULL, Array $images = [], $view = 'standart')
+    public function carousel(string $id = NULL, array $images = [], $view = 'standart')
     {
         $images = $this->transferAttributesAndUnset('attr', 'item') ?: $images;
 
@@ -322,7 +322,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function carousel4(String $id = NULL, Array $images = [])
+    public function carousel4(string $id = NULL, array $images = [])
     {
         return $this->carousel($id, $images, 'standart4');
     }
@@ -330,7 +330,7 @@ trait BootstrapComponents
     /**
      * Active caroseul options
      */
-    public function activeCarouselOptions(String $id)
+    public function activeCarouselOptions(string $id)
     {
         return $this->bootstrapOptions['carousel'][Base::prefix($id, '#')] ?? NULL;
     }
@@ -343,7 +343,7 @@ trait BootstrapComponents
      * 
      * @return self
      */
-    public function item(String $file, Array $attributes = [])
+    public function item(string $file, array $attributes = [])
     {
         if( empty($attributes) )
         {
@@ -366,7 +366,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function alert(String $type, $content)
+    public function alert(string $type, $content)
     {
         $content = $this->stringOrCallback($content);
 
@@ -392,7 +392,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function badge4(String $type, $content)
+    public function badge4(string $type, $content)
     {
         $content = $this->stringOrCallback($content);
 
@@ -408,7 +408,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function badge(String $type, $content)
+    public function badge(string $type, $content)
     {
         $content = $this->stringOrCallback($content);
 
@@ -444,7 +444,7 @@ trait BootstrapComponents
      * 
      * @return self
      */
-    public function progressbarText(String $text)
+    public function progressbarText(string $text)
     {
         $this->settings['progressbarText'] = ' ' . $text;
 
@@ -461,7 +461,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function progressbar4(String $type, Float $percent, Float $height = NULL)
+    public function progressbar4(string $type, Float $percent, Float $height = NULL)
     {
         $attr = NULL;
 
@@ -501,7 +501,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function progressbar(String $type, Float $percent, Float $height = NULL)
+    public function progressbar(string $type, Float $percent, Float $height = NULL)
     {
         $attr = NULL;
 
@@ -539,7 +539,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function filterEvent(String $source, String $target, String $event = NULL, $template = 'standart')
+    public function filterEvent(string $source, string $target, string $event = NULL, $template = 'standart')
     {
         $data = 
         [
@@ -575,7 +575,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function mediaObject4(String $avatar, String $name, String $content, String $date, $template = 'standart')
+    public function mediaObject4(string $avatar, string $name, string $content, string $date, $template = 'standart')
     { 
         $attr = $this->settings['attr'] ?? [];
 
@@ -606,7 +606,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function faIcon(String $icon, String $size = NULL, $type = '')
+    public function faIcon(string $icon, string $size = NULL, $type = '')
     {
         return '<i class="fa' . $type . ' fa-' . $icon . ($size ? ' fa-' . $size : NULL) . '"></i>';
     }
@@ -618,7 +618,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function falIcon(String $icon, String $size = NULL)
+    public function falIcon(string $icon, string $size = NULL)
     {
         return $this->faIcon($icon, $size, 'l');
     }
@@ -630,7 +630,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function fasIcon(String $icon, String $size = NULL)
+    public function fasIcon(string $icon, string $size = NULL)
     {
         return $this->faIcon($icon, $size, 's');
     }
@@ -642,7 +642,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function fadIcon(String $icon, String $size = NULL)
+    public function fadIcon(string $icon, string $size = NULL)
     {
         return $this->faIcon($icon, $size, 'd');
     }
@@ -654,7 +654,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function farIcon(String $icon, String $size = NULL)
+    public function farIcon(string $icon, string $size = NULL)
     {
         return $this->faIcon($icon, $size, 'r');
     }
@@ -668,7 +668,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function flex($content, String $class = NULL)
+    public function flex($content, string $class = NULL)
     {
         $attr =  $this->settings['attr'] ?? [];
 
@@ -710,7 +710,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function flexItem($content, String $class = NULL)
+    public function flexItem($content, string $class = NULL)
     {
         $attr =  $this->settings['attr'] ?? [];
 
@@ -743,7 +743,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function spinner(String $type = 'border', String $color = NULL, String $size = NULL)
+    public function spinner(string $type = 'border', string $color = NULL, string $size = NULL)
     {
         return $this->class('spinner-' . $type . ($color ? ' text-' . $color : NULL) . ($size ? ' spinner-' . $type . '-' . $size : NULL) )->div();
     }
@@ -757,7 +757,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function spinnerBorder(String $color = NULL, String $size = NULL)
+    public function spinnerBorder(string $color = NULL, string $size = NULL)
     {
         return $this->spinner('border', $color, $size);
     }
@@ -771,7 +771,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function spinnerGrow(String $color = NULL, String $size = NULL)
+    public function spinnerGrow(string $color = NULL, string $size = NULL)
     {
         return $this->spinner('grow', $color, $size);
     }
@@ -781,7 +781,7 @@ trait BootstrapComponents
      * 
      * @param string $uri = NULL
      */
-    public function breadcrumb(String $uri = NULL, Int $segmentCount = -1) 
+    public function breadcrumb(string $uri = NULL, int $segmentCount = -1) 
     {
         $uris = $this->getURIsegments($uri, $segmentCount);
         $list = $this->breadcrumbOlList($uris);

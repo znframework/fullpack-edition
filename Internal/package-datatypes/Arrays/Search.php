@@ -20,7 +20,7 @@ class Search
      * 
      * @return array|bool
      */
-    public static function betweenBothWithValueToKey(Array $array, $start, $end)
+    public static function betweenBothWithValueToKey(array $array, $start, $end)
     {
         $startPosition = array_search($start, $array);
 
@@ -41,7 +41,7 @@ class Search
      * 
      * @return array|bool
      */
-    public static function betweenBothWithKeyToValue(Array $array, $start, $end)
+    public static function betweenBothWithKeyToValue(array $array, $start, $end)
     {
         $endPosition = array_search($end, $array);
 
@@ -62,7 +62,7 @@ class Search
      * 
      * @return array|bool
      */
-    public static function betweenWithValueToKey(Array $array, $start, $end)
+    public static function betweenWithValueToKey(array $array, $start, $end)
     {
         $startPosition = array_search($start, $array);
 
@@ -83,7 +83,7 @@ class Search
      * 
      * @return array|bool
      */
-    public static function betweenWithKeyToValue(Array $array, $start, $end)
+    public static function betweenWithKeyToValue(array $array, $start, $end)
     {
         $endPosition = array_search($end, $array);
 
@@ -104,7 +104,7 @@ class Search
      * 
      * @return array|bool
      */
-    public static function betweenWithKey(Array $array, $start, $end)
+    public static function betweenWithKey(array $array, $start, $end)
     {
         if( isset($array[$start]) )
         {
@@ -124,7 +124,7 @@ class Search
      * 
      * @return array|bool
      */
-    public static function betweenBothWithKey(Array $array, $start, $end)
+    public static function betweenBothWithKey(array $array, $start, $end)
     {
         if( isset($array[$start]) )
         {
@@ -143,7 +143,7 @@ class Search
      * 
      * @return array|bool
      */
-    public static function between(Array $array, $start, $end)
+    public static function between(array $array, $start, $end)
     {
         if( self::betweenFunction($array, $start, $end, $startPosition, $endPosition) )
         {
@@ -162,7 +162,7 @@ class Search
      *
      * @return array|bool
      */
-    public static function betweenBoth(Array $array, $start, $end) 
+    public static function betweenBoth(array $array, $start, $end) 
     {
         if( self::betweenFunction($array, $start, $end, $startPosition, $endPosition) )
         {

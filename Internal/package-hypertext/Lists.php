@@ -21,7 +21,7 @@ class Lists extends HtmlHelpersAbstract
      * 
      * @param array ...$elements
      */
-    public function create(...$elements) : String
+    public function create(...$elements) : string
     {
         return $this->_element($elements[0], '', 0);
     }

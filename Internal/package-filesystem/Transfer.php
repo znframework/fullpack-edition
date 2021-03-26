@@ -20,7 +20,7 @@ class Transfer
      * 
      * @return Upload
      */
-    public static function settings(Array $set = [])
+    public static function settings(array $set = [])
     {
         return \Upload::settings($set);
     }
@@ -33,7 +33,7 @@ class Transfer
      * 
      * @return bool
      */
-    public static function upload(String $fileName = 'upload', String $rootDir = UPLOADS_DIR) : Bool
+    public static function upload(string $fileName = 'upload', string $rootDir = UPLOADS_DIR) : bool
     {
         return \Upload::start($fileName, $rootDir);
     }
@@ -43,7 +43,7 @@ class Transfer
      * 
      * @param string $file
      */
-    public static function download(String $file)
+    public static function download(string $file)
     {
         Download::start($file);
     }

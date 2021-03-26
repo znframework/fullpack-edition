@@ -17,7 +17,7 @@ class Parameters
      * @param string $path
      * @param string & $command
      */
-    public static function convert(Array $parameters)
+    public static function convert(array $parameters)
     {
         return $parameters ? implode(',', array_map(function($data){ return '"'.$data.'"';}, $parameters)) : '';
     }

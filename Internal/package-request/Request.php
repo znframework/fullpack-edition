@@ -39,7 +39,7 @@ class Request
      * 
      * @return string
      */
-    public static function ipv4() : String
+    public static function ipv4() : string
     {
         return Req::ipv4();
     }
@@ -49,7 +49,7 @@ class Request
      * 
      * @return string
      */
-    public static function scheme() : String
+    public static function scheme() : string
     {
         return Server::data('requestScheme');
     }
@@ -61,7 +61,7 @@ class Request
      * 
      * @return string
      */
-    public static function method(String $casing = 'upper') : String
+    public static function method(string $casing = 'upper') : string
     {
         return mb_convert_case(Server::data('requestMethod'), Helper::toConstant($casing, 'MB_CASE_'));
     }
@@ -71,7 +71,7 @@ class Request
      * 
      * @return string
      */
-    public static function uri() : String
+    public static function uri() : string
     {
         return Server::data('requestUri');
     }
@@ -81,7 +81,7 @@ class Request
      * 
      * @return int
      */
-    public static function time() : Int
+    public static function time() : int
     {
         return Server::data('requestTime');
     }

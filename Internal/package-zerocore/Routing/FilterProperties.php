@@ -26,7 +26,7 @@ class FilterProperties
      * 
      * @return Route
      */
-    public function restore($ips, String $uri = NULL)
+    public function restore($ips, string $uri = NULL)
     {
         $this->filters['restore']['ips'] = (array) $ips;
         $this->filters['restore']['uri'] = $uri;
@@ -41,7 +41,7 @@ class FilterProperties
      * 
      * @return Route
      */
-    public function usable(Bool $usable = true)
+    public function usable(bool $usable = true)
     {
         $this->filters['usable'] = $usable;
 
@@ -55,7 +55,7 @@ class FilterProperties
      * 
      * @return Route
      */
-    public function CSRF(String $uri = 'post')
+    public function CSRF(string $uri = 'post')
     {
         $this->filters['csrf'] = $uri;
 
@@ -81,7 +81,7 @@ class FilterProperties
      * 
      * @return Route
      */
-    public function callback(Callable $callback)
+    public function callback(callable $callback)
     {
         $this->filters['callback'] = $callback;
 
@@ -109,7 +109,7 @@ class FilterProperties
      * 
      * @return Route
      */
-    public function redirect(String $redirect)
+    public function redirect(string $redirect)
     {
         $this->filters['redirect'] = $redirect;
 

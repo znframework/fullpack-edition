@@ -19,7 +19,7 @@ class Force
      * 
      * @return array
      */
-    public static function values(Array $array, Callable $callable) : Array
+    public static function values(array $array, callable $callable) : array
     {
         return array_map($callable, $array);
     }
@@ -32,7 +32,7 @@ class Force
      * 
      * @return array
      */
-    public static function keys(Array $array, Callable $callable) : Array
+    public static function keys(array $array, callable $callable) : array
     {
         $keys = array_map($callable, array_keys($array));
 
@@ -47,7 +47,7 @@ class Force
      * 
      * @return array
      */
-    public static function do(Array $array, Callable $callable) : Array
+    public static function do(array $array, callable $callable) : array
     {
         $values = array_values(array_map($callable, $array));
         $keys   = array_values(array_map($callable, array_keys($array)));

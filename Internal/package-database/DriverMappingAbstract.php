@@ -83,7 +83,7 @@ abstract class DriverMappingAbstract
      * 
      * @codeCoverageIgnore
      */
-    public function limit($start = NULL, Int $limit = 0)
+    public function limit($start = NULL, int $limit = 0)
     {
         return ' LIMIT '. ( ! empty($limit) ? $limit . ' OFFSET ' . $start. ' ' : $start );
     }

@@ -28,7 +28,7 @@ class Something
      * 
      * @return mixed
      */
-    public static function use(String $randomPageVariable, Array $randomDataVariable = NULL, Bool $randomObGetContentsVariable = false)
+    public static function use(string $randomPageVariable, array $randomDataVariable = NULL, bool $randomObGetContentsVariable = false)
     {
         if( ! empty(Properties::$parameters['usable']) )
         {

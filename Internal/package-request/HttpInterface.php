@@ -17,7 +17,7 @@ interface HttpInterface
      * @param int    $code
      * @param string $version = '1.1'
      */
-    public static function response(Int $code, String $version = '1.1');
+    public static function response(int $code, string $version = '1.1');
 
     /**
      * Fix
@@ -26,56 +26,56 @@ interface HttpInterface
      * 
      * @return string
      */
-    public static function fix(Bool $security = false) : String;
+    public static function fix(bool $security = false) : string;
 
     /**
      * Host
      * 
      * @return string
      */
-    public static function host() : String;
+    public static function host() : string;
 
     /**
      * User Agent
      * 
      * @return string
      */
-    public static function userAgent() : String;
+    public static function userAgent() : string;
 
     /**
      * Accept
      * 
      * @return string
      */
-    public static function accept() : String;
+    public static function accept() : string;
 
     /**
      * Language
      * 
      * @return string
      */
-    public static function language() : String;
+    public static function language() : string;
 
     /**
      * Encoding
      * 
      * @return string
      */
-    public static function encoding() : String;
+    public static function encoding() : string;
 
     /**
      * Cookie
      * 
      * @return string
      */
-    public static function cookie() : String;
+    public static function cookie() : string;
 
     /**
      * Connection
      * 
      * @return string
      */
-    public static function connection() : String;
+    public static function connection() : string;
 
     /**
      * Request method type
@@ -84,14 +84,14 @@ interface HttpInterface
      * 
      * @returm bool
      */
-    public static function isRequestMethod(...$methods) : Bool;
+    public static function isRequestMethod(...$methods) : bool;
 
     /**
      * Request is ajax
      * 
      * @param bool
      */
-    public static function isAjax() : Bool;
+    public static function isAjax() : bool;
     
     /**
      * Get Browser Lang
@@ -100,7 +100,7 @@ interface HttpInterface
      * 
      * @return string
      */
-    public static function browserLang(String $default = 'en') : String;
+    public static function browserLang(string $default = 'en') : string;
 
     /**
      * Code
@@ -109,7 +109,7 @@ interface HttpInterface
      * 
      * @return string
      */
-    public static function code($code = 200) : String;
+    public static function code($code = 200) : string;
 
     /**
      * Message
@@ -118,7 +118,7 @@ interface HttpInterface
      * 
      * @return string
      */
-    public static function message(String $message) : String;
+    public static function message(string $message) : string;
 
     /**
      * Name
@@ -127,7 +127,7 @@ interface HttpInterface
      * 
      * @return Http
      */
-    public static function name(String $name) : Http;
+    public static function name(string $name) : Http;
 
     /**
      * Value
@@ -145,7 +145,7 @@ interface HttpInterface
      * 
      * @return Http
      */
-    public static function input(String $input) : Http;
+    public static function input(string $input) : Http;
 
     /**
      * Select
@@ -154,7 +154,7 @@ interface HttpInterface
      * 
      * @return mixed
      */
-    public static function select(String $name = NULL);
+    public static function select(string $name = NULL);
 
     /**
      * Insert
@@ -164,7 +164,7 @@ interface HttpInterface
      * 
      * @return bool
      */
-    public static function insert(String $name = NULL, $value = NULL) : Bool;
+    public static function insert(string $name = NULL, $value = NULL) : bool;
 
     /**
      * Insert
@@ -173,5 +173,5 @@ interface HttpInterface
      * 
      * @return bool
      */
-    public static function delete(String $name = NULL) : Bool;
+    public static function delete(string $name = NULL) : bool;
 }

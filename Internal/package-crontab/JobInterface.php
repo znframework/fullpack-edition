@@ -17,14 +17,14 @@ interface JobInterface
      * @param callable $callable
      * @param int      $decrement = 1
      */
-    public function queue(Callable $callable, Int $decrement = 1);
+    public function queue(callable $callable, int $decrement = 1);
 
     /**
      * Crontab limit
      * 
      * @param int $getLimit = 1
      */
-    public function limit(Int $getLimit = 1);
+    public function limit(int $getLimit = 1);
 
     /**
      * Selects project
@@ -33,21 +33,21 @@ interface JobInterface
      * 
      * @return Job
      */
-    public function driver(String $driver) : Job;
+    public function driver(string $driver) : Job;
 
     /**
      * Gets crontab list array
      * 
      * @return array
      */
-    public function listArray() : Array;
+    public function listArray() : array;
 
     /**
      * Gets crontab list
      * 
      * @return string
      */
-    public function list() : String;
+    public function list() : string;
 
     /**
      * Remove cron job
@@ -63,7 +63,7 @@ interface JobInterface
      * 
      * @return int
      */
-    public function run(String $cmd = NULL);
+    public function run(string $cmd = NULL);
 
     /**
      * Debug status
@@ -72,14 +72,14 @@ interface JobInterface
      * 
      * @return Job
      */
-    public function debug(Bool $status) : Job;
+    public function debug(bool $status) : Job;
 
     /**
      * Cron Controller
      * 
      * @param string $file
      */
-    public function controller(String $file);
+    public function controller(string $file);
 
     /**
      * Cron Command
@@ -87,14 +87,14 @@ interface JobInterface
      * @param string $file
      * @param string $type = 'Project' - options[Project|External]
      */
-    public function command(String $file);
+    public function command(string $file);
 
     /**
      * Cron wget
      * 
      * @param string $url
      */
-    public function wget(String $url);
+    public function wget(string $url);
 
     /**
      * Path
@@ -103,5 +103,5 @@ interface JobInterface
      * 
      * @return Job
      */
-    public function path(String $path = NULL);
+    public function path(string $path = NULL);
 }

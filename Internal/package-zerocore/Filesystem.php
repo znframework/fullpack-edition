@@ -22,7 +22,7 @@ class Filesystem
      * 
      * @return bool
      */
-    public static function zipExtract(String $source, String $target = NULL) : Bool
+    public static function zipExtract(string $source, string $target = NULL) : bool
     {
         $source = Base::suffix($source, '.zip');
 
@@ -60,7 +60,7 @@ class Filesystem
      * 
      * @return string
      */
-    public static function replaceData(String $file, $data, $replace) : String
+    public static function replaceData(string $file, $data, $replace) : string
     {
         if( ! is_file($file))
         {
@@ -87,7 +87,7 @@ class Filesystem
      * 
      * @return bool
      */
-    public static function createFolder(String $file, Int $permission = 0755, Bool $recursive = true) : Bool
+    public static function createFolder(string $file, int $permission = 0755, bool $recursive = true) : bool
     {
         if( is_dir($file) )
         {
@@ -104,7 +104,7 @@ class Filesystem
      * 
      * @return bool
      */
-    public static function deleteFolder(String $name) : Bool
+    public static function deleteFolder(string $name) : bool
     {
         if( is_dir($name) )
         {
@@ -137,7 +137,7 @@ class Filesystem
      * 
      * @return bool
      */
-    public static function deleteEmptyFolder(String $folder) : Bool
+    public static function deleteEmptyFolder(string $folder) : bool
     {
         if( ! is_dir($folder) )
         {
@@ -154,7 +154,7 @@ class Filesystem
      * 
      * @return bool
      */
-    public static function createFile(String $name) : Bool
+    public static function createFile(string $name) : bool
     {
         if( ! is_file($name) )
         {
@@ -173,7 +173,7 @@ class Filesystem
      * 
      * @return bool
      */
-    public static function copy(String $source, String $target) : Bool
+    public static function copy(string $source, string $target) : bool
     {
         if( ! file_exists($source) )
         {
@@ -222,7 +222,7 @@ class Filesystem
      * 
      * @return string
      */
-    public static function getExtension(String $file, Bool $dot = false) : String
+    public static function getExtension(string $file, bool $dot = false) : string
     {
         $dot = $dot === true ? '.' : '';
 
@@ -236,7 +236,7 @@ class Filesystem
      * 
      * @return string
      */
-    public static function removeExtension(String $file) : String
+    public static function removeExtension(string $file) : string
     {
         return preg_replace('/\\.[^.\\s]{2,4}$/', '', $file);
     }
@@ -252,7 +252,7 @@ class Filesystem
      * 
      * @return array
      */
-    public static function getFiles(String $path, $extension = NULL, Bool $pathType = false) : Array
+    public static function getFiles(string $path, $extension = NULL, bool $pathType = false) : array
     {
         if( ! is_dir($path) )
         {
@@ -284,7 +284,7 @@ class Filesystem
      * 
      * @return array
      */
-    public static function getRecursiveFiles(String $pattern = '*', Bool $allFiles = false, &$getRecursiveFiles = []) : Array
+    public static function getRecursiveFiles(string $pattern = '*', bool $allFiles = false, &$getRecursiveFiles = []) : array
     {
         // 5.3.36[added]
         if( $pattern === '/' )

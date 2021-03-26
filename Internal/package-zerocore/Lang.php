@@ -97,7 +97,7 @@ class Lang
      * 
      * @return mixed
      */
-    public static function select(String $file = NULL, String $str = NULL, $changed = NULL)
+    public static function select(string $file = NULL, string $str = NULL, $changed = NULL)
     {
         if( ! isset(self::$lang[$file]) )
         {      
@@ -171,7 +171,7 @@ class Lang
      * 
      * @return bool
      */
-    public static function set(String $l = NULL) : Bool
+    public static function set(string $l = NULL) : bool
     {
         if( empty($l) )
         {
@@ -186,7 +186,7 @@ class Lang
      * 
      * @return string
      */
-    public static function get() : String
+    public static function get() : string
     {
         $systemLanguageData        = In::defaultProjectKey('SystemLanguageData');
         $defaultSystemLanguageData = In::defaultProjectKey('DefaultSystemLanguageData');

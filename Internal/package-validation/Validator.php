@@ -24,7 +24,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function card(String $data, String $type = NULL) : Bool
+    public static function card(string $data, string $type = NULL) : bool
     {
         return CreditCard\Validator::card($data, $type);
     }
@@ -35,7 +35,7 @@ class Validator implements ValidatorInterface
      * @param int    $cvc
      * @param string $type
      */
-    public static function cvc(Int $cvc, String $type = NULL) : Bool
+    public static function cvc(int $cvc, string $type = NULL) : bool
     {
         return CreditCard\Validator::cvc($cvc, $type);
     }
@@ -48,7 +48,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function cardDate(String $date) : Bool
+    public static function cardDate(string $date) : bool
     {
         $dateEx = explode('/', $date);
 
@@ -71,7 +71,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function trim(String $data) : String
+    public static function trim(string $data) : string
     {
         return trim($data);
     }
@@ -83,7 +83,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function nc(String $data) : String
+    public static function nc(string $data) : string
     {
         $secnc = Security\Properties::$ncEncode;
 
@@ -97,7 +97,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function html(String $data) : String
+    public static function html(string $data) : string
     {
         return Security\Html::encode(Security\Html::decode($data));
     }
@@ -109,7 +109,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function xss(String $data) : String
+    public static function xss(string $data) : string
     {
         return Security\CrossSiteScripting::encode($data);
     }
@@ -121,7 +121,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function injection(String $data) : String
+    public static function injection(string $data) : string
     {
         return Security\Injection::encode($data);
     }
@@ -133,7 +133,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function script(String $data) : String
+    public static function script(string $data) : string
     {
         return Security\Script::encode($data);
     }
@@ -145,7 +145,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function php(String $data) : String
+    public static function php(string $data) : string
     {
         return Security\PHP::encode($data);
     }
@@ -157,7 +157,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function required(String $data) : Bool
+    public static function required(string $data) : bool
     {
         return $data !== '';
     }
@@ -169,7 +169,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function answer(String $data) : Bool
+    public static function answer(string $data) : bool
     {
         if( empty($data) )
         {
@@ -186,7 +186,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    public static function question(Array $questions = [])
+    public static function question(array $questions = [])
     {
         if( empty($questions) )
         {
@@ -211,7 +211,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function captcha(String $data) : Bool
+    public static function captcha(string $data) : bool
     {
         if( empty($data) )
         {
@@ -229,7 +229,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function matchPassword(String $data, String $check) : Bool
+    public static function matchPassword(string $data, string $check) : bool
     {
         return self::match($data, $check);
     }
@@ -242,7 +242,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function match(String $data, String $check) : Bool
+    public static function match(string $data, string $check) : bool
     {
         return $data === $check;
     }
@@ -255,7 +255,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function pattern(String $data, String $check) : Bool
+    public static function pattern(string $data, string $check) : bool
     {
         return preg_match($check, $data);
     }
@@ -269,7 +269,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function between(Float $value, Float $min, Float $max) : Bool
+    public static function between(Float $value, Float $min, Float $max) : bool
     {
         return self::betweenBoth($value, $min, $max, 'noboth');
     }
@@ -283,7 +283,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function betweenBoth(Float $value, Float $min, Float $max, $type = 'both') : Bool
+    public static function betweenBoth(Float $value, Float $min, Float $max, $type = 'both') : bool
     {
         if( $min > $max )
         {
@@ -308,7 +308,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function phone(String $data, String $pattern = NULL) : Bool
+    public static function phone(string $data, string $pattern = NULL) : bool
     {
         if( $pattern !== NULL)
         {
@@ -330,7 +330,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function numeric($data) : Bool
+    public static function numeric($data) : bool
     {
         return is_numeric($data);
     }
@@ -342,7 +342,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function alnum(String $data) : Bool
+    public static function alnum(string $data) : bool
     {
         return (bool) preg_match('/^\w+$/', $data);
     }
@@ -354,7 +354,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function alpha(String $data) : Bool
+    public static function alpha(string $data) : bool
     {
         return ctype_alpha($data);
     }
@@ -366,7 +366,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function identity($no) : Bool
+    public static function identity($no) : bool
     {
         if( ! is_numeric($no) || strlen($no) !== 11  )
         {
@@ -407,7 +407,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function email(String $data) : Bool
+    public static function email(string $data) : bool
     {
         return IS::email($data);
     }
@@ -419,7 +419,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function url(String $data) : Bool
+    public static function url(string $data) : bool
     {
         return IS::url($data);
     }
@@ -431,7 +431,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function specialChar(String $data) : Bool
+    public static function specialChar(string $data) : bool
     {
         return (bool) preg_match('/[\W]+/', $data);
     }
@@ -444,7 +444,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function maxchar(String $data, Int $char) : Bool
+    public static function maxchar(string $data, int $char) : bool
     {
         return ( strlen($data) <= $char );
     }
@@ -457,7 +457,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function minchar(String $data, Int $char) : Bool
+    public static function minchar(string $data, int $char) : bool
     {
         return ( strlen($data) >= $char );
     }

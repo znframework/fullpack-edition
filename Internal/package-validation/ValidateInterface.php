@@ -18,7 +18,7 @@ interface ValidateInterface
      * 
      * @return Validate
      */
-    public function data(String $data) : Validate;
+    public function data(string $data) : Validate;
 
     /**
      * Get result
@@ -27,7 +27,7 @@ interface ValidateInterface
      * 
      * @return bool
      */
-    public function get() : Bool;
+    public function get() : bool;
 
     /**
      * Get status.
@@ -36,5 +36,5 @@ interface ValidateInterface
      * 
      * @return array
      */
-    public function status() : Array;
+    public function status() : array;
 }

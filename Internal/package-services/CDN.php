@@ -33,7 +33,7 @@ class CDN implements CDNInterface
      * 
      * @return array
      */
-    public function links() : Array
+    public function links() : array
     {
         return $this->driver->getLinks();
     }
@@ -46,7 +46,7 @@ class CDN implements CDNInterface
      * 
      * @return string|false
      */
-    public function link(String $key, String $version = 'latest')
+    public function link(string $key, string $version = 'latest')
     {
         return $this->driver->getLink($key, $version);
     }
@@ -70,7 +70,7 @@ class CDN implements CDNInterface
      * 
      * @return $this
      */
-    public function setJsonFile(String $jsonFile) : CDN
+    public function setJsonFile(string $jsonFile) : CDN
     {
         $this->driver->setJsonFile($jsonFile);
 
@@ -85,7 +85,7 @@ class CDN implements CDNInterface
      * 
      * @return string
      */
-    public static function get(String $configName, String $name) : String
+    public static function get(string $configName, string $name) : string
     {
         $config = Config::default('ZN\Services\CDNDefaultConfiguration')
                         ::get('CDNLinks');
@@ -117,7 +117,7 @@ class CDN implements CDNInterface
      * 
      * @return string
      */
-    public static function image(String $name) : String
+    public static function image(string $name) : string
     {
         return self::get('images', $name);
     }
@@ -129,7 +129,7 @@ class CDN implements CDNInterface
      * 
      * @return string
      */
-    public static function style(String $name) : String
+    public static function style(string $name) : string
     {
         return self::get('styles', $name);
     }
@@ -141,7 +141,7 @@ class CDN implements CDNInterface
      * 
      * @return string
      */
-    public static function script(String $name) : String
+    public static function script(string $name) : string
     {
         return self::get('scripts', $name);
     }
@@ -153,7 +153,7 @@ class CDN implements CDNInterface
      * 
      * @return string
      */
-    public static function font(String $name) : String
+    public static function font(string $name) : string
     {
         return self::get('fonts', $name);
     }
@@ -165,7 +165,7 @@ class CDN implements CDNInterface
      * 
      * @return string
      */
-    public static function file(String $name) : String
+    public static function file(string $name) : string
     {
         return self::get('files', $name);
     }

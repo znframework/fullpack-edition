@@ -18,7 +18,7 @@ class Delete extends CartExtends
      * 
      * @return bool
      */
-    public function item($code) : Bool
+    public function item($code) : bool
     {
         if( empty(Properties::$items) )
         {
@@ -57,7 +57,7 @@ class Delete extends CartExtends
      * 
      * @return bool
      */
-    public function items() : Bool
+    public function items() : bool
     {
         Properties::$items = [];
         

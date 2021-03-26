@@ -101,7 +101,7 @@ class ZN
      * 
      * @return void|false
      */
-    public static function run(String $type = NULL, String $version = NULL, String $dedicate = NULL)
+    public static function run(string $type = NULL, string $version = NULL, string $dedicate = NULL)
     {
         # PHP shows code errors.
         ini_set('display_errors', true); error_reporting(1);
@@ -287,7 +287,7 @@ class ZN
      * 
      * @return self
      */
-    public static function defines(Array $defines)
+    public static function defines(array $defines)
     {
         self::$defines = $defines;
 
@@ -489,7 +489,7 @@ class ZN
      * 
      * @return string
      */
-    protected static function getProjectContainerDir($path = NULL) : String
+    protected static function getProjectContainerDir($path = NULL) : string
     {
         # Container projects are being called.
         $containers = PROJECTS_CONFIG['containers'] ?? [];
@@ -563,7 +563,7 @@ class ZN
      * 
      * @return string
      */
-    protected static function host() : String
+    protected static function host() : string
     {
         if( isset($_SERVER['HTTP_X_FORWARDED_HOST']) )
         {
@@ -809,7 +809,7 @@ class ZN
     * 
     * @return void
     */
-    protected static function isWritable(String $path)
+    protected static function isWritable(string $path)
     {
         if( is_file($path) && ! is_writable($path) && IS::software() === 'apache' )
         {   

@@ -123,7 +123,7 @@ class Converter
      * 
      * @return float
      */
-    public static function toBytes(String $data) : Float
+    public static function toBytes(string $data) : Float
     {
         $number = substr($data, 0, -2);
 
@@ -149,7 +149,7 @@ class Converter
      * 
      * @return string
      */
-    public static function byte(Float $bytes, Int $precision = 1, Bool $unit = true, String $fix = '') : String
+    public static function byte(Float $bytes, int $precision = 1, bool $unit = true, string $fix = '') : string
     {
         $byte   = 1024;
         $kb     = 1024 * $byte;
@@ -212,7 +212,7 @@ class Converter
      * 
      * @return string
      */
-    public static function money(Float $money = 0, String $type = NULL, Bool $float = true) : String
+    public static function money(Float $money = 0, string $type = NULL, bool $float = true) : string
     {
         $moneyFormat = '';
         $money       = round($money, 2);
@@ -280,7 +280,7 @@ class Converter
      * 
      * @return float
      */
-    public static function time(Int $count, String $type = 'second', String $output = 'day') : Float
+    public static function time(int $count, string $type = 'second', string $output = 'day') : Float
     {
         switch( Base::removeSuffix($output, 's') )
         {
@@ -316,7 +316,7 @@ class Converter
      * 
      * @return string
      */
-    public static function word(String $string, $badWords = NULL, $changeChar = '[badwords]') : String
+    public static function word(string $string, $badWords = NULL, $changeChar = '[badwords]') : string
     {
         return str_ireplace($badWords, $changeChar, $string);
     }
@@ -330,7 +330,7 @@ class Converter
      * 
      * @return string
      */
-    public static function anchor(String $data, String $type = 'short', Array $attributes = NULL) : String
+    public static function anchor(string $data, string $type = 'short', array $attributes = NULL) : string
     {
         return preg_replace
         (
@@ -348,7 +348,7 @@ class Converter
      * 
      * @return string
      */
-    public static function highLight(String $str, Array $settings = []) : String
+    public static function highLight(string $str, array $settings = []) : string
     {
         return Helper::highLight($str, $settings);
     }
@@ -362,7 +362,7 @@ class Converter
      * 
      * @return string
      */
-    public static function char(String $string, String $type = 'char', String $changeType = 'html') : String
+    public static function char(string $string, string $type = 'char', string $changeType = 'html') : string
     {
         $options = ['char', 'html', 'hex', 'dec'];
 
@@ -405,7 +405,7 @@ class Converter
      * 
      * @return string
      */
-    public static function accent(String $str) : String
+    public static function accent(string $str) : string
     {
         $accent = array_merge(Config::get('Expressions', 'accentChars') ?: [], self::$accentChars);
 
@@ -421,7 +421,7 @@ class Converter
      * 
      * @return string
      */
-    public static function urlWord(String $str) : String
+    public static function urlWord(string $str) : string
     {
         return self::slug($str);
     }
@@ -434,7 +434,7 @@ class Converter
      * 
      * @return string
      */
-    public static function slug(String $str, Bool $protectExtension = false) : String
+    public static function slug(string $str, bool $protectExtension = false) : string
     {
         if( $protectExtension === true )
         {
@@ -462,7 +462,7 @@ class Converter
      * @return string
      */
 
-    public static function charset(String $str, String $fromCharset, String $toCharset = 'utf-8') : String
+    public static function charset(string $str, string $fromCharset, string $toCharset = 'utf-8') : string
     {
         return mb_convert_encoding($str, $fromCharset, $toCharset);
     }
@@ -474,7 +474,7 @@ class Converter
      * 
      * @return string
      */
-    public static function toString($var) : String
+    public static function toString($var) : string
     {
         if( is_array($var) || is_object($var) )
         {
@@ -491,7 +491,7 @@ class Converter
      * 
      * @return object
      */
-    public static function toObjectRecursive(Array $var)
+    public static function toObjectRecursive(array $var)
     {
         return new Objects($var);
     }
@@ -503,7 +503,7 @@ class Converter
      * @param string $prefix = NULL
      * @param string $suffix = NULL
      */
-    public static function toConstant(String $var, String $prefix = NULL, String $suffix = NULL)
+    public static function toConstant(string $var, string $prefix = NULL, string $suffix = NULL)
     {
         return Helper::toConstant($var, $prefix, $suffix);
     }

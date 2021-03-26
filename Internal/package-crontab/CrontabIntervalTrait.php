@@ -184,7 +184,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function clock(String $clock = '23:59') : Job
+    public function clock(string $clock = '23:59') : Job
     {
         if( ! preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/', $clock) )
         {
@@ -208,7 +208,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function minute(String $minute) : Job
+    public function minute(string $minute) : Job
     {
         $this->minute = $this->_slashes($minute);
 
@@ -222,7 +222,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function perMinute(String $minute) : Job
+    public function perMinute(string $minute) : Job
     {
         $this->_per($minute, 'minute');
 
@@ -236,7 +236,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function hour(String $hour) : Job
+    public function hour(string $hour) : Job
     {
         $this->hour = $this->_slashes($hour);
 
@@ -250,7 +250,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function perHour(String $hour) : Job
+    public function perHour(string $hour) : Job
     {
         $this->_per($hour, 'hour');
 
@@ -264,7 +264,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function dayNumber(String $dayNumber) : Job
+    public function dayNumber(string $dayNumber) : Job
     {
         $this->dayNumber = $this->_slashes($dayNumber);
 
@@ -278,7 +278,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function month(String $monthNumber) : Job
+    public function month(string $monthNumber) : Job
     {
         $this->_format('monthFormat', __FUNCTION__, $monthNumber );
 
@@ -292,7 +292,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function perMonth(String $month) : Job
+    public function perMonth(string $month) : Job
     {
         $this->_per($month, 'month');
 
@@ -306,7 +306,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function day(String $day) : Job
+    public function day(string $day) : Job
     {
         $this->_format('dayFormat', __FUNCTION__, $day);
 
@@ -320,7 +320,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function perDay(String $day) : Job
+    public function perDay(string $day) : Job
     {
         $this->_per($day, 'day');
 
@@ -334,7 +334,7 @@ trait CrontabIntervalTrait
      * 
      * @return Job
      */
-    public function interval(String $interval = '* * * * *') : Job
+    public function interval(string $interval = '* * * * *') : Job
     {
         $this->interval = $interval;
 

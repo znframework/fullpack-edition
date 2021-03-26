@@ -38,7 +38,7 @@ trait Driver
      * 
      * @return void
      */
-    public function __construct(String $driver = NULL)
+    public function __construct(string $driver = NULL)
     {
         # 5.3.42[added]
         # If the parent has a method of building a class, then that method is introduced.
@@ -96,7 +96,7 @@ trait Driver
      * 
      * @return self
      */
-    public function driver(String $driver) : self
+    public function driver(string $driver) : self
     {
         return new self($driver);
     }

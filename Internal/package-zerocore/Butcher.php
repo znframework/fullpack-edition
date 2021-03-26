@@ -94,7 +94,7 @@ class Butcher
      * 
      * @return $this
      */
-    public function defaultProjectFile(String $path)
+    public function defaultProjectFile(string $path)
     {
         $this->defaultProjectFile = Base::suffix($path, '.zip');
 
@@ -113,7 +113,7 @@ class Butcher
      * 
      * @return $this
      */
-    public function location(String $location)
+    public function location(string $location)
     {
         if( ! in_array($location, ['project', 'external']) )
         {
@@ -132,7 +132,7 @@ class Butcher
      * 
      * @return $this
      */
-    public function application(String $application)
+    public function application(string $application)
     {
         $this->application = $application;
         $this->currentButcheryDirectory = PROJECTS_DIR . $application . '/Butchery/';
@@ -148,7 +148,7 @@ class Butcher
      * @param string $location = 'project' - options[project|external]
      * @param bool   $force    = false     - options[true|false] 
      */
-    public function extract(String $which = 'all', String $case = 'title', String $location = 'project', Bool $force = false)
+    public function extract(string $which = 'all', string $case = 'title', string $location = 'project', bool $force = false)
     {
         $this->openZipFiles(EXTERNAL_BUTCHERY_DIR, true);
 
@@ -183,7 +183,7 @@ class Butcher
      * @param string $case  = 'title' - options[title|lower|slug|normal|{name}]
      * @param string $location = 'project' - options[project|external]
      */
-    public function extractForce(String $which = 'all', String $case = 'title', String $location = 'project')
+    public function extractForce(string $which = 'all', string $case = 'title', string $location = 'project')
     {
         return $this->extract($which, $case, $location, true);
     }
@@ -195,7 +195,7 @@ class Butcher
      * @param string $case  = 'title' - options[title|lower|slug|normal|{name}]
      * @param string $location = 'project' - options[project|external]
      */
-    public function extractDelete(String $which = 'all', String $case = 'title', String $location = 'project')
+    public function extractDelete(string $which = 'all', string $case = 'title', string $location = 'project')
     {
         $this->extractDelete = true;
 
@@ -211,7 +211,7 @@ class Butcher
      * 
      * @return true
      */
-    public function run(String $theme = 'Default', String $location = 'project')
+    public function run(string $theme = 'Default', string $location = 'project')
     {
         if( $location === 'external' )
         {
@@ -282,7 +282,7 @@ class Butcher
      * 
      * @return true
      */
-    public function runDelete(String $theme = 'Default', String $location = 'project')
+    public function runDelete(string $theme = 'Default', string $location = 'project')
     {
         $return = $this->run($theme, $location);
 
@@ -946,7 +946,7 @@ class Initialize extends Controller
      * It enters the circuit before all controllers. 
      * You can change this setting in Config/Starting.php file.
      */
-    public function main(String $params = NULL)
+    public function main(string $params = NULL)
     {
         # The theme is activated.
         # Location: Resources/Themes/'.$this->getThemeDirectoryName().'/

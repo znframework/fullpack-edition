@@ -57,7 +57,7 @@ class Processor implements ProcessorInterface
      * 
      * @return Cache
      */
-    public function data(Array $data = NULL)
+    public function data(array $data = NULL)
     {
         Inclusion\Properties::data($data);
 
@@ -71,7 +71,7 @@ class Processor implements ProcessorInterface
      * 
      * @return Cache
      */
-    public function key(String $key = NULL) : Processor
+    public function key(string $key = NULL) : Processor
     {
         $this->key = $key;
 
@@ -87,7 +87,7 @@ class Processor implements ProcessorInterface
      * 
      * @return string
      */
-    public function code(Callable $function, $time = 60, String $compress = 'gz') : String
+    public function code(callable $function, $time = 60, string $compress = 'gz') : string
     {
         $this->codeCount++;
 
@@ -127,7 +127,7 @@ class Processor implements ProcessorInterface
      * 
      * @return string
      */
-    public function view(String $file, $time = 60, String $compress = 'gz') : String
+    public function view(string $file, $time = 60, string $compress = 'gz') : string
     {
         return $this->file($file, $time, $compress, 'view');
     }
@@ -141,7 +141,7 @@ class Processor implements ProcessorInterface
      * 
      * @return string
      */
-    public function file(String $file, $time = 60, String $compress = 'gz', $type = 'something') : String
+    public function file(string $file, $time = 60, string $compress = 'gz', $type = 'something') : string
     {
         $name = Converter::slug($file);
 
@@ -178,7 +178,7 @@ class Processor implements ProcessorInterface
      * 
      * @return mixed
      */
-    public function select(String $key, $compressed = false)
+    public function select(string $key, $compressed = false)
     {
         return $this->driver->select($key, $compressed);
     }
@@ -193,7 +193,7 @@ class Processor implements ProcessorInterface
      * 
      * @return bool
      */
-    public function insert(String $key, $var, $time = 60, $compressed = false) : Bool
+    public function insert(string $key, $var, $time = 60, $compressed = false) : bool
     {
         if( ! preg_match('/(?<count>[0-9]+)\s*(?<type>second|minute|hour|day|week|month|year)*s*/', $time, $match) )
         {
@@ -212,7 +212,7 @@ class Processor implements ProcessorInterface
      * 
      * @return bool
      */
-    public function delete(String $key) : Bool
+    public function delete(string $key) : bool
     {
         return $this->driver->delete($key);
     }
@@ -225,7 +225,7 @@ class Processor implements ProcessorInterface
      * 
      * @return int
      */
-    public function increment(String $key, Int $increment = 1) : Int
+    public function increment(string $key, int $increment = 1) : int
     {
         return $this->driver->increment($key, $increment);
     }
@@ -238,7 +238,7 @@ class Processor implements ProcessorInterface
      * 
      * @return int
      */
-    public function decrement(String $key, Int $decrement = 1) : Int
+    public function decrement(string $key, int $decrement = 1) : int
     {
         return $this->driver->decrement($key, $decrement);
     }
@@ -250,7 +250,7 @@ class Processor implements ProcessorInterface
      * 
      * @return bool
      */
-    public function clean() : Bool
+    public function clean() : bool
     {
         return $this->driver->clean();
     }
@@ -262,7 +262,7 @@ class Processor implements ProcessorInterface
      * 
      * @return array
      */
-    public function info($type = NULL) : Array
+    public function info($type = NULL) : array
     {
         return $this->driver->info($type);
     }

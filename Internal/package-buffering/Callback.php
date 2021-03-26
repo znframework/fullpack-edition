@@ -21,7 +21,7 @@ class Callback
      * 
      * @return mixed
      */
-    public static function code(String $randomBufferClassCallbackCode, Array $randomBufferClassCallbackData = NULL)
+    public static function code(string $randomBufferClassCallbackCode, array $randomBufferClassCallbackData = NULL)
     {
         return Buffering::code($randomBufferClassCallbackCode, $randomBufferClassCallbackData);
     }
@@ -34,7 +34,7 @@ class Callback
      * 
      * @return mixed
      */
-    public static function do(Callable $func, Array $params = [])
+    public static function do(callable $func, array $params = [])
     {
         ob_start();
 

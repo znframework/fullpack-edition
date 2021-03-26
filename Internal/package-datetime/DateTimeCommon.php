@@ -106,7 +106,7 @@ class DateTimeCommon
      * 
      * @return this
      */
-    public function zone(String $timezone)
+    public function zone(string $timezone)
     {
         # Sets the timezone.
         if( IS::timeZone($timezone) )
@@ -128,7 +128,7 @@ class DateTimeCommon
      * 
      * @return bool
      */
-    public function compare(String $value1, String $condition, String $value2) : Bool
+    public function compare(string $value1, string $condition, string $value2) : bool
     {
         $value1 = $this->toNumeric($value1);
         $value2 = $this->toNumeric($value2);
@@ -144,7 +144,7 @@ class DateTimeCommon
      * 
      * @return int
      */
-    public function toNumeric(String $dateFormat, Int $now = NULL) : Int
+    public function toNumeric(string $dateFormat, int $now = NULL) : int
     {
         if( $now === NULL )
         {
@@ -162,7 +162,7 @@ class DateTimeCommon
      * 
      * @return string
      */
-    public function toReadable(Int $time, String $dateFormat = 'Y-m-d H:i:s') : String
+    public function toReadable(int $time, string $dateFormat = 'Y-m-d H:i:s') : string
     {
         return $this->_datetime($dateFormat, $time);
     }
@@ -176,7 +176,7 @@ class DateTimeCommon
      * 
      * @return string
      */
-    public function calculate(String $input, String $calculate, String $output = 'Y-m-d') : String
+    public function calculate(string $input, string $calculate, string $output = 'Y-m-d') : string
     {
         if( ! preg_match('/^[0-9]/', $input) )
         {
@@ -201,7 +201,7 @@ class DateTimeCommon
      * 
      * @return string
      */
-    public function set(String $exp) : String
+    public function set(string $exp) : string
     {
         return $this->_datetime($exp);
     }
@@ -258,7 +258,7 @@ class DateTimeCommon
     /**
      * Protected add day
      */
-    protected function add(String $datetime = NULL, Int $count = 1, $type = 'day', $signal = '+') : String
+    protected function add(string $datetime = NULL, int $count = 1, $type = 'day', $signal = '+') : string
     {
         if( ! $this->check((string) $datetime) && is_numeric($datetime) && $count = 1 )
         {
@@ -272,7 +272,7 @@ class DateTimeCommon
     /**
      * Protected remove day
      */
-    protected function remove(String $datetime = NULL, Int $count = 1, $type = 'day') : String
+    protected function remove(string $datetime = NULL, int $count = 1, $type = 'day') : string
     {
         return $this->add($datetime, $count, $type, '-');
     }

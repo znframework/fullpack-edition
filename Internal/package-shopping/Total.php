@@ -18,7 +18,7 @@ class Total extends CartExtends
      * 
      * @return int
      */
-    public function items() : Int
+    public function items() : int
     {
         $totalItems = 0;
 

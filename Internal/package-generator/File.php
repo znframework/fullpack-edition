@@ -29,7 +29,7 @@ class File
      * 
      * @return Generate
      */
-    public function settings(Array $settings) : Generate
+    public function settings(array $settings) : Generate
     {
         $this->settings = $settings;
 
@@ -45,7 +45,7 @@ class File
      * 
      * @return bool
      */
-    public function delete(String $name, String $type = 'controller', String $app = NULL) : Bool
+    public function delete(string $name, string $type = 'controller', string $app = NULL) : bool
     {
         if( ! empty($app) )
         {
@@ -71,7 +71,7 @@ class File
      * 
      * @return bool
      */
-    public function object(String $type, String $name, Array $settings) : Bool
+    public function object(string $type, string $name, array $settings) : bool
     {
         if( ! empty($settings) )
         {
@@ -156,7 +156,7 @@ class File
      * 
      * @return bool
      */
-    protected function write($name, $type, $controller) : Bool
+    protected function write($name, $type, $controller) : bool
     {
         if( ! empty($name) )
         {
@@ -189,7 +189,7 @@ class File
      * @param string & $controller
      * @param string   $namespace = NULL
      */
-    protected function alias(String & $controller, String $namespace = NULL)
+    protected function alias(String & $controller, string $namespace = NULL)
     {
         if( ! empty($this->settings['alias']) )
         {

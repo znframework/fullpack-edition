@@ -46,7 +46,7 @@ class Autoloader
      * 
      * @return void
      */
-    public static function run(String $class)
+    public static function run(string $class)
     {
         # Automatically loads internal facade class.
         if( self::facade($class) !== false )
@@ -91,7 +91,7 @@ class Autoloader
      * 
      * @return bool
      */
-    public static function facade(String $class)
+    public static function facade(string $class)
     {
         # The namespace of the invoked class is converted to path information.
         $path = str_replace('\\', '/', $class) . '.php';
@@ -182,7 +182,7 @@ class Autoloader
      * 
      * @return array
      */
-    public static function getClassFileInfo(String $class) : Array
+    public static function getClassFileInfo(string $class) : array
     {
         $classCaseLower = strtolower($class);
         $classMap       = self::getClassMapContent();
@@ -230,7 +230,7 @@ class Autoloader
      * 
      * @return array
      */
-    public static function tokenClassFileInfo(String $fileName) : Array
+    public static function tokenClassFileInfo(string $fileName) : array
     {
         $classInfo = [];
 
@@ -295,7 +295,7 @@ class Autoloader
      * 
      * @return mixed
      */
-    public static function tokenFileInfo(String $fileName, Int $type = T_FUNCTION)
+    public static function tokenFileInfo(string $fileName, int $type = T_FUNCTION)
     {
         if( ! is_file($fileName) )
         {

@@ -107,7 +107,7 @@ class Sender implements SenderInterface
     /**
      * Protected Lang
      */
-    protected function getLang(String $type, String $changes = NULL) : String
+    protected function getLang(string $type, string $changes = NULL) : string
     {
         return str_replace('%', $changes, $this->getLang[$type]);
     }
@@ -119,7 +119,7 @@ class Sender implements SenderInterface
      * 
      * @param return Sender
      */
-    public function settings(Array $settings = NULL) : Sender
+    public function settings(array $settings = NULL) : Sender
     {
         $this->getLang = Lang::default('ZN\Email\EmailDefaultLanguage')
                              ::select('Services');
@@ -150,7 +150,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function contentType(String $type = 'plain') : Sender
+    public function contentType(string $type = 'plain') : Sender
     {
         $this->contentType = $type === 'plain'
                              ? 'plain'
@@ -165,7 +165,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function charset(String $charset = 'UTF-8') : Sender
+    public function charset(string $charset = 'UTF-8') : Sender
     {
         if( IS::charset($charset) )
         {
@@ -186,7 +186,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function priority(Int $count = 3) : Sender
+    public function priority(int $count = 3) : Sender
     {
         $this->priority = preg_match('/^[1-5]$/', $count)
                         ? (int)$count
@@ -203,7 +203,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function addHeader(String $header, String $value) : Sender
+    public function addHeader(string $header, string $value) : Sender
     {
         $this->headers[$header] = str_replace(["\n", "\r"], '', $value);
 
@@ -217,7 +217,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function encodingType(String $type = '8bit') : Sender
+    public function encodingType(string $type = '8bit') : Sender
     {
         $this->encodingType = $type;
 
@@ -231,7 +231,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function multiPart(String $multiPart = 'related') : Sender
+    public function multiPart(string $multiPart = 'related') : Sender
     {
         $this->multiPart = $multiPart;
 
@@ -245,7 +245,7 @@ class Sender implements SenderInterface
      * 
      * @return Snder
      */
-    public function smtpHost(String $host) : Sender
+    public function smtpHost(string $host) : Sender
     {
         $this->smtpHost = $host;
 
@@ -259,7 +259,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function smtpUser(String $user) : Sender
+    public function smtpUser(string $user) : Sender
     {
         $this->smtpUser = $user;
 
@@ -273,7 +273,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function smtpDsn(Bool $dsn = true) : Sender
+    public function smtpDsn(bool $dsn = true) : Sender
     {
         $this->smtpDsn = $dsn;
 
@@ -287,7 +287,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function smtpPassword(String $pass) : Sender
+    public function smtpPassword(string $pass) : Sender
     {
         $this->smtpPassword = $pass;
 
@@ -301,7 +301,7 @@ class Sender implements SenderInterface
      * 
      * @param Sender
      */
-    public function smtpPort(Int $port = 587) : Sender
+    public function smtpPort(int $port = 587) : Sender
     {
         $this->smtpPort = $port;
 
@@ -315,7 +315,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function smtpTimeout(Int $timeout = 10) : Sender
+    public function smtpTimeout(int $timeout = 10) : Sender
     {
         $this->smtpTimeout = $timeout;
 
@@ -329,7 +329,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function smtpKeepAlive(Bool $keepAlive = true) : Sender
+    public function smtpKeepAlive(bool $keepAlive = true) : Sender
     {
         $this->smtpKeepAlive = $keepAlive;
 
@@ -343,7 +343,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function smtpEncode(String $encode) : Sender
+    public function smtpEncode(string $encode) : Sender
     {
         $this->smtpEncode = $encode;
 
@@ -358,7 +358,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function to($to, String $name = NULL) : Sender
+    public function to($to, string $name = NULL) : Sender
     {
         $this->toEmail($to, $name, 'to');
 
@@ -373,7 +373,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function receiver($to, String $name = NULL) : Sender
+    public function receiver($to, string $name = NULL) : Sender
     {
         $this->to($to, $name);
 
@@ -388,7 +388,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function replyTo($replyTo, String $name = NULL) : Sender
+    public function replyTo($replyTo, string $name = NULL) : Sender
     {
         $this->toEmail($replyTo, $name, 'replyTo');
 
@@ -403,7 +403,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function cc($cc, String $name = NULL) : Sender
+    public function cc($cc, string $name = NULL) : Sender
     {
         $this->toEmail($cc, $name, 'cc');
 
@@ -418,7 +418,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function bcc($bcc, String $name = NULL) : Sender
+    public function bcc($bcc, string $name = NULL) : Sender
     {
         $this->toEmail($bcc, $name, 'bcc');
 
@@ -434,7 +434,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function from(String $from, String $name = NULL, String $returnPath = NULL) : Sender
+    public function from(string $from, string $name = NULL, string $returnPath = NULL) : Sender
     {
         if( ! IS::email($from) )
         {
@@ -459,7 +459,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function sender(String $from, String $name = NULL, String $returnPath = NULL) : Sender
+    public function sender(string $from, string $name = NULL, string $returnPath = NULL) : Sender
     {
         $this->from($from, $name, $returnPath);
 
@@ -473,7 +473,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function subject(String $subject) : Sender
+    public function subject(string $subject) : Sender
     {
         $this->subject = $subject;
         $this->addHeader('Subject', $this->subject);
@@ -490,7 +490,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function template(String $table, $column, Array $data = []) : Sender
+    public function template(string $table, $column, array $data = []) : Sender
     {
         if( is_array($column) && ($content = Inclusion\Template::use($table, $column, true)) )
         {
@@ -536,7 +536,7 @@ class Sender implements SenderInterface
      * 
      * @return string
      */
-    public function templateMatch(String $content, Array $data) : String
+    public function templateMatch(string $content, array $data) : string
     {
         $newData = array();
         
@@ -555,7 +555,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function message(String $message) : Sender
+    public function message(string $message) : Sender
     {
         $this->message = $message;
 
@@ -569,7 +569,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function content(String $message) : Sender
+    public function content(string $message) : Sender
     {
         $this->message($message);
 
@@ -586,7 +586,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function attachment(String $file, String $disposition = NULL, String $newName = NULL, $mime = NULL) : Sender
+    public function attachment(string $file, string $disposition = NULL, string $newName = NULL, $mime = NULL) : Sender
     {
         if( $newName === NULL )
         {
@@ -662,7 +662,7 @@ class Sender implements SenderInterface
      * 
      * @return mixed
      */
-    public function attachmentContentId(String $filename)
+    public function attachmentContentId(string $filename)
     {
         if( $this->multiPart !== 'related' )
         {
@@ -692,7 +692,7 @@ class Sender implements SenderInterface
      * 
      * @return bool
      */
-    public function send(String $subject = NULL, String $message = NULL) : Bool
+    public function send(string $subject = NULL, string $message = NULL) : bool
     {
         if( ! isset($this->headers['From']) )
         {

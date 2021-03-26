@@ -36,7 +36,7 @@ class Crypto implements CryptoInterface
      * 
      * @return string
      */
-    public function encrypt(String $data, $settings = []) : String
+    public function encrypt(string $data, $settings = []) : string
     {
         return $this->driver->encrypt($data, $settings);
     }
@@ -49,7 +49,7 @@ class Crypto implements CryptoInterface
      * 
      * @return string
      */
-    public function decrypt(String $data, $settings = []) : String
+    public function decrypt(string $data, $settings = []) : string
     {
         return $this->driver->decrypt($data, $settings);
     }
@@ -61,7 +61,7 @@ class Crypto implements CryptoInterface
      * 
      * @return string
      */
-    public function keygen(Int $length = 8) : String
+    public function keygen(int $length = 8) : string
     {
         return $this->driver->keygen($length);
     }

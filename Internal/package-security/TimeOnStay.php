@@ -16,7 +16,7 @@ class TimeOnStay
      * 
      * @param string $name = 'timeOnStay'
      */
-    public static function create(String $name = 'timeOnStay')
+    public static function create(string $name = 'timeOnStay')
     {
         $_SESSION[$name] = time();
     }
@@ -29,7 +29,7 @@ class TimeOnStay
      * 
      * @return bool
      */
-    public static function valid(Int $time = 5, String $name = 'timeOnStay') : Bool
+    public static function valid(int $time = 5, string $name = 'timeOnStay') : bool
     {
         if( empty($_SESSION[$name]) )
         {

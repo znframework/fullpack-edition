@@ -37,7 +37,7 @@ class Separator extends StoreAbstract implements StoreInterface
      * 
      * @return string
      */
-    public static function encode($data, String $key = NULL, String $separator = NULL) : String
+    public static function encode($data, string $key = NULL, string $separator = NULL) : string
     {
         if( ! is_scalar($data) )
         {
@@ -65,7 +65,7 @@ class Separator extends StoreAbstract implements StoreInterface
      * 
      * @return object
      */
-    public static function decode(String $data, String $key = NULL, String $separator = NULL) : stdClass
+    public static function decode(string $data, string $key = NULL, string $separator = NULL) : stdClass
     {
         $key       = $key       ?: self::$key;
         $separator = $separator ?: self::$separator;
@@ -96,7 +96,7 @@ class Separator extends StoreAbstract implements StoreInterface
      * 
      * @return object
      */
-    public static function decodeObject(String $data, String $key = NULL, String $separator = NULL) : stdClass
+    public static function decodeObject(string $data, string $key = NULL, string $separator = NULL) : stdClass
     {
         return self::decode($data, $key, $separator);
     }
@@ -110,7 +110,7 @@ class Separator extends StoreAbstract implements StoreInterface
      * 
      * @return array
      */
-    public static function decodeArray(String $data, String $key = NULL, String $separator = NULL) : Array
+    public static function decodeArray(string $data, string $key = NULL, string $separator = NULL) : array
     {
         return (array) self::decode($data, $key, $separator);
     }

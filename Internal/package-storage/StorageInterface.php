@@ -33,7 +33,7 @@ interface StorageInterface
      * 
      * @return $this
      */
-    public function encode(String $name, String $value);
+    public function encode(string $name, string $value);
     
     /**
      * Decode only session key
@@ -42,7 +42,7 @@ interface StorageInterface
      * 
      * @return $this
      */
-    public function decode(String $hash);
+    public function decode(string $hash);
     
     /**
      * Regenerate status
@@ -51,7 +51,7 @@ interface StorageInterface
      * 
      * @return $this
      */
-    public function regenerate(Bool $regenerate);
+    public function regenerate(bool $regenerate);
 
     /**
      * Insert session
@@ -61,7 +61,7 @@ interface StorageInterface
      * 
      * @return bool
      */
-    public function insert(String $name, $value) : Bool;
+    public function insert(string $name, $value) : bool;
 
     /**
      * Select session
@@ -70,7 +70,7 @@ interface StorageInterface
      * 
      * @return mixed
      */
-    public function select(String $name);
+    public function select(string $name);
 
     /**
      * Delete session
@@ -79,7 +79,7 @@ interface StorageInterface
      * 
      * @return bool
      */
-    public function delete(String $name) : Bool;
+    public function delete(string $name) : bool;
 
     /**
      * Select all session
@@ -88,7 +88,7 @@ interface StorageInterface
      * 
      * @return array
      */
-    public function selectAll() : Array;
+    public function selectAll() : array;
 
     /**
      * Delete all session
@@ -97,7 +97,7 @@ interface StorageInterface
      * 
      * @return void
      */
-    public function deleteAll() : Bool;
+    public function deleteAll() : bool;
 
     /**
      * Session start

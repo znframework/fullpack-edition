@@ -53,7 +53,7 @@ class Table extends HtmlHelpersAbstract
      * 
      * @return Table
      */
-    public function attr(Array $attributes) : Table
+    public function attr(array $attributes) : Table
     {
         foreach( $attributes as $att => $val )
         {
@@ -71,7 +71,7 @@ class Table extends HtmlHelpersAbstract
      * 
      * @return Table
      */
-    public function cell(Int $spacing, Int $padding) : Table
+    public function cell(int $spacing, int $padding) : Table
     {
         $this->attr['cellspacing'] = $spacing;
         $this->attr['cellpadding'] = $padding;
@@ -87,7 +87,7 @@ class Table extends HtmlHelpersAbstract
      * 
      * @return Table
      */
-    public function border(Int $border, String $color = NULL) : Table
+    public function border(int $border, string $color = NULL) : Table
     {
         $this->attr['border'] = $border;
 
@@ -107,7 +107,7 @@ class Table extends HtmlHelpersAbstract
      * 
      * @return Table
      */
-    public function size(Int $width, Int $height) : Table
+    public function size(int $width, int $height) : Table
     {
         $this->attr['width']  = $width;
         $this->attr['height'] = $height;
@@ -122,7 +122,7 @@ class Table extends HtmlHelpersAbstract
      * 
      * @return Table
      */
-    public function style(Array $attributes) : Table
+    public function style(array $attributes) : Table
     {
         $attribute = '';
 
@@ -148,7 +148,7 @@ class Table extends HtmlHelpersAbstract
      * 
      * @return string
      */
-    public function create(...$elements) : String
+    public function create(...$elements) : string
     {
         $table  = '<table'.$this->html->attributes($this->attr).'>';
         $table .= $this->_content(...$elements);

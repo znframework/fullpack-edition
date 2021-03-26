@@ -20,7 +20,7 @@ class Insert extends MLExtends
      * 
      * @return bool
      */
-    public function do(String $app, $key, String $data = NULL) : Bool
+    public function do(string $app, $key, string $data = NULL) : bool
     {
         $datas = [];
 

@@ -23,7 +23,7 @@ class View
      * 
      * @return mixed
      */
-    public static function get(String $file = NULL, $usable = false)
+    public static function get(string $file = NULL, $usable = false)
     {
         return Inclusion\View::use($file, [], $usable);
     }

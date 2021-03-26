@@ -140,7 +140,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function insert($data = NULL) : Bool
+    public function insert($data = NULL) : bool
     {
         $this->postGetExpression($table, $data);
 
@@ -154,7 +154,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function insertCSV(String $file) : Bool
+    public function insertCSV(string $file) : bool
     {
         return $this->connect->insertCSV($this->grandTable, $file);
     }
@@ -166,7 +166,7 @@ class GrandModel
      * 
      * @return int
      */
-    public function insertID() : Int
+    public function insertID() : int
     {
         return $this->connect->insertID();
     }
@@ -179,7 +179,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function isExists(String $column, String $value) : Bool
+    public function isExists(string $column, string $value) : bool
     {
         return $this->connect->isExists($this->grandTable, $column, $value);
     }
@@ -193,7 +193,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function update($data = NULL, String $column = NULL, String $value = NULL) : Bool
+    public function update($data = NULL, string $column = NULL, string $value = NULL) : bool
     {
         $this->postGetExpression($table, $data);
 
@@ -213,7 +213,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function delete(String $column = NULL, String $value = NULL) : Bool
+    public function delete(string $column = NULL, string $value = NULL) : bool
     {
         if( $column !== NULL )
         {
@@ -252,7 +252,7 @@ class GrandModel
      * 
      * @return array
      */
-    public function columns() : Array
+    public function columns() : array
     {
         return $this->returnQuery($this->_get()->columns());
     }
@@ -264,7 +264,7 @@ class GrandModel
      * 
      * @return int
      */
-    public function totalColumns() : Int
+    public function totalColumns() : int
     {
         return $this->returnQuery($this->_get()->totalColumns());
     }
@@ -286,7 +286,7 @@ class GrandModel
      * 
      * @param string $type = 'object' - options[object|array|json]
      */
-    public function result(String $type = 'object')
+    public function result(string $type = 'object')
     {
         return $this->returnQuery($this->_get()->result($type));
     }
@@ -299,7 +299,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function increment($columns, Int $increment = 1) : Bool
+    public function increment($columns, int $increment = 1) : bool
     {
         return $this->returnQuery($this->connect->increment($this->grandTable, $columns, $increment));
     }
@@ -312,7 +312,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function decrement($columns, Int $decrement = 1) : Bool
+    public function decrement($columns, int $decrement = 1) : bool
     {
         return $this->returnQuery($this->connect->decrement($this->grandTable, $columns, $decrement));
     }
@@ -324,7 +324,7 @@ class GrandModel
      * 
      * @return mixed
      */
-    public function status(String $type = 'row')
+    public function status(string $type = 'row')
     {
         return $this->returnQuery($this->connect->status($this->grandTable)->$type());
     }
@@ -336,7 +336,7 @@ class GrandModel
      * 
      * @return int
      */
-    public function totalRows(Bool $status = false) : Int
+    public function totalRows(bool $status = false) : int
     {
         return $this->returnQuery($this->getCurrent()->totalRows($status));
     }
@@ -350,7 +350,7 @@ class GrandModel
      * 
      * @return mixed
      */
-    public function pagination(String $url = NULL, Array $settings = [], Bool $output = true)
+    public function pagination(string $url = NULL, array $settings = [], bool $output = true)
     {
         return $this->getCurrent()->pagination($url, $settings, $output);
     }
@@ -363,7 +363,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function create($data = NULL, $extra = NULL) : Bool
+    public function create($data = NULL, $extra = NULL) : bool
     {
         $this->status = 'create';
 
@@ -385,7 +385,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function truncate() : Bool
+    public function truncate() : bool
     {
         return $this->returnQuery($this->connectForge->truncate($this->grandTable), 'forge');
     }
@@ -397,7 +397,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function add() : Bool
+    public function add() : bool
     {
         $columns = $this->options;
 
@@ -413,7 +413,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function drop() : Bool
+    public function drop() : bool
     {
         $columns = $this->options;
 
@@ -429,7 +429,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function modify() : Bool
+    public function modify() : bool
     {
         $columns = $this->options;
 
@@ -445,7 +445,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function rename() : Bool
+    public function rename() : bool
     {
         $columns = $this->options;
 
@@ -461,7 +461,7 @@ class GrandModel
      * 
      * @return string
      */
-    public function optimize() : String
+    public function optimize() : string
     {
         return $this->returnQuery($this->connectTool->optimizeTables($this->grandTable), 'tool');
     }
@@ -473,7 +473,7 @@ class GrandModel
      * 
      * @return string
      */
-    public function repair() : String
+    public function repair() : string
     {
         return $this->returnQuery($this->connectTool->repairTables($this->grandTable), 'tool');
     }
@@ -486,7 +486,7 @@ class GrandModel
      * 
      * @return string
      */
-    public function backup(String $fileName = NULL, String $path = STORAGE_DIR) : String
+    public function backup(string $fileName = NULL, string $path = STORAGE_DIR) : string
     {
         return $this->returnQuery($this->connectTool->backup($this->grandTable, $fileName, $path), 'tool');
     }

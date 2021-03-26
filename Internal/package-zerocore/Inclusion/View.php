@@ -34,7 +34,7 @@ class View
      * 
      * @return mixed
      */
-    public static function container(String $page, Array $data = NULL, Bool $obGetContents = false)
+    public static function container(string $page, array $data = NULL, bool $obGetContents = false)
     {
         return self::use($page, $data, $obGetContents, CONTAINER_PROJECT_DIR . 'Views/');
     }
@@ -48,7 +48,7 @@ class View
      * 
      * @return mixed
      */
-    public static function use(String $page, Array $data = NULL, Bool $obGetContents = false, String $randomPageDir = VIEWS_DIR)
+    public static function use(string $page, array $data = NULL, bool $obGetContents = false, string $randomPageDir = VIEWS_DIR)
     {
         # If the view starts with / symbol, it refers to pulling a file from 
         # the view directory linked to the corresponding controller.

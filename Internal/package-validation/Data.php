@@ -83,7 +83,7 @@ class Data implements DataInterface
      * 
      * @return void
      */
-    public function rules(String $name, Array $config = [], $viewName = '', String $met = 'post')
+    public function rules(string $name, array $config = [], $viewName = '', string $met = 'post')
     {
         if( ! in_array($met, $this->options) )
         {
@@ -144,7 +144,7 @@ class Data implements DataInterface
      * 
      * @param array $settings
      */
-    public function messages(Array $settings)
+    public function messages(array $settings)
     {
         $this->userMessages = $settings;
     }
@@ -156,7 +156,7 @@ class Data implements DataInterface
      * 
      * @return self
      */
-    public function addError(String $error)
+    public function addError(string $error)
     {
         $this->errors[][$this->index] = $error . '<br>'; $this->index++;
     }
@@ -169,7 +169,7 @@ class Data implements DataInterface
      * 
      * @return bool
      */
-    public function check(String $submit = 'all', &$error = NULL) : Bool
+    public function check(string $submit = 'all', &$error = NULL) : bool
     {
         $session = Singleton::class('ZN\Storage\Session');
         
@@ -213,7 +213,7 @@ class Data implements DataInterface
      * 
      * @param string $name = 'array' - options[array|string]
      */
-    public function error(String $name = 'array')
+    public function error(string $name = 'array')
     {
         if( $name === 'string' || $name === 'array' || $name === 'echo' )
         {
@@ -259,7 +259,7 @@ class Data implements DataInterface
      * @param string $name
      * @param string $met = 'post' - options[post|get]
      */
-    public function postBack(String $name, String $met = 'post')
+    public function postBack(string $name, string $met = 'post')
     {
         $method = $this->setMethodType($name, $met);
 
@@ -429,7 +429,7 @@ class Data implements DataInterface
      * 
      * @return void
      */
-    protected function setMultipleRules(String $name, Array $config = [], $viewName = '', String $met = 'post')
+    protected function setMultipleRules(string $name, array $config = [], $viewName = '', string $met = 'post')
     {
         $postNames = [];
         $postKey   = '';

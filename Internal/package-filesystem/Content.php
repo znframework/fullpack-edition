@@ -20,7 +20,7 @@ class Content
      * 
      * @return string
      */
-    public static function read(String $file) : String
+    public static function read(string $file) : string
     {
         return file_get_contents(Info::rpath($file));
     }
@@ -33,7 +33,7 @@ class Content
      * 
      * @return object
      */
-    public static function find(String $file, String $data) : stdClass
+    public static function find(string $file, string $data) : stdClass
     {
         $contents = self::read($file);
         $index    = strpos($contents, $data);
@@ -53,7 +53,7 @@ class Content
      * 
      * @return int
      */
-    public static function write(String $file, String $data) : Int
+    public static function write(string $file, string $data) : int
     {
         return file_put_contents(Info::rpath($file), $data);
     }
@@ -66,7 +66,7 @@ class Content
      * 
      * @return int
      */
-    public static function append(String $file, String $data) : Int
+    public static function append(string $file, string $data) : int
     {
         return file_put_contents(Info::rpath($file), $data, FILE_APPEND);
     }

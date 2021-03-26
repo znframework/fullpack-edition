@@ -28,7 +28,7 @@ class Response
      * 
      * @return bool
      */
-    public function isValidHash() : Bool
+    public function isValidHash() : bool
     {
         $hash   = $_POST['HASHPARAMS'];
         $hashEx = explode(':', $hash);
@@ -50,7 +50,7 @@ class Response
      * 
      * @return bool
      */
-    public function is3D() : Bool
+    public function is3D() : bool
     {
         return in_array($_POST["mdStatus"], ['1','2','3','4']);
     }
@@ -60,7 +60,7 @@ class Response
      * 
      * @return bool
      */
-    public function isApproved() : Bool
+    public function isApproved() : bool
     {
         return empty($_POST["ErrMsg"]) && $_POST["Response"] === 'Approved';
     }

@@ -19,7 +19,7 @@ class Update extends CartExtends
      * 
      * @return bool
      */
-    public function item($code, Array $data) : Bool
+    public function item($code, array $data) : bool
     {
         if( empty(Properties::$items) )
         {

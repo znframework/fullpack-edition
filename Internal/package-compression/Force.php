@@ -37,7 +37,7 @@ class Force implements ForceInterface
      * 
      * @return bool
      */
-    public function extract(String $source, String $target = NULL, String $password = NULL) : Bool
+    public function extract(string $source, string $target = NULL, string $password = NULL) : bool
     {
         if( ! is_file($source) )
         {
@@ -55,7 +55,7 @@ class Force implements ForceInterface
      * 
      * @return bool
      */
-    public function write(String $file, String $data) : Bool
+    public function write(string $file, string $data) : bool
     {
         return $this->driver->write($file, $data);
     }
@@ -67,7 +67,7 @@ class Force implements ForceInterface
      * 
      * @return bool
      */
-    public function read(String $file) : String
+    public function read(string $file) : string
     {
         return $this->driver->read($file);
     }
@@ -79,7 +79,7 @@ class Force implements ForceInterface
      * 
      * @return string
      */
-    public function do(String $data) : String
+    public function do(string $data) : string
     {
         return $this->driver->do($data);
     }
@@ -91,7 +91,7 @@ class Force implements ForceInterface
      * 
      * @return string
      */
-    public function undo(String $data) : String
+    public function undo(string $data) : string
     {
         return $this->driver->undo($data);
     }

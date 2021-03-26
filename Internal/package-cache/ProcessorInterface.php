@@ -27,7 +27,7 @@ interface ProcessorInterface
      * 
      * @return Cache
      */
-    public function data(Array $data = NULL);
+    public function data(array $data = NULL);
 
     /**
      * Set key
@@ -36,7 +36,7 @@ interface ProcessorInterface
      * 
      * @return Cache
      */
-    public function key(String $key = NULL) : Processor;
+    public function key(string $key = NULL) : Processor;
 
     /**
      * Cache code
@@ -47,7 +47,7 @@ interface ProcessorInterface
      * 
      * @return string
      */
-    public function code(Callable $function, $time = 60, String $compress = 'gz') : String;
+    public function code(callable $function, $time = 60, string $compress = 'gz') : string;
 
     /**
      * Cache view
@@ -58,7 +58,7 @@ interface ProcessorInterface
      * 
      * @return string
      */
-    public function view(String $file, $time = 60, String $compress = 'gz') : String;
+    public function view(string $file, $time = 60, string $compress = 'gz') : string;
 
     /**
      * Cache file
@@ -69,7 +69,7 @@ interface ProcessorInterface
      * 
      * @return string
      */
-    public function file(String $file, $time = 60, String $compress = 'gz', $type = 'something') : String;
+    public function file(string $file, $time = 60, string $compress = 'gz', $type = 'something') : string;
 
     /**
      * Select key
@@ -79,7 +79,7 @@ interface ProcessorInterface
      * 
      * @return mixed
      */
-    public function select(String $key, $compressed = false);
+    public function select(string $key, $compressed = false);
 
     /**
      * Insert key
@@ -91,7 +91,7 @@ interface ProcessorInterface
      * 
      * @return bool
      */
-    public function insert(String $key, $var, $time = 60, $compressed = false) : Bool;
+    public function insert(string $key, $var, $time = 60, $compressed = false) : bool;
 
     /**
      * Delete key
@@ -100,7 +100,7 @@ interface ProcessorInterface
      * 
      * @return bool
      */
-    public function delete(String $key) : Bool;
+    public function delete(string $key) : bool;
 
     /**
      * Increment key
@@ -110,7 +110,7 @@ interface ProcessorInterface
      * 
      * @return int
      */
-    public function increment(String $key, Int $increment = 1) : Int;
+    public function increment(string $key, int $increment = 1) : int;
 
     /**
      * Decrement key
@@ -120,7 +120,7 @@ interface ProcessorInterface
      * 
      * @return int
      */
-    public function decrement(String $key, Int $decrement = 1) : Int;
+    public function decrement(string $key, int $decrement = 1) : int;
 
     /**
      * Clean all cache
@@ -129,7 +129,7 @@ interface ProcessorInterface
      * 
      * @return bool
      */
-    public function clean() : Bool;
+    public function clean() : bool;
 
     /**
      * Get info
@@ -138,5 +138,5 @@ interface ProcessorInterface
      * 
      * @return array
      */
-    public function info($info) : Array;
+    public function info($info) : array;
 }

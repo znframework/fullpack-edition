@@ -18,5 +18,5 @@ interface LuhnAlgorithmInterface
      * 
      * @return string
      */
-    public static function check(String $number = NULL);
+    public static function check(string $number = NULL);
 }

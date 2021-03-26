@@ -142,7 +142,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function where($column, String $value = NULL, String $logical = NULL) : DB
+    public function where($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->_wh($column, (string) $value, $logical, __FUNCTION__);
 
@@ -157,7 +157,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereAnd($column, String $value = NULL) : DB
+    public function whereAnd($column, string $value = NULL) : DB
     {
         $this->where($column, $value, 'AND');
 
@@ -172,7 +172,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereOr($column, String $value = NULL) : DB
+    public function whereOr($column, string $value = NULL) : DB
     {
         $this->where($column, $value, 'OR');
 
@@ -187,7 +187,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereEmpty($column, String $logical = NULL) : DB
+    public function whereEmpty($column, string $logical = NULL) : DB
     {
         $group[] = ['exp:' . $column, '""', 'or'];
         $group[] = ['exp:' . $column . ' is', 'null'];
@@ -210,7 +210,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNotEmpty($column, String $logical = NULL) : DB
+    public function whereNotEmpty($column, string $logical = NULL) : DB
     {
         $group[] = ['exp:' . $column . ' !=', '""', 'and'];
         $group[] = ['exp:' . $column . ' is not', 'null'];
@@ -233,7 +233,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNull($column, String $logical = NULL) : DB
+    public function whereNull($column, string $logical = NULL) : DB
     {
         $this->where('exp:' . $column . ' is', 'null', $logical);
 
@@ -248,7 +248,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNotNull($column, String $logical = NULL) : DB
+    public function whereNotNull($column, string $logical = NULL) : DB
     {
         $this->where('exp:' . $column . ' is', 'not null', $logical);
 
@@ -264,7 +264,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNot($column, String $value = NULL, String $logical = NULL) : DB
+    public function whereNot($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' != ', $value, $logical);
 
@@ -280,7 +280,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereJson($column, String $value = NULL, String $logical = NULL) : DB
+    public function whereJson($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->specialDefinedWhere($column, $value, $logical, __FUNCTION__);
 
@@ -296,7 +296,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNotJson($column, String $value = NULL, String $logical = NULL) : DB
+    public function whereNotJson($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->specialDefinedWhere($column, $value, $logical, __FUNCTION__);
 
@@ -314,7 +314,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function whereFullText($column, String $value = NULL, String $type = NULL, String $logical = NULL) : DB
+    public function whereFullText($column, string $value = NULL, string $type = NULL, string $logical = NULL) : DB
     {
         $this->where('exp:' . $this->db->fullText($column, $this->_escapeStringAddNail($value), $type), '', $logical);
 
@@ -331,7 +331,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereBetween($column, String $value1 = NULL, String $value2 = NULL, String $logical = NULL) : DB
+    public function whereBetween($column, string $value1 = NULL, string $value2 = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' between', $this->between($value1, $value2), $logical);
 
@@ -347,7 +347,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereLike($column, String $value = NULL, String $logical = NULL) : DB
+    public function whereLike($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'inside'), $logical);
 
@@ -363,7 +363,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereStartLike($column, String $value = NULL, String $logical = NULL) : DB
+    public function whereStartLike($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'starting'), $logical);
 
@@ -379,7 +379,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereEndLike($column, String $value = NULL, String $logical = NULL) : DB
+    public function whereEndLike($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'ending'), $logical);
 
@@ -395,7 +395,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereIn($column, Array $values = [], String $logical = NULL) : DB
+    public function whereIn($column, array $values = [], string $logical = NULL) : DB
     {
         $this->where($column . ' in', $this->in(...$values), $logical);
 
@@ -411,7 +411,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNotIn($column, Array $values = [], String $logical = NULL) : DB
+    public function whereNotIn($column, array $values = [], string $logical = NULL) : DB
     {
         $this->where($column . ' not in', $this->notIn(...$values), $logical);
 
@@ -427,7 +427,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereInTable($column, String $table, String $logical = NULL) : DB
+    public function whereInTable($column, string $table, string $logical = NULL) : DB
     {
         $this->where($column . ' in', $this->inTable($table), $logical);
 
@@ -443,7 +443,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereInQuery($column, String $table, String $logical = NULL) : DB
+    public function whereInQuery($column, string $table, string $logical = NULL) : DB
     {
         $this->where($column . ' in', $this->inQuery($table), $logical);
 
@@ -487,7 +487,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function having($column, String $value = NULL, String $logical = NULL) : DB
+    public function having($column, string $value = NULL, string $logical = NULL) : DB
     {
         $this->_wh($column, (string) $value, $logical, __FUNCTION__);
 
@@ -502,7 +502,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function caching($time, String $driver = NULL) : DB
+    public function caching($time, string $driver = NULL) : DB
     {
         $this->caching['time']   = $time;
         $this->caching['driver'] = $driver ?? $this->config['cacheDriver'] ?? 'file';
@@ -517,7 +517,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function cleanCaching(String $driver = 'file') : Bool
+    public function cleanCaching(string $driver = 'file') : bool
     {
         return Singleton::class('ZN\Cache\Processor')->driver($this->caching['driver'] ?? $driver)->delete($this->_cacheQuery());
     }
@@ -531,7 +531,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function join(String $table, String $condition, String $type = NULL) : DB
+    public function join(string $table, string $condition, string $type = NULL) : DB
     {
         $tableEx = explode('.', $table);
 
@@ -565,7 +565,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function innerJoin(String $table, String $otherColumn, String $operator = '=') : DB
+    public function innerJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
         $this->_join($table, $otherColumn, $operator, 'INNER');
 
@@ -581,7 +581,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function outerJoin(String $table, String $otherColumn, String $operator = '=') : DB
+    public function outerJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
         $this->_join($table, $otherColumn, $operator, 'FULL OUTER');
 
@@ -597,7 +597,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function leftJoin(String $table, String $otherColumn, String $operator = '=') : DB
+    public function leftJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
         $this->_join($table, $otherColumn, $operator, 'LEFT');
 
@@ -613,7 +613,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function rightJoin(String $table, String $otherColumn, String $operator = '=') : DB
+    public function rightJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
         $this->_join($table, $otherColumn, $operator, 'RIGHT');
 
@@ -642,7 +642,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function orderBy($condition, String $type = NULL) : DB
+    public function orderBy($condition, string $type = NULL) : DB
     {
         if( is_string($condition) )
         {
@@ -667,7 +667,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function orderByField(String $field, Array $values) : DB
+    public function orderByField(string $field, array $values) : DB
     {
         $revalues = [];
 
@@ -697,7 +697,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function limit($start = NULL, Int $limit = 0) : DB
+    public function limit($start = NULL, int $limit = 0) : DB
     {
         if( $start < 0 )
         {
@@ -750,7 +750,7 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    public function get(String $table = NULL, String $return = 'object')
+    public function get(string $table = NULL, string $return = 'object')
     {
         $this->tableName = $table = $this->_p($table, 'table');
      
@@ -836,7 +836,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function escapeString(String $data) : String
+    public function escapeString(string $data) : string
     {
         return $this->db->realEscapeString($data);
     }
@@ -848,7 +848,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function realEscapeString(String $data) : String
+    public function realEscapeString(string $data) : string
     {
         return $this->db->realEscapeString($data);
     }
@@ -860,7 +860,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function getString(String $table = NULL) : String
+    public function getString(string $table = NULL) : string
     {
         return $this->get($table, 'string');
     }
@@ -874,7 +874,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function alias(String $string, String $alias, Bool $brackets = false) : String
+    public function alias(string $string, string $alias, bool $brackets = false) : string
     {
         if( $brackets === true)
         {
@@ -891,7 +891,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function brackets(String $string) : String
+    public function brackets(string $string) : string
     {
         return ' ( '.$string.' ) ';
     }
@@ -1028,7 +1028,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function outFile(String $file) : DB
+    public function outFile(string $file) : DB
     {
         $this->outFile = 'INTO OUTFILE '."'".$file."'".' ';
         return $this;
@@ -1041,7 +1041,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function dumpFile(String $file) : DB
+    public function dumpFile(string $file) : DB
     {
         $this->into = 'INTO DUMPFILE '."'".$file."'".' ';
 
@@ -1055,7 +1055,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function references(String $table, String $column) : String
+    public function references(string $table, string $column) : string
     {
         return $this->db->references($table, $column);
     }
@@ -1070,7 +1070,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function foreignKey($column = NULL, $references = NULL) : String
+    public function foreignKey($column = NULL, $references = NULL) : string
     {
         return $this->db->foreignKey($column, $references);
     }
@@ -1083,7 +1083,7 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    public function characterSet(String $set, Bool $return = false)
+    public function characterSet(string $set, bool $return = false)
     {
         $string = 'CHARACTER SET '.$set.' ';
 
@@ -1105,7 +1105,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function cset(String $set) : String
+    public function cset(string $set) : string
     {
         if( empty($set) )
         {
@@ -1122,7 +1122,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function collate(String $set = NULL) : String
+    public function collate(string $set = NULL) : string
     {
         if( empty($set) )
         {
@@ -1141,7 +1141,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function encoding(String $charset = 'utf8', String $collate = 'utf8_general_ci') : String
+    public function encoding(string $charset = 'utf8', string $collate = 'utf8_general_ci') : string
     {
         $encoding  = $this->cset($charset);
         $encoding .= $this->collate($collate);
@@ -1157,7 +1157,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function into(String $varname1, String $varname2 = NULL) : DB
+    public function into(string $varname1, string $varname2 = NULL) : DB
     {
         $this->into = 'INTO '.$varname1.' ';
 
@@ -1272,7 +1272,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function union(String $table = NULL, $name = 'UNION') : DB
+    public function union(string $table = NULL, $name = 'UNION') : DB
     {
         $this->unionQuery .= $this->get($table, 'string') . $name;
 
@@ -1286,7 +1286,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function unionAll(String $table = NULL) : DB
+    public function unionAll(string $table = NULL) : DB
     {
         $this->union($table, 'UNION ALL');
 
@@ -1315,7 +1315,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function query(String $query, Array $secure = [])
+    public function query(string $query, array $secure = [])
     {
         $secure     = $this->secure ?: $secure; $this->secure     = [];    
         $caching    = $this->caching;           $this->caching    = [];
@@ -1340,7 +1340,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function execQuery(String $query, Array $secure = []) : Bool
+    public function execQuery(string $query, array $secure = []) : bool
     {
         $this->secure = $this->secure ?: $secure;
 
@@ -1355,7 +1355,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function basicQuery(String $query, Array $secure = []) : DB
+    public function basicQuery(string $query, array $secure = []) : DB
     {
         return $this->_query($query, $secure);
     }
@@ -1368,7 +1368,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function transQuery(String $query, Array $secure = []) : DB
+    public function transQuery(string $query, array $secure = []) : DB
     {
         return $this->_query($query, $secure);
     }
@@ -1381,7 +1381,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function multiQuery(String $query, Array $secure = []) : Bool
+    public function multiQuery(string $query, array $secure = []) : bool
     {
         $this->secure = $this->secure ?: $secure;
 
@@ -1434,7 +1434,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function transaction($callback) : Bool
+    public function transaction($callback) : bool
     {
         $this->transStart();
 
@@ -1452,7 +1452,7 @@ class DB extends Connection
      * 
      * @return int
      */
-    public function insertID() : Int
+    public function insertID() : int
     {
         return $this->db->insertId();
     }
@@ -1464,7 +1464,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function status(String $table = NULL) : DB
+    public function status(string $table = NULL) : DB
     {
         $table = Base::presuffix($this->_p($table), "'");
 
@@ -1484,7 +1484,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function increment(String $table = NULL, $columns = [], Int $increment = 1)
+    public function increment(string $table = NULL, $columns = [], int $increment = 1)
     {
         return $this->_incdec($table, $columns, $increment, 'increment');
     }
@@ -1498,7 +1498,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function decrement(String $table = NULL, $columns = [], Int $decrement = 1)
+    public function decrement(string $table = NULL, $columns = [], int $decrement = 1)
     {
         return $this->_incdec($table, $columns, $decrement, 'decrement');
     }
@@ -1511,7 +1511,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function insertCSV(String $table, String $file) : Bool
+    public function insertCSV(string $table, string $file) : bool
     {
         $this->_csv($file);
         
@@ -1531,7 +1531,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function insert(String $table = NULL, Array $datas = [])
+    public function insert(string $table = NULL, array $datas = [])
     {
         $this->_ignoreData($table, $datas);
 
@@ -1627,7 +1627,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function update(String $table = NULL, Array $set = [])
+    public function update(string $table = NULL, array $set = [])
     {
         $this->_ignoreData($table, $set);
 
@@ -1676,7 +1676,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function delete(String $table = NULL)
+    public function delete(string $table = NULL)
     {
         if( empty($this->where) )
         {
@@ -1708,7 +1708,7 @@ class DB extends Connection
      * 
      * @return int
      */
-    public function totalRows(Bool $total = false) : Int
+    public function totalRows(bool $total = false) : int
     {
         if( $total === true )
         {
@@ -1723,7 +1723,7 @@ class DB extends Connection
      * 
      * @return int
      */
-    public function totalColumns() : Int
+    public function totalColumns() : int
     {
         return $this->db->numFields();
     }
@@ -1733,7 +1733,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function columns() : Array
+    public function columns() : array
     {
         return $this->db->columns();
     }
@@ -1745,7 +1745,7 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    public function result(String $type = 'object', $usageRow = false)
+    public function result(string $type = 'object', $usageRow = false)
     {
         $this->_resultCache($type, $results);
 
@@ -1767,7 +1767,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function resultJson() : String
+    public function resultJson() : string
     {
         return $this->result('json');
     }
@@ -1777,7 +1777,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function resultArray() : Array
+    public function resultArray() : array
     {
         return $this->result('array');
     }
@@ -1787,7 +1787,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function fetchArray() : Array
+    public function fetchArray() : array
     {
         return $this->db->fetchArray();
     }
@@ -1797,7 +1797,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function fetchAssoc() : Array
+    public function fetchAssoc() : array
     {
         return $this->db->fetchAssoc();
     }
@@ -1809,7 +1809,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function fetch(String $type = 'assoc') : Array
+    public function fetch(string $type = 'assoc') : array
     {
         if( $type === 'assoc' )
         {
@@ -1832,7 +1832,7 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    public function fetchRow(Bool $printable = false)
+    public function fetchRow(bool $printable = false)
     {
         $row = $this->db->fetchRow();
 
@@ -1881,7 +1881,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function value(String $column = NULL)
+    public function value(string $column = NULL)
     {
         if( preg_match('/[a-z]\w+/i', $column) )
         {
@@ -1896,7 +1896,7 @@ class DB extends Connection
      * 
      * @return int
      */
-    public function affectedRows() : Int
+    public function affectedRows() : int
     {
         return $this->db->affectedRows();
     }
@@ -1908,7 +1908,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function columnData(String $column = NULL)
+    public function columnData(string $column = NULL)
     {
         return $this->db->columnData($column);
     }
@@ -1918,7 +1918,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function tableName() : String
+    public function tableName() : string
     {
         return $this->tableName;
     }
@@ -1932,7 +1932,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function pagination(String $url = NULL, Array $settings = [], Bool $output = true)
+    public function pagination(string $url = NULL, array $settings = [], bool $output = true)
     {
         $pagcon   = Config::get('ViewObjects', 'pagination');
         $getLimit = $this->db->getLimitValues($this->stringQuery());
@@ -1970,7 +1970,7 @@ class DB extends Connection
      * 
      * @param bool
      */
-    public function isExists(String $table, String $column, String $value) : Bool
+    public function isExists(string $table, string $column, string $value) : bool
     {
         return (bool) $this->where($column, $value)->get($table)->totalRows();
     }
@@ -1984,7 +1984,7 @@ class DB extends Connection
      * 
      * @return object
      */
-    public function simpleResult(String $table, String $column = NULL, String $value = NULL, $type = 'result')
+    public function simpleResult(string $table, string $column = NULL, string $value = NULL, $type = 'result')
     {
         if( $column !== NULL && $value !== NULL )
         {
@@ -2003,7 +2003,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function simpleResultArray(String $table, String $column = NULL, String $value = NULL)
+    public function simpleResultArray(string $table, string $column = NULL, string $value = NULL)
     {
         return $this->simpleResult($table, $column, $value, 'resultArray');
     }
@@ -2017,7 +2017,7 @@ class DB extends Connection
      * 
      * @return object
      */
-    public function simpleRow(String $table, String $column = NULL, String $value = NULL)
+    public function simpleRow(string $table, string $column = NULL, string $value = NULL)
     {
         return $this->simpleResult($table, $column, $value, 'row');
     }
@@ -2029,7 +2029,7 @@ class DB extends Connection
      * 
      * @return int
      */
-    public function simpleTotalRows(String $table) : Int
+    public function simpleTotalRows(string $table) : int
     {
         return $this->simpleResult($table, NULL, NULL, 'totalRows');
     }
@@ -2041,7 +2041,7 @@ class DB extends Connection
      * 
      * @return int
      */
-    public function simpleTotalColumns(String $table) : Int
+    public function simpleTotalColumns(string $table) : int
     {
         return $this->simpleResult($table, NULL, NULL, 'totalColumns');
     }
@@ -2053,7 +2053,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function simpleColumns(String $table) : Array
+    public function simpleColumns(string $table) : array
     {
         return $this->simpleResult($table, NULL, NULL, 'columns');
     }
@@ -2066,7 +2066,7 @@ class DB extends Connection
      * 
      * @return stdClass
      */
-    public function simpleColumnData(String $table, String $column = NULL) : \stdClass
+    public function simpleColumnData(string $table, string $column = NULL) : \stdClass
     {
         return $this->get($table)->columnData($column);
     }
@@ -2081,7 +2081,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function simpleUpdate(String $table, Array $data, String $column, String $value)
+    public function simpleUpdate(string $table, array $data, string $column, string $value)
     {
         return $this->where($column, $value)->update($table, $data);
     }
@@ -2095,7 +2095,7 @@ class DB extends Connection
      * 
      * @return bool
      */
-    public function simpleDelete(String $table, String $column, String $value)
+    public function simpleDelete(string $table, string $column, string $value)
     {
         return $this->where($column, $value)->delete($table);
     }
@@ -2109,7 +2109,7 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    public function switchCase(String $switch, Array $conditions = [], Bool $return = false)
+    public function switchCase(string $switch, array $conditions = [], bool $return = false)
     {
         $case  = ' CASE '.$switch;
 
@@ -2159,7 +2159,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function vartype(String $type, Int $len = NULL, Bool $output = true) : String
+    public function vartype(string $type, int $len = NULL, bool $output = true) : string
     {
         return $this->db->variableTypes($type, $len, $output);
     }
@@ -2173,7 +2173,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function property($type, String $col = NULL, Bool $output = true) : String
+    public function property($type, string $col = NULL, bool $output = true) : string
     {
         if( is_array($type) )
         {
@@ -2207,7 +2207,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function defaultValue(String $default = NULL, Bool $type = false) : String
+    public function defaultValue(string $default = NULL, bool $type = false) : string
     {
         if( ! is_numeric($default) )
         {
@@ -2225,7 +2225,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function like(String $value, String $type = 'starting') : String
+    public function like(string $value, string $type = 'starting') : string
     {
         $operator = $this->db->operator(__FUNCTION__);
 
@@ -2257,7 +2257,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function between(String $value1, String $value2) : String
+    public function between(string $value1, string $value2) : string
     {
         return $this->_escapeStringAddNail($value1, true).' AND '.$this->_escapeStringAddNail($value2, true);
     }
@@ -2269,7 +2269,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function notIn(String ...$value) : String
+    public function notIn(String ...$value) : string
     {
         return $this->_in('in', ...$value);
     }
@@ -2281,7 +2281,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function in(String ...$value) : String
+    public function in(String ...$value) : string
     {
         return $this->_in(__FUNCTION__, ...$value);
     }
@@ -2293,7 +2293,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function inTable(String ...$value) : String
+    public function inTable(String ...$value) : string
     {
         return $this->_in(__FUNCTION__, ...$value);
     }
@@ -2305,7 +2305,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function inQuery(String ...$value) : String
+    public function inQuery(String ...$value) : string
     {
         return $this->_in(__FUNCTION__, ...$value);
     }
@@ -2338,7 +2338,7 @@ class DB extends Connection
     /**
      * Protected special defined where
      */
-    protected function specialDefinedWhere($column, String $value = NULL, String $logical = NULL, $type = 'whereJson')
+    protected function specialDefinedWhere($column, string $value = NULL, string $logical = NULL, $type = 'whereJson')
     {
         $this->where('exp:' . $this->db->$type($column, $this->_escapeStringAddNail((string) $value)), '', $logical, 'where');
     }
@@ -2919,7 +2919,7 @@ class DB extends Connection
      * 
      * @return DB 
      */
-    public function _query(String $query, Array $secure = [], $data = NULL)
+    public function _query(string $query, array $secure = [], $data = NULL)
     {
         $this->stringQuery = $query;
         $this->caching     = $data['caching']    ?? [];

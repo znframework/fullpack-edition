@@ -45,7 +45,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @param array $config = []
      */
-    public function __construct(Array $config = [])
+    public function __construct(array $config = [])
     {
         if( ! empty($config) )
         {
@@ -75,7 +75,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function createFolder(String $path) : Bool
+    public function createFolder(string $path) : bool
     {
         if( ftp_mkdir($this->connect, $path) )
         {
@@ -94,7 +94,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function deleteFolder(String $path) : Bool
+    public function deleteFolder(string $path) : bool
     {
         if( ftp_rmdir($this->connect, $path) )
         {
@@ -113,7 +113,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function changeFolder(String $path) : Bool
+    public function changeFolder(string $path) : bool
     {
         if( ftp_chdir($this->connect, $path) )
         {
@@ -133,7 +133,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function rename(String $oldName, String $newName) : Bool
+    public function rename(string $oldName, string $newName) : bool
     {
         if( ftp_rename($this->connect, $oldName, $newName) )
         {
@@ -152,7 +152,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function deleteFile(String $path) : Bool
+    public function deleteFile(string $path) : bool
     {
         if( ftp_delete($this->connect, $path) )
         {
@@ -172,7 +172,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function permission(String $path, Int $type = 0755) : Bool
+    public function permission(string $path, int $type = 0755) : bool
     {
         if( ftp_chmod($this->connect, $type, $path) )
         {
@@ -192,7 +192,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return array
      */
-    public function files(String $path, String $extension = NULL) : Array
+    public function files(string $path, string $extension = NULL) : array
     {
         $list = ftp_nlist($this->connect, $path);
 
@@ -244,7 +244,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return float
      */
-    public function fileSize(String $path, String $type = 'b', Int $decimal = 2) : Float
+    public function fileSize(string $path, string $type = 'b', int $decimal = 2) : Float
     {
         $size = 0;
 
@@ -289,7 +289,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function upload(String $localPath, String $remotePath, String $type = 'ascii') : Bool
+    public function upload(string $localPath, string $remotePath, string $type = 'ascii') : bool
     {
         if( ftp_put($this->connect, $remotePath, $localPath, Helper::toConstant($type, 'FTP_')) )
         {
@@ -310,7 +310,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return bool
      */
-    public function download(String $remotePath, String $localPath, String $type = 'ascii') : Bool
+    public function download(string $remotePath, string $localPath, string $type = 'ascii') : bool
     {
         if( ftp_get($this->connect, $localPath, $remotePath, Helper::toConstant($type, 'FTP_')) )
         {

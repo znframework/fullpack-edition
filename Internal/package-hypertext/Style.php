@@ -27,7 +27,7 @@ class Style implements TextInterface
      * 
      * @return $this
      */
-    public function type(String $type)
+    public function type(string $type)
     {
         $this->type = $type;
 
@@ -55,7 +55,7 @@ class Style implements TextInterface
      * 
      * @return string
      */
-    public function open() : String
+    public function open() : string
     {
         $script = "<style type=\"$this->type\">".EOL;
 
@@ -71,7 +71,7 @@ class Style implements TextInterface
      * 
      * @return string
      */
-    public function close() : String
+    public function close() : string
     {
         $script =  '</style>'.EOL;
         return $script;

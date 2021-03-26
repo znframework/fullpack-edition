@@ -20,7 +20,7 @@ class Classes
      * 
      * @return ReflectionClass
      */
-    public static function reflection(String $className) : ReflectionClass
+    public static function reflection(string $className) : ReflectionClass
     {
         return new ReflectionClass(self::_class($className));
     }
@@ -33,7 +33,7 @@ class Classes
      * 
      * @return bool
      */
-    public static function isRelation(String $className, $object) : Bool
+    public static function isRelation(string $className, $object) : bool
     {
         if( ! is_object($object) )
         {
@@ -51,7 +51,7 @@ class Classes
      * 
      * @return bool
      */
-    public static function isParent(String $className, $object) : Bool
+    public static function isParent(string $className, $object) : bool
     {
         return is_subclass_of($object, self::_class($className));
     }
@@ -64,7 +64,7 @@ class Classes
      * 
      * @return bool
      */
-    public static function methodExists(String $className, String $method) : Bool
+    public static function methodExists(string $className, string $method) : bool
     {
         return method_exists(Singleton::class(self::_class($className)), $method);
     }
@@ -77,7 +77,7 @@ class Classes
      * 
      * @return bool
      */
-    public static function propertyExists(String $className, String $property) : Bool
+    public static function propertyExists(string $className, string $property) : bool
     {
         return  property_exists(Singleton::class(self::_class($className)), $property);
     }
@@ -89,7 +89,7 @@ class Classes
      * 
      * @return bool
      */
-    public static function methods(String $className) : Array
+    public static function methods(string $className) : array
     {
         return get_class_methods(self::_class($className));
     }
@@ -101,7 +101,7 @@ class Classes
      * 
      * @return bool
      */
-    public static function vars(String $className) : Array
+    public static function vars(string $className) : array
     {
         return get_class_vars(self::_class($className));
     }
@@ -113,7 +113,7 @@ class Classes
      * 
      * @return string
      */
-    public static function name($var) : String
+    public static function name($var) : string
     {
         if( ! is_object($var) )
         {
@@ -128,7 +128,7 @@ class Classes
      * 
      * @return array
      */
-    public static function declared() : Array
+    public static function declared() : array
     {
         return get_declared_classes();
     }
@@ -138,7 +138,7 @@ class Classes
      * 
      * @return array
      */
-    public static function declaredInterfaces() : Array
+    public static function declaredInterfaces() : array
     {
         return get_declared_interfaces();
     }
@@ -148,7 +148,7 @@ class Classes
      * 
      * @return array
      */
-    public static function declaredTraits() : Array
+    public static function declaredTraits() : array
     {
         return get_declared_traits();
     }
@@ -160,7 +160,7 @@ class Classes
      * 
      * @return string
      */
-    public static function onlyName(String $class) : String
+    public static function onlyName(string $class) : string
     {
         return Datatype::divide(str_replace(INTERNAL_ACCESS, '', $class), '\\', -1);
     }
@@ -172,7 +172,7 @@ class Classes
      * 
      * @return string
      */
-    public static function class(String $className) : String
+    public static function class(string $className) : string
     {
         return self::_class($className);
     }

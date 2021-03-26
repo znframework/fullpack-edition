@@ -34,7 +34,7 @@ class CrossSiteScripting
      * 
      * @return string
      */
-    public static function encode(String $string) : String
+    public static function encode(string $string) : string
     {
         $secBadChars = self::$scriptBadChars;
 

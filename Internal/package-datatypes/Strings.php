@@ -76,7 +76,7 @@ class Strings extends Factory
      * 
      * @return array
      */
-    public static function toArray(String $string, String $split = ' ')
+    public static function toArray(string $string, string $split = ' ')
     {
         if( empty($split) )
         {
@@ -96,7 +96,7 @@ class Strings extends Factory
      * 
      * @return string
      */
-    public static function pad(String $string, Int $count = 1, String $chars = ' ', String $type = 'right') : String
+    public static function pad(string $string, int $count = 1, string $chars = ' ', string $type = 'right') : string
     {
         return str_pad($string, $count, $chars, Helper::toConstant($type, 'STR_PAD_'));
     }
@@ -109,7 +109,7 @@ class Strings extends Factory
      * 
      * @return int
      */
-    public static function recurrentCount(String $str, String $char) : Int
+    public static function recurrentCount(string $str, string $char) : int
     {
         return count(explode($char, $str)) - 1;
     }

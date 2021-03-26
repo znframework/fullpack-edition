@@ -22,7 +22,7 @@ class Casing
      * 
      * @return string
      */
-    public static function use(String $str, String $type = 'lower', String $encoding = 'utf-8') : String
+    public static function use(string $str, string $type = 'lower', string $encoding = 'utf-8') : string
     {
         return mb_convert_case($str, Helper::toConstant($type, 'MB_CASE_'), $encoding);
     }
@@ -35,7 +35,7 @@ class Casing
      * 
      * @return string
      */
-    public static function upper(String $str, String $encoding = 'utf-8') : String
+    public static function upper(string $str, string $encoding = 'utf-8') : string
     {
         return self::use($str, __FUNCTION__, $encoding);
     }
@@ -48,7 +48,7 @@ class Casing
      * 
      * @return string
      */
-    public static function lower(String $str, String $encoding = 'utf-8') : String
+    public static function lower(string $str, string $encoding = 'utf-8') : string
     {
         return self::use($str, __FUNCTION__, $encoding);
     }
@@ -61,7 +61,7 @@ class Casing
      * 
      * @return string
      */
-    public static function title(String $str, String $encoding = 'utf-8') : String
+    public static function title(string $str, string $encoding = 'utf-8') : string
     {
         return self::use($str, __FUNCTION__, $encoding);
     }
@@ -73,7 +73,7 @@ class Casing
      * 
      * @return string
      */
-    public static function camel(String $str) : String
+    public static function camel(string $str) : string
     {
         $string = self::title(trim($str));
 
@@ -89,7 +89,7 @@ class Casing
      * 
      * @return string
      */
-    public static function pascal(String $str) : String
+    public static function pascal(string $str) : string
     {
         $string = self::title(trim($str));
 
@@ -103,7 +103,7 @@ class Casing
      * 
      * @return string
      */
-    public static function underscore(String $str) : String
+    public static function underscore(string $str) : string
     {
         return preg_replace('/(\s+)/', '_', strtolower($str));
     }

@@ -21,7 +21,7 @@ class Split
      * 
      * @return array
      */
-    public static function upperCase(String $string) : Array
+    public static function upperCase(string $string) : array
     {
         return Datatype::splitUpperCase($string);
     }
@@ -33,7 +33,7 @@ class Split
      * @param int    $length = 76
      * @param string $end    = PHP_EOL
      */
-    public static function apportion(String $string, Int $length = 76, String $end = PHP_EOL) : String
+    public static function apportion(string $string, int $length = 76, string $end = PHP_EOL) : string
     {
         $arrayChunk = array_chunk(preg_split("//u", $string, -1, PREG_SPLIT_NO_EMPTY), $length);
 
@@ -55,7 +55,7 @@ class Split
      * @param string $index     = '0'
      * @param string $count     = '1' - added[5.6.02]
      */
-    public static function divide(String $str = NULL, String $separator = '|', String $index = '0', String $count = '1')
+    public static function divide(string $str = NULL, string $separator = '|', string $index = '0', string $count = '1')
     {
         return Datatype::divide($str, $separator, $index, $count);
     }

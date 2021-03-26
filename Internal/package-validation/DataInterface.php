@@ -18,7 +18,7 @@ interface DataInterface
      * 
      * @return bool
      */
-    public function check(String $submit = 'all') : Bool;
+    public function check(string $submit = 'all') : bool;
 
     /**
      * Defines rules for control of the grant.
@@ -30,14 +30,14 @@ interface DataInterface
      * 
      * @return void
      */
-    public function rules(String $name, Array $config = [], $viewName = '', String $met = 'post');
+    public function rules(string $name, array $config = [], $viewName = '', string $met = 'post');
 
     /**
      * Sets user messages
      * 
      * @param array $settings
      */
-    public function messages(Array $settings);
+    public function messages(array $settings);
 
     /**
      * Add errors
@@ -46,14 +46,14 @@ interface DataInterface
      * 
      * @return self
      */
-    public function addError(String $error);
+    public function addError(string $error);
 
     /**
      * Get error
      * 
      * @param string $name = 'array' - options[array|string]
      */
-    public function error(String $name = 'array');
+    public function error(string $name = 'array');
 
     /**
      * Get input post back.
@@ -61,5 +61,5 @@ interface DataInterface
      * @param string $name
      * @param string $met = 'post' - options[post|get]
      */
-    public function postBack(String $name, String $met = 'post');
+    public function postBack(string $name, string $met = 'post');
 }

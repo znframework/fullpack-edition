@@ -18,7 +18,7 @@ interface RemoteInterface
      * 
      * @return Connection
      */
-    public function new(Array $config);
+    public function new(array $config);
 
     /**
      * Different Connection
@@ -27,7 +27,7 @@ interface RemoteInterface
      * 
      * @return Connection
      */
-    public function differentConnection(Array $config);
+    public function differentConnection(array $config);
 
     /**
      * Create Folder
@@ -36,7 +36,7 @@ interface RemoteInterface
      * 
      * @return bool
      */
-    public function createFolder(String $path) : Bool;
+    public function createFolder(string $path) : bool;
 
     /**
      * Delete Folder
@@ -45,7 +45,7 @@ interface RemoteInterface
      * 
      * @return bool
      */
-    public function deleteFolder(String $path) : Bool;
+    public function deleteFolder(string $path) : bool;
 
     /**
      * Rename
@@ -55,7 +55,7 @@ interface RemoteInterface
      * 
      * @return bool
      */
-    public function rename(String $oldName, String $newName) : Bool;
+    public function rename(string $oldName, string $newName) : bool;
 
     /**
      * Delete File
@@ -64,7 +64,7 @@ interface RemoteInterface
      * 
      * @return bool
      */
-    public function deleteFile(String $path) : Bool;
+    public function deleteFile(string $path) : bool;
 
      /**
      * Permission
@@ -74,7 +74,7 @@ interface RemoteInterface
      * 
      * @return bool
      */
-    public function permission(String $path, Int $type = 0755) : Bool;
+    public function permission(string $path, int $type = 0755) : bool;
 
     /**
      * File Upload
@@ -84,7 +84,7 @@ interface RemoteInterface
      * 
      * @return bool
      */
-    public function upload(String $localPath, String $remotePath) : Bool;
+    public function upload(string $localPath, string $remotePath) : bool;
 
     /**
      * File Download
@@ -94,5 +94,5 @@ interface RemoteInterface
      * 
      * @return bool
      */
-    public function download(String $remotePath, String $localPath) : Bool;
+    public function download(string $remotePath, string $localPath) : bool;
 }

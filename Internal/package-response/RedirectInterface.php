@@ -16,21 +16,21 @@ interface RedirectInterface
      * 
      * @return int
      */
-    public static function status() : Int;
+    public static function status() : int;
 
     /**
      * Get redirect url
      * 
      * @return string
      */
-    public static function url() : String;
+    public static function url() : string;
 
     /**
      * Get redirect string query
      * 
      * @return string
      */
-    public static function queryString() : String;
+    public static function queryString() : string;
 
     /**
      * Redirect code
@@ -39,7 +39,7 @@ interface RedirectInterface
      * 
      * @return Redirect
      */
-    public function code(Int $code) : Redirect;
+    public function code(int $code) : Redirect;
 
     /**
      * Page refresh.
@@ -49,7 +49,7 @@ interface RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = false
      */
-    public function refresh(String $url = NULL, Int $time = 0, Array $data = NULL, Bool $exit = false);
+    public function refresh(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = false);
 
     /**
      * Location
@@ -61,7 +61,7 @@ interface RedirectInterface
      */
     public function location
     (
-        String $url  = NULL, 
+        string $url  = NULL, 
         Int    $time = 0, 
         Array  $data = NULL, 
         Bool   $exit = true, 
@@ -76,7 +76,7 @@ interface RedirectInterface
      * 
      * @return false|mixed
      */
-    public function selectData(String $k, Bool $isDelete = false);
+    public function selectData(string $k, bool $isDelete = false);
 
     /**
      * Redirect delete data
@@ -85,14 +85,14 @@ interface RedirectInterface
      * 
      * @return true
      */
-    public function deleteData($data) : Bool;
+    public function deleteData($data) : bool;
 
     /**
      * Action URL
      * 
      * @param string $action = NULL
      */
-    public function action(String $action = NULL);
+    public function action(string $action = NULL);
 
     /**
      * Sets redirect exit
@@ -101,7 +101,7 @@ interface RedirectInterface
      * 
      * @return self
      */
-    public function exit(Bool $exit = true);
+    public function exit(bool $exit = true);
 
     /**
      * Sets redirect time
@@ -110,7 +110,7 @@ interface RedirectInterface
      * 
      * @return self
      */
-    public function time(Int $time = 0);
+    public function time(int $time = 0);
 
     /**
      * Sets waiting time. same time() method
@@ -119,7 +119,7 @@ interface RedirectInterface
      * 
      * @return self
      */
-    public function wait(Int $time = 0);
+    public function wait(int $time = 0);
 
     /**
      * Sets redirect data
@@ -128,7 +128,7 @@ interface RedirectInterface
      * 
      * @return self
      */
-    public function data(Array $data);
+    public function data(array $data);
 
     /**
      * Insert redirect data
@@ -137,7 +137,7 @@ interface RedirectInterface
      * 
      * @return self
      */
-    public function insert(Array $data);
+    public function insert(array $data);
 
     /**
      * Select redirect data
@@ -147,7 +147,7 @@ interface RedirectInterface
      * 
      * @return mixed
      */
-    public function select(String $key, Bool $isDelete = false);
+    public function select(string $key, bool $isDelete = false);
 
     /**
      * Deletes redirect data
@@ -156,5 +156,5 @@ interface RedirectInterface
      * 
      * @return true
      */
-    public function delete($key) : Bool;
+    public function delete($key) : bool;
 }

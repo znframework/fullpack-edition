@@ -26,7 +26,7 @@ class Event implements EventInterface
      * 
      * @return bool
      */
-    public static function run(String $event, Array $parameters = []) : Bool
+    public static function run(string $event, array $parameters = []) : bool
     {
         $events = self::get($event);
         
@@ -94,7 +94,7 @@ class Event implements EventInterface
      * 
      * @return array|callback
      */
-    public static function get(String $event, Int $priority = NULL)
+    public static function get(string $event, int $priority = NULL)
     {
         if ( ! isset(Properties::$listeners[$event]))
 		{
@@ -121,7 +121,7 @@ class Event implements EventInterface
      * 
      * @return bool
      */
-    public static function remove(String $event, Int $priority = NULL) : Bool
+    public static function remove(string $event, int $priority = NULL) : bool
     {
         if( isset(Properties::$listeners[$event][$priority]) )
         {

@@ -53,7 +53,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function card(String $number, String $month, String $year, String $cvc)
+    public function card(string $number, string $month, string $year, string $cvc)
     {
         $this->yearAndMonthConverter($year, $month);
 
@@ -91,7 +91,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function clientId(String $id)
+    public function clientId(string $id)
     {
         $this->settings['clientid'] = $id;
 
@@ -105,7 +105,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function orderId(String $id)
+    public function orderId(string $id)
     {
         $this->settings['oid'] = $id;
 
@@ -119,7 +119,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function amount(String $amount)
+    public function amount(string $amount)
     {
         $this->settings['amount'] = $amount;
 
@@ -147,7 +147,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function randomKey(String $random)
+    public function randomKey(string $random)
     {
         $this->settings['rnd'] = $random;
 
@@ -162,7 +162,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function returnUrl(String $success, String $fail = NULL)
+    public function returnUrl(string $success, string $fail = NULL)
     {
         $this->settings['okUrl'] = URL::site($success);
         $this->settings['failUrl'] = URL::site($fail ?? $success);
@@ -177,7 +177,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function companyName(String $name)
+    public function companyName(string $name)
     {
         $this->settings['firmaadi'] = $name;
 
@@ -191,7 +191,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function installment(String $name)
+    public function installment(string $name)
     {
         $this->settings['taksit'] = $name;
 
@@ -205,7 +205,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function processType(String $type)
+    public function processType(string $type)
     {
         $this->settings['islemtipi'] = $type;
 
@@ -219,7 +219,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function storeKey(String $key)
+    public function storeKey(string $key)
     {
         $this->settings['storeKey'] = $key;
 

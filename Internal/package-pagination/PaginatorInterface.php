@@ -18,7 +18,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function url(String $url) : Paginator;
+    public function url(string $url) : Paginator;
     
     /**
      * Sets the paging initial value.
@@ -36,7 +36,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function limit(Int $limit) : Paginator;
+    public function limit(int $limit) : Paginator;
 
     /**
      * Pagination usage type.
@@ -45,7 +45,7 @@ interface PaginatorInterface
      * 
      * @param string $type - options[ajax|classic]
      */
-    public function type(String $type) : Paginator;
+    public function type(string $type) : Paginator;
 
     /**
      * Paging
@@ -54,7 +54,7 @@ interface PaginatorInterface
      * 
      * @return Paginator
      */
-    public function paging(String $paging) : Paginator;
+    public function paging(string $paging) : Paginator;
 
     /**
      * Sets the total number of records.
@@ -63,7 +63,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function totalRows(Int $totalRows) : Paginator;
+    public function totalRows(int $totalRows) : Paginator;
 
     /**
      * Sets the number of page links to be displayed at one time.
@@ -72,7 +72,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function countLinks(Int $countLinks) : Paginator;
+    public function countLinks(int $countLinks) : Paginator;
 
     /**
      * Change the names of links.
@@ -84,7 +84,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function linkNames(String $prev, String $next, String $first, String $last) : Paginator;
+    public function linkNames(string $prev, string $next, string $first, string $last) : Paginator;
 
     /**
      * Sets paging's css values.
@@ -93,7 +93,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function css(Array $css) : Paginator;
+    public function css(array $css) : Paginator;
 
     /**
      * Sets paging's style values.
@@ -102,7 +102,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function style(Array $style) : Paginator;
+    public function style(array $style) : Paginator;
 
      /**
      * Sets paging's output type.
@@ -111,7 +111,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function output(String $type) : Paginator;
+    public function output(string $type) : Paginator;
 
     /**
      * Returns the current URL for paging.
@@ -120,7 +120,7 @@ interface PaginatorInterface
      * 
      * @return string
      */
-    public function getURI(String $page = NULL) : String;
+    public function getURI(string $page = NULL) : string;
 
     /**
      * Configures all settings of the page.
@@ -129,7 +129,7 @@ interface PaginatorInterface
      * 
      * @return Pagination
      */
-    public function settings(Array $config = []) : Paginator;
+    public function settings(array $config = []) : Paginator;
 
     /**
      * Creates the pagination.
@@ -139,5 +139,5 @@ interface PaginatorInterface
      * 
      * @return string
      */
-    public function create($start, Array $settings = []) : String;
+    public function create($start, array $settings = []) : string;
 }

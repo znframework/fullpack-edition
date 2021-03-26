@@ -15,7 +15,7 @@ class InvalidArgumentException extends Exception
 {
     const lang = 
     [
-        'en' => '`String $type` parameter should contain the hash algos(md5, sha1) data type!',
-        'tr' => '`String $type` parametresi şifreleme algoritmalarıdan(md5, sha1) birini içermelidir!'
+        'en' => '`string $type` parameter should contain the hash algos(md5, sha1) data type!',
+        'tr' => '`string $type` parametresi şifreleme algoritmalarıdan(md5, sha1) birini içermelidir!'
     ];
 }

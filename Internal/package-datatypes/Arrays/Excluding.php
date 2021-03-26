@@ -21,7 +21,7 @@ class Excluding
      * 
      * @return array
      */
-    public static function use(Array $array, Array $excluding) : Array
+    public static function use(array $array, array $excluding) : array
     {
         $newArray = [];
 

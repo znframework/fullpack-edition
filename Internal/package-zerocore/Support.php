@@ -21,7 +21,7 @@ class Support
      * 
      * @return bool
      */
-    public static function function(String $name, String $value = NULL)
+    public static function function(string $name, string $value = NULL)
     {
         return self::callback($name, $value);
     }
@@ -34,7 +34,7 @@ class Support
      * 
      * @return bool
      */
-    public static function func(String $name, String $value = NULL)
+    public static function func(string $name, string $value = NULL)
     {
         return self::_loaded($name, $value, 'function_exists', 'undefinedFunctionExtension');
     }
@@ -47,7 +47,7 @@ class Support
      * 
      * @return bool
      */
-    public static function callback(String $name, String $value = NULL)
+    public static function callback(string $name, string $value = NULL)
     {
         return self::_loaded($name, $value, 'function_exists', 'undefinedFunction');
     }
@@ -60,7 +60,7 @@ class Support
      * 
      * @return bool
      */
-    public static function extension(String $name, String $value = NULL)
+    public static function extension(string $name, string $value = NULL)
     {
         return self::_loaded($name, $value, 'extension_loaded', 'undefinedFunctionExtension');
     }
@@ -73,7 +73,7 @@ class Support
      * 
      * @return bool
      */
-    public static function library(String $name, String $value = NULL)
+    public static function library(string $name, string $value = NULL)
     {
         return self::_loaded($name, $value, 'class_exists', 'classError');
     }
@@ -86,7 +86,7 @@ class Support
      * 
      * @return bool
      */
-    public static function writable(String $name, String $value = NULL)
+    public static function writable(string $name, string $value = NULL)
     {
         return self::_loaded($name, $value, 'is_writable', 'fileNotWrite');
     }
@@ -99,7 +99,7 @@ class Support
      * 
      * @return bool
      */
-    public static function driver(Array $drivers, String $driver = NULL)
+    public static function driver(array $drivers, string $driver = NULL)
     {
         if( ! in_array(strtolower($driver), $drivers) )
         {
@@ -117,7 +117,7 @@ class Support
      * 
      * @return bool
      */
-    public static function classMethod(String $class, String $method)
+    public static function classMethod(string $class, string $method)
     {
         throw new Exception
         (

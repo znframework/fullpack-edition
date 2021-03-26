@@ -42,7 +42,7 @@ class Document
      * 
      * @return Document
      */
-    public function target(String $target) : Document
+    public function target(string $target) : Document
     {
         $this->target = $target;
         

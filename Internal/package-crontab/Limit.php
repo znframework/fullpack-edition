@@ -22,7 +22,7 @@ class Limit extends QueueLimitExtends
      * 
      * @param string $path
      */
-    public function __construct(Int $getLimit, Job $crontab)
+    public function __construct(int $getLimit, Job $crontab)
     {
         $backtrace = (object) debug_backtrace(2)[4];
 

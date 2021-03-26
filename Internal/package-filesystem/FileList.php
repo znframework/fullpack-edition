@@ -25,7 +25,7 @@ class FileList
      * 
      * @return array
      */
-    public static function files(String $path, $extension = NULL, Bool $pathType = false) : Array
+    public static function files(string $path, $extension = NULL, bool $pathType = false) : array
     {
         $path = Info::rpath($path);
 
@@ -47,7 +47,7 @@ class FileList
      * 
      * @return array
      */
-    public static function allFiles(String $pattern = '*', Bool $allFiles = false) : Array
+    public static function allFiles(string $pattern = '*', bool $allFiles = false) : array
     {
         return Filesystem::getRecursiveFiles($pattern, $allFiles);
     }

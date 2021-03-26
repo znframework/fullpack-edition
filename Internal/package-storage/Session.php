@@ -21,7 +21,7 @@ class Session implements StorageInterface
      * 
      * @return bool
      */
-    public function insert(String $name, $value) : Bool
+    public function insert(string $name, $value) : bool
     {
         $this->encodeNameValue($name, $value);
 
@@ -47,7 +47,7 @@ class Session implements StorageInterface
      * 
      * @return mixed
      */
-    public function select(String $name)
+    public function select(string $name)
     {
         $this->encodeNameValue($name);
 
@@ -61,7 +61,7 @@ class Session implements StorageInterface
      * 
      * @return array
      */
-    public function selectAll() : Array
+    public function selectAll() : array
     {
         return $_SESSION;
     }
@@ -73,7 +73,7 @@ class Session implements StorageInterface
      * 
      * @return bool
      */
-    public function delete(String $name) : Bool
+    public function delete(string $name) : bool
     {
         $this->encodeNameValue($name);
 
@@ -96,7 +96,7 @@ class Session implements StorageInterface
      * 
      * @return void
      */
-    public function deleteAll() : Bool
+    public function deleteAll() : bool
     {
         $_SESSION = [];
 

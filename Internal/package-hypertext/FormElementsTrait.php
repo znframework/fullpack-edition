@@ -118,7 +118,7 @@ trait FormElementsTrait
      * 
      * @codeCoverageIgnore
      */
-    public function vMessage(String $message)
+    public function vMessage(string $message)
     {
         $this->vMethodMessages = $message;
         
@@ -133,7 +133,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vBetween(Int $min = 0, Int $max = 0)
+    public function vBetween(int $min = 0, int $max = 0)
     {
         return $this->setJavascriptValidation
         (
@@ -169,7 +169,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vMatch(String $selector)
+    public function vMatch(string $selector)
     {
         return $this->setJavascriptValidation('ZNValidationMatch', 'match', ['match' => $selector], [Base::presuffix($selector, '\'')]);
     }
@@ -179,7 +179,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vMatchPassword(String $selector)
+    public function vMatchPassword(string $selector)
     {
         return $this->setJavascriptValidation('ZNValidationMatch', 'matchPassword', ['matchPassword' => $selector], [Base::presuffix($selector, '\'')]);
     }
@@ -189,7 +189,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vPhone(String $pattern = NULL)
+    public function vPhone(string $pattern = NULL)
     {
         return $this->setJavascriptValidation('ZNValidationPhone', 'phone', ['phone' => $pattern], [Base::presuffix($pattern, '\'')]);
     }
@@ -201,7 +201,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vPattern(String $pattern)
+    public function vPattern(string $pattern)
     {
         return $this->onInvalidEventPatternWithoutValidate($pattern, 'pattern');
     }
@@ -224,7 +224,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vLimit(Int $min = 0, Int $max = NULL)
+    public function vLimit(int $min = 0, int $max = NULL)
     {
         $key['minchar'] = [':p1' => $min];
         $typ['minchar'] = $min;
@@ -246,7 +246,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vMinchar(Int $min = 0)
+    public function vMinchar(int $min = 0)
     {
         return $this->minlength($min)->onInvalidEventAttributeValidate('minchar', [':p1' => $min], ['minchar' => $min]);
     }
@@ -258,7 +258,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vMaxchar(Int $max = 0)
+    public function vMaxchar(int $max = 0)
     {
         return $this->maxlength($max)->onInvalidEventAttributeValidate('maxchar', [':p1' => $max], ['maxchar' => $max]);
     }
@@ -292,7 +292,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function postBack(Bool $postback = true, String $type = 'post')
+    public function postBack(bool $postback = true, string $type = 'post')
     {
         $this->postback['bool'] = $postback;
         $this->postback['type'] = $type;
@@ -347,7 +347,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function process(String $type)
+    public function process(string $type)
     {
         $this->settings['process'] = $type;
 
@@ -375,7 +375,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function where($column, String $value = NULL, String $logical = 'and')
+    public function where($column, string $value = NULL, string $logical = 'and')
     {
         $this->settings['where']       = true;
         $this->settings['whereValue']  = $value;
@@ -393,7 +393,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function query(String $query)
+    public function query(string $query)
     {
         $this->settings['query'] = $query;
 
@@ -407,7 +407,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function table(String $table)
+    public function table(string $table)
     {
         $this->settings['table'] = $table;
 
@@ -422,7 +422,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function order(String $type = 'desc', String $flags = 'regular')
+    public function order(string $type = 'desc', string $flags = 'regular')
     {
         $this->settings['order']['type']  = $type;
         $this->settings['order']['flags'] = $flags;
@@ -437,7 +437,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function attr(Array $attr = [])
+    public function attr(array $attr = [])
     {
         $settings = [];
 
@@ -458,7 +458,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function action(String $url = NULL)
+    public function action(string $url = NULL)
     {
         $this->settings['attr']['action'] = IS::url($url) ? $url : Request::getSiteURL($url);
 
@@ -472,7 +472,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function enctype(String $enctype)
+    public function enctype(string $enctype)
     {
         if( isset($this->enctypes[$enctype]) )
         {
@@ -492,7 +492,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function option($key, String $value = NULL)
+    public function option($key, string $value = NULL)
     {
         if( is_array($key) )
         {

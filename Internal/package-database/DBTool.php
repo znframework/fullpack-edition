@@ -97,7 +97,7 @@ class DBTool extends Connection
      * 
      * @return string
      */
-    public function backup($tables = '*', String $fileName = NULL, String $path = STORAGE_DIR)
+    public function backup($tables = '*', string $fileName = NULL, string $path = STORAGE_DIR)
     {
         return $this->tool->backup($tables, $fileName, $path);
     }
@@ -109,7 +109,7 @@ class DBTool extends Connection
      * 
      * @return bool
      */
-    public function import(String $file)
+    public function import(string $file)
     {
         return $this->tool->import($file);
     }

@@ -18,7 +18,7 @@ class Delete extends Singleton
      * 
      * @return bool
      */
-    public static function do($name) : Bool
+    public static function do($name) : bool
     {
         if( is_array($name) )
         {

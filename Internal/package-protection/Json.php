@@ -23,7 +23,7 @@ class Json extends StoreAbstract implements StoreInterface
      * 
      * @return string
      */
-    public static function encode($data, String $type = 'unescapedUnicode') : String
+    public static function encode($data, string $type = 'unescapedUnicode') : string
     {
         return json_encode($data, Helper::toConstant($type, 'JSON_'));
     }
@@ -37,7 +37,7 @@ class Json extends StoreAbstract implements StoreInterface
      * 
      * @return mixed
      */
-    public static function decode(String $data, Bool $array = false, Int $length = 512)
+    public static function decode(string $data, bool $array = false, int $length = 512)
     {
         $return = json_decode($data, $array, $length);
 
@@ -52,7 +52,7 @@ class Json extends StoreAbstract implements StoreInterface
      * 
      * @return object
      */
-    public static function decodeObject(String $data, Int $length = 512)
+    public static function decodeObject(string $data, int $length = 512)
     {
         return json_decode($data, false, $length);
     }
@@ -65,7 +65,7 @@ class Json extends StoreAbstract implements StoreInterface
      * 
      * @return array
      */
-    public static function decodeArray(String $data, Int $length = 512) : Array
+    public static function decodeArray(string $data, int $length = 512) : array
     {
         return (array) json_decode($data, true, $length);
     }
@@ -77,7 +77,7 @@ class Json extends StoreAbstract implements StoreInterface
      * 
      * @return string
      */
-    public static function error() : String
+    public static function error() : string
     {
         return json_last_error_msg();
     }
@@ -89,7 +89,7 @@ class Json extends StoreAbstract implements StoreInterface
      * 
      * @return int
      */
-    public static function errno() : Int
+    public static function errno() : int
     {
         return json_last_error();
     }
@@ -101,7 +101,7 @@ class Json extends StoreAbstract implements StoreInterface
      * 
      * @return bool
      */
-    public static function check(String $data) : Bool
+    public static function check(string $data) : bool
     {
         return ( is_array(json_decode($data, true)) && json_last_error() === 0 );
     }

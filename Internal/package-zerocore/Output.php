@@ -19,7 +19,7 @@ class Output
      * 
      * @return void
      */
-    public static function write($data = NULL, Array $vars = NULL)
+    public static function write($data = NULL, array $vars = NULL)
     {
         if( ! is_scalar($data) )
         {
@@ -50,7 +50,7 @@ class Output
      * 
      * @return void
      */
-    public static function writeLine($data = NULL, Array $vars = NULL, Int $brCount = 1)
+    public static function writeLine($data = NULL, array $vars = NULL, int $brCount = 1)
     {
         echo self::write($data, $vars) . str_repeat('<br>', $brCount);
     }
@@ -64,7 +64,7 @@ class Output
      * 
      * @return void
      */
-    public static function display($data, Array $settings = NULL, Bool $content = false)
+    public static function display($data, array $settings = NULL, bool $content = false)
     {
         $textType = $settings['textType'] ?? 'monospace, Tahoma, Arial';
         $textSize = $settings['textSize'] ?? '12px';
@@ -95,7 +95,7 @@ class Output
      * 
      * @return void
      */
-    protected static function _output($data, String $tab = NULL, Int $start = 0, Array $settings = []) : String
+    protected static function _output($data, string $tab = NULL, int $start = 0, array $settings = []) : string
     {
         static $start;
 

@@ -58,7 +58,7 @@ class Info
      * 
      * @return string
      */
-    public static function pathInfo(String $file, String $info = 'basename') : String
+    public static function pathInfo(string $file, string $info = 'basename') : string
     {
         $pathInfo = pathinfo($file);
 
@@ -70,7 +70,7 @@ class Info
      * 
      * @return array
      */
-    public static function required() : Array
+    public static function required() : array
     {
         return get_required_files();
     }
@@ -98,7 +98,7 @@ class Info
      * 
      * @return string
      */
-    public static function rpath(String $file = NULL) : String
+    public static function rpath(string $file = NULL) : string
     {
         $config = Config::get('Filesystem', 'file', self::$access);
 
@@ -124,7 +124,7 @@ class Info
      * 
      * @return bool
      */
-    public static function exists(String $file) : Bool
+    public static function exists(string $file) : bool
     {
         $file = self::rpath($file);
 
@@ -143,7 +143,7 @@ class Info
      * 
      * @return array
      */
-    public static function readZip(String $file) : Array
+    public static function readZip(string $file) : array
     {
         $file = self::rpath(Base::suffix($file, '.zip'));
 
@@ -170,7 +170,7 @@ class Info
      * 
      * @return string
      */
-    public static function originpath(String $string) : String
+    public static function originpath(string $string) : string
     {
         return str_replace(['/', '\\'], DS, $string);
     }
@@ -182,7 +182,7 @@ class Info
      * 
      * @return string
      */
-    public static function relativepath(String $string) : String
+    public static function relativepath(string $string) : string
     {
         return str_replace(REAL_BASE_DIR, NULL, self::originpath($string));
     }
@@ -194,7 +194,7 @@ class Info
      * 
      * @return bool
      */
-    public static function available(String $file) : Bool
+    public static function available(string $file) : bool
     {
         $file = self::rpath($file);
 
@@ -213,7 +213,7 @@ class Info
      * 
      * @return object
      */
-    public static function get(String $file) : stdClass
+    public static function get(string $file) : stdClass
     {
         $file = self::rpath($file);
 
@@ -243,7 +243,7 @@ class Info
      * 
      * @return float
      */
-    public static function size(String $file, String $type = 'b', Int $decimal = 2) : Float
+    public static function size(string $file, string $type = 'b', int $decimal = 2) : Float
     {
         $file = self::rpath($file);
 
@@ -310,7 +310,7 @@ class Info
      * 
      * @return string
      */
-    public static function createDate(String $file, String $type = 'd.m.Y G:i:s') : String
+    public static function createDate(string $file, string $type = 'd.m.Y G:i:s') : string
     {
         $file = self::rpath($file);
 
@@ -332,7 +332,7 @@ class Info
      * 
      * @return string
      */
-    public static function changeDate(String $file, String $type = 'd.m.Y G:i:s') : String
+    public static function changeDate(string $file, string $type = 'd.m.Y G:i:s') : string
     {
         $file = self::rpath($file);
 
@@ -353,7 +353,7 @@ class Info
      * 
      * @return array|int
      */
-    public static function owner(String $file)
+    public static function owner(string $file)
     {
         $file = self::rpath($file);
 
@@ -381,7 +381,7 @@ class Info
      * 
      * @return array|int
      */
-    public static function group(String $file)
+    public static function group(string $file)
     {
         $file = self::rpath($file);
 
@@ -410,7 +410,7 @@ class Info
      * 
      * @return int
      */
-    public static function rowCount(String $file = '/', Bool $recursive = true) : Int
+    public static function rowCount(string $file = '/', bool $recursive = true) : int
     {
         $file = self::rpath($file);
 
@@ -447,7 +447,7 @@ class Info
      * 
      * @return string
      */
-    public static function basePath() : String
+    public static function basePath() : string
     {
         return getcwd();
     }
@@ -459,7 +459,7 @@ class Info
      * 
      * @return bool
      */
-    public static function existsFolder(String $file) : Bool
+    public static function existsFolder(string $file) : bool
     {
         $file = self::rpath($file);
 
@@ -479,7 +479,7 @@ class Info
      * 
      * @return array
      */
-    public static function fileInfo(String $dir, String $extension = NULL) : Array
+    public static function fileInfo(string $dir, string $extension = NULL) : array
     {
         $dir = self::rpath($dir);
 
@@ -522,7 +522,7 @@ class Info
      * 
      * @return float
      */
-    public static function disk(String $dir, String $type = 'free') : Float
+    public static function disk(string $dir, string $type = 'free') : Float
     {
         $dir = self::rpath($dir);
 
@@ -548,7 +548,7 @@ class Info
      * 
      * @return float
      */
-    public static function totalSpace(String $dir) : Float
+    public static function totalSpace(string $dir) : Float
     {
         return self::disk($dir, 'total');
     }
@@ -560,7 +560,7 @@ class Info
      * 
      * @return float
      */
-    public static function freeSpace(String $dir) : Float
+    public static function freeSpace(string $dir) : Float
     {
         return self::disk($dir, 'free');
     }

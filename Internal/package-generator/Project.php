@@ -20,7 +20,7 @@ class Project
      * 
      * @return bool
      */
-    public static function generate(String $name) : Bool
+    public static function generate(string $name) : bool
     {
         if( ctype_alnum($name) )
         {

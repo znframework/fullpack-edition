@@ -11,7 +11,7 @@ class Gateway
      * 
      * @return object
      */
-    public static function request(String $gateway)
+    public static function request(string $gateway)
     {
         return Singleton::class(self::getClassName($gateway, 'Request'));
     }
@@ -23,7 +23,7 @@ class Gateway
      * 
      * @return object
      */
-    public static function response(String $gateway)
+    public static function response(string $gateway)
     {
         return Singleton::class(self::getClassName($gateway, 'Response'));
     }

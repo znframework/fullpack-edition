@@ -16,7 +16,7 @@ class Update extends UserExtends
      * 
      * @param string $oldPassword
      */
-    public function oldPassword(String $oldPassword)
+    public function oldPassword(string $oldPassword)
     {
         Properties::$parameters['oldPassword'] = $oldPassword;
     }
@@ -26,7 +26,7 @@ class Update extends UserExtends
      * 
      * @param string $newPassword
      */
-    public function newPassword(String $newPassword)
+    public function newPassword(string $newPassword)
     {
         Properties::$parameters['newPassword'] = $newPassword;
     }
@@ -36,7 +36,7 @@ class Update extends UserExtends
      * 
      * @param string $passwordAgain
      */
-    public function passwordAgain(String $passwordAgain)
+    public function passwordAgain(string $passwordAgain)
     {
         Properties::$parameters['passwordAgain'] = $passwordAgain;
     }
@@ -51,7 +51,7 @@ class Update extends UserExtends
      * 
      * @return bool
      */
-    public function do(String $old = NULL, String $new = NULL, String $newAgain = NULL, $data = []) : Bool
+    public function do(string $old = NULL, string $new = NULL, string $newAgain = NULL, $data = []) : bool
     {
         if( $this->isLogin() )
         {

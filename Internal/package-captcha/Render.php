@@ -54,7 +54,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function path(String $path) : Render
+    public function path(string $path) : Render
     {
         $this->path = Base::suffix($path);
 
@@ -69,7 +69,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function size(Int $width, Int $height) : Render
+    public function size(int $width, int $height) : Render
     {
         $this->sets['size']['width']  = $width;
         $this->sets['size']['height'] = $height;
@@ -84,7 +84,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function type(String $type = 'alnum') : Render
+    public function type(string $type = 'alnum') : Render
     {
         $this->sets['text']['type'] = $type;
 
@@ -98,7 +98,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function length(Int $param) : Render
+    public function length(int $param) : Render
     {
         $this->sets['text']['length'] = $param;
 
@@ -126,7 +126,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function ttf(Array $fonts) : Render
+    public function ttf(array $fonts) : Render
     {
         $this->sets['text']['ttf'] = $fonts;
 
@@ -140,7 +140,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function borderColor(String $color = NULL) : Render
+    public function borderColor(string $color = NULL) : Render
     {
         $this->sets['border']['status'] = true;
 
@@ -159,7 +159,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function bgColor(String $color) : Render
+    public function bgColor(string $color) : Render
     {
         $this->sets['background']['color'] = $this->convertColor($color);
 
@@ -173,7 +173,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function bgImage(Array $image) : Render
+    public function bgImage(array $image) : Render
     {
         $this->sets['background']['image'] = $image;
 
@@ -187,7 +187,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function textSize(Int $size) : Render
+    public function textSize(int $size) : Render
     {
         $this->sets['text']['size'] = $size;
 
@@ -202,7 +202,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function textCoordinate(Int $x = 0, Int $y = 0) : Render
+    public function textCoordinate(int $x = 0, int $y = 0) : Render
     {
         $this->sets['text']['x'] = $x;
         $this->sets['text']['y'] = $y;
@@ -217,7 +217,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function textColor(String $color) : Render
+    public function textColor(string $color) : Render
     {
         $this->sets['text']['color'] = $this->convertColor($color);
 
@@ -231,7 +231,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function gridColor(String $color = NULL) : Render
+    public function gridColor(string $color = NULL) : Render
     {
         $this->sets['grid']['status'] = true;
 
@@ -251,7 +251,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function gridSpace(Int $x = 0, Int $y = 0) : Render
+    public function gridSpace(int $x = 0, int $y = 0) : Render
     {
         if( ! empty($x) )
         {
@@ -273,7 +273,7 @@ class Render implements RenderInterface
      * 
      * @return string
      */
-    public function create(Bool $img = false) : String
+    public function create(bool $img = false) : string
     {   
         # Create Session
         $this->session();
@@ -316,7 +316,7 @@ class Render implements RenderInterface
      * 
      * @return string
      */
-    public function getCode() : String
+    public function getCode() : string
     {
         return $this->session->select($this->key);
     }

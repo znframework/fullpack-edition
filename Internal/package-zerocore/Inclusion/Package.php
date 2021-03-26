@@ -25,7 +25,7 @@ class Package
      * 
      * @return mixed
      */
-    public static function use($packages, Bool $recursive = false, Bool $getContents = false, String $dir = NULL)
+    public static function use($packages, bool $recursive = false, bool $getContents = false, string $dir = NULL)
     {
         if( ! empty(Properties::$parameters['usable']) )
         {
@@ -74,7 +74,7 @@ class Package
      * 
      * @return mixed
      */
-    public static function theme($theme = 'Default', Bool $recursive = false, Bool $getContents = false)
+    public static function theme($theme = 'Default', bool $recursive = false, bool $getContents = false)
     {
         if( Theme::$active !== NULL && is_array($theme) )
         {
@@ -97,7 +97,7 @@ class Package
      * 
      * @return mixed
      */
-    public static function plugin($plugin = 'Default', Bool $recursive = false, Bool $getContents = false)
+    public static function plugin($plugin = 'Default', bool $recursive = false, bool $getContents = false)
     {
         return self::use($plugin, $recursive, $getContents, PLUGINS_DIR);
     }

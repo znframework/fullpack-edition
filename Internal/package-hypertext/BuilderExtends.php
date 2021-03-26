@@ -43,7 +43,7 @@ class BuilderExtends
      * 
      * @param bool $status
      */
-    public function tag(Bool $status)
+    public function tag(bool $status)
     {
         $this->tag = $status;
 

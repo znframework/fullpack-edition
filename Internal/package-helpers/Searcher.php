@@ -18,7 +18,7 @@ class Searcher
      * @param mixed  $searchWord
      * @param string $output = 'boolean' - options[string|position|boolean]
      */
-    public static function data($searchData, $searchWord, String $output = 'boolean')
+    public static function data($searchData, $searchWord, string $output = 'boolean')
     {
         if( ! is_array($searchData) )
         {   

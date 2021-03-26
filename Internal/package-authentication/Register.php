@@ -37,7 +37,7 @@ class Register extends UserExtends
      * 
      * @return Bool
      */
-    public function do($data = NULL, $autoLogin = false, String $activationReturnLink = '') : Bool
+    public function do($data = NULL, $autoLogin = false, string $activationReturnLink = '') : bool
     {
         $this->autoMatchColumns($data);
         $this->controlPropertiesParameters($data, $autoLogin, $activationReturnLink);
@@ -122,7 +122,7 @@ class Register extends UserExtends
      * 
      * @return bool
      */
-    public function activationComplete($userUriKey = 'user', $decryptor = 'pass') : Bool
+    public function activationComplete($userUriKey = 'user', $decryptor = 'pass') : bool
     {
         # Return link values.
         # 5.7.3[added]
@@ -183,7 +183,7 @@ class Register extends UserExtends
      * 
      * @return bool
      */
-    public function resendActivationEmail(String $username, String $returnLink, String $email = NULL) : Bool
+    public function resendActivationEmail(string $username, string $returnLink, string $email = NULL) : bool
     {
         if( empty($this->activationColumn) )
         {

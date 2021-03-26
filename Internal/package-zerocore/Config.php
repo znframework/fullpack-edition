@@ -111,7 +111,7 @@ class Config
      * 
      * @return mixed
      */
-    public static function get(String $file, String $configs = NULL, $settings = NULL )
+    public static function get(string $file, string $configs = NULL, $settings = NULL )
     {
         self::_config($file);
 
@@ -161,7 +161,7 @@ class Config
      * 
      * @return mixed
      */
-    public static function set(String $file, $configs, $set = NULL)
+    public static function set(string $file, $configs, $set = NULL)
     {
         if( empty($configs) )
         {
@@ -256,7 +256,7 @@ class Config
      * 
      * @return array
      */
-    public static function iniGetAll(String $extension = NULL, Bool $details = true) : Array
+    public static function iniGetAll(string $extension = NULL, bool $details = true) : array
     {
         if( empty($extension) )
         {
@@ -275,7 +275,7 @@ class Config
      * 
      * @return void
      */
-    public static function iniRestore(String $str)
+    public static function iniRestore(string $str)
     {
         ini_restore($str);
     }

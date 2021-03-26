@@ -88,7 +88,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @param string $controllerAndMethod
      */
-    public function show404(String $controllerAndMethod)
+    public function show404(string $controllerAndMethod)
     {
         if( $this->direct === true )
         {
@@ -113,7 +113,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @param callable $callback
      */
-    public function container(Callable $callback)
+    public function container(callable $callback)
     {
         $current = count(debug_backtrace(2));
         
@@ -159,7 +159,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @param string $path   = NULL
      */
-    public function uri(String $path = NULL)
+    public function uri(string $path = NULL)
     {
         $path = rtrim($path, '/');
 
@@ -197,7 +197,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @return Route
      */
-    public function change(String $route) : Route
+    public function change(string $route) : Route
     {
         $route        = trim($route, '/');
         $return       = true;
@@ -227,7 +227,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @codeCoverageIgnore
      */
-    public function redirectShow404(String $function, String $lang = 'callUserFuncArrayError', String $report = 'SystemCallUserFuncArrayError')
+    public function redirectShow404(string $function, string $lang = 'callUserFuncArrayError', string $report = 'SystemCallUserFuncArrayError')
     {
         if( ! $routeShow404 = $this->getConfig['show404'] )
         {

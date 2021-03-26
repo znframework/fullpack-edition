@@ -29,7 +29,7 @@ class PHP
      * 
      * @return string
      */
-    public static function encode(String $str) : String
+    public static function encode(string $str) : string
     {
         return str_replace(array_keys(self::$phpTagChars), array_values(self::$phpTagChars), $str);
     }
@@ -41,7 +41,7 @@ class PHP
      * 
      * @return string
      */
-    public static function decode(String $str) : String
+    public static function decode(string $str) : string
     {
         return str_replace(array_values(self::$phpTagChars), array_keys(self::$phpTagChars), $str);
     }
@@ -53,7 +53,7 @@ class PHP
      * 
      * @return string
      */
-    public static function tagClean(String $str) : String
+    public static function tagClean(string $str) : string
     {
         return str_ireplace(['<?php', '<?', '?>'], NULL, $str);
     }

@@ -24,7 +24,7 @@ class ForgotPassword extends UserExtends
      * 
      * @param string $email
      */
-    public function email(String $email)
+    public function email(string $email)
     {
         Properties::$parameters['email'] = $email;
     }
@@ -36,7 +36,7 @@ class ForgotPassword extends UserExtends
      * 
      * @return ForgotPassword
      */
-    public function verification(String $verification)
+    public function verification(string $verification)
     {
         Properties::$parameters['verification'] = $verification;
     }
@@ -48,7 +48,7 @@ class ForgotPassword extends UserExtends
      * 
      * @return ForgotPassword
      */
-    public function passwordChangeProcess(String $changePassword = 'before')
+    public function passwordChangeProcess(string $changePassword = 'before')
     {
         Properties::$parameters['changePassword'] = $changePassword;
     }
@@ -62,7 +62,7 @@ class ForgotPassword extends UserExtends
      * 
      * @return bool
      */
-    public function do(String $email = NULL, String $returnLinkPath = NULL, String $changePassword = 'before') : Bool
+    public function do(string $email = NULL, string $returnLinkPath = NULL, string $changePassword = 'before') : bool
     {
         $this->controlPropertiesParameters($email, $verification, $returnLinkPath, $changePassword);
 
@@ -121,7 +121,7 @@ class ForgotPassword extends UserExtends
     /**
      * Password change complete
      */
-    public function passwordChangeComplete(String $redirect = NULL)
+    public function passwordChangeComplete(string $redirect = NULL)
     {
         $this->decryptionReturnLink($username, $password);
 

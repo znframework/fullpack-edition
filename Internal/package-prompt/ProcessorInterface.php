@@ -16,7 +16,7 @@ interface ProcessorInterface
      * 
      * @return string
      */
-    public function type() : String;
+    public function type() : string;
 
     /**
      * Execute
@@ -34,19 +34,19 @@ interface ProcessorInterface
      * 
      * @return Processor
      */
-    public function driver(String $driver) : Processor;
+    public function driver(string $driver) : Processor;
 
     /**
      * Output
      * 
      * @return array
      */
-    public function output() : Array;
+    public function output() : array;
 
     /**
      * Return
      * 
      * @return int
      */
-    public function return() : Int;
+    public function return() : int;
 }

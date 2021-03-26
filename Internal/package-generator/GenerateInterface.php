@@ -18,7 +18,7 @@ interface GenerateInterface
      * 
      * @return bool
      */
-    public function project(String $name) : Bool;
+    public function project(string $name) : bool;
 
     /**
      * Process databases
@@ -38,7 +38,7 @@ interface GenerateInterface
      * @param string $database = '*'
      * @param array  $tables   = NULL
      */
-    public function deleteVision(String $database = '*', Array $tables = NULL);
+    public function deleteVision(string $database = '*', array $tables = NULL);
 
     /**
      * Settings
@@ -47,7 +47,7 @@ interface GenerateInterface
      * 
      * @return Generate
      */
-    public function settings(Array $settings) : Generate;
+    public function settings(array $settings) : Generate;
 
     /**
      * Delete Structure
@@ -58,5 +58,5 @@ interface GenerateInterface
      * 
      * @return bool
      */
-    public function delete(String $name, String $type = 'controller', String $app = NULL) : Bool;
+    public function delete(string $name, string $type = 'controller', string $app = NULL) : bool;
 }

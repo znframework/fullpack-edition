@@ -35,7 +35,7 @@ abstract class GatewayRequestAbstract
     /**
      * Send request.
      */
-    public function send(String $bank)
+    public function send(string $bank)
     {
         $this->missingInformation();
         

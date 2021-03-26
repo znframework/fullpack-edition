@@ -105,7 +105,7 @@ class Regex
      * 
      * @return string
      */
-    public function special2classic(String $pattern, String $ex = NULL, String $delimiter = '/') : String
+    public function special2classic(string $pattern, string $ex = NULL, string $delimiter = '/') : string
     {
         return (string) $this->_regularConverting($pattern, $ex, $delimiter);
     }
@@ -118,7 +118,7 @@ class Regex
      * 
      * @return string
      */
-    public function classic2special(String $pattern, String $delimiter = '/') : String
+    public function classic2special(string $pattern, string $delimiter = '/') : string
     {
         $specialChars = $this->specialChars;
         $regexChars   = Datatype::multikey($this->regexChars);
@@ -139,7 +139,7 @@ class Regex
      * 
      * @return array
      */
-    public function match(String $pattern, String $str, String $ex = NULL, String $delimiter = '/') : Array
+    public function match(string $pattern, string $str, string $ex = NULL, string $delimiter = '/') : array
     {
         $pattern = $this->_regularConverting($pattern, $ex, $delimiter);
 
@@ -158,7 +158,7 @@ class Regex
      * 
      * @return array
      */
-    public function matchAll(String $pattern, String $str, String $ex = NULL, String $delimiter = '/') : Array
+    public function matchAll(string $pattern, string $str, string $ex = NULL, string $delimiter = '/') : array
     {
         $pattern = $this->_regularConverting($pattern, $ex, $delimiter);
 
@@ -177,7 +177,7 @@ class Regex
      * 
      * @return array
      */
-    public function replace(String $pattern, String $rep, String $str, String $ex = NULL, String $delimiter = '/')
+    public function replace(string $pattern, string $rep, string $str, string $ex = NULL, string $delimiter = '/')
     {
         $pattern = $this->_regularConverting($pattern, $ex, $delimiter);
 
@@ -191,7 +191,7 @@ class Regex
      * 
      * @return string
      */
-    public function group(String $str) : String
+    public function group(string $str) : string
     {
         return "(".$str.")";
     }
@@ -203,7 +203,7 @@ class Regex
      * 
      * @return string
      */
-    public function recount(String $str) : String
+    public function recount(string $str) : string
     {
         return "{".$str."}";
     }
@@ -215,7 +215,7 @@ class Regex
      * 
      * @return string
      */
-    public function to(String $str) : String
+    public function to(string $str) : string
     {
         return "[".$str."]";
     }
@@ -228,7 +228,7 @@ class Regex
      * 
      * @return string
      */
-    public function quote(String $data, String $delimiter = NULL) : String
+    public function quote(string $data, string $delimiter = NULL) : string
     {
         return preg_quote($data, $delimiter);
     }

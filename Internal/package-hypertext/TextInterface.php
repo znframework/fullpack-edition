@@ -18,7 +18,7 @@ interface TextInterface
      * 
      * @return $this
      */
-    public function type(String $type);
+    public function type(string $type);
 
     /**
      * Imports script libraries.
@@ -36,7 +36,7 @@ interface TextInterface
      * 
      * @return string
      */
-    public function open() : String;
+    public function open() : string;
 
     /**
      * Closes the [/script] tag.
@@ -45,5 +45,5 @@ interface TextInterface
      * 
      * @return string
      */
-    public function close() : String;
+    public function close() : string;
 }

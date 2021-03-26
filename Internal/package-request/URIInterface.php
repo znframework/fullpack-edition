@@ -28,7 +28,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function manipulation(Array $rules, String $type = 'none') : String;
+    public static function manipulation(array $rules, string $type = 'none') : string;
 
     /**
      * Build Query
@@ -39,7 +39,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function buildQuery(Array $data, String $separator = '/', String $type = 'none') : String;
+    public static function buildQuery(array $data, string $separator = '/', string $type = 'none') : string;
 
     /**
      * Get
@@ -50,7 +50,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function get($get = 1, $index = 1, Bool $while = false) : String;
+    public static function get($get = 1, $index = 1, bool $while = false) : string;
 
     /**
      * Returns the number of segments after the specified segment.
@@ -59,7 +59,7 @@ interface URIInterface
      * 
      * @return int
      */
-    public static function getNameCount(String $get) : Int;
+    public static function getNameCount(string $get) : int;
 
     /**
      * Returns all segments after the specified segment.
@@ -68,7 +68,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function getNameAll(String $get) : String;
+    public static function getNameAll(string $get) : string;
 
     /**
      * Used to get the range according to the index of the specified segment.
@@ -78,7 +78,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function getByIndex(Int $get = 1, Int $index = 1) : String;
+    public static function getByIndex(int $get = 1, int $index = 1) : string;
 
     /**
      * Used to get the range according to the specified segment names.
@@ -88,28 +88,28 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function getByName(String $get, $index = NULL) : String;
+    public static function getByName(string $get, $index = NULL) : string;
 
     /**
      * Get Segment Array
      * 
      * @return array
      */
-    public static function segmentArray() : Array;
+    public static function segmentArray() : array;
 
     /**
      * Get Total Segments
      * 
      * @param int
      */
-    public static function totalSegments() : Int;
+    public static function totalSegments() : int;
 
     /**
      * Get Segment Count / Get Total Segments
      * 
      * @return int
      */
-    public static function segmentCount() : Int;
+    public static function segmentCount() : int;
 
     /**
      * Get segment
@@ -118,14 +118,14 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function segment(Int $seg = 1) : String;
+    public static function segment(int $seg = 1) : string;
 
     /**
      * Current Segment
      * 
      * @return string
      */
-    public static function currentSegment() : String;
+    public static function currentSegment() : string;
 
     /**
      * Current
@@ -134,7 +134,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function current(Bool $isPath = true) : String;
+    public static function current(bool $isPath = true) : string;
 
     /**
      * Get active URL
@@ -143,7 +143,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function active(Bool $fullPath = false) : String;
+    public static function active(bool $fullPath = false) : string;
 
     /**
      * Base
@@ -152,7 +152,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function base(String $uri = NULL) : String;
+    public static function base(string $uri = NULL) : string;
 
     /**
      * Prev
@@ -161,5 +161,5 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function prev(Bool $isPath = true) : String;
+    public static function prev(bool $isPath = true) : string;
 }

@@ -23,14 +23,14 @@ interface RouteInterface
      * 
      * @param string $controllerAndMethod
      */
-    public function show404(String $controllerAndMethod);
+    public function show404(string $controllerAndMethod);
 
     /**
      * Container
      * 
      * @param callable $callback
      */
-    public function container(Callable $callback);
+    public function container(callable $callback);
 
     /**
      * Restore
@@ -40,7 +40,7 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function restore($ips, String $uri = NULL);
+    public function restore($ips, string $uri = NULL);
 
     /**
      * CSRF
@@ -49,7 +49,7 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function usable(Bool $usable = true);
+    public function usable(bool $usable = true);
 
     /**
      * CSRF
@@ -58,7 +58,7 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function CSRF(String $uri = 'post');
+    public function CSRF(string $uri = 'post');
 
     /**
      * Ajax
@@ -74,7 +74,7 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function callback(Callable $callback);
+    public function callback(callable $callback);
 
     /**
      * Apply Filters
@@ -97,14 +97,14 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function redirect(String $redirect);
+    public function redirect(string $redirect);
     
     /**
      * Sets old URI
      * 
      * @param string $path   = NULL
      */
-    public function uri(String $path = NULL);
+    public function uri(string $path = NULL);
 
     /**
      * Sets all route
@@ -118,7 +118,7 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function change(String $route) : Route;
+    public function change(string $route) : Route;
 
     /**
      * Redirect Show 404
@@ -127,5 +127,5 @@ interface RouteInterface
      * @param string $lang
      * @param report
      */
-    public function redirectShow404(String $function, String $lang = 'callUserFuncArrayError', String $report = 'SystemCallUserFuncArrayError');
+    public function redirectShow404(string $function, string $lang = 'callUserFuncArrayError', string $report = 'SystemCallUserFuncArrayError');
 }

@@ -96,7 +96,7 @@ class AjaxBuilder extends BuilderExtends
     /**
      * Protected build
      */
-    protected function build(String $content)
+    protected function build(string $content)
     {
         $string  = '$.ajax({' . PHP_EOL;
         $string .= rtrim($content, ',' . PHP_EOL) . PHP_EOL;

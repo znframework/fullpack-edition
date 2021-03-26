@@ -42,7 +42,7 @@ class DT
      * 
      * @return DT
      */
-    public function date(String $data, $class = 'Date')
+    public function date(string $data, $class = 'Date')
     {
         $this->class = Singleton::class('ZN\DateTime\\' . $class);
         $this->data  = $data;
@@ -57,7 +57,7 @@ class DT
      * 
      * @return DT
      */
-    public function time(String $data)
+    public function time(string $data)
     {
         return $this->date($data, 'Time');
     }   
@@ -67,7 +67,7 @@ class DT
      * 
      * @return mixed
      */
-    public function get(String $output = NULL)
+    public function get(string $output = NULL)
     {
         if( $output !== NULL )
         {

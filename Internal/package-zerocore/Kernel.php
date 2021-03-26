@@ -381,7 +381,7 @@ class Kernel
      * 
      * @codeCoverageIgnore
      */
-    protected static function getLang(String $type)
+    protected static function getLang(string $type)
     {
         return Lang::default('ZN\CoreDefaultLanguage')::select('Kernel')['kernel:'.$type];
     }

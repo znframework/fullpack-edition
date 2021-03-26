@@ -20,7 +20,7 @@ class Substitution
      * 
      * @return string
      */
-    public static function reshuffle(String $str, String $shuffle, String $reshuffle) : String
+    public static function reshuffle(string $str, string $shuffle, string $reshuffle) : string
     {
         $shuffleEx = explode($shuffle, $str);
 
@@ -43,7 +43,7 @@ class Substitution
      * 
      * @return string
      */
-    public static function placement(String $str, String $delimiter, Array $array) : String
+    public static function placement(string $str, string $delimiter, array $array) : string
     {
         if( ! empty($delimiter) )
         {
@@ -79,7 +79,7 @@ class Substitution
      * 
      * @return string
      */
-    public static function replace(String $string, $oldChar, $newChar = NULL, Bool $case = true) : String
+    public static function replace(string $string, $oldChar, $newChar = NULL, bool $case = true) : string
     {
         if( $case === true )
         {

@@ -21,7 +21,7 @@ class Delete extends MLExtends
      * 
      * @return bool
      */
-    public function do(String $app, $key) : Bool
+    public function do(string $app, $key) : bool
     {
         $datas = [];
 
@@ -61,7 +61,7 @@ class Delete extends MLExtends
      * 
      * @return bool
      */
-    public function all($app = NULL) : Bool
+    public function all($app = NULL) : bool
     {
         Properties::$select = NULL;
         

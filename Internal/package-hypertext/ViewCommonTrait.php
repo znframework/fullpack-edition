@@ -33,7 +33,7 @@ trait ViewCommonTrait
      * 
      * @return string
      */
-    public function attributes(Array $attributes) : String
+    public function attributes(array $attributes) : string
     {
         unset($this->settings['attr']['perm']);
 
@@ -74,7 +74,7 @@ trait ViewCommonTrait
      * 
      * @return string
      */
-    public function input(String $type = NULL, String $name = NULL, String $value = NULL, Array $attributes = []) : String
+    public function input(string $type = NULL, string $name = NULL, string $value = NULL, array $attributes = []) : string
     {
         if( isset($this->settings['attr']['type']) )
         {
@@ -93,7 +93,7 @@ trait ViewCommonTrait
      * @param string|callable $selector
      * @param string|array    $datatype|$properties
      */
-    public function serializer(String $url, $selector = '.modal-body', $datatype = 'standart')
+    public function serializer(string $url, $selector = '.modal-body', $datatype = 'standart')
     {
         $selector = is_string($selector)
                   ? ($this->settings['attr']['data-target'] ?? NULL) . Base::prefix($selector, ' ')
@@ -110,7 +110,7 @@ trait ViewCommonTrait
      * @param string|callable $selector
      * @param string|array    $datatype|$properties
      */
-    public function trigger(String $event, String $url, $selector, $datatype = 'standart', $resource = 'trigger')
+    public function trigger(string $event, string $url, $selector, $datatype = 'standart', $resource = 'trigger')
     {
         $this->convertSerializerDataType($datatype);
 
@@ -137,7 +137,7 @@ trait ViewCommonTrait
      * 
      * @return this
      */
-    public function on(String $parameter, $callback)
+    public function on(string $parameter, $callback)
     {
         $this->settings['attr']['on']         = $parameter;
         $this->settings['attr']['onCallback'] = $this->stringOrCallback($callback);
@@ -234,7 +234,7 @@ trait ViewCommonTrait
     /**
      * Protected object options
      */
-    protected function bootstrapObjectOptions(String $selector, $options, $type)
+    protected function bootstrapObjectOptions(string $selector, $options, $type)
     {
         if( ! empty($options) )
         {
@@ -278,7 +278,7 @@ trait ViewCommonTrait
     /**
      * Protected get resource
      */
-    protected function getResource(String $resource, $data, $directory)
+    protected function getResource(string $resource, $data, $directory)
     {
         return Inclusion\View::use($resource, $data, true, __DIR__ . '/Resources/' . $directory . '/');
     }
@@ -286,7 +286,7 @@ trait ViewCommonTrait
     /**
      * Protected get modal resource
      */
-    protected function getModalResource(String $resource = 'standart', $data = [])
+    protected function getModalResource(string $resource = 'standart', $data = [])
     {
         return $this->getResource($resource, $data, 'Modals');
     }
@@ -294,7 +294,7 @@ trait ViewCommonTrait
     /**
      * Protected get toast resource
      */
-    protected function getToastResource(String $resource = 'standart', $data = [])
+    protected function getToastResource(string $resource = 'standart', $data = [])
     {
         return $this->getResource($resource, $data, 'Toasts');
     }
@@ -302,7 +302,7 @@ trait ViewCommonTrait
     /**
      * Protected get modal resource
      */
-    protected function getAjaxResource(String $resource = 'serializer', $data = [])
+    protected function getAjaxResource(string $resource = 'serializer', $data = [])
     {
         return $this->getResource($resource, $data, 'Ajax');
     }
@@ -310,7 +310,7 @@ trait ViewCommonTrait
     /**
      * Protected get carousel resource
      */
-    protected function getCarouselResource(String $resource = 'standart', $data = [])
+    protected function getCarouselResource(string $resource = 'standart', $data = [])
     {
         return $this->getResource($resource, $data, 'Carousels');
     }

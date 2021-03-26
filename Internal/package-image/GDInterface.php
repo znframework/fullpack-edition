@@ -16,7 +16,7 @@ interface GDInterface
      * 
      * @return array
      */
-    public function info() : Array;
+    public function info() : array;
 
     /**
      * Sets canvas
@@ -37,7 +37,7 @@ interface GDInterface
      * 
      * @return resource
      */
-    public function createFrom(String $source);
+    public function createFrom(string $source);
 
     /**
      * Set size
@@ -46,7 +46,7 @@ interface GDInterface
      * 
      * @return object
      */
-    public function size(String $fileName) : \stdClass;
+    public function size(string $fileName) : \stdClass;
 
     /**
      * Get file extension
@@ -56,7 +56,7 @@ interface GDInterface
      * 
      * @return string
      */
-    public function extension(String $type = 'jpeg', Bool $dot = true) : String;
+    public function extension(string $type = 'jpeg', bool $dot = true) : string;
 
     /**
      * Get mime type
@@ -65,7 +65,7 @@ interface GDInterface
      * 
      * @return string
      */
-    public function mime(String $type = 'jpeg') : String;
+    public function mime(string $type = 'jpeg') : string;
 
     /**
      * Sets alpha blending
@@ -74,7 +74,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function alphaBlending(Bool $blendMode = NULL) : GD;
+    public function alphaBlending(bool $blendMode = NULL) : GD;
 
     /**
      * Sets save alpha
@@ -83,7 +83,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function saveAlpha(Bool $save = true) : GD;
+    public function saveAlpha(bool $save = true) : GD;
 
     /**
      * Sets smooth
@@ -92,7 +92,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function smooth(Bool $mode = true) : GD;
+    public function smooth(bool $mode = true) : GD;
 
     /**
      * Creates Arc
@@ -101,7 +101,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function arc(Array $settings = []) : GD;
+    public function arc(array $settings = []) : GD;
 
     /**
      * Creates Ellipse
@@ -110,7 +110,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function ellipse(Array $settings = []) : GD;
+    public function ellipse(array $settings = []) : GD;
 
     /**
      * Creates Polygon
@@ -119,7 +119,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function polygon(Array $settings = []) : GD;
+    public function polygon(array $settings = []) : GD;
 
     /**
      * Creates Rectangle
@@ -128,7 +128,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function rectangle(Array $settings = []) : GD;
+    public function rectangle(array $settings = []) : GD;
 
     /**
      * Fill
@@ -137,7 +137,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function fill(Array $settings = []) : GD;
+    public function fill(array $settings = []) : GD;
 
     /**
      * Filter
@@ -150,7 +150,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function filter(String $filter, Int $arg1 = NULL, Int $arg2 = NULL, Int $arg3 = NULL, Int $arg4 = NULL) : GD;
+    public function filter(string $filter, int $arg1 = NULL, int $arg2 = NULL, int $arg3 = NULL, int $arg4 = NULL) : GD;
 
     /**
      * Flip
@@ -159,7 +159,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function flip(String $type) : GD;
+    public function flip(string $type) : GD;
 
     /**
      * Creates char
@@ -169,7 +169,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function char(String $char, Array $settings = []) : GD;
+    public function char(string $char, array $settings = []) : GD;
 
     /**
      * Creates text
@@ -179,7 +179,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function text(String $text, Array $settings = []) : GD;
+    public function text(string $text, array $settings = []) : GD;
 
     /**
      * Set convolution
@@ -190,7 +190,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function convolution(Array $matrix, Float $div = 0, Float $offset = 0) : GD;
+    public function convolution(array $matrix, Float $div = 0, Float $offset = 0) : GD;
 
     /**
      * Set interlace
@@ -199,7 +199,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function interlace(Int $interlace = 0) : GD;
+    public function interlace(int $interlace = 0) : GD;
 
     /**
      * Copy
@@ -209,7 +209,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function copy($source, Array $settings = []) : GD;
+    public function copy($source, array $settings = []) : GD;
 
     /**
      * Mix
@@ -219,7 +219,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function mix($source, Array $settings = []) : GD;
+    public function mix($source, array $settings = []) : GD;
 
     /**
      * Mixgray
@@ -229,7 +229,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function mixGray($source, Array $settings = []) : GD;
+    public function mixGray($source, array $settings = []) : GD;
 
     /**
      * Resize / Resample
@@ -239,7 +239,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function resample($source, Array $settings = []) : GD;
+    public function resample($source, array $settings = []) : GD;
 
     /**
      * Resize
@@ -249,7 +249,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function resize($source, Array $settings = []) : GD;
+    public function resize($source, array $settings = []) : GD;
 
     /**
      * Crop
@@ -258,7 +258,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function crop(Array $settings = []) : GD;
+    public function crop(array $settings = []) : GD;
 
     /**
      * Auto crop
@@ -269,7 +269,7 @@ interface GDInterface
      * 
      * @return GD 
      */
-    public function autoCrop(String $mode = 'default', $threshold = .5, $color = -1) : GD;
+    public function autoCrop(string $mode = 'default', $threshold = .5, $color = -1) : GD;
 
     /**
      * Creates a line
@@ -278,7 +278,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function line(Array $settings = []) : GD;
+    public function line(array $settings = []) : GD;
 
     /**
      * Get screenshot
@@ -296,7 +296,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function rotate(Float $angle, String $spaceColor = '0|0|0', Int $ignoreTransparent = 0) : GD;
+    public function rotate(Float $angle, string $spaceColor = '0|0|0', int $ignoreTransparent = 0) : GD;
 
     /**
      * Set scale
@@ -307,7 +307,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function scale(Int $width, Int $height = -1, String $mode = 'bilinear_fixed') : GD;
+    public function scale(int $width, int $height = -1, string $mode = 'bilinear_fixed') : GD;
 
     /**
      * Set interpolation
@@ -316,7 +316,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function interpolation(String $method = 'bilinear_fixed') : GD;
+    public function interpolation(string $method = 'bilinear_fixed') : GD;
 
     /**
      * Set pixed
@@ -325,7 +325,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function pixel(Array $settings = []) : GD;
+    public function pixel(array $settings = []) : GD;
 
     /**
      * Set thickness
@@ -334,7 +334,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function thickness(Int $thickness = 1) : GD;
+    public function thickness(int $thickness = 1) : GD;
 
     /**
      * Set layer effect
@@ -343,7 +343,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function layerEffect(String $effect = 'normal') : GD;
+    public function layerEffect(string $effect = 'normal') : GD;
 
     /**
      * Generate Image
@@ -353,5 +353,5 @@ interface GDInterface
      * 
      * @return resource
      */
-    public function generate(String $type, String $save);
+    public function generate(string $type, string $save);
 }

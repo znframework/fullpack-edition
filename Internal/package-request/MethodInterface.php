@@ -19,7 +19,7 @@ interface MethodInterface
      * 
      * @return mixed
      */
-    public static function post(String $name, $value);
+    public static function post(string $name, $value);
 
     /**
      * Get
@@ -29,7 +29,7 @@ interface MethodInterface
      * 
      * @return mixed
      */
-    public static function get(String $name, $value);
+    public static function get(string $name, $value);
 
     /**
      * Env
@@ -39,7 +39,7 @@ interface MethodInterface
      * 
      * @return mixed
      */
-    public static function env(String $name, $value);
+    public static function env(string $name, $value);
 
     /**
      * Server
@@ -49,7 +49,7 @@ interface MethodInterface
      * 
      * @return mixed
      */
-    public static function server(String $name, $value);
+    public static function server(string $name, $value);
 
     /**
      * Request
@@ -59,7 +59,7 @@ interface MethodInterface
      * 
      * @return mixed
      */
-    public static function request(String $name, $value);
+    public static function request(string $name, $value);
 
     /**
      * Files
@@ -69,7 +69,7 @@ interface MethodInterface
      * 
      * @return mixed
      */
-    public static function files(String $fileName, String $type);
+    public static function files(string $fileName, string $type);
 
     /**
      * Delete
@@ -79,5 +79,5 @@ interface MethodInterface
      * 
      * @return mixed
      */
-    public static function delete(String $input, String $name);
+    public static function delete(string $input, string $name);
 }

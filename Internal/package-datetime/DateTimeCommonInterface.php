@@ -20,7 +20,7 @@ interface DateTimeCommonInterface
      * 
      * @return this
      */
-    public function zone(String $timezone);
+    public function zone(string $timezone);
 
     /**
      * Sets locale
@@ -40,7 +40,7 @@ interface DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function isPast(String $datetime) : Bool;
+    public function isPast(string $datetime) : bool;
 
     /**
      * Compare dates
@@ -51,7 +51,7 @@ interface DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function compare(String $value1, String $condition, String $value2) : Bool;
+    public function compare(string $value1, string $condition, string $value2) : bool;
 
     /**
      * Turns historical data into numeric data.
@@ -61,7 +61,7 @@ interface DateTimeCommonInterface
      * 
      * @return int
      */
-    public function toNumeric(String $dateFormat, Int $now = NULL) : Int;
+    public function toNumeric(string $dateFormat, int $now = NULL) : int;
 
      /**
      * Converts time data to readable form.
@@ -71,7 +71,7 @@ interface DateTimeCommonInterface
      * 
      * @return string
      */
-    public function toReadable(Int $time, String $dateFormat = 'Y-m-d H:i:s') : String;
+    public function toReadable(int $time, string $dateFormat = 'Y-m-d H:i:s') : string;
 
     /**
      * Calculates between dates.
@@ -82,7 +82,7 @@ interface DateTimeCommonInterface
      * 
      * @return string
      */
-    public function calculate(String $input, String $calculate, String $output = 'Y-m-d') : String;
+    public function calculate(string $input, string $calculate, string $output = 'Y-m-d') : string;
 
     /**
      * Sets the date and time.
@@ -91,7 +91,7 @@ interface DateTimeCommonInterface
      * 
      * @return string
      */
-    public function set(String $exp) : String;
+    public function set(string $exp) : string;
 
     /**
      * Gives the active time information.
@@ -100,7 +100,7 @@ interface DateTimeCommonInterface
      * 
      * @return string
      */
-    public function current(String $clock) : String;
+    public function current(string $clock) : string;
 
     /**
      * Converts date information.
@@ -110,12 +110,12 @@ interface DateTimeCommonInterface
      * 
      * @return string
      */
-    public function convert(String $date, String $format) : String;
+    public function convert(string $date, string $format) : string;
 
     /**
      * Generates standard date and time information.
      * 
      * @return string
      */
-    public function standart() : String;
+    public function standart() : string;
 }

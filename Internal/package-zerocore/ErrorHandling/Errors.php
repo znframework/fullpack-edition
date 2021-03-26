@@ -22,7 +22,7 @@ class Errors
      * 
      * @return string
      */
-    public static function message(String $langFile, String $errorMsg = NULL, $ex = NULL) : String
+    public static function message(string $langFile, string $errorMsg = NULL, $ex = NULL) : string
     {
         $style  = 'border:solid 1px #E1E4E5;';
         $style .= 'background:#FEFEFE;';
@@ -74,7 +74,7 @@ class Errors
      * 
      * @return mixed
      */
-    public static function last(String $type = NULL)
+    public static function last(string $type = NULL)
     {
         $result = error_get_last();
 
@@ -98,7 +98,7 @@ class Errors
      * 
      * @return bool
      */
-    public static function log(String $message, Int $type = 0, String $destination = NULL, String $header = NULL) : Bool
+    public static function log(string $message, int $type = 0, string $destination = NULL, string $header = NULL) : bool
     {
         return error_log($message, $type, $destination, $header);
     }
@@ -110,7 +110,7 @@ class Errors
      * 
      * @return int
      */
-    public static function report(Int $level = NULL) : Int
+    public static function report(int $level = NULL) : int
     {
         if( ! empty($level) )
         {
@@ -127,7 +127,7 @@ class Errors
      * 
      * @return void
      */
-    public static function handler(Int $errorTypes = E_ALL | E_STRICT)
+    public static function handler(int $errorTypes = E_ALL | E_STRICT)
     {
         set_error_handler([new Exceptions, 'table'], $errorTypes);
     }
@@ -140,7 +140,7 @@ class Errors
      * 
      * @return bool
      */
-    public static function trigger(String $msg, Int $errorType = E_USER_NOTICE) : Bool
+    public static function trigger(string $msg, int $errorType = E_USER_NOTICE) : bool
     {
         return trigger_error($msg, $errorType);
     }

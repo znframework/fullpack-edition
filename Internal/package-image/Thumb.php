@@ -37,7 +37,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function watermark(String $source, String $align = NULL, $margin = 0) : Thumb
+    public function watermark(string $source, string $align = NULL, $margin = 0) : Thumb
     {
         $this->sets['watermark'] = [Base::removePrefix($source, Request::getBaseURL()), $align, $margin]; 
 
@@ -54,7 +54,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function background(Int $x, Int $y, String $color = 'white', String $align = 'center') : Thumb
+    public function background(int $x, int $y, string $color = 'white', string $align = 'center') : Thumb
     {
         $this->sets['backgroundOriginX'] = $x;
         $this->sets['backgroundOriginY'] = $y;
@@ -83,7 +83,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function path(String $file) : Thumb
+    public function path(string $file) : Thumb
     {
         $this->sets['filePath'] = $file;
 
@@ -97,7 +97,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function quality(Int $quality) : Thumb
+    public function quality(int $quality) : Thumb
     {
         $this->sets['quality'] = $quality;
 
@@ -112,7 +112,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function crop(Int $x, Int $y) : Thumb
+    public function crop(int $x, int $y) : Thumb
     {
         $this->sets['x'] = $x;
         $this->sets['y'] = $y;
@@ -128,7 +128,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function size(Int $width, Int $height) : Thumb
+    public function size(int $width, int $height) : Thumb
     {
         $this->sets['width']  = $width;
         $this->sets['height'] = $height;
@@ -144,7 +144,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function resize(Int $width, Int $height) : Thumb
+    public function resize(int $width, int $height) : Thumb
     {
         $this->sets['rewidth']  = $width;
         $this->sets['reheight'] = $height;
@@ -160,7 +160,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function prosize(Int $width, Int $height = 0) : Thumb
+    public function prosize(int $width, int $height = 0) : Thumb
     {
         $this->sets['prowidth']  = $width;
         $this->sets['proheight'] = $height;
@@ -175,7 +175,7 @@ class Thumb implements ThumbInterface
      * 
      * @return string
      */
-    public function create(String $path = NULL) : String
+    public function create(string $path = NULL) : string
     {
         if( isset($this->sets['filePath']) )
         {
@@ -201,7 +201,7 @@ class Thumb implements ThumbInterface
      * 
      * @return object|false
      */
-    public function getProsize(Int $width = 0, Int $height = 0)
+    public function getProsize(int $width = 0, int $height = 0)
     {
         if( ! isset($this->sets['filePath']) )
         {
@@ -217,7 +217,7 @@ class Thumb implements ThumbInterface
      * @param string $ile
      * @param bool   $origin = false
      */
-    public function clean(String $path, Bool $origin = false)
+    public function clean(string $path, bool $origin = false)
     {
         $this->image->cleaner($path, $origin);
     }

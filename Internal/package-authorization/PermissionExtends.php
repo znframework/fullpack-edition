@@ -66,7 +66,7 @@ class PermissionExtends
      * 
      * @return array|string
      */
-    public static function getPermRules(String $type = 'page', $roleId = NULL)
+    public static function getPermRules(string $type = 'page', $roleId = NULL)
     {
         return self::getNopermRules($type, $roleId, 'perm');
     }
@@ -79,7 +79,7 @@ class PermissionExtends
      * 
      * @return array|string
      */
-    public static function getNopermRules(String $type = 'page', $roleId = NULL, $ptype = 'noperm')
+    public static function getNopermRules(string $type = 'page', $roleId = NULL, $ptype = 'noperm')
     {
         $rules = self::getConfigByType($type);
 
@@ -101,7 +101,7 @@ class PermissionExtends
      * 
      * @return array|string
      */
-    protected static function setPermRules(Array $config, $roleId = NULL, $ptype = 'perm')
+    protected static function setPermRules(array $config, $roleId = NULL, $ptype = 'perm')
     {
         $roleId   = $roleId ?? self::$roleId;
         $configs  = array_keys(self::getConfigByType(NULL));
@@ -135,7 +135,7 @@ class PermissionExtends
      * 
      * @return array|string
      */
-    protected static function setNopermRules(Array $config, $roleId = NULL)
+    protected static function setNopermRules(array $config, $roleId = NULL)
     {
         self::setPermRules($config, $roleId, 'noperm');
     }

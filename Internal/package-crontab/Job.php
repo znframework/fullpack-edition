@@ -156,7 +156,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * @param callable $callable
      * @param int      $decrement = 1
      */
-    public function queue(Callable $callable, Int $decrement = 1)
+    public function queue(callable $callable, int $decrement = 1)
     {
         new Queue($callable, $decrement, $this);
     }
@@ -166,7 +166,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @param int $getLimit = 1
      */
-    public function limit(Int $getLimit = 1)
+    public function limit(int $getLimit = 1)
     {
         new Limit($getLimit, $this);
     }
@@ -178,7 +178,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function project(String $name)
+    public function project(string $name)
     {
         $this->user = $name;
 
@@ -196,7 +196,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function driver(String $driver) : Job
+    public function driver(string $driver) : Job
     {
         $this->processor->driver($driver);
         
@@ -208,7 +208,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return array
      */
-    public function listArray() : Array
+    public function listArray() : array
     {
         if( ! is_file($this->crontabCommands) )
         {
@@ -223,7 +223,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return string
      */
-    public function list() : String
+    public function list() : string
     {
         $list = '';
 
@@ -289,7 +289,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function debug(Bool $status = true) : Job
+    public function debug(bool $status = true) : Job
     {
         $this->debug = $status;
         return $this;
@@ -300,7 +300,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @param string $file
      */
-    public function controller(String $file)
+    public function controller(string $file)
     {
         new ControllerCommand($file, $command);
         
@@ -314,7 +314,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @param string $url
      */
-    public function wget(String $url)
+    public function wget(string $url)
     {
         $this->path('wget');
 
@@ -327,7 +327,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * @param string $file
      * @param string $type = 'Project' - options[Project|External]
      */
-    public function command(String $file, $type = 'Project')
+    public function command(string $file, $type = 'Project')
     {
         $path     = $this->convertFileName($file);
         $pathEx   = explode('-', $path);
@@ -348,7 +348,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function path(String $path = NULL)
+    public function path(string $path = NULL)
     {
         $this->path = $path;
         
@@ -362,7 +362,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return int
      */
-    public function run(String $cmd = NULL)
+    public function run(string $cmd = NULL)
     {
         $this->createExecFileIfNotExists();
 

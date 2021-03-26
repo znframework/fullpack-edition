@@ -18,7 +18,7 @@ class Data extends UserExtends
      * 
      * @return object
      */
-    public function get(String $tbl = NULL)
+    public function get(string $tbl = NULL)
     {
         if( $this->getUsernameSessionCookie() )
         {
@@ -63,7 +63,7 @@ class Data extends UserExtends
      * 
      * @return int
      */
-    public function activeCount($type = 'active') : Int
+    public function activeCount($type = 'active') : int
     {
         $column = $this->getConfig['matching']['columns'][$type];
 
@@ -77,7 +77,7 @@ class Data extends UserExtends
      * 
      * @return int
      */
-    public function bannedCount() : Int
+    public function bannedCount() : int
     {
         return $this->activeCount('banned');
     }
@@ -89,7 +89,7 @@ class Data extends UserExtends
      * 
      * @return int
      */
-    public function count() : Int
+    public function count() : int
     {
         return $this->dbClass->get($this->tableName)->totalRows();
     }

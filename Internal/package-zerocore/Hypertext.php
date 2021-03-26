@@ -18,7 +18,7 @@ class Hypertext
      * 
      * @return string
      */
-    public static function attributes(Array $attributes) : String
+    public static function attributes(array $attributes) : string
     {
         $attribute = '';
 

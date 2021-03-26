@@ -50,7 +50,7 @@ class Mime
      * 
      * @return string|false
      */
-    public static function type(String $file, $element = NULL)
+    public static function type(string $file, $element = NULL)
     {
         if( ! is_file($file) )
         {

@@ -18,7 +18,7 @@ interface FTPInterface
      * 
      * @return bool
      */
-    public function changeFolder(String $path) : Bool;
+    public function changeFolder(string $path) : bool;
 
     /**
      * Get Files
@@ -28,7 +28,7 @@ interface FTPInterface
      * 
      * @return array
      */
-    public function files(String $path, String $extension = NULL) : Array;
+    public function files(string $path, string $extension = NULL) : array;
 
     /**
      * Get File Size
@@ -38,5 +38,5 @@ interface FTPInterface
      * 
      * @return float
      */
-    public function fileSize(String $path, String $type = 'b', Int $decimal = 2) : Float;
+    public function fileSize(string $path, string $type = 'b', int $decimal = 2) : Float;
 }

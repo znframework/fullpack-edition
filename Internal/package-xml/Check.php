@@ -18,7 +18,7 @@ class Check
      * 
      * @return bool
      */
-    public static function check(String $xml) : Bool
+    public static function check(string $xml) : bool
     {
         if( empty($xml) )
         {

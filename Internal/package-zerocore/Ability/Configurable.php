@@ -47,7 +47,7 @@ trait Configurable
      * 
      * @return array
      */
-    public static function all() : Array
+    public static function all() : array
     {
         return Config::get(self::getOnlyClassName());
     }

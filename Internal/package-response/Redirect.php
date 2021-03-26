@@ -43,7 +43,7 @@ class Redirect implements RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = true
      */
-    public function __construct(String $url = NULL, Int $time = 0, Array $data = NULL, Bool $exit = true)
+    public function __construct(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true)
     {
         if( $url !== NULL )
         {
@@ -56,7 +56,7 @@ class Redirect implements RedirectInterface
      * 
      * @return int
      */
-    public static function status() : Int
+    public static function status() : int
     {
         return $_SERVER['REDIRECT_STATUS'] ?? 0;
     }
@@ -66,7 +66,7 @@ class Redirect implements RedirectInterface
      * 
      * @return string
      */
-    public static function url() : String
+    public static function url() : string
     {
         return $_SERVER['REDIRECT_URL'] ?? false;
     }
@@ -76,7 +76,7 @@ class Redirect implements RedirectInterface
      * 
      * @return string
      */
-    public static function queryString() : String
+    public static function queryString() : string
     {
         return $_SERVER['REDIRECT_QUERY_STRING'] ?? false;
     }
@@ -88,7 +88,7 @@ class Redirect implements RedirectInterface
      * 
      * @return Redirect
      */
-    public function code(Int $code) : Redirect
+    public function code(int $code) : Redirect
     {
         Http::response($code);
 
@@ -103,7 +103,7 @@ class Redirect implements RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = false
      */
-    public function refresh(String $url = NULL, Int $time = 0, Array $data = NULL, Bool $exit = false)
+    public function refresh(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = false)
     {
         $this->location($url, $time, $data, $exit, __FUNCTION__);
     }
@@ -116,7 +116,7 @@ class Redirect implements RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = true
      */
-    public function location(String $url = NULL, Int $time = 0, Array $data = NULL, Bool $exit = true, $type = 'location')
+    public function location(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true, $type = 'location')
     {
         return Response::redirect($url, $time, $data, $exit, $type);
     }
@@ -129,7 +129,7 @@ class Redirect implements RedirectInterface
      * 
      * @return false|mixed
      */
-    public function selectData(String $k, Bool $isDelete = false)
+    public function selectData(string $k, bool $isDelete = false)
     {
         if( $data = ($_SESSION[$this->fix . $k] ?? NULL) )
         {
@@ -155,7 +155,7 @@ class Redirect implements RedirectInterface
      * 
      * @return true
      */
-    public function deleteData($data) : Bool
+    public function deleteData($data) : bool
     {
         if( is_array($data) ) foreach( $data as $v )
         {
@@ -174,7 +174,7 @@ class Redirect implements RedirectInterface
      * 
      * @param string $action = NULL
      */
-    public function action(String $action = NULL)
+    public function action(string $action = NULL)
     {
         $time = $this->redirect['time'] ?? 0;
         $data = $this->redirect['data'] ?? [];
@@ -198,7 +198,7 @@ class Redirect implements RedirectInterface
      * 
      * @return self
      */
-    public function exit(Bool $exit = true)
+    public function exit(bool $exit = true)
     {
         $this->redirect['exit'] = $exit;
 
@@ -212,7 +212,7 @@ class Redirect implements RedirectInterface
      * 
      * @return self
      */
-    public function time(Int $time = 0)
+    public function time(int $time = 0)
     {
         $this->redirect['time'] = $time;
 
@@ -226,7 +226,7 @@ class Redirect implements RedirectInterface
      * 
      * @return self
      */
-    public function wait(Int $time = 0)
+    public function wait(int $time = 0)
     {
         $this->redirect['time'] = $time;
 
@@ -240,7 +240,7 @@ class Redirect implements RedirectInterface
      * 
      * @return self
      */
-    public function data(Array $data)
+    public function data(array $data)
     {
         $this->redirect['data'] = $data;
 
@@ -254,7 +254,7 @@ class Redirect implements RedirectInterface
      * 
      * @return self
      */
-    public function insert(Array $data)
+    public function insert(array $data)
     {
         $this->redirect['data'] = $data;
 
@@ -269,7 +269,7 @@ class Redirect implements RedirectInterface
      * 
      * @return mixed
      */
-    public function select(String $key, Bool $isDelete = false)
+    public function select(string $key, bool $isDelete = false)
     {
         return $this->selectData($key, $isDelete);
     }
@@ -281,7 +281,7 @@ class Redirect implements RedirectInterface
      * 
      * @return true
      */
-    public function delete($key) : Bool
+    public function delete($key) : bool
     {
         return $this->deleteData($key);
     }

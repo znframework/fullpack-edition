@@ -21,7 +21,7 @@ class Element
      * 
      * @return mixed 
      */
-    public static function use(Array $array, String $keyval = 'value')
+    public static function use(array $array, string $keyval = 'value')
     {
         switch( $keyval )
         {

@@ -21,7 +21,7 @@ class Money
      * 
      * @return string
      */
-    public function format(Int $money, String $type = NULL) : String
+    public function format(int $money, string $type = NULL) : string
     {
         return Converter::money($money, $type);
     }

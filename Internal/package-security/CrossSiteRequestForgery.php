@@ -21,7 +21,7 @@ class CrossSiteRequestForgery
      * 
      * @return void
      */
-    public static function token(String $uri = NULL, String $type = 'post')
+    public static function token(string $uri = NULL, string $type = 'post')
     {
         Security::CSRFToken($uri, $type);
     }
@@ -33,7 +33,7 @@ class CrossSiteRequestForgery
      * 
      * @return void
      */
-    public static function get(String $uri = NULL)
+    public static function get(string $uri = NULL)
     {
         self::token($uri, 'get');
     }
@@ -45,7 +45,7 @@ class CrossSiteRequestForgery
      * 
      * @return string
      */
-    public static function key(String $name = 'token')
+    public static function key(string $name = 'token')
     {
         Security::createCSRFTokenKey($name);
 
@@ -60,7 +60,7 @@ class CrossSiteRequestForgery
      * 
      * @return bool
      */
-    public static function validToken(String $name = 'token', String $type = 'post') : Bool
+    public static function validToken(string $name = 'token', string $type = 'post') : bool
     {
         return Security::validCSRFToken($name, $type);
     }

@@ -16,7 +16,7 @@ class Login extends UserExtends
      * 
      * @param string $username
      */
-    public function username(String $username)
+    public function username(string $username)
     {
         Properties::$parameters['username'] = $username;
     }
@@ -26,7 +26,7 @@ class Login extends UserExtends
      * 
      * @param string $password
      */
-    public function password(String $password)
+    public function password(string $password)
     {
         Properties::$parameters['password'] = $password;
     }
@@ -36,7 +36,7 @@ class Login extends UserExtends
      * 
      * @param bool $remember = true
      */
-    public function remember(Bool $remember = true)
+    public function remember(bool $remember = true)
     {
         Properties::$parameters['remember'] = $remember;
     }
@@ -50,7 +50,7 @@ class Login extends UserExtends
      * 
      * @return bool
      */
-    public function do(String $username = NULL, String $password = NULL, $rememberMe = false) : Bool
+    public function do(string $username = NULL, string $password = NULL, $rememberMe = false) : bool
     {
         $rpassword = $password;
 
@@ -128,7 +128,7 @@ class Login extends UserExtends
      * 
      * @return bool
      */
-    public function is() : Bool
+    public function is() : bool
     {
         $getUserData = $this->getUserData();
 

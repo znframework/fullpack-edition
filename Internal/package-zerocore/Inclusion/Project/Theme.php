@@ -36,7 +36,7 @@ class Theme
      * 
      * @return void
      */
-    public static function active(String $active = 'Default')
+    public static function active(string $active = 'Default')
     {
         self::$active = Base::suffix($active);
 
@@ -49,7 +49,7 @@ class Theme
      * 
      * @param array $elements
      */
-    public static function matchElement(String $inputs = NULL, String $attributes = NULL)
+    public static function matchElement(string $inputs = NULL, string $attributes = NULL)
     {
         self::$elements = [Base::prefix($inputs, '|'), Base::prefix($attributes, '|')];
 
@@ -66,7 +66,7 @@ class Theme
      * 
      * @return void
      */
-    public static function integration(String $themeName, String &$data)
+    public static function integration(string $themeName, String &$data)
     {
         $data = preg_replace_callback
         (

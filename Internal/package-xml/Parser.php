@@ -22,7 +22,7 @@ class Parser
      * 
      * @return mixed
      */
-    public static function do(String $xml, String $result = 'object')
+    public static function do(string $xml, string $result = 'object')
     {
         $xml    = self::cleanXMLElement($xml);
         $parser = xml_parser_create();
@@ -89,7 +89,7 @@ class Parser
      * 
      * @return array
      */
-    public static function array(String $data) : Array
+    public static function array(string $data) : array
     {
         return self::do($data, 'array');
     }
@@ -101,7 +101,7 @@ class Parser
      * 
      * @return string
      */
-    public static function json(String $data) : String
+    public static function json(string $data) : string
     {
         return json_encode(self::do($data, 'array'));
     }
@@ -113,7 +113,7 @@ class Parser
      * 
      * @return object
      */
-    public static function object(String $data)
+    public static function object(string $data)
     {
         return self::do($data, 'object');
     }
@@ -126,7 +126,7 @@ class Parser
      * 
      * @return SimpleXMLElement
      */
-    public static function simple(String $data, Int $option = 0)
+    public static function simple(string $data, int $option = 0)
     {
         $data = self::cleanXMLElement($data);
 
@@ -141,7 +141,7 @@ class Parser
      * 
      * @return SimpleXMLElement
      */
-    public static function simpleURL(String $data, Int $option = 0)
+    public static function simpleURL(string $data, int $option = 0)
     {
         return new SimpleXMLElement($data, $option, true);
     }

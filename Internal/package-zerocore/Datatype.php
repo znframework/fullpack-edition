@@ -20,7 +20,7 @@ class Datatype
      * 
      * @return array
      */
-    public static function caseArray(Array $array, String $type = 'lower', String $keyval = 'all') : Array
+    public static function caseArray(array $array, string $type = 'lower', string $keyval = 'all') : array
     {
         $callback = function($data) use($type)
         {
@@ -49,7 +49,7 @@ class Datatype
      * 
      * @return array
      */
-    public static function multikey(Array $array, String $keySplit = '|') : Array
+    public static function multikey(array $array, string $keySplit = '|') : array
     {
         $newArray = [];
 
@@ -74,7 +74,7 @@ class Datatype
      * @param string $index     = '0'
      * @param string $count     = '1'
      */
-    public static function divide(String $str = NULL, String $separator = '|', String $index = '0', String $count = '1')
+    public static function divide(string $str = NULL, string $separator = '|', string $index = '0', string $count = '1')
     {
         $arrayEx = explode($separator, $str);
 
@@ -129,7 +129,7 @@ class Datatype
      * 
      * @return array
      */
-    public static function splitUpperCase(String $string) : Array
+    public static function splitUpperCase(string $string) : array
     {
         return preg_split('/(?=[A-Z])/', $string, -1, PREG_SPLIT_NO_EMPTY);
     }

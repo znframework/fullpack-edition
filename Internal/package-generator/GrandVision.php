@@ -59,7 +59,7 @@ class GrandVision extends DatabaseDefinitions
      * @param string $databaes = '*'
      * @param array  $tables   = NULL
      */
-    public function delete(String $database = '*', Array $tables = NULL)
+    public function delete(string $database = '*', array $tables = NULL)
     {
         if( $database === '*' )
         {
@@ -242,7 +242,7 @@ class GrandVision extends DatabaseDefinitions
      * 
      * @return string
      */
-    protected function stringArray(Array $data)
+    protected function stringArray(array $data)
     {
         $str = EOL . HT . '[' . EOL;
 

@@ -43,7 +43,7 @@ class Processor implements ProcessorInterface
      * 
      * @return string
      */
-    public function type() : String
+    public function type() : string
     {
         switch( $name = substr($sapi = php_sapi_name(), 0, 3) )
         {
@@ -94,7 +94,7 @@ class Processor implements ProcessorInterface
      * 
      * @return Processor
      */
-    public function driver(String $driver) : Processor
+    public function driver(string $driver) : Processor
     {
         $this->driver = $driver;
 
@@ -106,7 +106,7 @@ class Processor implements ProcessorInterface
      * 
      * @return array
      */
-    public function output() : Array
+    public function output() : array
     {
         return (array) $this->output;
     }
@@ -116,7 +116,7 @@ class Processor implements ProcessorInterface
      * 
      * @return int
      */
-    public function return() : Int
+    public function return() : int
     {
         return (int) $this->return;
     }

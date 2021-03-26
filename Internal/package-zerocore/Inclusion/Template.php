@@ -24,7 +24,7 @@ class Template
      * 
      * @codeCoverageIgnore
      */
-    public static function use(String $page, Array $data = NULL, Bool $obGetContents = false)
+    public static function use(string $page, array $data = NULL, bool $obGetContents = false)
     {
         if( $return = View::use($page, $data, $obGetContents, TEMPLATES_DIR) )
         {

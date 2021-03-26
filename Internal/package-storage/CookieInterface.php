@@ -18,7 +18,7 @@ interface CookieInterface
      * 
      * @return Cookie
      */
-    public function time(Int $time) : Cookie;
+    public function time(int $time) : Cookie;
 
     /**
      * Sets cookie path
@@ -27,7 +27,7 @@ interface CookieInterface
      * 
      * @return Cookie
      */
-    public function path(String $path) : Cookie;
+    public function path(string $path) : Cookie;
 
     /**
      * Sets cookie domain
@@ -36,7 +36,7 @@ interface CookieInterface
      * 
      * @return Cookie
      */
-    public function domain(String $domain) : Cookie;
+    public function domain(string $domain) : Cookie;
 
     /**
      * Sets secure status
@@ -45,7 +45,7 @@ interface CookieInterface
      * 
      * @return Cookie
      */
-    public function secure(Bool $secure) : Cookie;
+    public function secure(bool $secure) : Cookie;
 
     /**
      * Sets only http status
@@ -54,5 +54,5 @@ interface CookieInterface
      * 
      * @return Cookie
      */
-    public function httpOnly(Bool $httpOnly) : Cookie;
+    public function httpOnly(bool $httpOnly) : Cookie;
 }

@@ -18,7 +18,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function base(String $uri = NULL) : String;
+    public static function base(string $uri = NULL) : string;
 
     /**
      * Get site URL
@@ -27,7 +27,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function site(String $uri = NULL) : String;
+    public static function site(string $uri = NULL) : string;
 
     /**
      * Get site URLs
@@ -36,7 +36,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function sites(String $uri = NULL) : String;
+    public static function sites(string $uri = NULL) : string;
 
     /**
      * Get host name
@@ -45,7 +45,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function host(String $uri = NULL) : String;
+    public static function host(string $uri = NULL) : string;
 
     /**
      * Get current URL
@@ -54,14 +54,14 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function current(String $fix = NULL) : String;
+    public static function current(string $fix = NULL) : string;
 
     /**
      * Get prev URL
      * 
      * @return string
      */
-    public static function prev() : String;
+    public static function prev() : string;
 
     /**
      * Build Query
@@ -73,7 +73,7 @@ interface URLInterface
      * 
      * @return mixed
      */
-    public static function buildQuery($data, String $numericPrefix = NULL, String $separator = NULL, String $enctype = '+') : String;
+    public static function buildQuery($data, string $numericPrefix = NULL, string $separator = NULL, string $enctype = '+') : string;
 
     /**
      * Parse URL
@@ -83,5 +83,5 @@ interface URLInterface
      * 
      * @return mixed
      */
-    public static function parse(String $url, $component = 1);
+    public static function parse(string $url, $component = 1);
 }

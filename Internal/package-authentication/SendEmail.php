@@ -36,7 +36,7 @@ class SendEmail extends UserExtends
      * @param string $newName     = NULL
      * @param mixed  $mime        = NULL
      */
-    public function attachment(String $file, String $disposition = NULL, String $newName = NULL, $mime = NULL)
+    public function attachment(string $file, string $disposition = NULL, string $newName = NULL, $mime = NULL)
     {
         $this->emailClass->attachment($file, $disposition, $newName, $mime);
     }
@@ -50,7 +50,7 @@ class SendEmail extends UserExtends
      * 
      * @return void
      */
-    public function send(String $subject, String $body, Int $count = 35)
+    public function send(string $subject, string $body, int $count = 35)
 	{
         if( empty($this->usernameColumn) )
         {

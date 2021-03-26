@@ -21,7 +21,7 @@ class Extension
      * 
      * @return string
      */
-    public static function get(String $file, Bool $dot = false) : String
+    public static function get(string $file, bool $dot = false) : string
     {
         return Filesystem::getExtension($file, $dot);
     }
@@ -33,7 +33,7 @@ class Extension
      * 
      * @return string
      */
-    public static function remove(String $file) : String
+    public static function remove(string $file) : string
     {
         return Filesystem::removeExtension($file);
     }

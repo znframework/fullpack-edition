@@ -25,7 +25,7 @@ class Request
      * 
      * @returm bool
      */
-    public static function isMethod(...$methods) : Bool
+    public static function isMethod(...$methods) : bool
     {
         if( ! in_array(strtolower($_SERVER['REQUEST_METHOD'] ?? false), $methods) )
         {
@@ -40,7 +40,7 @@ class Request
      * 
      * @param bool
      */
-    public static function isAjax() : Bool
+    public static function isAjax() : bool
     {
         if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest' )
         {
@@ -59,7 +59,7 @@ class Request
      * 
      * @return string
      */
-    public static function ipv4() : String
+    public static function ipv4() : string
     {
         $localIP = '127.0.0.1';
 
@@ -91,7 +91,7 @@ class Request
      * 
      * @return string
      */
-    public static function getActiveURI(Bool $fullPath = false) : String
+    public static function getActiveURI(bool $fullPath = false) : string
     {
         # 5.3.22[edited]
         $requestUri = Base::suffix($_SERVER['REQUEST_URI'] ?? false);
@@ -127,7 +127,7 @@ class Request
      * 
      * @return string
      */
-    public static function getSiteURL(String $uri = NULL) : String
+    public static function getSiteURL(string $uri = NULL) : string
     {
         $return = self::getHostName
         (
@@ -149,7 +149,7 @@ class Request
      * 
      * @return string
      */
-    public static function getBaseURL(String $uri = NULL) : String
+    public static function getBaseURL(string $uri = NULL) : string
     {
         return self::getHostName(BASE_DIR . $uri);
     }
@@ -162,7 +162,7 @@ class Request
      * 
      * @return string
      */
-    public static function getHostName(String $uri = NULL) : String
+    public static function getHostName(string $uri = NULL) : string
     {
         return SSL_STATUS . Base::host() . '/' . In::cleanInjection(ltrim($uri, '/'));
     }

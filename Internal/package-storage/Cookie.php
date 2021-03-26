@@ -58,7 +58,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return Cookie
      */
-    public function time(Int $time) : Cookie
+    public function time(int $time) : Cookie
     {
         $this->time = $time;
 
@@ -72,7 +72,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return Cookie
      */
-    public function path(String $path) : Cookie
+    public function path(string $path) : Cookie
     {
         $this->path = $path;
 
@@ -86,7 +86,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return Cookie
      */
-    public function domain(String $domain) : Cookie
+    public function domain(string $domain) : Cookie
     {
         $this->domain = $domain;
 
@@ -100,7 +100,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return Cookie
      */
-    public function secure(Bool $secure = false) : Cookie
+    public function secure(bool $secure = false) : Cookie
     {
         $this->secure = $secure;
 
@@ -114,7 +114,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return Cookie
      */
-    public function httpOnly(Bool $httpOnly = true) : Cookie
+    public function httpOnly(bool $httpOnly = true) : Cookie
     {
         $this->httpOnly = $httpOnly;
 
@@ -130,7 +130,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return bool
      */
-    public function insert(String $name, $value, Int $time = NULL) : Bool
+    public function insert(string $name, $value, int $time = NULL) : bool
     {
         if( ! empty($time) ) $this->time($time);
 
@@ -168,7 +168,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return mixed
      */
-    public function select(String $name)
+    public function select(string $name)
     {
         $this->encodeNameValue($name);
 
@@ -189,7 +189,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return array
      */
-    public function selectAll() : Array
+    public function selectAll() : array
     {
         if( ! empty($_COOKIE) )
         {
@@ -209,7 +209,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @param bool
      */
-    public function delete(String $name, String $path = NULL) : Bool
+    public function delete(string $name, string $path = NULL) : bool
     {
         $this->setCookiePath($path);
 
@@ -236,7 +236,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return bool
      */
-    public function deleteAll() : Bool
+    public function deleteAll() : bool
     {
         $path = $this->config['path'];
 

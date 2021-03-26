@@ -48,7 +48,7 @@ class Script implements TextInterface
      * 
      * @return string
      */
-    public function compress(Callable $callback, String $encoding = 'normal', Bool $fastDecode = true, Bool $specialChars = false)
+    public function compress(callable $callback, string $encoding = 'normal', bool $fastDecode = true, bool $specialChars = false)
     {
         $output = Callback::do($callback);
 
@@ -73,7 +73,7 @@ class Script implements TextInterface
      * 
      * @return $this
      */
-    public function type(String $type)
+    public function type(string $type)
     {
         $this->type = $type;
 
@@ -101,7 +101,7 @@ class Script implements TextInterface
      * 
      * @return string
      */
-    public function open() : String
+    public function open() : string
     {
         $script = "<script type=\"$this->type\">".EOL;
 
@@ -117,7 +117,7 @@ class Script implements TextInterface
      * 
      * @return string
      */
-    public function close() : String
+    public function close() : string
     {
         $script =  '</script>'.EOL;
         return $script;

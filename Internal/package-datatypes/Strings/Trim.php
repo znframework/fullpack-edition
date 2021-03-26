@@ -20,7 +20,7 @@ class Trim
      * 
      * @return string
      */
-    public static function middle(String $str) : String
+    public static function middle(string $str) : string
     {
         $str = preg_replace
         (
@@ -39,7 +39,7 @@ class Trim
      * 
      * @return string
      */
-    public static function slashes(String $str) : String
+    public static function slashes(string $str) : string
     {
         $str = trim($str, "/");
 
@@ -54,7 +54,7 @@ class Trim
      * 
      * @return string
      */
-    public static function removePrefix(String $data = NULL, String $fix = '/') : String
+    public static function removePrefix(string $data = NULL, string $fix = '/') : string
     {
         return Base::removePrefix($data, $fix);
     }
@@ -67,7 +67,7 @@ class Trim
      * 
      * @return string
      */
-    public static function removeSuffix(String $data = NULL, String $fix = '/') : String
+    public static function removeSuffix(string $data = NULL, string $fix = '/') : string
     {
         return Base::removeSuffix($data, $fix);
     }
@@ -80,7 +80,7 @@ class Trim
      * 
      * @return string
      */
-    public static function removePresuffix(String $data = NULL, String $fix = '/') : String
+    public static function removePresuffix(string $data = NULL, string $fix = '/') : string
     {
         return Base::removePresuffix($data, $fix);
     }
@@ -95,7 +95,7 @@ class Trim
      * 
      * @return string
      */
-    public static function suffix(String $data = NULL, String $fix = '/') : String
+    public static function suffix(string $data = NULL, string $fix = '/') : string
     {
         return Base::suffix($data, $fix);
     }
@@ -110,7 +110,7 @@ class Trim
      * 
      * @return string
      */
-    public static function prefix(String $data = NULL, String $fix = '/') : String
+    public static function prefix(string $data = NULL, string $fix = '/') : string
     {
         return Base::prefix($data, $fix);
     }
@@ -125,7 +125,7 @@ class Trim
      * 
      * @return string
      */
-    public static function presuffix(String $data = NULL, String $fix = '/') : String
+    public static function presuffix(string $data = NULL, string $fix = '/') : string
     {
         return Base::presuffix($data, $fix);
     }

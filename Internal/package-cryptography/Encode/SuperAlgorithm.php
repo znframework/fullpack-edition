@@ -22,7 +22,7 @@ class SuperAlgorithm extends EncodeExtends
      * 
      * @return string
      */
-    public static function create(String $data) : String
+    public static function create(string $data) : string
     { 
         $projectKey = Config::get('Project', 'key');
 

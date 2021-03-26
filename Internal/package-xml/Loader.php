@@ -21,7 +21,7 @@ class Loader
      * 
      * @return string
      */
-    public static function do(String $file) : String
+    public static function do(string $file) : string
     {
         $file = Base::suffix($file, '.xml');
 

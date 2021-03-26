@@ -118,7 +118,7 @@ class Run
      * @return array
      * 
      */
-    protected static function arrayRemoveFirst(Array $array, Int $count = 1) : Array
+    protected static function arrayRemoveFirst(array $array, int $count = 1) : array
     {
         for( $i = 0; $i < $count; $i++ )
         {

@@ -162,7 +162,7 @@ class MDB implements MDBInterface
      * 
      * @param array $config
      */
-    public static function new(Array $config)
+    public static function new(array $config)
     {
         return new self($config);
     }
@@ -175,7 +175,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function insert(String $table, Array $datas) : Bool
+    public function insert(string $table, array $datas) : bool
     {
         $bulk = new BulkWrite;
 
@@ -205,7 +205,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function delete(String $table) : Bool
+    public function delete(string $table) : bool
     {
         $bulk = new BulkWrite;
 
@@ -222,7 +222,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function update(String $table, Array $datas = []) : Bool
+    public function update(string $table, array $datas = []) : bool
     {
         $bulk = new BulkWrite;
 
@@ -242,7 +242,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function whereRegex(String $key, $value, String $flags = '')
+    public function whereRegex(string $key, $value, string $flags = '')
     {
         return $this->filter($key, new Regex($value, $flags));
     }
@@ -255,7 +255,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function where(String $key, $value)
+    public function where(string $key, $value)
     {
         return $this->filter($key, $value);
     }
@@ -278,7 +278,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function option(String $key, $value)
+    public function option(string $key, $value)
     {
         $this->options[$key] = $value;
 
@@ -293,7 +293,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function filter(String $key, $value)
+    public function filter(string $key, $value)
     {
         $this->filters[$key] = $value;
 
@@ -305,7 +305,7 @@ class MDB implements MDBInterface
      * 
      * @param int
      */
-    public function totalRows() : Int
+    public function totalRows() : int
     {
         return count($this->result());
     }
@@ -324,7 +324,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function limit(Int $skip, Int $limit = NULL)
+    public function limit(int $skip, int $limit = NULL)
     {
         if( $limit === NULL )
         {
@@ -347,7 +347,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function orderBy(String $column, String $type = 'asc')
+    public function orderBy(string $column, string $type = 'asc')
     {
         $type  = strtolower($type);
         $types = ['asc' => 1, 'desc' => -1];
@@ -369,7 +369,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function get(String $table)
+    public function get(string $table)
     {
         $execute = $this->execute($table);
 
@@ -422,7 +422,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function createIndex(String $table, Array $indexes) : Bool
+    public function createIndex(string $table, array $indexes) : bool
     {
         $generateIndexses = [];
 
@@ -444,7 +444,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function dropIndex(String $table, String $indexName) : Bool
+    public function dropIndex(string $table, string $indexName) : bool
     {
         try 
         {
@@ -467,7 +467,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function drop(String $table) : Bool
+    public function drop(string $table) : bool
     {
         return $this->truncate($table);
     }
@@ -480,7 +480,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function create(String $table, Array $options = []) : Bool
+    public function create(string $table, array $options = []) : bool
     {
         try 
         {
@@ -520,7 +520,7 @@ class MDB implements MDBInterface
      * @param string $table
      * @param string $column
      */
-    public function createAutoIncrement(String $table, String $column)
+    public function createAutoIncrement(string $table, string $column)
     {
         $table = $this->getIndexCollectionName($table);
 
@@ -535,7 +535,7 @@ class MDB implements MDBInterface
     /**
      * protected index get index collection name
      */
-    protected function getIndexCollectionName(String $table)
+    protected function getIndexCollectionName(string $table)
     {
         return $table . 'Indexes';
     }
@@ -547,7 +547,7 @@ class MDB implements MDBInterface
      * 
      * @return bool
      */
-    public function truncate(String $table) : Bool
+    public function truncate(string $table) : bool
     {
         try 
         {
@@ -573,7 +573,7 @@ class MDB implements MDBInterface
      * 
      * @return array
      */
-    public function databases() : Array
+    public function databases() : array
     {
         $databases = $this->executeReadCommand('admin', ['listDatabases' => 1]);
 
@@ -594,7 +594,7 @@ class MDB implements MDBInterface
      * 
      * @return array
      */
-    public function indexes(String $table) : Array
+    public function indexes(string $table) : array
     {
         $indexes = $this->executeReadCommand($this->database, ['listIndexes' => $table]);
 
@@ -615,7 +615,7 @@ class MDB implements MDBInterface
      * 
      * @return array
      */
-    public function tables() : Array
+    public function tables() : array
     {
         return $this->collections();
     }
@@ -625,7 +625,7 @@ class MDB implements MDBInterface
      * 
      * @return array
      */
-    public function collections() : Array
+    public function collections() : array
     {
         $collections = $this->executeReadCommand($this->database, ['listCollections' => 1]);
 
@@ -646,7 +646,7 @@ class MDB implements MDBInterface
      * 
      * @return string
      */
-    public function error() : String
+    public function error() : string
     {
         return $this->error;
     }
@@ -662,7 +662,7 @@ class MDB implements MDBInterface
     /**
      * protected set auto increment
      */
-    protected function setAutoIncrement(String $table, &$data)
+    protected function setAutoIncrement(string $table, &$data)
     {
         if( $this->isAutoIncrement($table) )
         {
@@ -691,7 +691,7 @@ class MDB implements MDBInterface
     /**
      * protected execute read command
      */
-    protected function executeReadCommand(String $database, Array $command)
+    protected function executeReadCommand(string $database, array $command)
     {
         $query = $this->manager->executeReadCommand($database, new Command($command), $this->executable);
 
@@ -705,7 +705,7 @@ class MDB implements MDBInterface
     /**
      * protected execute write command
      */
-    protected function executeWriteCommand(Array $command)
+    protected function executeWriteCommand(array $command)
     {
         $return = $this->manager->executeWriteCommand($this->database, new Command($command), $this->executable);
 
@@ -717,7 +717,7 @@ class MDB implements MDBInterface
     /**
      * protected operation
      */
-    protected function operation(String $table, $bulk)
+    protected function operation(string $table, $bulk)
     {
         $return = $this->manager->executeBulkWrite($this->collect($table), $bulk, $this->executable);
 
@@ -729,7 +729,7 @@ class MDB implements MDBInterface
     /**
      * protected execute
      */
-    protected function execute(String $table)
+    protected function execute(string $table)
     {
         $return = $this->manager->executeQuery($this->collect($table), new Query($this->filters, $this->options), $this->executable);
 
@@ -741,7 +741,7 @@ class MDB implements MDBInterface
     /**
      * protected collect
      */
-    protected function collect(String $collection)
+    protected function collect(string $collection)
     {
         return $this->database . '.' . $collection;
     }

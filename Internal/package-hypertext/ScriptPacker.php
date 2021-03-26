@@ -81,7 +81,7 @@ class ScriptPacker
      * @param bool   $fastDecode   = true
      * @param bool   $specialChars = false
      */
-	public function __construct(String $script, String $encoding = 'normal', Bool $fastDecode = true, Bool $specialChars = false)
+	public function __construct(string $script, string $encoding = 'normal', bool $fastDecode = true, bool $specialChars = false)
 	{
         $this->script = $script . "\n";
         

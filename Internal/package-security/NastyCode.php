@@ -22,7 +22,7 @@ class NastyCode
      * 
      * @return string
      */
-    public static function encode(String $string, $badWords = NULL, $changeChar = '[badchars]') : String
+    public static function encode(string $string, $badWords = NULL, $changeChar = '[badchars]') : string
     {
         if( empty($badWords) )
         {

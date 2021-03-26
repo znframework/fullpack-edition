@@ -19,7 +19,7 @@ interface StoreInterface
      * 
      * @return string
      */
-    public static function write(String $file, $data) : Bool;
+    public static function write(string $file, $data) : bool;
 
     /**
      * Read
@@ -29,7 +29,7 @@ interface StoreInterface
      * 
      * @return mixed
      */
-    public static function read(String $file, Bool $array = false);
+    public static function read(string $file, bool $array = false);
 
     /**
      * Read object
@@ -38,7 +38,7 @@ interface StoreInterface
      * 
      * @return object
      */
-    public static function readObject(String $file);
+    public static function readObject(string $file);
 
     /**
      * Read array
@@ -47,7 +47,7 @@ interface StoreInterface
      * 
      * @return array
      */
-    public static function readArray(String $file) : Array;
+    public static function readArray(string $file) : array;
 
     /**
      * Encode
@@ -57,7 +57,7 @@ interface StoreInterface
      * 
      * @return string
      */
-    public static function encode($data) : String;
+    public static function encode($data) : string;
 
     /**
      * Decode
@@ -68,7 +68,7 @@ interface StoreInterface
      * 
      * @return mixed
      */
-    public static function decode(String $data);
+    public static function decode(string $data);
 
     /**
      * Decode Object
@@ -77,7 +77,7 @@ interface StoreInterface
      * 
      * @return object
      */
-    public static function decodeObject(String $data);
+    public static function decodeObject(string $data);
 
    /**
      * Decode Array
@@ -86,7 +86,7 @@ interface StoreInterface
      * 
      * @return array
      */
-    public static function decodeArray(String $data) : Array;
+    public static function decodeArray(string $data) : array;
 
     /**
      * Error
@@ -95,7 +95,7 @@ interface StoreInterface
      * 
      * @return string
      */
-    public static function error() : String;
+    public static function error() : string;
     
     /** 
      * Error No
@@ -104,7 +104,7 @@ interface StoreInterface
      * 
      * @return int
      */
-    public static function errno() : Int;
+    public static function errno() : int;
     
     /** 
      * Check
@@ -113,5 +113,5 @@ interface StoreInterface
      * 
      * @return bool
      */
-    public static function check(String $data) : Bool;
+    public static function check(string $data) : bool;
 }

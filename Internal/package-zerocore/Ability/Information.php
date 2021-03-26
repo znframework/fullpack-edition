@@ -34,7 +34,7 @@ trait Information
      * 
      * @return mixed
      */
-    public function error(String $endOfLine = '<br>')
+    public function error(string $endOfLine = '<br>')
     {
         if( ! empty($this->error) )
         {
@@ -58,7 +58,7 @@ trait Information
      * 
      * @return mixed
      */
-    public function success(String $endOfLine = '<br>')
+    public function success(string $endOfLine = '<br>')
     {
         if( empty($this->error) )
         {

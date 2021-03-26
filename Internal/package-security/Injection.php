@@ -29,7 +29,7 @@ class Injection
      * 
      * @return string
      */
-    public static function encode(String $string) : String
+    public static function encode(string $string) : string
     {
         $secBadChars = Properties::$injectionBadChars;
 
@@ -52,7 +52,7 @@ class Injection
      * 
      * @return string
      */
-    public static function decode(String $string) : String
+    public static function decode(string $string) : string
     {
         return stripslashes(trim($string));
     }
@@ -64,7 +64,7 @@ class Injection
      * 
      * @return string
      */
-    public static function nailEncode(String $str) : String
+    public static function nailEncode(string $str) : string
     {
         $str = str_replace(array_keys(self::$nailChars), array_values(self::$nailChars), $str);
 
@@ -78,7 +78,7 @@ class Injection
      * 
      * @return string
      */
-    public static function nailDecode(String $str) : String
+    public static function nailDecode(string $str) : string
     {
         $str = str_replace(array_values(self::$nailChars), array_keys(self::$nailChars), $str);
 
@@ -92,7 +92,7 @@ class Injection
      * 
      * @return string
      */
-    public static function escapeStringEncode(String $data) : String
+    public static function escapeStringEncode(string $data) : string
     {
         return addslashes($data);
     }
@@ -104,7 +104,7 @@ class Injection
      * 
      * @return string
      */
-    public static function escapeStringDecode(String $data) : String
+    public static function escapeStringDecode(string $data) : string
     {
         return stripslashes($data);
     }

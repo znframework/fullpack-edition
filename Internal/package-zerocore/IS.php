@@ -58,7 +58,7 @@ class IS
      * 
      * @return string
      */
-    public static function software() : String
+    public static function software() : string
     {
         return strtolower(explode('/', $_SERVER['SERVER_SOFTWARE'] ?? 'apache')[0]);
     }
@@ -70,7 +70,7 @@ class IS
      * 
      * @return bool
      */
-    public static function timeZone(String $timezone) : Bool
+    public static function timeZone(string $timezone) : bool
     {
         return in_array($timezone, timezone_identifiers_list());
     }
@@ -82,7 +82,7 @@ class IS
      * 
      * @return bool
      */
-    public static function phpVersion(String $version = '5.2.4') : Bool
+    public static function phpVersion(string $version = '5.2.4') : bool
     {
         return (bool) version_compare(PHP_VERSION, $version, '>=');
     }
@@ -94,7 +94,7 @@ class IS
      * 
      * @return bool
      */
-    public static function import(String $path) : Bool
+    public static function import(string $path) : bool
     {
         return in_array( realpath(Base::suffix($path, '.php')), get_required_files() );
     }
@@ -106,7 +106,7 @@ class IS
      * 
      * @return bool
      */
-    public static function url(String $url) : Bool
+    public static function url(string $url) : bool
     {
         return preg_match('#^(\w+:)?//#i', $url);
     }
@@ -118,7 +118,7 @@ class IS
      * 
      * @return bool
      */
-    public static function email(String $email) : Bool
+    public static function email(string $email) : bool
     {
         return preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email);
     }
@@ -130,7 +130,7 @@ class IS
      * 
      * @return bool
      */
-    public static function char($str) : Bool
+    public static function char($str) : bool
     {
         return is_scalar($str);
     }
@@ -142,7 +142,7 @@ class IS
      * 
      * @return bool
      */
-    public static function realNumeric($num = 0) : Bool
+    public static function realNumeric($num = 0) : bool
     {
         return ! is_string($num) && is_numeric($num);
     }
@@ -154,7 +154,7 @@ class IS
      * 
      * @return bool
      */
-    public static function declaredClass(String $class) : Bool
+    public static function declaredClass(string $class) : bool
     {
         return in_array(strtolower($class), array_map('strtolower', get_declared_classes()));
     }
@@ -166,7 +166,7 @@ class IS
      * 
      * @return bool
      */
-    public static function hash(String $type) : Bool
+    public static function hash(string $type) : bool
     {
         $hashAlgos = array_merge(hash_algos(), ['super', 'golden']);
 
@@ -180,7 +180,7 @@ class IS
      * 
      * @return bool
      */
-    public static function charset(String $charset) : Bool
+    public static function charset(string $charset) : bool
     {
         return array_search(strtolower($charset), array_map('strtolower', mb_list_encodings()), true);
     }
@@ -192,7 +192,7 @@ class IS
      * 
      * @return bool
      */
-    public static function array($array) : Bool
+    public static function array($array) : bool
     {
         return ! empty($array) && is_array($array);
     }

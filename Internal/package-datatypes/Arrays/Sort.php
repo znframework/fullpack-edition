@@ -22,7 +22,7 @@ class Sort
      * 
      * @return array
      */
-    public static function order(Array $array, $type = NULL, $flags = 'regular') : Array
+    public static function order(array $array, $type = NULL, $flags = 'regular') : array
     {
         $flags = Helper::toConstant($flags, 'SORT_');
 
@@ -50,7 +50,7 @@ class Sort
      * 
      * @return array
      */
-    public static function normal(Array $array, String $flag = 'regular') : Array
+    public static function normal(array $array, string $flag = 'regular') : array
     {
         return self::order($array, 'sort', $flag);
     }
@@ -63,7 +63,7 @@ class Sort
      * 
      * @return array
      */
-    public static function descending(Array $array, String $flag = 'regular') : Array
+    public static function descending(array $array, string $flag = 'regular') : array
     {
         return self::order($array, 'desc', $flag);
     }
@@ -76,7 +76,7 @@ class Sort
      * 
      * @return array
      */
-    public static function ascending(Array $array, String $flag = 'regular') : Array
+    public static function ascending(array $array, string $flag = 'regular') : array
     {
         return self::order($array, 'asc', $flag);
     }
@@ -89,7 +89,7 @@ class Sort
      * 
      * @return array
      */
-    public static function ascendingKey(Array $array, String $flag = 'regular') : Array
+    public static function ascendingKey(array $array, string $flag = 'regular') : array
     {
         return self::order($array, 'asckey', $flag);
     }
@@ -102,7 +102,7 @@ class Sort
      * 
      * @return array
      */
-    public static function descendingKey(Array $array, String $flag = 'regular') : Array
+    public static function descendingKey(array $array, string $flag = 'regular') : array
     {
         return self::order($array, 'desckey', $flag);
     }
@@ -115,7 +115,7 @@ class Sort
      * 
      * @return array
      */
-    public static function reverse(Array $array, String $flag = 'regular') : Array
+    public static function reverse(array $array, string $flag = 'regular') : array
     {
         return self::order($array, 'reverse', $flag);
     }
@@ -128,7 +128,7 @@ class Sort
      * 
      * @return array
      */
-    public static function insensitive(Array $array) : Array
+    public static function insensitive(array $array) : array
     {
         return self::order($array, 'insens');
     }
@@ -140,7 +140,7 @@ class Sort
      * 
      * @return array
      */
-    public static function natural(Array $array) : Array
+    public static function natural(array $array) : array
     {
         return self::order($array, 'natural');
     }
@@ -152,7 +152,7 @@ class Sort
      * 
      * @return array
      */
-    public static function shuffle(Array $array) : Array
+    public static function shuffle(array $array) : array
     {
         return self::order($array, 'random');
     }

@@ -19,7 +19,7 @@ class Security
      * 
      * @return string
      */
-    public static function addSlashes(String $string, String $addDifferentChars = NULL) : String
+    public static function addSlashes(string $string, string $addDifferentChars = NULL) : string
     {
         $return = addslashes($string);
 
@@ -38,7 +38,7 @@ class Security
      * 
      * @return string
      */
-    public static function removeSlashes(String $string) : String
+    public static function removeSlashes(string $string) : string
     {
         return stripslashes(stripcslashes($string));
     }

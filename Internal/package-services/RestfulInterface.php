@@ -16,7 +16,7 @@ interface RestfulInterface
      * 
      * @return array
      */
-    public function getRequestHeaders() : Array;
+    public function getRequestHeaders() : array;
     
     /**
      * Get raw data
@@ -25,7 +25,7 @@ interface RestfulInterface
      * 
      * @return string|array|object
      */
-    public function getRawData(String $type = 'string');
+    public function getRawData(string $type = 'string');
 
     /**
      * Get raw data object
@@ -49,7 +49,7 @@ interface RestfulInterface
      * 
      * @return Restful
      */
-    public function contentType(String $type = 'json', String $charset = 'utf-8') : Restful;
+    public function contentType(string $type = 'json', string $charset = 'utf-8') : Restful;
 
     /**
      * HTTP Status
@@ -58,7 +58,7 @@ interface RestfulInterface
      * 
      * @return Restful
      */
-    public function httpStatus(Int $code = NULL) : Restful;
+    public function httpStatus(int $code = NULL) : Restful;
 
     /**
      * Info
@@ -67,7 +67,7 @@ interface RestfulInterface
      * 
      * @return mixed
      */
-    public function info(String $key = NULL);
+    public function info(string $key = NULL);
 
     /**
      * URL
@@ -76,7 +76,7 @@ interface RestfulInterface
      * 
      * @return Restful
      */
-    public function url(String $url) : Restful;
+    public function url(string $url) : Restful;
 
     /**
      * Data
@@ -94,7 +94,7 @@ interface RestfulInterface
      * 
      * @return Restful
      */
-    public function sslVerifyPeer(Bool $type = false) : Restful;
+    public function sslVerifyPeer(bool $type = false) : Restful;
 
     /**
      * Get
@@ -103,7 +103,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function get(String $url = NULL);
+    public function get(string $url = NULL);
 
     /**
      * Post 
@@ -113,7 +113,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function post(String $url = NULL, $data = NULL);
+    public function post(string $url = NULL, $data = NULL);
 
     /**
      * Post Json
@@ -123,7 +123,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function postJson(String $url = NULL, $data = NULL);
+    public function postJson(string $url = NULL, $data = NULL);
 
     /**
      * Put 
@@ -133,7 +133,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function put(String $url = NULL, $data = NULL);
+    public function put(string $url = NULL, $data = NULL);
 
     /**
      * Put Json
@@ -143,7 +143,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function putJson(String $url = NULL, $data = NULL);
+    public function putJson(string $url = NULL, $data = NULL);
 
     /**
      * Patch 
@@ -153,7 +153,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function patch(String $url = NULL, $data = NULL);
+    public function patch(string $url = NULL, $data = NULL);
 
     /**
      * Patch Json
@@ -163,7 +163,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function patchJson(String $url = NULL, $data = NULL);
+    public function patchJson(string $url = NULL, $data = NULL);
 
     /**
      * Delete 
@@ -173,7 +173,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function delete(String $url = NULL, $data = NULL);
+    public function delete(string $url = NULL, $data = NULL);
 
     /**
      * Return
@@ -182,5 +182,5 @@ interface RestfulInterface
      * 
      * @return callable
      */
-    public function return(Callable $callback);
+    public function return(callable $callback);
 }

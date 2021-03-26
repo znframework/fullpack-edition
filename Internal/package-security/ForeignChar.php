@@ -18,7 +18,7 @@ class ForeignChar
      * 
      * @return string
      */
-    public static function encode(String $str) : String
+    public static function encode(string $str) : string
     {
         $chars = self::$numericalCodes;
 
@@ -32,7 +32,7 @@ class ForeignChar
      * 
      * @return string
      */
-    public static function decode(String $str) : String
+    public static function decode(string $str) : string
     {
         $chars = self::$numericalCodes;
 

@@ -22,7 +22,7 @@ class Html
      * 
      * @return string
      */
-    public static function encode(String $string, String $type = 'quotes', String $encoding = 'utf-8') : String
+    public static function encode(string $string, string $type = 'quotes', string $encoding = 'utf-8') : string
     {
         return htmlspecialchars(trim($string), Helper::toConstant($type, 'ENT_'), $encoding);
     }
@@ -35,7 +35,7 @@ class Html
      * 
      * @return string
      */
-    public static function decode(String $string, String $type = 'quotes') : String
+    public static function decode(string $string, string $type = 'quotes') : string
     {
         return htmlspecialchars_decode(trim($string), Helper::toConstant($type, 'ENT_'));
     }
@@ -48,7 +48,7 @@ class Html
      * 
      * @return string
      */
-    public static function tagClean(String $string, $allowable = '') : String
+    public static function tagClean(string $string, $allowable = '') : string
     {
         return strip_tags(self::decode($string), $allowable);
     }

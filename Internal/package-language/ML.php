@@ -40,7 +40,7 @@ class ML extends Factory
      * 
      * @return bool
      */
-    public function lang(String $lang = 'tr') : Bool
+    public function lang(string $lang = 'tr') : bool
     {
         Properties::$select = NULL;
         

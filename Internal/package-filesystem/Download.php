@@ -18,7 +18,7 @@ class Download
      * 
      * @param string $file
      */
-    public static function start(String $file)
+    public static function start(string $file)
     {
         if( ! Info::available($file) )
         {

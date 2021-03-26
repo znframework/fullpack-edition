@@ -19,7 +19,7 @@ class AddElement
      * 
      * @return array
      */
-    public static function first(Array $array, $element, $type = 'array_unshift') : Array
+    public static function first(array $array, $element, $type = 'array_unshift') : array
     {
         if( ! is_array($element) )
         {
@@ -48,7 +48,7 @@ class AddElement
      * 
      * @return array
      */
-    public static function last(Array $array, $element) : Array
+    public static function last(array $array, $element) : array
     {
         return self::first($array, $element, 'array_push');
     }

@@ -32,7 +32,7 @@ trait StoreTrait
      * 
      * @return string
      */
-    public static function write(String $file, $data) : Bool
+    public static function write(string $file, $data) : bool
     {
         if( is_scalar($data) )
         {
@@ -52,7 +52,7 @@ trait StoreTrait
      * 
      * @return mixed
      */
-    public static function read(String $file, Bool $array = false)
+    public static function read(string $file, bool $array = false)
     {
         $file = self::addExtension($file);
 
@@ -73,7 +73,7 @@ trait StoreTrait
      * 
      * @return mixed
      */
-    public static function readObject(String $file)
+    public static function readObject(string $file)
     {
         return self::read($file, false);
     }
@@ -85,7 +85,7 @@ trait StoreTrait
      * 
      * @return mixed
      */
-    public static function readArray(String $file) : Array
+    public static function readArray(string $file) : array
     {
         if( is_file($file) && strstr(get_called_class(), 'Separator') )
         {

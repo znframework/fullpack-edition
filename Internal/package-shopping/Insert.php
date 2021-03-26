@@ -18,7 +18,7 @@ class Insert extends CartExtends
      * 
      * @return bool
      */
-    public function item(Array $product) : Bool
+    public function item(array $product) : bool
     {
         if( ! isset($product['quantity']) )
         {

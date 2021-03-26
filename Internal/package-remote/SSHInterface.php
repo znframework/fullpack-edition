@@ -18,7 +18,7 @@ interface SSHInterface
      * 
      * @return string
      */
-    public function output(Int $length = 4096) : String;
+    public function output(int $length = 4096) : string;
 
     /**
      * Command
@@ -27,7 +27,7 @@ interface SSHInterface
      * 
      * @return SSH
      */
-    public function command(String $command) : SSH;
+    public function command(string $command) : SSH;
 
     /**
      * Run
@@ -36,5 +36,5 @@ interface SSHInterface
      * 
      * @return resource|false
      */
-    public function run(String $command = NULL);
+    public function run(string $command = NULL);
 }

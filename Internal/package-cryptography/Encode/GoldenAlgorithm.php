@@ -21,7 +21,7 @@ class GoldenAlgorithm extends EncodeExtends
      * 
      * @return string
      */
-    public static function create(String $data, String $additional = 'default') : String
+    public static function create(string $data, string $additional = 'default') : string
     {
         $algo = self::$config['type'];
 

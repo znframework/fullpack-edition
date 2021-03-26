@@ -29,7 +29,7 @@ class Singleton
      * 
      * @return self
      */
-    public static function class(String $class)
+    public static function class(string $class)
     {
         if( ! isset(self::$singleton[$class]) ) 
         {

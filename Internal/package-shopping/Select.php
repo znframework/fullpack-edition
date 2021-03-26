@@ -18,7 +18,7 @@ class Select extends CartExtends
      * 
      * @return array
      */
-    public function items() : Array
+    public function items() : array
     {
         return Properties::$items ?: [];
     }

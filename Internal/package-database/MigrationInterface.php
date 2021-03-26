@@ -18,7 +18,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function upAll(String ...$migrations) : Bool;
+    public function upAll(String ...$migrations) : bool;
 
     /**
      * Down all migrations
@@ -27,7 +27,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function downAll(String ...$migrations) : Bool;
+    public function downAll(String ...$migrations) : bool;
 
     /**
      * Create table
@@ -36,7 +36,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function createTable(Array $data) : Bool;
+    public function createTable(array $data) : bool;
 
     /**
      * Drop table
@@ -45,7 +45,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function dropTable() : Bool;
+    public function dropTable() : bool;
 
     /**
      * Add column
@@ -54,7 +54,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function addColumn(Array $columns) : Bool;
+    public function addColumn(array $columns) : bool;
 
     /**
      * Drop column
@@ -63,7 +63,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function dropColumn($columns) : Bool;
+    public function dropColumn($columns) : bool;
 
     /**
      * Modify column
@@ -72,7 +72,7 @@ interface MigrationInterface
      * 
      * @param bool
      */
-    public function modifyColumn(Array $columns) : Bool;
+    public function modifyColumn(array $columns) : bool;
 
     /**
      * Rename column
@@ -81,7 +81,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function renameColumn(Array $column) : Bool;
+    public function renameColumn(array $column) : bool;
 
     /**
      * Truncate table
@@ -90,7 +90,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function truncate() : Bool;
+    public function truncate() : bool;
 
     /**
      * Sets migration path
@@ -99,7 +99,7 @@ interface MigrationInterface
      * 
      * @return Migration
      */
-    public function path(String $path) : Migration;
+    public function path(string $path) : Migration;
 
     /**
      * Selects migration version
@@ -108,7 +108,7 @@ interface MigrationInterface
      * 
      * @return object
      */
-    public function version(Int $version = 0);
+    public function version(int $version = 0);
 
     /**
      * Create migration
@@ -118,7 +118,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function create(String $name, Int $ver = 0) : Bool;
+    public function create(string $name, int $ver = 0) : bool;
 
     /**
      * Delete migration
@@ -128,7 +128,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function delete(String $name, Int $ver = 0) : Bool;
+    public function delete(string $name, int $ver = 0) : bool;
 
     /**
      * Delete all migrations
@@ -137,5 +137,5 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function deleteAll() : Bool;
+    public function deleteAll() : bool;
 }

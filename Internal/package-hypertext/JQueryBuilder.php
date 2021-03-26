@@ -78,7 +78,7 @@ class JQueryBuilder extends BuilderExtends
     /**
      * Protected build
      */
-    protected function build(String $content)
+    protected function build(string $content)
     {
         $string = '$(' . $this->selector . ')' . $content . ';';
 

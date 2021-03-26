@@ -26,7 +26,7 @@ class Restoration
      * 
      * @return void
      */
-    public static function routeURI($machinesIP, String $uri)
+    public static function routeURI($machinesIP, string $uri)
     {
         if( ! in_array(Request::ipv4(), (array) $machinesIP) && In::requestURI() !== $uri )
         {
@@ -145,7 +145,7 @@ class Restoration
      * 
      * @return bool
      */
-    public static function start(String $project, $directories = 'standart')
+    public static function start(string $project, $directories = 'standart')
     {
         if( $directories === 'full' )
         {
@@ -172,7 +172,7 @@ class Restoration
      * 
      * @return bool
      */
-    public static function end(String $project, String $type = NULL)
+    public static function end(string $project, string $type = NULL)
     {
         self::deleteClassMapIfExists($project);
 
@@ -193,7 +193,7 @@ class Restoration
      * 
      * @return bool
      */
-    public static function endDelete(String $project)
+    public static function endDelete(string $project)
     {
         return self::end($project, 'delete');
     }

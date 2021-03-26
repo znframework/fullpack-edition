@@ -19,7 +19,7 @@ interface RenderInterface
      * @param string $ile
      * @param bool   $origin = false
      */
-    public function cleaner(String $path, Bool $origin = false);
+    public function cleaner(string $path, bool $origin = false);
     
     /**
      * Get prosize
@@ -30,7 +30,7 @@ interface RenderInterface
      * 
      * @return object
      */
-    public function getProsize(String $path, Int $width = 0, Int $height = 0) : stdClass;
+    public function getProsize(string $path, int $width = 0, int $height = 0) : stdClass;
 
     /**
      * Thumb
@@ -40,5 +40,5 @@ interface RenderInterface
      * 
      * @return string
      */
-    public function thumb(String $fpath, Array $set) : String;
+    public function thumb(string $fpath, array $set) : string;
 }

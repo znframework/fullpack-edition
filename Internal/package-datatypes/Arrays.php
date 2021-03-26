@@ -124,7 +124,7 @@ class Arrays extends Factory
      * 
      * @return array
      */
-    public static function multikey(Array $array, String $keySplit = '|') : Array
+    public static function multikey(array $array, string $keySplit = '|') : array
     {
         return Datatype::multikey($array, $keySplit);
     }
@@ -139,7 +139,7 @@ class Arrays extends Factory
      * 
      * @return bool
      */
-    public static function valueExists(Array $array, $element, Bool $strict = false) : Bool
+    public static function valueExists(array $array, $element, bool $strict = false) : bool
     {
         return in_array($element, $array, $strict);
     }
@@ -153,7 +153,7 @@ class Arrays extends Factory
      * 
      * @return bool
      */
-    public static function valueExistsInsensitive(Array $array, $element, Bool $strict = false) : Bool
+    public static function valueExistsInsensitive(array $array, $element, bool $strict = false) : bool
     {
         return self::valueExists(array_map('strtolower', $array), strtolower($element), $strict);
     }
@@ -166,7 +166,7 @@ class Arrays extends Factory
      * 
      * @return bool
      */
-    public static function keyExists(Array $array, $key) : Bool
+    public static function keyExists(array $array, $key) : bool
     {
         return isset($array[$key]);
     }
@@ -179,7 +179,7 @@ class Arrays extends Factory
      * 
      * @return bool
      */
-    public static function keyEsistsInsensitive(Array $array, $key) : Bool
+    public static function keyEsistsInsensitive(array $array, $key) : bool
     {
         return self::keyExists(array_change_key_case($array), strtolower($key));
     }
@@ -193,7 +193,7 @@ class Arrays extends Factory
      * 
      * @return bool
      */
-    public static function search(Array $array, $element, Bool $strict = false)
+    public static function search(array $array, $element, bool $strict = false)
     {
         return array_search($element, $array, $strict);
     }
@@ -206,7 +206,7 @@ class Arrays extends Factory
      * 
      * @return int|false
      */
-    public static function countSameValues(Array $array, String $key = NULL)
+    public static function countSameValues(array $array, string $key = NULL)
     {
         $return = array_count_values($array);
 

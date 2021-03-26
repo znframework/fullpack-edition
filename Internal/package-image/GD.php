@@ -55,7 +55,7 @@ class GD implements GDInterface
      * 
      * @return array
      */
-    public function info() : Array
+    public function info() : array
     {
         return gd_info();
     }
@@ -104,7 +104,7 @@ class GD implements GDInterface
      * 
      * @return resource
      */
-    public function createFrom(String $source)
+    public function createFrom(string $source)
     {
         $type     = $this->mime->type($source, 1);
         $function = 'imagecreatefrom' . ($type ?? 'jpeg');
@@ -124,7 +124,7 @@ class GD implements GDInterface
      * 
      * @return object
      */
-    public function size(String $fileName) : stdClass
+    public function size(string $fileName) : stdClass
     {
         $data = [];
 
@@ -161,7 +161,7 @@ class GD implements GDInterface
      * 
      * @return string
      */
-    public function extension(String $type = 'jpeg', Bool $dot = true) : String
+    public function extension(string $type = 'jpeg', bool $dot = true) : string
     {
         return image_type_to_extension(Helper::toConstant($type, 'IMAGETYPE_'), $dot);
     }
@@ -173,7 +173,7 @@ class GD implements GDInterface
      * 
      * @return string
      */
-    public function mime(String $type = 'jpeg') : String
+    public function mime(string $type = 'jpeg') : string
     {
         return image_type_to_mime_type(Helper::toConstant($type, 'IMAGETYPE_'));
     }
@@ -185,7 +185,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function alphaBlending(Bool $blendMode = NULL) : GD
+    public function alphaBlending(bool $blendMode = NULL) : GD
     {
         imagealphablending($this->canvas, (bool) $blendMode);
 
@@ -199,7 +199,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function saveAlpha(Bool $save = true) : GD
+    public function saveAlpha(bool $save = true) : GD
     {
         imagesavealpha($this->canvas, $save);
 
@@ -213,7 +213,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function smooth(Bool $mode = true) : GD
+    public function smooth(bool $mode = true) : GD
     {
         imageantialias($this->canvas, $mode);
 
@@ -227,7 +227,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function arc(Array $settings = []) : GD
+    public function arc(array $settings = []) : GD
     {
         $x      = $settings['x']       ?? $this->x      ?? 0;
         $y      = $settings['y']       ?? $this->y      ?? 0;
@@ -264,7 +264,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function ellipse(Array $settings = []) : GD
+    public function ellipse(array $settings = []) : GD
     {
         $x      = $settings['x']       ?? $this->x      ?? 0;
         $y      = $settings['y']       ?? $this->y      ?? 0;
@@ -294,7 +294,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function polygon(Array $settings = []) : GD
+    public function polygon(array $settings = []) : GD
     {
         $points     = $settings['points']     ?? $this->points     ?? 0;
         $pointCount = $settings['pointCount'] ?? $this->pointCount ?? (ceil(count($this->points ?? $points) / 2));
@@ -322,7 +322,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function rectangle(Array $settings = []) : GD
+    public function rectangle(array $settings = []) : GD
     {
         $x      = $settings['x']      ?? $this->x      ?? 0;
         $y      = $settings['y']      ?? $this->y      ?? 0;
@@ -356,7 +356,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function fill(Array $settings = []) : GD
+    public function fill(array $settings = []) : GD
     {
         $x           = $settings['x']           ?? $this->x           ?? 0;
         $y           = $settings['y']           ?? $this->y           ?? 0;
@@ -388,7 +388,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function filter(String $filter, Int $arg1 = NULL, Int $arg2 = NULL, Int $arg3 = NULL, Int $arg4 = NULL) : GD
+    public function filter(string $filter, int $arg1 = NULL, int $arg2 = NULL, int $arg3 = NULL, int $arg4 = NULL) : GD
     {
         $filters = Singleton::class('ZN\DataTypes\Collection')->data(func_get_args())
                                                               ->removeFirst()
@@ -407,7 +407,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function flip(String $type = 'both') : GD
+    public function flip(string $type = 'both') : GD
     {
         imageflip($this->canvas, Helper::toConstant($type, 'IMG_FLIP_'));
 
@@ -422,7 +422,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function char(String $char, Array $settings = [], $function = 'char') : GD
+    public function char(string $char, array $settings = [], $function = 'char') : GD
     {
         $x      = $settings['x']     ?? $this->x     ?? 0;
         $y      = $settings['y']     ?? $this->y     ??  0;
@@ -455,7 +455,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function text(String $text, Array $settings = []) : GD
+    public function text(string $text, array $settings = []) : GD
     {
         return $this->char($text, $settings, 'string');
     }
@@ -469,7 +469,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function convolution(Array $matrix, Float $div = 0, Float $offset = 0) : GD
+    public function convolution(array $matrix, Float $div = 0, Float $offset = 0) : GD
     {
         imageconvolution($this->canvas, $matrix, $div, $offset);
 
@@ -483,7 +483,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function interlace(Int $interlace = 0) : GD
+    public function interlace(int $interlace = 0) : GD
     {
         imageinterlace($this->canvas, $interlace);
 
@@ -498,7 +498,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function copy($source, Array $settings = []) : GD
+    public function copy($source, array $settings = []) : GD
     {
         if( is_file($file = $source) )
         {
@@ -534,7 +534,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function mix($source, Array $settings = [], $function = 'imagecopymerge') : GD
+    public function mix($source, array $settings = [], $function = 'imagecopymerge') : GD
     {
         if( is_file($file = $source) )
         {
@@ -571,7 +571,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function mixGray($source, Array $settings = []) : GD
+    public function mixGray($source, array $settings = []) : GD
     {
         $this->mix($source, $settings, 'imagecopymergegray');
 
@@ -586,7 +586,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function resample($source, Array $settings = [], $function = 'imagecopyresampled') : GD
+    public function resample($source, array $settings = [], $function = 'imagecopyresampled') : GD
     {
         if( is_file($file = $source) )
         {
@@ -624,7 +624,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function resize($source, Array $settings = []) : GD
+    public function resize($source, array $settings = []) : GD
     {
         $this->resample($source, $settings, 'imagecopyresized');
 
@@ -638,7 +638,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function crop(Array $settings = []) : GD
+    public function crop(array $settings = []) : GD
     {
         $sets = 
         [
@@ -665,7 +665,7 @@ class GD implements GDInterface
      * 
      * @return GD 
      */
-    public function autoCrop(String $mode = 'default', $threshold = .5, $color = -1) : GD
+    public function autoCrop(string $mode = 'default', $threshold = .5, $color = -1) : GD
     {
         $this->canvas = imagecropauto
         (
@@ -687,7 +687,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function line(Array $settings = []) : GD
+    public function line(array $settings = []) : GD
     {
         $x1   = $settings['x1']    ?? $this->x1    ?? 0;
         $y1   = $settings['y1']    ?? $this->y1    ?? 0;
@@ -732,7 +732,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function rotate(Float $angle, String $spaceColor = '0|0|0', Int $ignoreTransparent = 0) : GD
+    public function rotate(Float $angle, string $spaceColor = '0|0|0', int $ignoreTransparent = 0) : GD
     {
         $this->canvas = imagerotate($this->canvas, $angle, $this->allocate($spaceColor), $ignoreTransparent);
 
@@ -753,7 +753,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function scale(Int $width, Int $height = -1, String $mode = 'bilinearFixed') : GD
+    public function scale(int $width, int $height = -1, string $mode = 'bilinearFixed') : GD
     {
         $this->canvas = imagescale($this->canvas, $width, $height, Helper::toConstant($mode, 'IMG_'));
 
@@ -767,7 +767,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function interpolation(String $method = 'bilinearFixed') : GD
+    public function interpolation(string $method = 'bilinearFixed') : GD
     {
         imagesetinterpolation($this->canvas, Helper::toConstant($method, 'IMG_'));
 
@@ -781,7 +781,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function pixel(Array $settings = []) : GD
+    public function pixel(array $settings = []) : GD
     {
         $x   = $settings['x']     ?? $this->x     ?? 0;
         $y   = $settings['y']     ?? $this->y     ?? 0;
@@ -801,7 +801,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function thickness(Int $thickness = 1) : GD
+    public function thickness(int $thickness = 1) : GD
     {
         imagesetthickness($this->canvas, $thickness);
 
@@ -815,7 +815,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function layerEffect(String $effect = 'normal') : GD
+    public function layerEffect(string $effect = 'normal') : GD
     {
         imagelayereffect($this->canvas, Helper::toConstant($effect, 'IMG_EFFECT_'));
 
@@ -830,7 +830,7 @@ class GD implements GDInterface
      * 
      * @return resource
      */
-    public function generate(String $type = NULL, String $save = NULL)
+    public function generate(string $type = NULL, string $save = NULL)
     {
         $canvas = $this->canvas;
         

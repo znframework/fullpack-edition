@@ -134,7 +134,7 @@ class ApcDriver extends DriverMappingAbstract
      * @param string $type
      * @param mixed  ...$args
      */
-    protected function apc(String $type, ...$args)
+    protected function apc(string $type, ...$args)
     {
         $method = $this->apc . '_' . $type;
 

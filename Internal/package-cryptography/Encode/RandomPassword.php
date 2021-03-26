@@ -19,7 +19,7 @@ class RandomPassword
      * 
      * @return string
      */
-    public static function create(Int $count = 6, String $chars = 'alnum') : String
+    public static function create(int $count = 6, string $chars = 'alnum') : string
     {
         $password = '';
         $alpha    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOQPRSTUVWXYZ';

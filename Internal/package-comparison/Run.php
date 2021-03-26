@@ -20,7 +20,7 @@ class Run
      * 
      * @return Run
      */
-    public function test(Callable $test) : Run
+    public function test(callable $test) : Run
     {
         Testing::start('run');
         $test();
@@ -36,7 +36,7 @@ class Run
      * 
      * @return Run
      */
-    public function cycle($count, Callable $test) : Run
+    public function cycle($count, callable $test) : Run
     {
         Testing::start('run');
         

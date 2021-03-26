@@ -115,7 +115,7 @@ class UserExtends
      * @param string $column
      * @param mixed  $value
      */
-    public function column(String $column, $value)
+    public function column(string $column, $value)
     {
         Properties::$parameters['column'][$column] = $value;
     }
@@ -125,7 +125,7 @@ class UserExtends
      * 
      * @param string $returnLink
      */
-    public function returnLink(String $returnLink)
+    public function returnLink(string $returnLink)
     {
         Properties::$parameters['returnLink'] = $returnLink;
     }
@@ -150,7 +150,7 @@ class UserExtends
      * @param string $message
      * @param string $subject = NULL [6.7.0]
      */
-    public function setEmailTemplate(String $message, String $subject = NULL)
+    public function setEmailTemplate(string $message, string $subject = NULL)
     {
         Properties::$setEmailTemplate = $message;
         Properties::$setEmailTemplateSubject = $subject;
@@ -159,7 +159,7 @@ class UserExtends
     /**
      * Protected activation email data
      */
-    protected function replaceActivationEmailData(Array $replace)
+    protected function replaceActivationEmailData(array $replace)
     {
         $data = Properties::$setEmailTemplate;
 

@@ -67,7 +67,7 @@ interface CrontabIntervalInterface
     * 
     * @return Job
     */
-    public function clock(String $clock) : Job;
+    public function clock(string $clock) : Job;
 
     /**
      * Minute
@@ -76,7 +76,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function minute(String $minute) : Job;
+    public function minute(string $minute) : Job;
 
     /**
      * Perminute
@@ -85,7 +85,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function perMinute(String $minute) : Job;
+    public function perMinute(string $minute) : Job;
 
     /**
      * Hour
@@ -94,7 +94,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function hour(String $hour) : Job;
+    public function hour(string $hour) : Job;
 
     /**
      * Perhour
@@ -103,7 +103,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function perHour(String $hour) : Job;
+    public function perHour(string $hour) : Job;
 
     /**
      * Day Number
@@ -112,7 +112,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function dayNumber(String $dayNumber) : Job;
+    public function dayNumber(string $dayNumber) : Job;
 
     /**
      * Month Number
@@ -121,7 +121,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function month(String $monthNumber) : Job;
+    public function month(string $monthNumber) : Job;
 
     /**
      * Permonth
@@ -130,7 +130,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function perMonth(String $month) : Job;
+    public function perMonth(string $month) : Job;
 
     /**
      * Day
@@ -139,7 +139,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function day(String $day) : Job;
+    public function day(string $day) : Job;
 
     /**
      * Perday
@@ -148,7 +148,7 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function perDay(String $day) : Job;
+    public function perDay(string $day) : Job;
 
     /**
      * Interval
@@ -157,5 +157,5 @@ interface CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function interval(String $interval) : Job;
+    public function interval(string $interval) : Job;
 }

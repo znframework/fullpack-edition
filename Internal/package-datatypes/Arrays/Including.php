@@ -21,7 +21,7 @@ class Including
      * 
      * @return array
      */
-    public static function use(Array $array, Array $including) : Array
+    public static function use(array $array, array $including) : array
     {
         $newArray = [];
 

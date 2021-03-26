@@ -51,7 +51,7 @@ interface MDBInterface
      * 
      * @param array $config
      */
-    public static function new(Array $config);
+    public static function new(array $config);
 
     /**
      * Insert
@@ -61,7 +61,7 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function insert(String $table, Array $datas) : Bool;
+    public function insert(string $table, array $datas) : bool;
 
     /**
      * Delete
@@ -70,7 +70,7 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function delete(String $table) : Bool;
+    public function delete(string $table) : bool;
 
     /**
      * Update
@@ -80,7 +80,7 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function update(String $table, Array $datas = []) : Bool;
+    public function update(string $table, array $datas = []) : bool;
 
     /**
      * Where Regex
@@ -91,7 +91,7 @@ interface MDBInterface
      * 
      * @return self
      */
-    public function whereRegex(String $key, $value, String $flags = '');
+    public function whereRegex(string $key, $value, string $flags = '');
     
     /**
      * Where
@@ -101,7 +101,7 @@ interface MDBInterface
      * 
      * @return self
      */
-    public function where(String $key, $value);
+    public function where(string $key, $value);
 
     /**
      * Upsert
@@ -118,7 +118,7 @@ interface MDBInterface
      * 
      * @return self
      */
-    public function option(String $key, $value);
+    public function option(string $key, $value);
 
     /**
      * Filter
@@ -128,14 +128,14 @@ interface MDBInterface
      * 
      * @return self
      */
-    public function filter(String $key, $value);
+    public function filter(string $key, $value);
 
     /**
      * Total Rows
      * 
      * @param int
      */
-    public function totalRows() : Int;
+    public function totalRows() : int;
 
     /**
      * Limit
@@ -151,7 +151,7 @@ interface MDBInterface
      * 
      * @return self
      */
-    public function limit(Int $skip, Int $limit = NULL);
+    public function limit(int $skip, int $limit = NULL);
 
     /**
      * Order By
@@ -161,7 +161,7 @@ interface MDBInterface
      * 
      * @return self
      */
-    public function orderBy(String $column, String $type = 'asc');
+    public function orderBy(string $column, string $type = 'asc');
 
     /**
      * Get
@@ -170,7 +170,7 @@ interface MDBInterface
      * 
      * @return self
      */
-    public function get(String $table);
+    public function get(string $table);
 
     /**
      * Result
@@ -196,7 +196,7 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function createIndex(String $table, Array $indexes) : Bool;
+    public function createIndex(string $table, array $indexes) : bool;
 
     /**
      * Drop Index
@@ -206,7 +206,7 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function dropIndex(String $table, String $indexName) : Bool;
+    public function dropIndex(string $table, string $indexName) : bool;
 
     /**
      * Create
@@ -216,7 +216,7 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function create(String $table, Array $options = []) : Bool;
+    public function create(string $table, array $options = []) : bool;
 
     /**
      * Create Auto Increment
@@ -224,7 +224,7 @@ interface MDBInterface
      * @param string $table
      * @param string $column
      */
-    public function createAutoIncrement(String $table, String $column);
+    public function createAutoIncrement(string $table, string $column);
 
     /**
      * Drop/Truncate
@@ -233,7 +233,7 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function drop(String $table) : Bool;
+    public function drop(string $table) : bool;
 
     /**
      * Truncate/Drop
@@ -242,40 +242,40 @@ interface MDBInterface
      * 
      * @return bool
      */
-    public function truncate(String $table) : Bool;
+    public function truncate(string $table) : bool;
 
     /**
      * Databases
      * 
      * @return array
      */
-    public function databases() : Array;
+    public function databases() : array;
 
     /**
      * Indexes
      * 
      * @return array
      */
-    public function indexes(String $table) : Array;
+    public function indexes(string $table) : array;
 
     /**
      * Tables/Collections
      * 
      * @return array
      */
-    public function tables() : Array;
+    public function tables() : array;
 
     /**
      * Collections/Tables
      * 
      * @return array
      */
-    public function collections() : Array;
+    public function collections() : array;
 
     /**
      * Error
      * 
      * @return string
      */
-    public function error() : String;
+    public function error() : string;
 }

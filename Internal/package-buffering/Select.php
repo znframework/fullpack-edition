@@ -18,7 +18,7 @@ class Select extends Singleton
      * 
      * @return mixed
      */
-    public static function do(String $name)
+    public static function do(string $name)
     {
         return self::$session->select(md5('OB_DATAS_'.$name));
     }

@@ -51,7 +51,7 @@ class Ini
      * 
      * @return string
      */
-    public static function set(String $setting, String $value) : String
+    public static function set(string $setting, string $value) : string
     {
         return ini_set($setting, $value);
     }
@@ -63,7 +63,7 @@ class Ini
      * 
      * @return string
      */
-    public static function get(String $setting) : String
+    public static function get(string $setting) : string
     {
         return ini_get($setting);
     }
@@ -73,7 +73,7 @@ class Ini
      * 
      * @param string $setting
      */
-    public static function restore(String $setting)
+    public static function restore(string $setting)
     {
         ini_restore($setting);
     }
@@ -83,7 +83,7 @@ class Ini
      * 
      * @return array
      */
-    public static function getAll() : Array
+    public static function getAll() : array
     {
         return ini_get_all(NULL, false);
     }

@@ -19,7 +19,7 @@ class Loader
      * 
      * @return mixed
      */
-    public static function require(String $file, String $type = 'require')
+    public static function require(string $file, string $type = 'require')
     {
         $file = Info::rpath($file);
 
@@ -46,7 +46,7 @@ class Loader
      * 
      * @return mixed
      */
-    public static function requireOnce(String $file)
+    public static function requireOnce(string $file)
     {
         return self::require($file, 'require_once');
     }
@@ -58,7 +58,7 @@ class Loader
      * 
      * @return mixed
      */
-    public static function include(String $file)
+    public static function include(string $file)
     {
         return self::require($file, 'include');
     }
@@ -70,7 +70,7 @@ class Loader
      * 
      * @return mixed
      */
-    public static function includeOnce(String $file)
+    public static function includeOnce(string $file)
     {
         return self::require($file, 'include_once');
     }

@@ -47,7 +47,7 @@ class Validate implements ValidateInterface
      * 
      * @return Validate
      */
-    public function data(String $data) : Validate
+    public function data(string $data) : Validate
     {
         $this->data = $data;
 
@@ -61,7 +61,7 @@ class Validate implements ValidateInterface
      * 
      * @return bool
      */
-    public function get() : Bool
+    public function get() : bool
     {
         $this->data = NULL;
 
@@ -83,7 +83,7 @@ class Validate implements ValidateInterface
      * 
      * @return array
      */
-    public function status() : Array
+    public function status() : array
     {
         return $this->status;
     }

@@ -39,7 +39,7 @@ class Wizard
      * 
      * @return void
      */
-	public static function isolation(String $data = '')
+	public static function isolation(string $data = '')
 	{
 		Filesystem::replaceData($data, ['<?php', '<?', '?>'], ['{[', '{[', ']}']);
 	}
@@ -53,7 +53,7 @@ class Wizard
      * 
      * @return string
      */
-    public static function data(String $string, Array $data = [], Array $config = []) : String
+    public static function data(string $string, array $data = [], array $config = []) : string
     {
         self::$config = $config ?: Config::get('ViewObjects', 'wizard');
 

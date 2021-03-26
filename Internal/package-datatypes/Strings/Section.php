@@ -21,7 +21,7 @@ class Section
      * 
      * @return string
      */
-    public static function use(String $str, Int $starting = 0, Int $count = NULL, String $encoding = 'utf-8') : String
+    public static function use(string $str, int $starting = 0, int $count = NULL, string $encoding = 'utf-8') : string
     {
         return mb_substr($str, $starting, $count, $encoding);
     }

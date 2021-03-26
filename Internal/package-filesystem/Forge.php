@@ -23,7 +23,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function create(String $name) : Bool
+    public static function create(string $name) : bool
     {
         return Filesystem::createFile(Info::rpath($name));
     }
@@ -37,7 +37,7 @@ class Forge
      * 
      * @return string
      */
-    public static function replace(String $file, $data, $replace) : String
+    public static function replace(string $file, $data, $replace) : string
     {
         $file = Info::rpath($file);
 
@@ -58,7 +58,7 @@ class Forge
      * 
      * @return string
      */
-    public static function reglace(String $file, $pattern, $replace) : String
+    public static function reglace(string $file, $pattern, $replace) : string
     {
         $file = Info::rpath($file);
 
@@ -85,7 +85,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function delete(String $name) : Bool
+    public static function delete(string $name) : bool
     {
         $name = Info::rpath($name);
 
@@ -107,7 +107,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function zipExtract(String $source, String $target = NULL) : Bool
+    public static function zipExtract(string $source, string $target = NULL) : bool
     {
         $source = Info::rpath($source);
         $target = Info::rpath($target);
@@ -147,7 +147,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function createZip(String $path, Array $data) : Bool
+    public static function createZip(string $path, array $data) : bool
     {
         $opath   = $path;
         $path    = Info::rpath($path);
@@ -207,7 +207,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function rename(String $oldName, String $newName) : Bool
+    public static function rename(string $oldName, string $newName) : bool
     {
         $oldName = Info::rpath($oldName);
 
@@ -225,7 +225,7 @@ class Forge
      * @param string $fileName = NULL
      * @param bool   $real     = false
      */
-    public static function cleanCache(String $fileName = NULL, Bool $real = false)
+    public static function cleanCache(string $fileName = NULL, bool $real = false)
     {
         $fileName = Info::rpath($fileName);
 
@@ -246,7 +246,7 @@ class Forge
      * @param int    $limit = 0
      * @param string $mode  = 'r+'
      */
-    public static function truncate(String $file, Int $limit = 0, String $mode = 'r+')
+    public static function truncate(string $file, int $limit = 0, string $mode = 'r+')
     {
         $file = Info::rpath($file);
 
@@ -269,7 +269,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function permission(String $name, Int $permission = 0755) : Bool
+    public static function permission(string $name, int $permission = 0755) : bool
     {
         $name = Info::rpath($name);
 
@@ -290,7 +290,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function createFolder(String $file, Int $permission = 0755, Bool $recursive = true) : Bool
+    public static function createFolder(string $file, int $permission = 0755, bool $recursive = true) : bool
     {
         return Filesystem::createFolder(Info::rpath($file), $permission, $recursive);
     }
@@ -302,7 +302,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function deleteEmptyFolder(String $folder) : Bool
+    public static function deleteEmptyFolder(string $folder) : bool
     {
         return Filesystem::deleteEmptyFolder(Info::rpath($folder));
     }
@@ -314,7 +314,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function deleteFolder(String $name) : Bool
+    public static function deleteFolder(string $name) : bool
     {
         return Filesystem::deleteFolder(Info::rpath($name));
     }
@@ -328,7 +328,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function copy(String $source, String $target) : Bool
+    public static function copy(string $source, string $target) : bool
     {
         return Filesystem::copy(Info::rpath($source), Info::rpath($target));
     }
@@ -340,7 +340,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function changeFolder(String $name) : Bool
+    public static function changeFolder(string $name) : bool
     {
         $name = Info::rpath($name);
 

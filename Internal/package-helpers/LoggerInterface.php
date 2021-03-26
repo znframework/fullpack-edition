@@ -19,7 +19,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function notice(String $message, String $time = NULL);
+    public static function notice(string $message, string $time = NULL);
 
     /**
      * Emergency log
@@ -29,7 +29,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function emergency(String $message, String $time = NULL);
+    public static function emergency(string $message, string $time = NULL);
 
     /**
      * Alert log
@@ -39,7 +39,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function alert(String $message, String $time = NULL);
+    public static function alert(string $message, string $time = NULL);
 
     /**
      * Error log
@@ -49,7 +49,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function error(String $message, String $time = NULL);
+    public static function error(string $message, string $time = NULL);
 
     /**
      * Warning log
@@ -59,7 +59,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function warning(String $message, String $time = NULL);
+    public static function warning(string $message, string $time = NULL);
 
     /**
      * Critical log
@@ -69,7 +69,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function critical(String $message, String $time = NULL);
+    public static function critical(string $message, string $time = NULL);
 
     /**
      * Info log
@@ -79,7 +79,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function info(String $message, String $time = NULL);
+    public static function info(string $message, string $time = NULL);
 
     /**
      * Debug log
@@ -89,7 +89,7 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function debug(String $message, String $time = NULL);
+    public static function debug(string $message, string $time = NULL);
 
     /**
      * Report log
@@ -101,5 +101,5 @@ interface LoggerInterface
      * 
      * @return bool
      */
-    public static function report(String $subject, String $message, String $destination = NULL, String $time = NULL) : Bool;
+    public static function report(string $subject, string $message, string $destination = NULL, string $time = NULL) : bool;
 }

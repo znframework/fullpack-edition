@@ -88,7 +88,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createDatabase(String $dbname, $extras = NULL)
+    public function createDatabase(string $dbname, $extras = NULL)
     {
         $query = $this->forge->createDatabase($dbname, $this->_p($extras, 'extras'));
 
@@ -102,7 +102,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function dropDatabase(String $dbname)
+    public function dropDatabase(string $dbname)
     {
         $query = $this->forge->dropDatabase($dbname);
 
@@ -118,7 +118,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createTable(String $table = NULL, Array $columns = NULL, $extras = NULL)
+    public function createTable(string $table = NULL, array $columns = NULL, $extras = NULL)
     {
         $query = $this->forge->createTable($this->_p($table), $this->_p($columns, 'column'), $this->_p($extras, 'extras'));
 
@@ -136,7 +136,7 @@ class DBForge extends Connection
      * 
      * @codeCoverageIgnore
      */
-    public function createTempTable(String $table = NULL, Array $columns = NULL, $extras = NULL)
+    public function createTempTable(string $table = NULL, array $columns = NULL, $extras = NULL)
     {
         $query = $this->forge->createTempTable($this->_p($table), $this->_p($columns, 'column'), $this->_p($extras, 'extras'));
 
@@ -150,7 +150,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function dropTable(String $table = NULL)
+    public function dropTable(string $table = NULL)
     {
         $query = $this->forge->dropTable($this->_p($table));
 
@@ -167,7 +167,7 @@ class DBForge extends Connection
      * 
      * @codeCoverageIgnore
      */
-    public function alterTable(String $table = NULL, Array $condition = NULL)
+    public function alterTable(string $table = NULL, array $condition = NULL)
     {
         $table = $this->_p($table);
         $key   = key($condition);
@@ -183,7 +183,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function renameTable(String $name, String $newName)
+    public function renameTable(string $name, string $newName)
     {
         $query = $this->forge->renameTable($this->_p($name, 'prefix'), $this->_p($newName, 'prefix'));
 
@@ -197,7 +197,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function truncate(String $table = NULL)
+    public function truncate(string $table = NULL)
     {
         $query = $this->forge->truncate($this->_p($table));
 
@@ -212,7 +212,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function addColumn(String $table = NULL, Array $columns = NULL)
+    public function addColumn(string $table = NULL, array $columns = NULL)
     {
         $query = $this->forge->addColumn($this->_p($table), $this->_p($columns, 'column'));
 
@@ -231,7 +231,7 @@ class DBForge extends Connection
      * 
      * @codeCoverageIgnore
      */
-    public function startAutoIncrement(String $table, Int $start = 0)
+    public function startAutoIncrement(string $table, int $start = 0)
     {
         $query = $this->forge->startAutoIncrement($this->_p($table), $start);
 
@@ -250,7 +250,7 @@ class DBForge extends Connection
      * 
      * @codeCoverageIgnore
      */
-    public function addAutoIncrement(String $table, String $column = 'id', Int $start = NULL)
+    public function addAutoIncrement(string $table, string $column = 'id', int $start = NULL)
     {
         if( $start !== NULL )
         {
@@ -271,7 +271,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function addPrimaryKey(String $table, String $columns, String $constraint = NULL)
+    public function addPrimaryKey(string $table, string $columns, string $constraint = NULL)
     {
         $query = $this->forge->addPrimaryKey($this->_p($table), $columns, $constraint);
 
@@ -291,7 +291,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function addForeignKey(String $table, String $columns, String $reftable, String $refcolumn, String $constraint = NULL)
+    public function addForeignKey(string $table, string $columns, string $reftable, string $refcolumn, string $constraint = NULL)
     {
         $query = $this->forge->addForeignKey($this->_p($table), $columns, $reftable, $refcolumn, $constraint);
 
@@ -308,7 +308,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function dropPrimaryKey(String $table = NULL, String $constraint = NULL)
+    public function dropPrimaryKey(string $table = NULL, string $constraint = NULL)
     {
         $query = $this->forge->dropPrimaryKey($this->_p($table), $constraint);
 
@@ -325,7 +325,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function dropForeignKey(String $table = NULL, String $constraint = NULL)
+    public function dropForeignKey(string $table = NULL, string $constraint = NULL)
     {
         $query = $this->forge->dropForeignKey($this->_p($table), $constraint);
 
@@ -343,7 +343,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createIndex(String $indexName, String $table, String $columns)
+    public function createIndex(string $indexName, string $table, string $columns)
     {
         $query = $this->forge->createIndex($indexName, $this->_p($table), $columns);
 
@@ -361,7 +361,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createUniqueIndex(String $indexName, String $table, String $columns)
+    public function createUniqueIndex(string $indexName, string $table, string $columns)
     {
         $query = $this->forge->createUniqueIndex($indexName, $this->_p($table), $columns);
 
@@ -379,7 +379,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createFulltextIndex(String $indexName, String $table, String $columns)
+    public function createFulltextIndex(string $indexName, string $table, string $columns)
     {
         $query = $this->forge->createFulltextIndex($indexName, $this->_p($table), $columns);
 
@@ -397,7 +397,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createSpatialIndex(String $indexName, String $table, String $columns)
+    public function createSpatialIndex(string $indexName, string $table, string $columns)
     {
         $query = $this->forge->createSpatialIndex($indexName, $this->_p($table), $columns);
 
@@ -414,7 +414,7 @@ class DBForge extends Connection
      * 
      * @return string
      */
-    public function dropIndex(String $indexName, String $table = NULL)
+    public function dropIndex(string $indexName, string $table = NULL)
     {
         $query = $this->forge->dropIndex($indexName, $this->_p($table));
 
@@ -429,7 +429,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function dropColumn(String $table = NULL, $columns = NULL)
+    public function dropColumn(string $table = NULL, $columns = NULL)
     {
         $columns = $this->_p($columns, 'column');
 
@@ -465,7 +465,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function modifyColumn(String $table = NULL, Array $columns = NULL)
+    public function modifyColumn(string $table = NULL, array $columns = NULL)
     {
         $query = $this->forge->modifyColumn($this->_p($table), $this->_p($columns, 'column'));
 
@@ -480,7 +480,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function renameColumn(String $table = NULL , Array $columns = NULL)
+    public function renameColumn(string $table = NULL , array $columns = NULL)
     {
         $query = $this->forge->renameColumn($this->_p($table), $this->_p($columns, 'column'));
 

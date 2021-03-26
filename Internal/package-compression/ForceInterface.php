@@ -20,7 +20,7 @@ interface ForceInterface
      * 
      * @return bool
      */
-    public function extract(String $source, String $target = NULL, String $password = NULL) : Bool;
+    public function extract(string $source, string $target = NULL, string $password = NULL) : bool;
 
     /**
      * Write data to file
@@ -30,7 +30,7 @@ interface ForceInterface
      * 
      * @return bool
      */
-    public function write(String $file, String $data) : Bool;
+    public function write(string $file, string $data) : bool;
 
     /**
      * Read file
@@ -39,7 +39,7 @@ interface ForceInterface
      * 
      * @return bool
      */
-    public function read(String $file) : String;
+    public function read(string $file) : string;
 
     /**
      * Force do
@@ -48,7 +48,7 @@ interface ForceInterface
      * 
      * @return string
      */
-    public function do(String $data) : String;
+    public function do(string $data) : string;
 
     /**
      * Force undo
@@ -57,5 +57,5 @@ interface ForceInterface
      * 
      * @return string
      */
-    public function undo(String $data) : String;
+    public function undo(string $data) : string;
 }

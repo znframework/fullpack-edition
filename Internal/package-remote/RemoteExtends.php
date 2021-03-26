@@ -21,7 +21,7 @@ class RemoteExtends
      * 
      * @return Connection
      */
-    public function new(Array $config)
+    public function new(array $config)
     {
         return $this->differentConnection($config);
     }
@@ -33,7 +33,7 @@ class RemoteExtends
      * 
      * @return Connection
      */
-    public function differentConnection(Array $config)
+    public function differentConnection(array $config)
     {
         $class = get_called_class();
         

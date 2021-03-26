@@ -18,7 +18,7 @@ interface SenderInterface
      * 
      * @param return Sender
      */
-    public function settings(Array $settings = NULL) : Sender;
+    public function settings(array $settings = NULL) : Sender;
 
     /**
      * Content Tyep
@@ -27,7 +27,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function contentType(String $type = 'plain') : Sender;
+    public function contentType(string $type = 'plain') : Sender;
 
     /**
      * Sets charset
@@ -36,7 +36,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function charset(String $charset = 'UTF-8') : Sender;
+    public function charset(string $charset = 'UTF-8') : Sender;
 
     /**
      * Sets priority
@@ -45,7 +45,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function priority(Int $count = 3) : Sender;
+    public function priority(int $count = 3) : Sender;
 
     /**
      * Add Header
@@ -55,7 +55,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function addHeader(String $header, String $value) : Sender;
+    public function addHeader(string $header, string $value) : Sender;
 
    /**
      * Sets Encoding Type
@@ -64,7 +64,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function encodingType(String $type = '8bit') : Sender;
+    public function encodingType(string $type = '8bit') : Sender;
 
     /**
      * Sets multipart
@@ -73,7 +73,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function multiPart(String $multiPart = 'related') : Sender;
+    public function multiPart(string $multiPart = 'related') : Sender;
 
     /**
      * Sets SMTP Host
@@ -82,7 +82,7 @@ interface SenderInterface
      * 
      * @return Snder
      */
-    public function smtpHost(String $host) : Sender;
+    public function smtpHost(string $host) : Sender;
 
     /**
      * Sets SMTP User
@@ -91,7 +91,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function smtpUser(String $user) : Sender;
+    public function smtpUser(string $user) : Sender;
 
     /**
      * Sets SMTP DSN
@@ -100,7 +100,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function smtpDsn(Bool $dsn = true) : Sender;
+    public function smtpDsn(bool $dsn = true) : Sender;
 
     /**
      * Sets SMTP Passowrd
@@ -109,7 +109,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function smtpPassword(String $pass) : Sender;
+    public function smtpPassword(string $pass) : Sender;
 
     /**
      * Sets SMTP Port
@@ -118,7 +118,7 @@ interface SenderInterface
      * 
      * @param Sender
      */
-    public function smtpPort(Int $port = 587) : Sender;
+    public function smtpPort(int $port = 587) : Sender;
 
     /**
      * Sets SMTP Timeout
@@ -127,7 +127,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function smtpTimeout(Int $timeout = 10) : Sender;
+    public function smtpTimeout(int $timeout = 10) : Sender;
 
     /**
      * Sets SMTP Keep Alive
@@ -136,7 +136,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function smtpKeepAlive(Bool $keepAlive = true) : Sender;
+    public function smtpKeepAlive(bool $keepAlive = true) : Sender;
 
     /**
      * Sets SMTP Encode
@@ -145,7 +145,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function smtpEncode(String $encode) : Sender;
+    public function smtpEncode(string $encode) : Sender;
 
     /**
      * To
@@ -155,7 +155,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function to($to, String $name) : Sender;
+    public function to($to, string $name) : Sender;
 
     /**
      * To / Receiver
@@ -165,7 +165,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function receiver($to, String $name) : Sender;
+    public function receiver($to, string $name) : Sender;
 
     /**
      * Reply To
@@ -175,7 +175,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function replyTo($replyTo, String $name) : Sender;
+    public function replyTo($replyTo, string $name) : Sender;
 
 
     /**
@@ -186,7 +186,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function cc($cc, String $name) : Sender;
+    public function cc($cc, string $name) : Sender;
 
     /**
      * BCC
@@ -196,7 +196,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function bcc($bcc, String $name) : Sender;
+    public function bcc($bcc, string $name) : Sender;
 
     /**
      * From
@@ -207,7 +207,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function from(String $from, String $name = NULL, String $returnPath = NULL) : Sender;
+    public function from(string $from, string $name = NULL, string $returnPath = NULL) : Sender;
 
     /**
      * From / Sender
@@ -218,7 +218,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function sender(String $from, String $name = NULL, String $returnPath = NULL) : Sender;
+    public function sender(string $from, string $name = NULL, string $returnPath = NULL) : Sender;
 
     /**
      * Subject
@@ -227,7 +227,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function subject(String $subject) : Sender;
+    public function subject(string $subject) : Sender;
 
     /**
      * Template
@@ -238,7 +238,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function template(String $table, $column, Array $data = []) : Sender;
+    public function template(string $table, $column, array $data = []) : Sender;
 
     /**
      * Template Match
@@ -248,7 +248,7 @@ interface SenderInterface
      * 
      * @return string
      */
-    public function templateMatch(String $content, Array $data) : String;
+    public function templateMatch(string $content, array $data) : string;
 
     /**
      * Message
@@ -257,7 +257,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function message(String $message) : Sender;
+    public function message(string $message) : Sender;
 
     /**
      * Message / Content
@@ -266,7 +266,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function content(String $message) : Sender;
+    public function content(string $message) : Sender;
 
     /**
      * Attachment
@@ -278,7 +278,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function attachment(String $file, String $disposition = NULL, String $newName = NULL, $mime = NULL) : Sender;
+    public function attachment(string $file, string $disposition = NULL, string $newName = NULL, $mime = NULL) : Sender;
 
     /**
      * Attachment Content ID
@@ -287,7 +287,7 @@ interface SenderInterface
      * 
      * @return mixed
      */
-    public function attachmentContentId(String $filename);
+    public function attachmentContentId(string $filename);
 
     /**
      * Send
@@ -297,5 +297,5 @@ interface SenderInterface
      * 
      * @return bool
      */
-    public function send(String $subject = NULL, String $message = NULL) : Bool;
+    public function send(string $subject = NULL, string $message = NULL) : bool;
 }

@@ -22,7 +22,7 @@ class Search
      * 
      * @return string|bool
      */
-    public static function between(String $str, String $start, String $end, Bool $case = true, Bool $both = false)
+    public static function between(string $str, string $start, string $end, bool $case = true, bool $both = false)
     {
         if( preg_match('/(?<start>' . preg_quote($start, '/') . ')(?<search>.*?)(?<end>' . preg_quote($end, '/') . ')/' . ( $case === true ? NULL : 'i' ), $str, $match) )
         {
@@ -47,7 +47,7 @@ class Search
      * 
      * @return string|bool
      */
-    public static function betweenBoth(String $str, String $start, String $end, Bool $case = true) 
+    public static function betweenBoth(string $str, string $start, string $end, bool $case = true) 
     {
         return self::between($str, $start, $end, $case, true);
     }
@@ -60,7 +60,7 @@ class Search
      * @param string $type = 'string' - options[string|position]
      * @param bool   $case = true
      */
-    public static function use(String $str, String $needle, String $type = 'string', Bool $case = true)
+    public static function use(string $str, string $needle, string $type = 'string', bool $case = true)
     {
         if( $type === 'string' )
         {
@@ -100,7 +100,7 @@ class Search
      * @param string $needle
      * @param bool   $case = true
      */
-    public static function position(String $str, String $needle, Bool $case = true)
+    public static function position(string $str, string $needle, bool $case = true)
     {
         return self::use($str, $needle, __FUNCTION__, $case);
     }
@@ -112,7 +112,7 @@ class Search
      * @param string $needle
      * @param bool   $case = true
      */
-    public static function string(String $str, String $needle, Bool $case = true) : String
+    public static function string(string $str, string $needle, bool $case = true) : string
     {
         return self::use($str, $needle, __FUNCTION__, $case);
     }

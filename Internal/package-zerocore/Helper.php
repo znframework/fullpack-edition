@@ -21,7 +21,7 @@ class Helper
      * 
      * @return bool
      */
-    public static function report(String $subject, String $message, String $destination = NULL, String $time = NULL) : Bool
+    public static function report(string $subject, string $message, string $destination = NULL, string $time = NULL) : bool
     {
         if( ! Config::get('Project', 'log')['createFile'] )
         {
@@ -74,7 +74,7 @@ class Helper
      * 
      * @return string
      */
-    public static function highLight(String $str, Array $settings = []) : String
+    public static function highLight(string $str, array $settings = []) : string
     {
         $phpFamily      = ! empty( $settings['php:family'] )    ? 'font-family:'.$settings['php:family'] : 'font-family:Consolas, monospace';
         $phpSize        = ! empty( $settings['php:size'] )      ? 'font-size:'.$settings['php:size'] : 'font-size:12px';
@@ -128,7 +128,7 @@ class Helper
      * @param string $prefix = NULL
      * @param string $suffix = NULL
      */
-    public static function toConstant(String $var, String $prefix = NULL, String $suffix = NULL)
+    public static function toConstant(string $var, string $prefix = NULL, string $suffix = NULL)
     {
         preg_match('/^[A-Z]+/', $var, $match);
         

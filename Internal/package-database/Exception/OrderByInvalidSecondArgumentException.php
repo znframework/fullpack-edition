@@ -15,7 +15,7 @@ class OrderByInvalidSecondArgumentException extends Exception
 {
     const lang = 
     [
-        'tr' => 'String $type parametresi "asc" veya "desc" değerlerini alabilir!',
-        'en' => 'String $type parameter can take "asc" or "desc" values!'
+        'tr' => 'string $type parametresi "asc" veya "desc" değerlerini alabilir!',
+        'en' => 'string $type parameter can take "asc" or "desc" values!'
     ];
 }

@@ -266,7 +266,7 @@ class DriverTool extends DriverExtends
      * 
      * @return bool
      */
-    public function import(String $file)
+    public function import(string $file)
     {
         if( is_file($file) )
         {   

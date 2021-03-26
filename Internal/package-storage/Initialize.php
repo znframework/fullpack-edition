@@ -21,7 +21,7 @@ trait Initialize
      * 
      * @return void
      */
-    public function __construct(Array $config = [])
+    public function __construct(array $config = [])
     {
         $this->config = $config ?: Config::default(__CLASS__ . 'DefaultConfiguration')
                                          ::get('Storage', strtolower(Datatype::divide(__CLASS__, '/', -1)));

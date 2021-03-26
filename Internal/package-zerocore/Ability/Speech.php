@@ -36,7 +36,7 @@ trait Speech
      * 
      * @return array
      */
-    public static function all() : Array
+    public static function all() : array
     {
         return Lang::default('ZN\CoreDefaultLanguage')::select(self::getOnlyClassName());
     }

@@ -22,7 +22,7 @@ class Serial extends StoreAbstract implements StoreInterface
      * 
      * @return string
      */
-    public static function encode($data) : String
+    public static function encode($data) : string
     {
         return serialize($data);
     }
@@ -35,7 +35,7 @@ class Serial extends StoreAbstract implements StoreInterface
      * 
      * @return object
      */
-    public static function decode(String $data, Bool $array = false)
+    public static function decode(string $data, bool $array = false)
     {
         if( $array === false )
         {
@@ -55,7 +55,7 @@ class Serial extends StoreAbstract implements StoreInterface
      * 
      * @return object
      */
-    public static function decodeObject(String $data) : stdClass
+    public static function decodeObject(string $data) : stdClass
     {
         return self::decode($data, false);
     }
@@ -68,7 +68,7 @@ class Serial extends StoreAbstract implements StoreInterface
      * 
      * @return array
      */
-    public static function decodeArray(String $data) : Array
+    public static function decodeArray(string $data) : array
     {
         return self::decode($data, true);
     }

@@ -20,7 +20,7 @@ class Method extends PermissionExtends
      * 
      * @return bool
      */
-    public static function post($roleId = NULL, Array $table = NULL, $callback = NULL) : Bool
+    public static function post($roleId = NULL, array $table = NULL, $callback = NULL) : bool
     {
         return self::use($roleId, __FUNCTION__, $table, $callback);
     }
@@ -34,7 +34,7 @@ class Method extends PermissionExtends
      * 
      * @return bool
      */
-    public static function get($roleId = NULL, Array $table = NULL, $callback = NULL) : Bool
+    public static function get($roleId = NULL, array $table = NULL, $callback = NULL) : bool
     {
         return self::use($roleId, __FUNCTION__, $table, $callback);
     }
@@ -47,7 +47,7 @@ class Method extends PermissionExtends
      * @param mixed $callback = NULL
      * @return bool
      */
-    public static function request($roleId = NULL, Array $table = NULL, $callback = NULL) : Bool
+    public static function request($roleId = NULL, array $table = NULL, $callback = NULL) : bool
     {
         return self::use($roleId, __FUNCTION__, $table, $callback);
     }
@@ -62,7 +62,7 @@ class Method extends PermissionExtends
      * 
      * @return bool
      */
-    public static function use($roleId = NULL, $method = 'post', Array $table = NULL, $callback = NULL) : Bool
+    public static function use($roleId = NULL, $method = 'post', array $table = NULL, $callback = NULL) : bool
     {
         if( $roleId !== NULL && $table !== NULL )
         {

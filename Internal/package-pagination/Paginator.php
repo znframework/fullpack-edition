@@ -157,7 +157,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function url(String $url) : Paginator
+    public function url(string $url) : Paginator
     {
         $this->settings['url'] = $url;
 
@@ -185,7 +185,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function limit(Int $limit) : Paginator
+    public function limit(int $limit) : Paginator
     {
         $this->settings['limit'] = $limit;
 
@@ -199,7 +199,7 @@ class Paginator implements PaginatorInterface
      * 
      * @param string $type - options[ajax|classic]
      */
-    public function type(String $type) : Paginator
+    public function type(string $type) : Paginator
     {
         $this->settings['type'] = $type;
 
@@ -213,7 +213,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function paging(String $paging) : Paginator
+    public function paging(string $paging) : Paginator
     {
         $this->settings['paging'] = $paging;
 
@@ -227,7 +227,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function totalRows(Int $totalRows) : Paginator
+    public function totalRows(int $totalRows) : Paginator
     {
         $this->settings['totalRows'] = $totalRows;
 
@@ -241,7 +241,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function countLinks(Int $countLinks) : Paginator
+    public function countLinks(int $countLinks) : Paginator
     {
         $this->settings['countLinks'] = $countLinks;
 
@@ -258,7 +258,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function linkNames(String $prev, String $next, String $first, String $last) : Paginator
+    public function linkNames(string $prev, string $next, string $first, string $last) : Paginator
     {
         $this->settings['prevName']  = $prev;
         $this->settings['nextName']  = $next;
@@ -275,7 +275,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function css(Array $css) : Paginator
+    public function css(array $css) : Paginator
     {
         $this->settings['class'] = $css;
 
@@ -289,7 +289,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function style(Array $style) : Paginator
+    public function style(array $style) : Paginator
     {
         $this->settings['style'] = $style;
 
@@ -303,7 +303,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function output(String $type) : Paginator
+    public function output(string $type) : Paginator
     {
         $this->settings['output'] = $type;
 
@@ -317,7 +317,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return string
      */
-    public function getURI(String $page = NULL) : String
+    public function getURI(string $page = NULL) : string
     {
         return $this->checkGetRequest($page);
     }
@@ -329,7 +329,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return Paginator
      */
-    public function settings(Array $config = []) : Paginator
+    public function settings(array $config = []) : Paginator
     {
         foreach( $config as $key => $value )
         {
@@ -363,7 +363,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return string
      */
-    public function create($start = NULL, Array $settings = []) : String
+    public function create($start = NULL, array $settings = []) : string
     {
         # The configuration arrays are merge.
         $settings = array_merge($this->config, $this->settings, $settings);

@@ -18,7 +18,7 @@ class Security
      * 
      * @return string 
      */
-    public static function getCSRFTokenKey(String $name = 'token')
+    public static function getCSRFTokenKey(string $name = 'token')
     {
         return $_SESSION[$name];
     }
@@ -28,7 +28,7 @@ class Security
      * 
      * @param string $name = 'token'
      */
-    public static function createCSRFTokenKey(String $name = 'token')
+    public static function createCSRFTokenKey(string $name = 'token')
     {
        $_SESSION[$name] = self::createHashCode();
     }
@@ -41,7 +41,7 @@ class Security
      * 
      * @return void
      */
-    public static function CSRFToken(String $uri = NULL, String $type = 'post', $name = 'token')
+    public static function CSRFToken(string $uri = NULL, string $type = 'post', $name = 'token')
     {
         if( ! self::validCSRFToken($name, $type) )
         {
@@ -57,7 +57,7 @@ class Security
      * 
      * @return bool
      */
-    public static function validCSRFToken(String $name = 'token', String $type = 'post')
+    public static function validCSRFToken(string $name = 'token', string $type = 'post')
     {
         switch( $type )
         {
@@ -85,7 +85,7 @@ class Security
      * 
      * @return string
      */
-    protected static function createHashCode(Int $len = 32)
+    protected static function createHashCode(int $len = 32)
     {
         return bin2hex(random_bytes($len));
     }

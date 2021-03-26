@@ -19,7 +19,7 @@ class Converter
      * @param array  $data
      * @param string $file = 'excel.xls'
      */
-    public static function arrayToXLS(Array $data, String $file = 'excel.xls')
+    public static function arrayToXLS(array $data, string $file = 'excel.xls')
     {
         $file = Base::suffix($file, '.xls');
 
@@ -45,7 +45,7 @@ class Converter
      * 
      * @return array
      */
-    public static function CSVToArray(String $file) : Array
+    public static function CSVToArray(string $file) : array
     {
         $file = Base::suffix($file, '.csv');
 

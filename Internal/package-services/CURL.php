@@ -93,7 +93,7 @@ class CURL implements CURLInterface
      * 
      * @return CURL
      */
-    public function init(String $url = NULL) : CURL
+    public function init(string $url = NULL) : CURL
     {
         if( $url !== NULL && ! IS::URL($url) )
         {
@@ -138,7 +138,7 @@ class CURL implements CURLInterface
      * 
      * @return String
      */
-    public function escape(String $str) : String
+    public function escape(string $str) : string
     {
         if( ! Base::isResourceObject($this->init) )
         {
@@ -155,7 +155,7 @@ class CURL implements CURLInterface
      * 
      * @return string
      */
-    public function unescape(String $str) : String
+    public function unescape(string $str) : string
     {
         if( ! Base::isResourceObject($this->init) )
         {
@@ -172,7 +172,7 @@ class CURL implements CURLInterface
      * 
      * @return mixed
      */
-    public function info(String $opt = NULL)
+    public function info(string $opt = NULL)
     {
         if( isset($this->multipleInformations) )
         {
@@ -187,7 +187,7 @@ class CURL implements CURLInterface
      * 
      * @return string
      */
-    public function error() : String
+    public function error() : string
     {
         if( ! Base::isResourceObject($this->init) )
         {
@@ -202,7 +202,7 @@ class CURL implements CURLInterface
      * 
      * @return int
      */
-    public function errno() : Int
+    public function errno() : int
     {
         if( ! Base::isResourceObject($this->init) )
         {
@@ -219,7 +219,7 @@ class CURL implements CURLInterface
      * 
      * @return string
      */
-    public function pause($bitmask = 0) : Int
+    public function pause($bitmask = 0) : int
     {
         if( ! empty($this->init) )
         {
@@ -234,7 +234,7 @@ class CURL implements CURLInterface
      * 
      * @return bool
      */
-    public function reset() : Bool
+    public function reset() : bool
     {
         if( ! empty($this->init) )
         {
@@ -254,7 +254,7 @@ class CURL implements CURLInterface
      * 
      * @return CURL
      */
-    public function option(String $options, $value) : CURL
+    public function option(string $options, $value) : CURL
     {
         $this->options[Helper::toConstant($options, 'CURLOPT_')] = $value;
 
@@ -266,7 +266,7 @@ class CURL implements CURLInterface
      * 
      * @return bool
      */
-    public function close() : Bool
+    public function close() : bool
     {
         $init = $this->init;
 
@@ -289,7 +289,7 @@ class CURL implements CURLInterface
      * 
      * @return string
      */
-    public function errval(Int $errno = 0) : String
+    public function errval(int $errno = 0) : string
     {
         return curl_strerror($errno);
     }

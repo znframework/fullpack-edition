@@ -22,7 +22,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function post(String $name = NULL, $value = NULL)
+    public static function post(string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_POST ,__FUNCTION__);
     }
@@ -35,7 +35,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function get(String $name = NULL, $value = NULL)
+    public static function get(string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_GET, __FUNCTION__);
     }
@@ -48,7 +48,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function request(String $name = NULL, $value = NULL)
+    public static function request(string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_REQUEST, __FUNCTION__);
     }
@@ -61,7 +61,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function env(String $name = NULL, $value = NULL)
+    public static function env(string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_ENV, __FUNCTION__);
     }
@@ -74,7 +74,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function server(String $name = '', $value = NULL)
+    public static function server(string $name = '', $value = NULL)
     {
         // @value parametresi boş değilse
         if( ! empty($value) )
@@ -93,7 +93,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function files(String $fileName = NULL, String $type = 'name')
+    public static function files(string $fileName = NULL, string $type = 'name')
     {
         return $_FILES[$fileName][$type] ?? false;
     }
@@ -104,7 +104,7 @@ class Method implements MethodInterface
      * @param string $input
      * @param string $name
      */
-    public static function delete(String $input, String $name)
+    public static function delete(string $input, string $name)
     {
         switch( $input )
         {
