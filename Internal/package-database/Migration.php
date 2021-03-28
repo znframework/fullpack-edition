@@ -81,7 +81,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function upAll(String ...$migrations) : bool
+    public function upAll(string ...$migrations) : bool
     {
         $this->runMigrateAll('up', $migrations);
 
@@ -95,7 +95,7 @@ class Migration implements MigrationInterface
      * 
      * @return bool
      */
-    public function downAll(String ...$migrations) : bool
+    public function downAll(string ...$migrations) : bool
     {
         $this->runMigrateAll('down', $migrations);
 

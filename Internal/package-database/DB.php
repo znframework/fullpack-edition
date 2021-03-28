@@ -2269,7 +2269,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function notIn(String ...$value) : string
+    public function notIn(string ...$value) : string
     {
         return $this->_in('in', ...$value);
     }
@@ -2281,7 +2281,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function in(String ...$value) : string
+    public function in(string ...$value) : string
     {
         return $this->_in(__FUNCTION__, ...$value);
     }
@@ -2293,7 +2293,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function inTable(String ...$value) : string
+    public function inTable(string ...$value) : string
     {
         return $this->_in(__FUNCTION__, ...$value);
     }
@@ -2305,7 +2305,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function inQuery(String ...$value) : string
+    public function inQuery(string ...$value) : string
     {
         return $this->_in(__FUNCTION__, ...$value);
     }

@@ -18,7 +18,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function upAll(String ...$migrations) : bool;
+    public function upAll(string ...$migrations) : bool;
 
     /**
      * Down all migrations
@@ -27,7 +27,7 @@ interface MigrationInterface
      * 
      * @return bool
      */
-    public function downAll(String ...$migrations) : bool;
+    public function downAll(string ...$migrations) : bool;
 
     /**
      * Create table

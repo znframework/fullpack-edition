@@ -88,7 +88,7 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function method(String ...$methods);
+    public function method(string ...$methods);
 
     /**
      * Sets redirect

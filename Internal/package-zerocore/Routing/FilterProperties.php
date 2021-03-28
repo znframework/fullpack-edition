@@ -95,7 +95,7 @@ class FilterProperties
      * 
      * @return Route
      */
-    public function method(String ...$methods)
+    public function method(string ...$methods)
     {
         $this->filters['method'] = $methods;
 
