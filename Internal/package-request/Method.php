@@ -10,6 +10,7 @@
  */
 
 use ZN\In;
+use ZN\Security\Html;
 use ZN\Protection\Json;
 
 class Method implements MethodInterface
@@ -155,7 +156,7 @@ class Method implements MethodInterface
                         $input[$name] = In::cleanInjection($input[$name]);
                     }
 
-                    return htmlspecialchars($input[$name], ENT_QUOTES, "utf-8");
+                    return Html::encode($input[$name]);
                 }
             }
             elseif( is_array($input[$name]) )

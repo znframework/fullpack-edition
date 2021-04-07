@@ -24,7 +24,7 @@ class Html
      */
     public static function encode(string $string, string $type = 'quotes', string $encoding = 'utf-8') : string
     {
-        return htmlspecialchars(trim($string), Helper::toConstant($type, 'ENT_'), $encoding);
+        return str_replace('&amp;', '&', htmlspecialchars(trim($string), Helper::toConstant($type, 'ENT_'), $encoding, false));
     }
 
     /**
