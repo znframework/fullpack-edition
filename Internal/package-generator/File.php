@@ -448,6 +448,8 @@ class File
             case 'command'   : $return = COMMANDS_DIR;    break;
         }
 
-        return Base::suffix(Datatype::divide(rtrim($return ?? NULL, '/'), '/', -1));
+        $path = PROJECT_TYPE === 'EIP' ? Datatype::divide(rtrim($return ?? NULL, '/'), '/', -1) : $return;
+
+        return Base::suffix($path);
     }
 }

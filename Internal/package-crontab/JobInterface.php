@@ -97,6 +97,15 @@ interface JobInterface
     public function wget(string $url);
 
     /**
+     * Script [6.8.0]
+     *
+     * @param string $cmd
+     * 
+     * @return int
+     */
+    public function script(String $cmd);
+
+    /**
      * Path
      * 
      * @param string $path = NULL
