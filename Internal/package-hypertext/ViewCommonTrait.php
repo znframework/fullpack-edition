@@ -616,10 +616,6 @@ trait ViewCommonTrait
             {
                 $element = json_encode($element, JSON_UNESCAPED_UNICODE);
             }
-            else if( ! is_scalar($element) )
-            {
-                $element = 'nonscalar';
-            }
 
             $element = htmlentities($element, ENT_COMPAT);
         }
