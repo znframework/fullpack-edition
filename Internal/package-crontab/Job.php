@@ -348,7 +348,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return int
      */
-    public function script(String $cmd)
+    public function script(string $cmd)
     {
         return $this->path('')->run($cmd);
     }
