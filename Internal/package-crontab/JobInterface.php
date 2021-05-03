@@ -66,6 +66,13 @@ interface JobInterface
     public function run(string $cmd = NULL);
 
     /**
+     * Get string query
+     * 
+     * @return string
+     */
+    public function stringQuery();
+
+    /**
      * Debug status
      * 
      * @param bool $status = true
@@ -90,13 +97,6 @@ interface JobInterface
     public function command(string $file);
 
     /**
-     * Cron wget
-     * 
-     * @param string $url
-     */
-    public function wget(string $url);
-
-    /**
      * Script [6.8.0]
      *
      * @param string $cmd
@@ -104,6 +104,13 @@ interface JobInterface
      * @return int
      */
     public function script(string $cmd);
+
+    /**
+     * Cron wget
+     * 
+     * @param string $url
+     */
+    public function wget(string $url);
 
     /**
      * Path

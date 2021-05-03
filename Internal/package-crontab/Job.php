@@ -102,6 +102,11 @@ class Job implements JobInterface, CrontabIntervalInterface
     protected $limitFile = 'Limit.json';
 
     /**
+     * @var string 
+     */
+    protected $stringQuery;
+
+    /**
      * Magic Constructor
      */
     public function __construct()
@@ -384,6 +389,16 @@ class Job implements JobInterface, CrontabIntervalInterface
     }
 
     /**
+     * Get string query
+     * 
+     * @return string
+     */
+    public function stringQuery()
+    {
+        return $this->stringQuery;
+    }
+
+    /**
      * Protected create crontab directory if not exists
      */
     protected function createCrontabDirectoryIfNotExists()
@@ -430,15 +445,19 @@ class Job implements JobInterface, CrontabIntervalInterface
      */
     protected function addJobToExecFile($cmd)
     {
+        $this->stringQuery = $cmd;
+
         $content = file_get_contents($this->crontabCommands);
 
         if( ! stristr($content, $cmd))
         {
-            $content = $content . $this->getValidCommand() . $cmd . EOL;
+            $this->stringQuery = $stringQuery = $this->getValidCommand() . $cmd;
+
+            $content = $content . $stringQuery . EOL;
 
             file_put_contents($this->crontabCommands, $content);
         }
-    }   
+    }  
 
     /**
      * Protected remove job from exec file
@@ -449,7 +468,7 @@ class Job implements JobInterface, CrontabIntervalInterface
 
         unset($jobs[$cmd]);
 
-        file_put_contents($this->crontabCommands, implode(EOL, $jobs) . EOL);
+        $this->writeCrontabCommands($jobs);
     }
 
     /**
@@ -480,12 +499,20 @@ class Job implements JobInterface, CrontabIntervalInterface
         foreach( $this->listArray() as $key => $job )
         {
             if( ! stristr($job, $cmd) )
-            {
+            { 
                 $jobs[$key] = $job; // @codeCoverageIgnore
             }
         }
 
-        file_put_contents($this->crontabCommands, implode(EOL, $jobs) . EOL);
+        $this->writeCrontabCommands($jobs);
+    }
+
+    /**
+     * Protected write crontab commands
+     */
+    protected function writeCrontabCommands($jobs)
+    {
+        file_put_contents($this->crontabCommands, implode(EOL, $jobs) . ($jobs ? EOL : NULL));
     }
 
     /**
