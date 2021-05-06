@@ -144,7 +144,7 @@ class DB extends Connection
      */
     public function where($column, string $value = NULL, string $logical = NULL) : DB
     {
-        $this->_wh($column, (string) $value, $logical, __FUNCTION__);
+        $this->buildWhereHavingClause($column, (string) $value, $logical, __FUNCTION__);
 
         return $this;
     }
@@ -316,7 +316,7 @@ class DB extends Connection
      */
     public function whereFullText($column, string $value = NULL, string $type = NULL, string $logical = NULL) : DB
     {
-        $this->where('exp:' . $this->db->fullText($column, $this->_escapeStringAddNail($value), $type), '', $logical);
+        $this->where('exp:' . $this->db->fullText($column, $this->escapeStringAddNail($value), $type), '', $logical);
 
         return $this;
     }
@@ -459,7 +459,7 @@ class DB extends Connection
      */
     public function whereGroup(...$args) : DB
     {
-        $this->where .= $this->_whereHavingGroup($args);
+        $this->where .= $this->whereHavingGroup($args);
 
         return $this;
     }
@@ -473,7 +473,7 @@ class DB extends Connection
      */
     public function havingGroup(...$args) : DB
     {
-        $this->having .= $this->_whereHavingGroup($args);
+        $this->having .= $this->whereHavingGroup($args);
 
         return $this;
     }
@@ -489,7 +489,7 @@ class DB extends Connection
      */
     public function having($column, string $value = NULL, string $logical = NULL) : DB
     {
-        $this->_wh($column, (string) $value, $logical, __FUNCTION__);
+        $this->buildWhereHavingClause($column, (string) $value, $logical, __FUNCTION__);
 
         return $this;
     }
@@ -519,7 +519,7 @@ class DB extends Connection
      */
     public function cleanCaching(string $driver = 'file') : bool
     {
-        return Singleton::class('ZN\Cache\Processor')->driver($this->caching['driver'] ?? $driver)->delete($this->_cacheQuery());
+        return Singleton::class('ZN\Cache\Processor')->driver($this->caching['driver'] ?? $driver)->delete($this->getEncryptedCacheQuery());
     }
 
     /**
@@ -567,7 +567,7 @@ class DB extends Connection
      */
     public function innerJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
-        $this->_join($table, $otherColumn, $operator, 'INNER');
+        $this->buildJoinClause($table, $otherColumn, $operator, 'INNER');
 
         return $this;
     }
@@ -583,7 +583,7 @@ class DB extends Connection
      */
     public function outerJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
-        $this->_join($table, $otherColumn, $operator, 'FULL OUTER');
+        $this->buildJoinClause($table, $otherColumn, $operator, 'FULL OUTER');
 
         return $this;
     }
@@ -599,7 +599,7 @@ class DB extends Connection
      */
     public function leftJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
-        $this->_join($table, $otherColumn, $operator, 'LEFT');
+        $this->buildJoinClause($table, $otherColumn, $operator, 'LEFT');
 
         return $this;
     }
@@ -615,7 +615,7 @@ class DB extends Connection
      */
     public function rightJoin(string $table, string $otherColumn, string $operator = '=') : DB
     {
-        $this->_join($table, $otherColumn, $operator, 'RIGHT');
+        $this->buildJoinClause($table, $otherColumn, $operator, 'RIGHT');
 
         return $this;
     }
@@ -673,7 +673,7 @@ class DB extends Connection
 
         foreach( $values as $value )
         {
-            $revalues[] = $this->_escapeStringAddNail($value ?? '', true);
+            $revalues[] = $this->escapeStringAddNail($value ?? '', true);
         }
 
         return $this->orderBy('FIELD(' . $field . ', ' . implode(', ', $revalues) . ')');
@@ -752,16 +752,16 @@ class DB extends Connection
      */
     public function get(string $table = NULL, string $return = 'object')
     {
-        $this->tableName = $table = $this->_p($table, 'table');
+        $this->tableName = $table = $this->addPrefixForTableAndColumn($table, 'table');
      
         $finalQuery =     'SELECT '         . 
                           $this->distinct   . $this->highPriority . $this->straightJoin . 
                           $this->smallResult. $this->bigResult    . $this->bufferResult . 
-                          $this->cache      . $this->calcFoundRows. $this->_select()    .
+                          $this->cache      . $this->calcFoundRows. $this->buildSelectClause()    .
                           ' FROM '          . 
                           $table.' '        . $this->partition    . $this->join         . 
-                          $this->_where()   . $this->_groupBy()   . $this->_having()    . 
-                          $this->_orderBy() . $this->limit        . $this->procedure    . 
+                          $this->buildWhereClause()   . $this->buildGroupByClause()   . $this->buildHavingClause()    . 
+                          $this->buildOrderByClause() . $this->limit        . $this->procedure    . 
                           $this->outFile    . $this->characterSet . $this->into         .
                           $this->forUpdate;
 
@@ -773,9 +773,9 @@ class DB extends Connection
 
         $returnQuery = $this->retunQueryType ?? 'query';
 
-        $this->_resetSelectQuery();
+        $this->resetSelectQueryVariables();
         
-        $secureFinalQuery = $this->_querySecurity($finalQuery);
+        $secureFinalQuery = $this->querySecurity($finalQuery);
 
         if( $this->string === true || $return === 'string' )
         {
@@ -1004,7 +1004,7 @@ class DB extends Connection
      */
     public function partition(...$args) : DB
     {
-        $this->partition = $this->_math(__FUNCTION__, $args)->args;
+        $this->partition = $this->setMathFunction(__FUNCTION__, $args)->args;
         return $this;
     }
 
@@ -1017,7 +1017,7 @@ class DB extends Connection
      */
     public function procedure(...$args) : DB
     {
-        $this->procedure = $this->_math(__FUNCTION__, $args)->args;
+        $this->procedure = $this->setMathFunction(__FUNCTION__, $args)->args;
         return $this;
     }
 
@@ -1323,7 +1323,7 @@ class DB extends Connection
         $jsonDecode = $this->jsonDecode;        $this->jsonDecode = [];
         $paging     = $this->paging ?? 'row';
 
-        return (new self($this->config))->_query($query, $secure, 
+        return (new self($this->config))->setQueryByDriver($query, $secure, 
         [
             'caching'    => $caching, 
             'tableName'  => $tableName,
@@ -1344,7 +1344,7 @@ class DB extends Connection
     {
         $this->secure = $this->secure ?: $secure;
 
-        return $this->db->exec($this->_querySecurity($query), $this->secure);
+        return $this->db->exec($this->querySecurity($query), $this->secure);
     }
 
     /**
@@ -1357,7 +1357,7 @@ class DB extends Connection
      */
     public function basicQuery(string $query, array $secure = []) : DB
     {
-        return $this->_query($query, $secure);
+        return $this->setQueryByDriver($query, $secure);
     }
 
     /**
@@ -1370,7 +1370,7 @@ class DB extends Connection
      */
     public function transQuery(string $query, array $secure = []) : DB
     {
-        return $this->_query($query, $secure);
+        return $this->setQueryByDriver($query, $secure);
     }
 
     /**
@@ -1385,7 +1385,7 @@ class DB extends Connection
     {
         $this->secure = $this->secure ?: $secure;
 
-        return $this->db->multiQuery($this->_querySecurity($query), $this->secure);
+        return $this->db->multiQuery($this->querySecurity($query), $this->secure);
     }
 
     /**
@@ -1466,11 +1466,11 @@ class DB extends Connection
      */
     public function status(string $table = NULL) : DB
     {
-        $table = Base::presuffix($this->_p($table), "'");
+        $table = Base::presuffix($this->addPrefixForTableAndColumn($table), "'");
 
         $query = "SHOW TABLE STATUS FROM " . $this->config['database'] . " LIKE $table";
 
-        $this->_runQuery($query);
+        $this->runQuery($query);
 
         return $this;
     }
@@ -1486,7 +1486,7 @@ class DB extends Connection
      */
     public function increment(string $table = NULL, $columns = [], int $increment = 1)
     {
-        return $this->_incdec($table, $columns, $increment, 'increment');
+        return $this->setIncrementDecrement($table, $columns, $increment, 'increment');
     }
 
     /**
@@ -1500,7 +1500,7 @@ class DB extends Connection
      */
     public function decrement(string $table = NULL, $columns = [], int $decrement = 1)
     {
-        return $this->_incdec($table, $columns, $decrement, 'decrement');
+        return $this->setIncrementDecrement($table, $columns, $decrement, 'decrement');
     }
 
     /**
@@ -1513,7 +1513,7 @@ class DB extends Connection
      */
     public function insertCSV(string $table, string $file) : bool
     {
-        $this->_csv($file);
+        $this->convertCSVData($file);
         
         array_map(function($data) use($table)
         {
@@ -1533,18 +1533,18 @@ class DB extends Connection
      */
     public function insert(string $table = NULL, array $datas = [])
     {
-        $this->_ignoreData($table, $datas);
+        $this->ignoreData($table, $datas);
 
-        $datas = $this->_p($datas, 'column');
+        $datas = $this->addPrefixForTableAndColumn($datas, 'column');
         $data  = NULL; $values = NULL;
 
         $duplicateCheckWhere = [];
 
         foreach( $datas as $key => $value )
         {
-            if( $this->_exp($key) )
+            if( $this->isExpressionExists($key) )
             {
-                $key   = $this->_clearExp($key);
+                $key   = $this->clearExpression($key);
                 $isExp = true;
             }
 
@@ -1609,14 +1609,14 @@ class DB extends Connection
                         $this->highPriority.
                         $this->ignore.
                         ' INTO '.
-                        $this->_p($table).
+                        $this->addPrefixForTableAndColumn($table).
                         $this->partition.
-                        $this->_values($data, $values) . 
+                        $this->buildInsertValuesClause($data, $values) . 
                         $this->db->getInsertExtrasByDriver();
 
-        $this->_resetInsertQuery();
+        $this->resetInsertQueryVariables();
 
-        return $this->_runQuery($insertQuery);
+        return $this->runQuery($insertQuery);
     }
 
     /**
@@ -1629,9 +1629,9 @@ class DB extends Connection
      */
     public function update(string $table = NULL, array $set = [])
     {
-        $this->_ignoreData($table, $set);
+        $this->ignoreData($table, $set);
 
-        $set  = $this->_p($set, 'column');
+        $set  = $this->addPrefixForTableAndColumn($set, 'column');
         $data = NULL;
         
         foreach( $set as $key => $value )
@@ -1640,9 +1640,9 @@ class DB extends Connection
 
             $value = $this->nailEncode($value);
 
-            if( $this->_exp($key) )
+            if( $this->isExpressionExists($key) )
             {
-                $key = $this->_clearExp($key); // @codeCoverageIgnore
+                $key = $this->clearExpression($key); // @codeCoverageIgnore
             }
             else
             {
@@ -1657,16 +1657,16 @@ class DB extends Connection
         $updateQuery = 'UPDATE '.
                         $this->lowPriority.
                         $this->ignore.
-                        $this->_p($table).
+                        $this->addPrefixForTableAndColumn($table).
                         $this->join.
                         $set.
-                        $this->_where().
-                        $this->_orderBy().
+                        $this->buildWhereClause().
+                        $this->buildOrderByClause().
                         $this->limit;
 
-        $this->_resetUpdateQuery();
+        $this->resetUpdateQueryVariables();
 
-        return $this->_runQuery($updateQuery);
+        return $this->runQuery($updateQuery);
     }
 
     /**
@@ -1687,18 +1687,18 @@ class DB extends Connection
                        $this->lowPriority.
                        $this->quick.
                        $this->ignore.
-                       $this->_deleteJoinTables($table).
+                       $this->deleteJoinTables($table).
                        ' FROM '.
-                       $this->_p($table).
+                       $this->addPrefixForTableAndColumn($table).
                        $this->join.
                        $this->partition.
-                       $this->_where().
-                       $this->_orderBy().
+                       $this->buildWhereClause().
+                       $this->buildOrderByClause().
                        $this->limit;
 
-        $this->_resetDeleteQuery();
+        $this->resetDeleteQueryVariables();
 
-        return $this->_runQuery($deleteQuery);
+        return $this->runQuery($deleteQuery);
     }
 
     /**
@@ -1747,7 +1747,7 @@ class DB extends Connection
      */
     public function result(string $type = 'object', $usageRow = false)
     {
-        $this->_resultCache($type, $results);
+        $this->getCacheResult($type, $results);
 
         if( empty($results) )
         {
@@ -2259,7 +2259,7 @@ class DB extends Connection
      */
     public function between(string $value1, string $value2) : string
     {
-        return $this->_escapeStringAddNail($value1, true).' AND '.$this->_escapeStringAddNail($value2, true);
+        return $this->escapeStringAddNail($value1, true).' AND '.$this->escapeStringAddNail($value2, true);
     }
 
     /**
@@ -2271,7 +2271,7 @@ class DB extends Connection
      */
     public function notIn(string ...$value) : string
     {
-        return $this->_in('in', ...$value);
+        return $this->buildInClause('in', ...$value);
     }
 
     /**
@@ -2283,7 +2283,7 @@ class DB extends Connection
      */
     public function in(string ...$value) : string
     {
-        return $this->_in(__FUNCTION__, ...$value);
+        return $this->buildInClause(__FUNCTION__, ...$value);
     }
 
     /**
@@ -2295,7 +2295,7 @@ class DB extends Connection
      */
     public function inTable(string ...$value) : string
     {
-        return $this->_in(__FUNCTION__, ...$value);
+        return $this->buildInClause(__FUNCTION__, ...$value);
     }
 
     /**
@@ -2307,7 +2307,7 @@ class DB extends Connection
      */
     public function inQuery(string ...$value) : string
     {
-        return $this->_in(__FUNCTION__, ...$value);
+        return $this->buildInClause(__FUNCTION__, ...$value);
     }
 
      /**
@@ -2340,7 +2340,7 @@ class DB extends Connection
      */
     protected function specialDefinedWhere($column, string $value = NULL, string $logical = NULL, $type = 'whereJson')
     {
-        $this->where('exp:' . $this->db->$type($column, $this->_escapeStringAddNail((string) $value)), '', $logical, 'where');
+        $this->where('exp:' . $this->db->$type($column, $this->escapeStringAddNail((string) $value)), '', $logical, 'where');
     }
 
     /**
@@ -2351,7 +2351,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _in($type = 'in', ...$value)
+    protected function buildInClause($type = 'in', ...$value)
     {
         $query = '(';
         $type  = strtolower($type);
@@ -2360,7 +2360,7 @@ class DB extends Connection
         {
             if( $type === 'in' )
             {
-                $query .= $this->_escapeStringAddNail($val, true);
+                $query .= $this->escapeStringAddNail($val, true);
             }
             elseif( $type === 'intable' )
             {
@@ -2393,7 +2393,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _select()
+    protected function buildSelectClause()
     {
         if( ! empty($this->selectFunctions) )
         {
@@ -2425,7 +2425,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _values($data, $values)
+    protected function buildInsertValuesClause($data, $values)
     {
         return ' ('.rtrim($data, ',').') VALUES ('.rtrim($values, ',').')';
     }
@@ -2435,7 +2435,7 @@ class DB extends Connection
      * 
      * @param string $type
      */
-    protected function _resultCache($type, &$results = [])
+    protected function getCacheResult($type, &$results = [])
     {
         if( ! empty($this->caching) )
         {
@@ -2443,13 +2443,13 @@ class DB extends Connection
 
             $cache = Singleton::class('ZN\Cache\Processor');
 
-            if( $cacheResult = $cache->driver($driver)->select($this->_cacheQuery()) )
+            if( $cacheResult = $cache->driver($driver)->select($this->getEncryptedCacheQuery()) )
             {
                 $results = $cacheResult; // @codeCoverageIgnore
             }
             else
             {
-                $cache->driver($driver)->insert($this->_cacheQuery(), $results = $this->db->result($type), $this->caching['time'] ?? 0);
+                $cache->driver($driver)->insert($this->getEncryptedCacheQuery(), $results = $this->db->result($type), $this->caching['time'] ?? 0);
             }
         }
     }
@@ -2460,7 +2460,7 @@ class DB extends Connection
      * @param string & $table
      * @param string & $data
      */
-    protected function _ignoreData(&$table, &$data)
+    protected function ignoreData(&$table, &$data)
     {
         $methods = ['ignore', 'post', 'get', 'request'];
 
@@ -2477,7 +2477,7 @@ class DB extends Connection
                     $data = Method::$method();
                 }
 
-                $columns = array_flip($this->_query('SELECT * FROM ' . $table)->columns());
+                $columns = array_flip($this->setQueryByDriver('SELECT * FROM ' . $table)->columns());
                 $data    = array_intersect_key($data, $columns);
 
                 if( $find = preg_grep('/(^id$)/i', array_keys($data)) )
@@ -2493,7 +2493,7 @@ class DB extends Connection
      * 
      * @param string & $data
      */
-    protected function _csv(&$data)
+    protected function convertCSVData(&$data)
     {
         $csv       = Converter::CSVToArray($data);
         $csvColumn = $csv[0];
@@ -2514,7 +2514,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _deleteJoinTables($table)
+    protected function deleteJoinTables($table)
     {
         if( $this->join )
         {
@@ -2522,7 +2522,7 @@ class DB extends Connection
 
             if( $joinType === 'inner' )
             {
-                $joinTables = $this->_p($table).', '.$this->joinTable; // @codeCoverageIgnore
+                $joinTables = $this->addPrefixForTableAndColumn($table).', '.$this->joinTable; // @codeCoverageIgnore
             }
             elseif( $joinType === 'right' )
             {
@@ -2530,7 +2530,7 @@ class DB extends Connection
             }
             else
             {
-                $joinTables = $this->_p($table);
+                $joinTables = $this->addPrefixForTableAndColumn($table);
             }
 
             $this->joinType  = NULL;
@@ -2550,17 +2550,17 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _whereKeyControl($column, $value)
+    protected function whereKeyControl($column, $value)
     {
         $keys   = ['between', 'in'];
         $column = trim($column);
 
-        if( in_array(strtolower(Datatype::divide($column, ' ', -1)), $keys) || $this->_exp($column) )
+        if( in_array(strtolower(Datatype::divide($column, ' ', -1)), $keys) || $this->isExpressionExists($column) )
         {
             return $value;
         }
 
-        return $this->_escapeStringAddNail($value);
+        return $this->escapeStringAddNail($value);
     }
 
     /**
@@ -2570,7 +2570,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _equalControl($column)
+    protected function setEqualClause($column)
     {
         $control = trim($column);
 
@@ -2596,18 +2596,18 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _whereHaving($column, $value, $logical)
+    protected function whereHaving($column, $value, $logical)
     {
         if( $value !== '' )
         {
-            $value = $this->_whereKeyControl($column, $value);
+            $value = $this->whereKeyControl($column, $value);
         }
 
-        $this->_convertType($column, $value);
+        $this->convertVartype($column, $value);
 
-        $column = $this->_equalControl($column);
+        $column = $this->setEqualClause($column);
 
-        return ' '.$this->_tablePrefixColumnControl($column).' '.$value.' '.$logical.' ';
+        return ' '.$this->tablePrefixColumnControl($column).' '.$value.' '.$logical.' ';
     }
 
     /**
@@ -2620,7 +2620,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    protected function _wh($column, $value, $logical, $type = 'where')
+    protected function buildWhereHavingClause($column, $value, $logical, $type = 'where')
     {   
         if( is_array($column) )
         {
@@ -2639,13 +2639,13 @@ class DB extends Connection
                     $v = $col[1] ?? '';
                     $l = $col[2] ?? 'and';
 
-                    $this->$type .= $this->_whereHaving($c, $v, $l);
+                    $this->$type .= $this->whereHaving($c, $v, $l);
                 }
             }
         }
         else
         {
-            $this->$type .= $this->_whereHaving($column, $value, $logical ?: 'and');
+            $this->$type .= $this->whereHaving($column, $value, $logical ?: 'and');
         }
 
         return $this;
@@ -2658,7 +2658,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _whereHavingGroup($conditions = [])
+    protected function whereHavingGroup($conditions = [])
     {
         $con = [];
 
@@ -2697,10 +2697,10 @@ class DB extends Connection
             $value   = $column[1] ?? '';
             $logical = $column[2] ?? 'and';
 
-            $whereGroup .= $this->_whereHaving($col, $value, $logical);
+            $whereGroup .= $this->whereHaving($col, $value, $logical);
         }
 
-        return ' ( '.$this->_whereHavingConjuctionClean($whereGroup).' ) '.$conjunction.' ';
+        return ' ( '.$this->whereHavingConjuctionClean($whereGroup).' ) '.$conjunction.' ';
     }
 
     /**
@@ -2710,11 +2710,11 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _whereHavingConjuctionControl($type)
+    protected function whereHavingConjuctionControl($type)
     {
         if( ! empty($this->$type) )
         {
-            $this->$type = $this->_whereHavingConjuctionClean($this->$type) ?: $this->$type;
+            $this->$type = $this->whereHavingConjuctionClean($this->$type) ?: $this->$type;
 
             $return = ' '.strtoupper($type).' '.$this->$type;
 
@@ -2733,7 +2733,7 @@ class DB extends Connection
      * 
      * @codeCoverageIgnore
      */
-    protected function _whereHavingConjuctionClean($str)
+    protected function whereHavingConjuctionClean($str)
     {
         if( ! empty($str) )
         {
@@ -2770,9 +2770,9 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _where()
+    protected function buildWhereClause()
     {
-        return $this->_whereHavingConjuctionControl('where');
+        return $this->whereHavingConjuctionControl('where');
     }
 
     /**
@@ -2780,9 +2780,9 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _having()
+    protected function buildHavingClause()
     {
-        return $this->_whereHavingConjuctionControl('having');
+        return $this->whereHavingConjuctionControl('having');
     }
 
     /**
@@ -2795,11 +2795,11 @@ class DB extends Connection
      * 
      * @param object
      */
-    protected function _join($tableAndColumn = '', $otherColumn = '', $operator = '=', $type = 'INNER')
+    protected function buildJoinClause($tableAndColumn = '', $otherColumn = '', $operator = '=', $type = 'INNER')
     {
-        $condition = $this->_tablePrefixColumnControl($tableAndColumn, $table).' '.
+        $condition = $this->tablePrefixColumnControl($tableAndColumn, $table).' '.
                      $operator.' '.
-                     $this->_tablePrefixColumnControl($otherColumn).' ';
+                     $this->tablePrefixColumnControl($otherColumn).' ';
         
         $this->join($table, $condition, $type);
     }
@@ -2812,7 +2812,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _tablePrefixColumnControl($column, &$table = NULL)
+    protected function tablePrefixColumnControl($column, &$table = NULL)
     {
         $column = explode('.', $column);
 
@@ -2830,7 +2830,7 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    protected function _groupBy()
+    protected function buildGroupByClause()
     {
         if( ! empty($this->groupBy) )
         {
@@ -2845,7 +2845,7 @@ class DB extends Connection
      * 
      * @return mixed
      */
-    protected function _orderBy()
+    protected function buildOrderByClause()
     {
         if( ! empty($this->orderBy) )
         {
@@ -2865,12 +2865,12 @@ class DB extends Connection
      * 
      * @return bool
      */
-    protected function _incdec($table, $columns, $incdec, $type)
+    protected function setIncrementDecrement($table, $columns, $incdec, $type)
     {
         $newColumns = [];
 
-        $table   = $this->_p($table);
-        $columns = $this->_p($columns, 'column');
+        $table   = $this->addPrefixForTableAndColumn($table);
+        $columns = $this->addPrefixForTableAndColumn($columns, 'column');
         $incdec  = $type === 'increment' ? abs($incdec) : -abs($incdec);
 
         if( is_array($columns) ) foreach( $columns as $v )
@@ -2891,7 +2891,7 @@ class DB extends Connection
 
         $set = ' SET '.substr($data, 0, -1);
 
-        $updateQuery = 'UPDATE '.$this->prefix.$table.$set.$this->_where();
+        $updateQuery = 'UPDATE '.$this->prefix.$table.$set.$this->buildWhereClause();
 
         $this->where = NULL;
 
@@ -2919,7 +2919,7 @@ class DB extends Connection
      * 
      * @return DB 
      */
-    public function _query(string $query, array $secure = [], $data = NULL)
+    public function setQueryByDriver(string $query, array $secure = [], $data = NULL)
     {
         $this->stringQuery = $query;
         $this->caching     = $data['caching']    ?? [];
@@ -2927,11 +2927,11 @@ class DB extends Connection
         $this->jsonDecode  = $data['jsonDecode'] ?? [];
         $this->paging      = $data['paging']     ?? 'page';
 
-        if( empty($this->caching) || ! Singleton::class('ZN\Cache\Processor')->select($this->_cacheQuery()) )
+        if( empty($this->caching) || ! Singleton::class('ZN\Cache\Processor')->select($this->getEncryptedCacheQuery()) )
         {
             $this->secure = $this->secure ?: $secure;
 
-            $this->db->query($this->_querySecurity($query), $secure);
+            $this->db->query($this->querySecurity($query), $secure);
 
             if( ! empty($this->transStart) )
             {
@@ -2952,7 +2952,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    protected function _cacheQuery()
+    protected function getEncryptedCacheQuery()
     {
         return md5(Json::encode($this->config) . $this->stringQuery());
     }
@@ -2960,7 +2960,7 @@ class DB extends Connection
     /**
      * Protected Select Reset Query
      */
-    protected function _resetSelectQuery()
+    protected function resetSelectQueryVariables()
     {
         $this->distinct        = NULL;
         $this->highPriority    = NULL;
@@ -2993,7 +2993,7 @@ class DB extends Connection
     /**
      * Protected Reset Insert Query
      */
-    protected function _resetInsertQuery()
+    protected function resetInsertQueryVariables()
     {
         $this->column          = NULL;
         $this->table           = NULL;
@@ -3009,7 +3009,7 @@ class DB extends Connection
     /**
      * Protected Reset Update Query
      */
-    protected function _resetUpdateQuery()
+    protected function resetUpdateQueryVariables()
     {
         $this->where           = NULL;
         $this->lowPriority     = NULL;
@@ -3024,7 +3024,7 @@ class DB extends Connection
     /**
      * Protected Reset Delete Query
      */
-    protected function _resetDeleteQuery()
+    protected function resetDeleteQueryVariables()
     {
         $this->where           = NULL;
         $this->lowPriority     = NULL;

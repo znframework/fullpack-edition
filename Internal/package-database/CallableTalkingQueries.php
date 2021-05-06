@@ -230,7 +230,7 @@ trait CallableTalkingQueries
      */
     protected function callMathMethod($functionMethod, $parameters)
     {
-        $math = $this->_math($functionMethod, $parameters);
+        $math = $this->setMathFunction($functionMethod, $parameters);
 
         if( $math->return === true )
         {

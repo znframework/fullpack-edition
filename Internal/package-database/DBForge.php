@@ -63,7 +63,7 @@ class DBForge extends Connection
     {
         parent::__construct($settings);
 
-        $this->forge = $this->_drvlib('Forge', $settings);
+        $this->forge = $this->getDriver('Forge', $settings);
     }
 
     /**
@@ -90,9 +90,9 @@ class DBForge extends Connection
      */
     public function createDatabase(string $dbname, $extras = NULL)
     {
-        $query = $this->forge->createDatabase($dbname, $this->_p($extras, 'extras'));
+        $query = $this->forge->createDatabase($dbname, $this->addPrefixForTableAndColumn($extras, 'extras'));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -106,7 +106,7 @@ class DBForge extends Connection
     {
         $query = $this->forge->dropDatabase($dbname);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -120,9 +120,9 @@ class DBForge extends Connection
      */
     public function createTable(string $table = NULL, array $columns = NULL, $extras = NULL)
     {
-        $query = $this->forge->createTable($this->_p($table), $this->_p($columns, 'column'), $this->_p($extras, 'extras'));
+        $query = $this->forge->createTable($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'), $this->addPrefixForTableAndColumn($extras, 'extras'));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -138,9 +138,9 @@ class DBForge extends Connection
      */
     public function createTempTable(string $table = NULL, array $columns = NULL, $extras = NULL)
     {
-        $query = $this->forge->createTempTable($this->_p($table), $this->_p($columns, 'column'), $this->_p($extras, 'extras'));
+        $query = $this->forge->createTempTable($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'), $this->addPrefixForTableAndColumn($extras, 'extras'));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -152,9 +152,9 @@ class DBForge extends Connection
      */
     public function dropTable(string $table = NULL)
     {
-        $query = $this->forge->dropTable($this->_p($table));
+        $query = $this->forge->dropTable($this->addPrefixForTableAndColumn($table));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -169,7 +169,7 @@ class DBForge extends Connection
      */
     public function alterTable(string $table = NULL, array $condition = NULL)
     {
-        $table = $this->_p($table);
+        $table = $this->addPrefixForTableAndColumn($table);
         $key   = key($condition);
 
         return $this->$key($table, $condition[$key]);
@@ -185,9 +185,9 @@ class DBForge extends Connection
      */
     public function renameTable(string $name, string $newName)
     {
-        $query = $this->forge->renameTable($this->_p($name, 'prefix'), $this->_p($newName, 'prefix'));
+        $query = $this->forge->renameTable($this->addPrefixForTableAndColumn($name, 'prefix'), $this->addPrefixForTableAndColumn($newName, 'prefix'));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -199,9 +199,9 @@ class DBForge extends Connection
      */
     public function truncate(string $table = NULL)
     {
-        $query = $this->forge->truncate($this->_p($table));
+        $query = $this->forge->truncate($this->addPrefixForTableAndColumn($table));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -214,9 +214,9 @@ class DBForge extends Connection
      */
     public function addColumn(string $table = NULL, array $columns = NULL)
     {
-        $query = $this->forge->addColumn($this->_p($table), $this->_p($columns, 'column'));
+        $query = $this->forge->addColumn($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -233,9 +233,9 @@ class DBForge extends Connection
      */
     public function startAutoIncrement(string $table, int $start = 0)
     {
-        $query = $this->forge->startAutoIncrement($this->_p($table), $start);
+        $query = $this->forge->startAutoIncrement($this->addPrefixForTableAndColumn($table), $start);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -273,9 +273,9 @@ class DBForge extends Connection
      */
     public function addPrimaryKey(string $table, string $columns, string $constraint = NULL)
     {
-        $query = $this->forge->addPrimaryKey($this->_p($table), $columns, $constraint);
+        $query = $this->forge->addPrimaryKey($this->addPrefixForTableAndColumn($table), $columns, $constraint);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -293,9 +293,9 @@ class DBForge extends Connection
      */
     public function addForeignKey(string $table, string $columns, string $reftable, string $refcolumn, string $constraint = NULL)
     {
-        $query = $this->forge->addForeignKey($this->_p($table), $columns, $reftable, $refcolumn, $constraint);
+        $query = $this->forge->addForeignKey($this->addPrefixForTableAndColumn($table), $columns, $reftable, $refcolumn, $constraint);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -310,9 +310,9 @@ class DBForge extends Connection
      */
     public function dropPrimaryKey(string $table = NULL, string $constraint = NULL)
     {
-        $query = $this->forge->dropPrimaryKey($this->_p($table), $constraint);
+        $query = $this->forge->dropPrimaryKey($this->addPrefixForTableAndColumn($table), $constraint);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -327,9 +327,9 @@ class DBForge extends Connection
      */
     public function dropForeignKey(string $table = NULL, string $constraint = NULL)
     {
-        $query = $this->forge->dropForeignKey($this->_p($table), $constraint);
+        $query = $this->forge->dropForeignKey($this->addPrefixForTableAndColumn($table), $constraint);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -345,9 +345,9 @@ class DBForge extends Connection
      */
     public function createIndex(string $indexName, string $table, string $columns)
     {
-        $query = $this->forge->createIndex($indexName, $this->_p($table), $columns);
+        $query = $this->forge->createIndex($indexName, $this->addPrefixForTableAndColumn($table), $columns);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -363,9 +363,9 @@ class DBForge extends Connection
      */
     public function createUniqueIndex(string $indexName, string $table, string $columns)
     {
-        $query = $this->forge->createUniqueIndex($indexName, $this->_p($table), $columns);
+        $query = $this->forge->createUniqueIndex($indexName, $this->addPrefixForTableAndColumn($table), $columns);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -381,9 +381,9 @@ class DBForge extends Connection
      */
     public function createFulltextIndex(string $indexName, string $table, string $columns)
     {
-        $query = $this->forge->createFulltextIndex($indexName, $this->_p($table), $columns);
+        $query = $this->forge->createFulltextIndex($indexName, $this->addPrefixForTableAndColumn($table), $columns);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -399,9 +399,9 @@ class DBForge extends Connection
      */
     public function createSpatialIndex(string $indexName, string $table, string $columns)
     {
-        $query = $this->forge->createSpatialIndex($indexName, $this->_p($table), $columns);
+        $query = $this->forge->createSpatialIndex($indexName, $this->addPrefixForTableAndColumn($table), $columns);
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -416,9 +416,9 @@ class DBForge extends Connection
      */
     public function dropIndex(string $indexName, string $table = NULL)
     {
-        $query = $this->forge->dropIndex($indexName, $this->_p($table));
+        $query = $this->forge->dropIndex($indexName, $this->addPrefixForTableAndColumn($table));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -431,13 +431,13 @@ class DBForge extends Connection
      */
     public function dropColumn(string $table = NULL, $columns = NULL)
     {
-        $columns = $this->_p($columns, 'column');
+        $columns = $this->addPrefixForTableAndColumn($columns, 'column');
 
         if( ! is_array($columns) )
         {
-            $query = $this->forge->dropColumn($this->_p($table), $columns);
+            $query = $this->forge->dropColumn($this->addPrefixForTableAndColumn($table), $columns);
 
-            return $this->_runExecQuery($query);
+            return $this->runExecQuery($query);
         }
         else
         {
@@ -448,9 +448,9 @@ class DBForge extends Connection
                     $col = $key; // @codeCoverageIgnore
                 }
 
-                $query = $this->forge->dropColumn($this->_p($table), $col);
+                $query = $this->forge->dropColumn($this->addPrefixForTableAndColumn($table), $col);
 
-                $this->_runExecQuery($query);
+                $this->runExecQuery($query);
             }
 
             return ! (bool) $this->error();
@@ -467,9 +467,9 @@ class DBForge extends Connection
      */
     public function modifyColumn(string $table = NULL, array $columns = NULL)
     {
-        $query = $this->forge->modifyColumn($this->_p($table), $this->_p($columns, 'column'));
+        $query = $this->forge->modifyColumn($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 
     /**
@@ -482,8 +482,8 @@ class DBForge extends Connection
      */
     public function renameColumn(string $table = NULL , array $columns = NULL)
     {
-        $query = $this->forge->renameColumn($this->_p($table), $this->_p($columns, 'column'));
+        $query = $this->forge->renameColumn($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'));
 
-        return $this->_runExecQuery($query);
+        return $this->runExecQuery($query);
     }
 }

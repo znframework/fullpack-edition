@@ -27,7 +27,7 @@ class DBTool extends Connection
     {
         parent::__construct($settings);
 
-        $this->tool = $this->_drvlib('Tool', $settings);
+        $this->tool = $this->getDriver('Tool', $settings);
     }
 
     /**

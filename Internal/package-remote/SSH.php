@@ -18,7 +18,8 @@ use ZN\Remote\Exception\FileRemoteDownloadException;
 use ZN\Remote\Exception\FolderChangeNameException;
 use ZN\Remote\Exception\FolderNotFoundException;
 use ZN\Remote\Exception\FolderAllreadyException;
-use ZN\Remote\Exception\InvalidArgumentException;
+use ZN\Remote\Exception\LoginErrorException;
+use ZN\Remote\Exception\ConnectionErrorException;
 
 /**
  * @codeCoverageIgnore
@@ -31,13 +32,6 @@ class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
      * @var resource
      */
     protected $connect = NULL;
-
-    /**
-     * Login
-     * 
-     * @var resource
-     */
-    protected $login = NULL;
 
     /**
      * Stream
@@ -280,10 +274,8 @@ class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
         {
             return true;
         }
-        else
-        {
-            throw new InvalidArgumentException(NULL, '$this->connect');
-        }
+        
+        return false;
     }
 
     /**
@@ -330,17 +322,15 @@ class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
 
         if( empty($this->connect) )
         {
-            throw new InvalidArgumentException(NULL, '$this->connect');
+            throw new ConnectionErrorException;
         }
 
         if( ! empty($user) )
         {
-            $this->login = ssh2_auth_password($this->connect, $user, $password);
-        }
-
-        if( empty($this->login) )
-        {
-            throw new InvalidArgumentException(NULL, '$this->login');
+            if( ! ssh2_auth_password($this->connect, $user, $password) )
+            {
+                throw new LoginErrorException;
+            }
         }
 
         return $this;
