@@ -769,9 +769,9 @@ class ZN
 
         self::$lastestVersion = $return[0]->name;
  
-        if( ZN_VERSION < self::$lastestVersion ) foreach( $return as $version )
+        if( version_compare(self::$lastestVersion, ZN_VERSION, '>') ) foreach( $return as $version )
         {
-            if( ZN_VERSION < $version->name )
+            if( version_compare($version->name, ZN_VERSION, '>') )
             {
                 $commit = $restful->useragent(true)->get($version->commit->url);
 
