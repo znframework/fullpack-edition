@@ -1533,90 +1533,119 @@ class DB extends Connection
      */
     public function insert(string $table = NULL, array $datas = [])
     {
-        $this->ignoreData($table, $datas);
-
-        $datas = $this->addPrefixForTableAndColumn($datas, 'column');
-        $data  = NULL; $values = NULL;
-
-        $duplicateCheckWhere = [];
-
-        foreach( $datas as $key => $value )
+        if( isset($datas[0]) && is_array($datas[0]) )
         {
-            if( $this->isExpressionExists($key) )
+            $insertQuery = $this->multiInsert($table, $datas);
+        }
+        else
+        {
+            $this->ignoreData($table, $datas);
+
+            $datas = $this->addPrefixForTableAndColumn($datas, 'column');
+            
+            $data = NULL; $values = NULL; $duplicateCheckWhere = [];
+    
+            foreach( $datas as $key => $value )
             {
-                $key   = $this->clearExpression($key);
-                $isExp = true;
-            }
-
-            $this->isNonscalarValueEncodeJson($value);
-
-            $data .= Base::suffix($key, ',');
-
-            if( ! empty($this->duplicateCheck) )
-            {
-                if( $this->duplicateCheck[0] !== '*' )
+                if( $this->isExpressionExists($key) )
                 {
-                    if( in_array($key, $this->duplicateCheck) )
+                    $key = $this->clearExpression($key); $isExp = true;
+                }
+    
+                $this->isNonscalarValueEncodeJson($value);
+    
+                $data .= Base::suffix($key, ',');
+    
+                if( ! empty($this->duplicateCheck) )
+                {
+                    if( $this->duplicateCheck[0] !== '*' )
+                    {
+                        if( in_array($key, $this->duplicateCheck) )
+                        {
+                            $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
+                        }
+                    }
+                    else
                     {
                         $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
                     }
                 }
+    
+                $value = $this->nailEncode($value);
+    
+                if( isset($isExp) )
+                {
+                    $values .= Base::suffix($value, ','); unset($isExp);
+                }
+                elseif( $value !== '?' )
+                {
+                    $values .= Base::suffix(Base::presuffix($value, "'"), ',');
+                }
                 else
                 {
-                    $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
+                    $values .= Base::suffix($value, ','); // @codeCoverageIgnore
                 }
             }
-
-            $value = $this->nailEncode($value);
-
-            if( isset($isExp) )
+    
+            if( ! empty($duplicateCheckWhere) )
             {
-                $values .= Base::suffix($value, ',');
-                unset($isExp);
-            }
-            elseif( $value !== '?' )
-            {
-                $values .= Base::suffix(Base::presuffix($value, "'"), ',');
-            }
-            else
-            {
-                $values .= Base::suffix($value, ','); // @codeCoverageIgnore
-            }
-        }
-
-        if( ! empty($duplicateCheckWhere) )
-        {
-            $duplicateCheckColumn = $this->duplicateCheck;
-
-            if( $this->where($duplicateCheckWhere)->get($table)->totalRows() )
-            {
-                $this->duplicateCheck = NULL;
-
-                if( $this->duplicateCheckUpdate === true )
+                $duplicateCheckColumn = $this->duplicateCheck;
+    
+                if( $this->where($duplicateCheckWhere)->get($table)->totalRows() )
                 {
-                    $this->duplicateCheckUpdate = NULL;
-
-                    return $this->where($duplicateCheckWhere)->update($table, $datas);
+                    $this->duplicateCheck = NULL;
+    
+                    if( $this->duplicateCheckUpdate === true )
+                    {
+                        $this->duplicateCheckUpdate = NULL;
+    
+                        return $this->where($duplicateCheckWhere)->update($table, $datas);
+                    }
+    
+                    return false;
                 }
-
-                return false;
             }
+    
+            $insertQuery = 'INSERT '.
+                            $this->lowPriority.
+                            $this->delayed.
+                            $this->highPriority.
+                            $this->ignore.
+                            ' INTO '.
+                            $this->addPrefixForTableAndColumn($table).
+                            $this->partition.
+                            $this->buildInsertValuesClause($data, $values) . 
+                            $this->db->getInsertExtrasByDriver();
         }
-
-        $insertQuery = 'INSERT '.
-                        $this->lowPriority.
-                        $this->delayed.
-                        $this->highPriority.
-                        $this->ignore.
-                        ' INTO '.
-                        $this->addPrefixForTableAndColumn($table).
-                        $this->partition.
-                        $this->buildInsertValuesClause($data, $values) . 
-                        $this->db->getInsertExtrasByDriver();
+        
 
         $this->resetInsertQueryVariables();
 
         return $this->runQuery($insertQuery);
+    }
+
+    /**
+     * protected multi insert
+     */
+    protected function multiInsert($table, $datas)
+    {
+        $data  = $datas[0]; unset($datas[0]);
+
+        $query = $this->string()->insert($table, $data);
+        
+        foreach( $datas as $values )
+        {
+            $value = NULL;
+
+            foreach( $values as $val )
+            {
+                $value .= Base::suffix(Base::presuffix($this->nailEncode($val), "'"), ',');
+            }
+
+            $query .= ', (' . rtrim($value, ',') . ')';
+        } 
+
+        return Base::suffix($query, ';');
     }
 
     /**
