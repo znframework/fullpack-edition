@@ -20,7 +20,7 @@ class DBTool extends DriverTool
      */
     public function listDatabases($query = 'SELECT datname FROM pg_database')
     {
-        return $this->_list($query);
+        return $this->runListQuery($query);
     }
 
     /**
@@ -30,7 +30,7 @@ class DBTool extends DriverTool
      */
     public function listTables($query = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'")
     {
-        return $this->_list($query);
+        return $this->runListQuery($query);
     }
 
     /**

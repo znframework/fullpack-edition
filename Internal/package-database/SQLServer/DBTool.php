@@ -21,7 +21,7 @@ class DBTool extends DriverTool
      */
     public function listDatabases($query = 'SELECT name FROM master.dbo.sysdatabases')
     {
-        return $this->_list($query);
+        return $this->runListQuery($query);
     }
 
     /**
@@ -33,7 +33,7 @@ class DBTool extends DriverTool
     {
         $query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG='".($this->settings['database'] ?? Config::get('Database', 'database')['database'])."'";
         
-        return $this->_list($query);
+        return $this->runListQuery($query);
     }
 
     /**

@@ -54,7 +54,7 @@ class DBForge extends DriverForge
      */
     public function renameColumn($table, $column)
     { 
-        return 'ALTER TABLE '.$table.' RENAME COLUMN ' . $this->_syntax($column, 'TO') . ';';
+        return 'ALTER TABLE '.$table.' RENAME COLUMN ' . $this->buildForgeColumnsSyntax($column, 'TO') . ';';
     }
 
     /**
@@ -67,7 +67,7 @@ class DBForge extends DriverForge
      */
     public function addColumn($table, $columns)
     {
-        return 'ALTER TABLE ' . $table . ' ADD ' . $this->_extractColumn($columns) . ';';
+        return 'ALTER TABLE ' . $table . ' ADD ' . $this->buildForgeColumnsQuery($columns) . ';';
     }
 
     /**

@@ -37,7 +37,7 @@ class DriverForge
      */
     public function createDatabase($dbname, $extras)
     {
-        return 'CREATE DATABASE ' . $dbname . $this->_extras($extras);
+        return 'CREATE DATABASE ' . $dbname . $this->addExtrasForCreateProcess($extras);
     }
 
     /**
@@ -107,7 +107,7 @@ class DriverForge
             $column .= $key . ' ' . rtrim($values) . ', ';
         }
 
-        return  $table . '(' .rtrim(trim($column), ', ') . ')' . $this->_extras($extras);
+        return  $table . '(' .rtrim(trim($column), ', ') . ')' . $this->addExtrasForCreateProcess($extras);
     }
 
     /**
@@ -165,7 +165,7 @@ class DriverForge
      */
     public function addColumn($table, $columns)
     {
-        return 'ALTER TABLE ' . $table . ' ADD (' . $this->_extractColumn($columns) . ');';
+        return 'ALTER TABLE ' . $table . ' ADD (' . $this->buildForgeColumnsQuery($columns) . ');';
     }
 
     /**
@@ -351,7 +351,7 @@ class DriverForge
      */
     public function modifyColumn($table, $columns)
     {
-        return 'ALTER TABLE ' . $table . ' MODIFY ' . $this->_extractColumn($columns) . ';';
+        return 'ALTER TABLE ' . $table . ' MODIFY ' . $this->buildForgeColumnsQuery($columns) . ';';
     }
 
     /**
@@ -364,7 +364,7 @@ class DriverForge
      */
     public function renameColumn($table, $columns)
     {
-        return 'ALTER TABLE ' . $table . ' CHANGE COLUMN ' . $this->_extractColumn($columns) . ';';
+        return 'ALTER TABLE ' . $table . ' CHANGE COLUMN ' . $this->buildForgeColumnsQuery($columns) . ';';
     }
 
     /**
@@ -401,7 +401,7 @@ class DriverForge
     /**
      * protected Syntax
      */
-    protected function _syntax($column, $sep = NULL)
+    protected function buildForgeColumnsSyntax($column, $sep = NULL)
     {
         return key($column) . ' ' . $sep . ' ' . (is_array($cols = current($column)) ? implode(' ', $cols) : $cols);
     }
@@ -409,7 +409,7 @@ class DriverForge
     /**
      * Protected Extract Column
      */
-    protected function _extractColumn($columns)
+    protected function buildForgeColumnsQuery($columns)
     {
         $con = NULL;
 
@@ -438,7 +438,7 @@ class DriverForge
     /**
      * Protected Extras
      */
-    protected function _extras($extras)
+    protected function addExtrasForCreateProcess($extras)
     {
         if( is_array($extras) )
         {

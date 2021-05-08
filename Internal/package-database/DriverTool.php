@@ -21,7 +21,7 @@ class DriverTool extends DriverExtends
      */
     public function listDatabases($query = 'SHOW DATABASES')
     {
-        return $this->_list($query);
+        return $this->runListQuery($query);
     }
 
     /**
@@ -31,13 +31,13 @@ class DriverTool extends DriverExtends
      */
     public function listTables($query = 'SHOW TABLES')
     {
-        return $this->_list($query);
+        return $this->runListQuery($query);
     }
 
     /**
      * Protected List
      */
-    protected function _list($query)
+    protected function runListQuery($query)
     {
         $result = $this->differentConnection->query($query)->result();
 

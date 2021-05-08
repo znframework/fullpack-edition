@@ -1518,6 +1518,7 @@ class DB extends Connection
         array_map(function($data) use($table)
         {
             $this->duplicateCheck()->insert(Base::prefix($table, 'ignore:'), $data);
+            
         }, $file);
         
         return true;
@@ -1543,155 +1544,40 @@ class DB extends Connection
 
             $datas = $this->addPrefixForTableAndColumn($datas, 'column');
             
-            $data = NULL; $values = NULL; $duplicateCheckWhere = [];
-    
-            foreach( $datas as $key => $value )
+            $this->buildDataValuesQueryForInsert($datas, $data, $values, $duplicateCheckWhere);
+            
+            $this->duplicateCheckProcess($duplicateCheckWhere, $table, $datas, $return);
+
+            if( isset($return) )
             {
-                if( $this->isExpressionExists($key) )
-                {
-                    $key = $this->clearExpression($key); $isExp = true;
-                }
-    
-                $this->isNonscalarValueEncodeJson($value);
-    
-                $data .= Base::suffix($key, ',');
-    
-                if( ! empty($this->duplicateCheck) )
-                {
-                    if( $this->duplicateCheck[0] !== '*' )
-                    {
-                        if( in_array($key, $this->duplicateCheck) )
-                        {
-                            $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
-                        }
-                    }
-                    else
-                    {
-                        $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
-                    }
-                }
-    
-                $value = $this->nailEncode($value);
-    
-                if( isset($isExp) )
-                {
-                    $values .= Base::suffix($value, ','); unset($isExp);
-                }
-                elseif( $value !== '?' )
-                {
-                    $values .= Base::suffix(Base::presuffix($value, "'"), ',');
-                }
-                else
-                {
-                    $values .= Base::suffix($value, ','); // @codeCoverageIgnore
-                }
+                return $return;
             }
     
-            if( ! empty($duplicateCheckWhere) )
-            {
-                $duplicateCheckColumn = $this->duplicateCheck;
-    
-                if( $this->where($duplicateCheckWhere)->get($table)->totalRows() )
-                {
-                    $this->duplicateCheck = NULL;
-    
-                    if( $this->duplicateCheckUpdate === true )
-                    {
-                        $this->duplicateCheckUpdate = NULL;
-    
-                        return $this->where($duplicateCheckWhere)->update($table, $datas);
-                    }
-    
-                    return false;
-                }
-            }
-    
-            $insertQuery = 'INSERT '.
-                            $this->lowPriority.
-                            $this->delayed.
-                            $this->highPriority.
-                            $this->ignore.
-                            ' INTO '.
-                            $this->addPrefixForTableAndColumn($table).
-                            $this->partition.
-                            $this->buildInsertValuesClause($data, $values) . 
-                            $this->db->getInsertExtrasByDriver();
+            $insertQuery = $this->buildInsertQuery($table, $data, $values);
         }
         
-
         $this->resetInsertQueryVariables();
 
         return $this->runQuery($insertQuery);
     }
 
     /**
-     * protected multi insert
-     */
-    protected function multiInsert($table, $datas)
-    {
-        $data  = $datas[0]; unset($datas[0]);
-
-        $query = $this->string()->insert($table, $data);
-        
-        foreach( $datas as $values )
-        {
-            $value = NULL;
-
-            foreach( $values as $val )
-            {
-                $value .= Base::suffix(Base::presuffix($this->nailEncode($val), "'"), ',');
-            }
-
-            $query .= ', (' . rtrim($value, ',') . ')';
-        } 
-
-        return Base::suffix($query, ';');
-    }
-
-    /**
      * Update 
      * 
      * @param string $table = NULL
-     * @param array  $set   = []
+     * @param array  $datas = []
      * 
      * @return bool
      */
-    public function update(string $table = NULL, array $set = [])
+    public function update(string $table = NULL, array $datas = [])
     {
-        $this->ignoreData($table, $set);
+        $this->ignoreData($table, $datas);
 
-        $set  = $this->addPrefixForTableAndColumn($set, 'column');
-        $data = NULL;
+        $datas = $this->addPrefixForTableAndColumn($datas, 'column');
         
-        foreach( $set as $key => $value )
-        {
-            $this->isNonscalarValueEncodeJson($value);
+        $this->buildDataValuesQueryForUpdate($datas, $data);
 
-            $value = $this->nailEncode($value);
-
-            if( $this->isExpressionExists($key) )
-            {
-                $key = $this->clearExpression($key); // @codeCoverageIgnore
-            }
-            else
-            {
-                $value = Base::presuffix($value, "'");
-            }
-
-            $data .= $key . '=' . Base::suffix($value, ',');
-        }
-
-        $set = ' SET '.substr($data,0,-1);
-
-        $updateQuery = 'UPDATE '.
-                        $this->lowPriority.
-                        $this->ignore.
-                        $this->addPrefixForTableAndColumn($table).
-                        $this->join.
-                        $set.
-                        $this->buildWhereClause().
-                        $this->buildOrderByClause().
-                        $this->limit;
+        $updateQuery = $this->buildUpdateQuery($table, $data);
 
         $this->resetUpdateQueryVariables();
 
@@ -1712,18 +1598,7 @@ class DB extends Connection
             throw new UnconditionalException();
         }
 
-        $deleteQuery = 'DELETE '.
-                       $this->lowPriority.
-                       $this->quick.
-                       $this->ignore.
-                       $this->deleteJoinTables($table).
-                       ' FROM '.
-                       $this->addPrefixForTableAndColumn($table).
-                       $this->join.
-                       $this->partition.
-                       $this->buildWhereClause().
-                       $this->buildOrderByClause().
-                       $this->limit;
+        $deleteQuery = $this->buildDeleteQuery($table);
 
         $this->resetDeleteQueryVariables();
 
@@ -2337,6 +2212,181 @@ class DB extends Connection
     public function inQuery(string ...$value) : string
     {
         return $this->buildInClause(__FUNCTION__, ...$value);
+    }
+
+    /**
+     * protected build insert query
+     */
+    protected function buildInsertQuery($table, $data, $values)
+    {
+        return 'INSERT '.
+                $this->lowPriority.
+                $this->delayed.
+                $this->highPriority.
+                $this->ignore.
+                ' INTO '.
+                $this->addPrefixForTableAndColumn($table).
+                $this->partition.
+                $this->buildInsertValuesClause($data, $values) . 
+                $this->db->getInsertExtrasByDriver();
+    }
+
+    /**
+     * protected duplicate check process
+     */
+    protected function duplicateCheckProcess($duplicateCheckWhere, $table, $datas, &$return = NULL)
+    {
+        if( ! empty($duplicateCheckWhere) )
+        {
+            if( $this->where($duplicateCheckWhere)->get($table)->totalRows() )
+            {
+                $this->duplicateCheck = NULL; $return = true;
+
+                if( $this->duplicateCheckUpdate === true )
+                {
+                    $this->duplicateCheckUpdate = NULL;
+
+                    $return = $this->where($duplicateCheckWhere)->update($table, $datas);
+                }
+
+                $return = false;
+            }
+        }
+    }
+
+    /**
+     * protected build data values query
+     */
+    protected function buildDataValuesQueryForInsert($datas, &$data, &$values, &$duplicateCheckWhere)
+    {
+        $data = NULL; $values = NULL; $duplicateCheckWhere = [];
+    
+        foreach( $datas as $key => $value )
+        {
+            if( $this->isExpressionExists($key) )
+            {
+                $key = $this->clearExpression($key); $isExp = true;
+            }
+
+            $this->isNonscalarValueEncodeJson($value);
+
+            $data .= Base::suffix($key, ',');
+
+            if( ! empty($this->duplicateCheck) )
+            {
+                if( $this->duplicateCheck[0] !== '*' )
+                {
+                    if( in_array($key, $this->duplicateCheck) )
+                    {
+                        $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
+                    }
+                }
+                else
+                {
+                    $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
+                }
+            }
+
+            $value = $this->nailEncode($value);
+
+            if( isset($isExp) )
+            {
+                $values .= Base::suffix($value, ','); unset($isExp);
+            }
+            elseif( $value !== '?' )
+            {
+                $values .= Base::suffix(Base::presuffix($value, "'"), ',');
+            }
+            else
+            {
+                $values .= Base::suffix($value, ','); // @codeCoverageIgnore
+            }
+        }
+    }
+
+    /**
+     * protected multi insert
+     */
+    protected function multiInsert($table, $datas)
+    {
+        $data  = $datas[0]; unset($datas[0]);
+
+        $query = $this->string()->insert($table, $data);
+        
+        foreach( $datas as $values )
+        {
+            $value = NULL;
+
+            foreach( $values as $val )
+            {
+                $value .= Base::suffix(Base::presuffix($this->nailEncode($val), "'"), ',');
+            }
+
+            $query .= ', (' . rtrim($value, ',') . ')';
+        } 
+
+        return Base::suffix($query, ';');
+    }
+
+    /**
+     * protected build data values query for update
+     */
+    protected function buildDataValuesQueryForUpdate($datas, &$data)
+    {
+        $data = NULL;
+        
+        foreach( $datas as $key => $value )
+        {
+            $this->isNonscalarValueEncodeJson($value);
+
+            $value = $this->nailEncode($value);
+
+            if( $this->isExpressionExists($key) )
+            {
+                $key = $this->clearExpression($key); // @codeCoverageIgnore
+            }
+            else
+            {
+                $value = Base::presuffix($value, "'");
+            }
+
+            $data .= $key . '=' . Base::suffix($value, ',');
+        }
+    }
+
+    /**
+     * protected build update query
+     */
+    protected function buildUpdateQuery($table, $data)
+    {
+        return 'UPDATE '.
+                $this->lowPriority.
+                $this->ignore.
+                $this->addPrefixForTableAndColumn($table).
+                $this->join.
+                ' SET ' . substr($data, 0, -1) .
+                $this->buildWhereClause().
+                $this->buildOrderByClause().
+                $this->limit;
+    }
+
+    /**
+     * protected build delete query
+     */
+    protected function buildDeleteQuery($table)
+    {
+        return 'DELETE '.
+                $this->lowPriority.
+                $this->quick.
+                $this->ignore.
+                $this->deleteJoinTables($table).
+                ' FROM '.
+                $this->addPrefixForTableAndColumn($table).
+                $this->join.
+                $this->partition.
+                $this->buildWhereClause().
+                $this->buildOrderByClause().
+                $this->limit;
     }
 
      /**

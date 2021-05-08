@@ -72,7 +72,7 @@ class DBForge extends DriverForge
      */
     public function addColumn($table, $columns)
     {
-        return 'ALTER TABLE ' . $table . ' ADD ' . $this->_extractColumn($columns) . ';';
+        return 'ALTER TABLE ' . $table . ' ADD ' . $this->buildForgeColumnsQuery($columns) . ';';
     }
 
     /**
@@ -85,7 +85,7 @@ class DBForge extends DriverForge
      */
     public function modifyColumn($table, $columns)
     {
-        return 'ALTER TABLE ' . $table . ' ALTER COLUMN ' . $this->_extractColumn($columns) . ';';
+        return 'ALTER TABLE ' . $table . ' ALTER COLUMN ' . $this->buildForgeColumnsQuery($columns) . ';';
     }
 
     /**

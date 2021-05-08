@@ -30,7 +30,7 @@ class DBTool extends DriverTool
      */
     public function listTables($query = "SELECT name FROM sqlite_master WHERE type = 'table'")
     {
-        return $this->_list($query);
+        return $this->runListQuery($query);
     }
 
     /**

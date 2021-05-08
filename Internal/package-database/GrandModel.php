@@ -240,7 +240,7 @@ class GrandModel
      * 
      * @return object
      */
-    protected function _get()
+    protected function getInstance()
     {
         return $this->get = $this->get();
     }
@@ -254,7 +254,7 @@ class GrandModel
      */
     public function columns() : array
     {
-        return $this->returnQuery($this->_get()->columns());
+        return $this->returnQuery($this->getInstance()->columns());
     }
 
     /**
@@ -266,7 +266,7 @@ class GrandModel
      */
     public function totalColumns() : int
     {
-        return $this->returnQuery($this->_get()->totalColumns());
+        return $this->returnQuery($this->getInstance()->totalColumns());
     }
 
     /**
@@ -278,7 +278,7 @@ class GrandModel
      */
     public function row($printable = false)
     {
-        return $this->returnQuery($this->_get()->row($printable));
+        return $this->returnQuery($this->getInstance()->row($printable));
     }
 
     /**
@@ -288,7 +288,7 @@ class GrandModel
      */
     public function result(string $type = 'object')
     {
-        return $this->returnQuery($this->_get()->result($type));
+        return $this->returnQuery($this->getInstance()->result($type));
     }
 
     /**
@@ -703,7 +703,7 @@ class GrandModel
         }
         else
         {
-            $get = $this->_get(); // @codeCoverageIgnore
+            $get = $this->getInstance(); // @codeCoverageIgnore
         }
 
         return $get;
