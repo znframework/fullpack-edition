@@ -2236,20 +2236,15 @@ class DB extends Connection
      */
     protected function duplicateCheckProcess($duplicateCheckWhere, $table, $datas, &$return = NULL)
     {
-        if( ! empty($duplicateCheckWhere) )
+        if( ! empty($duplicateCheckWhere) && $this->where($duplicateCheckWhere)->get($table)->totalRows() )
         {
-            if( $this->where($duplicateCheckWhere)->get($table)->totalRows() )
+            $this->duplicateCheck = NULL; $return = true;
+
+            if( $this->duplicateCheckUpdate === true )
             {
-                $this->duplicateCheck = NULL; $return = true;
+                $this->duplicateCheckUpdate = NULL;
 
-                if( $this->duplicateCheckUpdate === true )
-                {
-                    $this->duplicateCheckUpdate = NULL;
-
-                    $return = $this->where($duplicateCheckWhere)->update($table, $datas);
-                }
-
-                $return = false;
+                $return = $this->where($duplicateCheckWhere)->update($table, $datas);
             }
         }
     }
@@ -2271,20 +2266,10 @@ class DB extends Connection
             $this->isNonscalarValueEncodeJson($value);
 
             $data .= Base::suffix($key, ',');
-
-            if( ! empty($this->duplicateCheck) )
+            
+            if( ! empty($this->duplicateCheck) && ($this->duplicateCheck[0] === '*' || in_array($key, $this->duplicateCheck)) )
             {
-                if( $this->duplicateCheck[0] !== '*' )
-                {
-                    if( in_array($key, $this->duplicateCheck) )
-                    {
-                        $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
-                    }
-                }
-                else
-                {
-                    $duplicateCheckWhere[] = [$key.' = ', $value, 'and'];
-                }
+                $duplicateCheckWhere[] = [$key . ' = ', $value, 'and'];
             }
 
             $value = $this->nailEncode($value);
