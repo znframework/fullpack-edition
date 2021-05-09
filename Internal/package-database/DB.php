@@ -2238,7 +2238,7 @@ class DB extends Connection
     {
         if( ! empty($duplicateCheckWhere) && $this->where($duplicateCheckWhere)->get($table)->totalRows() )
         {
-            $this->duplicateCheck = NULL; $return = true;
+            $this->duplicateCheck = NULL; $return = false;
 
             if( $this->duplicateCheckUpdate === true )
             {
