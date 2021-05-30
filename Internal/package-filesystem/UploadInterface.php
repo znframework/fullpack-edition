@@ -12,6 +12,17 @@
 interface UploadInterface
 {
     /**
+     * Uplaod progress
+     * 
+     * @param string   $selector
+     * @param string   $source
+     * @param callable $callable
+     * 
+     * @return string
+     */
+    public function progress(string $selector, string $source, callable $callable) : string;
+
+    /**
      * Is file input name
      * 
      * @param string $name

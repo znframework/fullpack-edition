@@ -27,6 +27,7 @@
                 <directory>./Internal/package-tests</directory>
                 <file>./Internal/autoload.php</file>
                 <directory>./Internal/package-authentication/Resources</directory>    
+                <directory>./Internal/package-filesystem/Resources</directory>  
                 <directory>./Internal/package-hypertext/Resources</directory>  
                 <file>./Internal/package-hypertext/JavascriptValidationFunctions.php</file> 
                 <directory>./Internal/package-payment</directory>

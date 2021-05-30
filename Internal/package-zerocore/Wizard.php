@@ -112,8 +112,9 @@ class Wizard
         {
             $array    =
             [
-                '/(function\((.*?)\)\s*)*(use\(.*?\)\s*)*\{\<(\s)/s' => 'function($2)$3{$4?>',  # Function
-                '/(\s)\>\}/s'                                        => '$1<?php }'
+                '/(\w+\s*\(\s*)\[\<(\s*(\$\w+\,*\s*){1,}\s*)\>\](\s*\{\<)/s'   => '$1function() use($2)$4',    # Use
+                '/(function\((.*?)\)\s*)*(use\(.*?\)\s*)*\{\<(\s)/s'           => 'function($2)$3{$4?>',       # Function
+                '/(\s)\>\}/s'                                                  => '$1<?php }'
             ];   
         }
 

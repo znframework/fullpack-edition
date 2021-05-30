@@ -12,6 +12,7 @@
 use ZN\IS;
 use ZN\Base;
 use ZN\Lang;
+use ZN\Inclusion;
 use ZN\Helpers\Mime;
 use ZN\Request\Method;
 use ZN\DataTypes\Arrays;
@@ -91,6 +92,26 @@ class Upload implements UploadInterface
     public function __construct()
     {
         $this->getLang = Lang::default('ZN\Filesystem\FilesystemDefaultLanguage')::select('Filesystem');
+    }
+
+    /**
+     * Uplaod progress
+     * 
+     * @param string   $selector
+     * @param string   $source
+     * @param callable $callable
+     * 
+     * @return string
+     */
+    public function progress(string $selector, string $source, callable $callable) : string
+    {
+        return Inclusion\View::use('upload-progress', 
+        [
+            'selector' => $selector,
+            'source'   => $source,
+            'callable' => $callable
+
+        ], true, __DIR__ . '/Resources/');
     }
 
     /**
