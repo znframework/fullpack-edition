@@ -26,6 +26,13 @@ class Wizard
     const END = '((\s|\n|' . PHP_EOL . ')|\:|$)';
 
     /**
+     * PARENTHESIS
+     * 
+     * @const string
+     */
+    const PARENTHESIS = '\+\[symbol\?\?parenthesis\]\+';
+
+    /**
      * Get config
      * 
      * @var array
@@ -75,6 +82,8 @@ class Wizard
         
         $string  = self::encodeParenthesis($string);
 
+        $string  = self::decodeParenthesisIntoCallable($string);
+
         $pattern = array_merge
         (
             self::callableJS(),
@@ -93,7 +102,7 @@ class Wizard
         $string = self::replace($pattern, $string);
 
         $string = self::decodeParenthesis($string);
-
+    
         return $string;
     }
 
@@ -112,9 +121,9 @@ class Wizard
         {
             $array    =
             [
-                '/(\w+\s*\(\s*)\[\<(\s*(\$\w+\,*\s*){1,}\s*)\>\](\s*\{\<)/s'   => '$1function() use($2)$4',    # Use
-                '/(function\((.*?)\)\s*)*(use\(.*?\)\s*)*\{\<(\s)/s'           => 'function($2)$3{$4?>',       # Function
-                '/(\s)\>\}/s'                                                  => '$1<?php }'
+                '/\[\<(\s*(\$\w+\,*\s*){1,}\s*)\>\](\s*\{\<)/s'                                     => 'function() use($1)$3',    # Use
+                '/(function\((.*?)\)\s*)*(use\(.*?(\)|' . self::PARENTHESIS . ')\s*)*\{\<(\s)/s'    => 'function($2)$3{$5?>',     # Function
+                '/(\s)\>\}/s'                                                                       => '$1<?php }'                # Close
             ];   
         }
 
@@ -331,8 +340,8 @@ class Wizard
             $array    =
             [   
                 '/((\W)@|^@)(\w+)/'                                   => '$2<?php echo $3',
-                '/\)\:(\"|\'|\<|\s|\n|'.PHP_EOL.'|$)/sm'              => ')?>$1',
-                '/\)\s*(?!\s*(\-\>|\)|\{|\?\>))(\n|'.PHP_EOL.'|$)/sm' => ')?>$1$2$3'
+                '/\)\:(\"|\'|\<|\s|\n|'.PHP_EOL.'|$)/sm'              => ') ?>$1',
+                '/\)\s*(?!\s*(\-\>|\)|\{|\?\>))(\n|'.PHP_EOL.'|$)/sm' => ') ?>$1$2$3'
             ];
         }
 
@@ -481,6 +490,18 @@ class Wizard
      */
     protected static function decodeParenthesis($string)
     {
-        return preg_replace('/\+\[symbol\?\?parenthesis\]\+/', ')' . PHP_EOL, $string);
+        return preg_replace('/' . self::PARENTHESIS . '/', ')' . PHP_EOL, $string);
+    }
+
+    /**
+     * Protected decode parenthesis into callable
+     */
+    protected static function decodeParenthesisIntoCallable($string)
+    {
+        return preg_replace_callback('/{<.*?>}/s', function($data)
+        {
+            return preg_replace('/' . self::PARENTHESIS . '/', ')' . PHP_EOL, $data[0]);
+
+        }, $string);
     }
 }
