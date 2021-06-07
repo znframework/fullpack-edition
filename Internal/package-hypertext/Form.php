@@ -147,6 +147,21 @@ class Form
     }
 
     /**
+     * Reset validation rules
+     * 
+     * @param string $formName
+     */
+    public function resetValidationRules(string $formName)
+    {
+        $session = Singleton::class('ZN\Storage\Session');
+
+        $session->delete('FormValidationRules' . $formName);
+        $session->delete('FormValidationMethod' . $formName);
+
+        return $this;
+    }
+
+    /**
      * Closes form object.
      * 
      * @param void
