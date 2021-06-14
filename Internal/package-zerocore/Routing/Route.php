@@ -244,7 +244,7 @@ class Route extends FilterProperties implements RouteInterface
         {
             if( isset($this->lines[$line]) )
             {
-                $this->filters = array_merge($this->lines[$line], $this->filters);
+                $this->filters = array_merge($this->lines[$line], $this->filters); // @codeCoverageIgnore
             }
             else
             {
