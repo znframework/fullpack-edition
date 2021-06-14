@@ -44,7 +44,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @var array
      */
-    protected $route = [], $routes = [], $status = [], $setFilters = [], $recursion = [], $recursionFilters = [], $allFilterKeys = [];
+    protected $route = [], $routes = [], $status = [], $setFilters = [], $recursion = [], $recursionFilters = [], $allFilterKeys = [], $lines;
 
     /**
      * Magic Constructor
@@ -127,14 +127,10 @@ class Route extends FilterProperties implements RouteInterface
         {
             if( $recursion[$i] < $current )
             {
-                $this->filters = array_merge($this->recursionFilters[$i], $this->filters); 
+                $this->filters = array_merge($recursionFilters[$i], $this->filters); 
             
                 break;
             }
-        }
-        else
-        {
-            $this->filters = [];
         }
 
         $this->recursion[]        = $current; 
@@ -161,19 +157,14 @@ class Route extends FilterProperties implements RouteInterface
      */
     public function uri(string $path = NULL)
     {
-        $path = rtrim($path, '/');
+        $path = $this->setPath($path, $routeConfig);
 
-        $routeConfig = $this->getConfig;
+        $container = debug_backtrace(2)[2];
 
-        if( ! strstr($path, '/') )
-        {
-            $path = Base::suffix($path) . $routeConfig['openFunction'];
-        }
+        $this->setContainerFilters($container);
 
-        $lowerPath = strtolower($path);
+        $this->setFilters($path);
 
-        $this->setFilters($lowerPath);
-        $this->filters = [];
         $this->changeRouteURI($path, $routeConfig);
     }
 
@@ -239,6 +230,44 @@ class Route extends FilterProperties implements RouteInterface
         {
             Response::redirect($routeShow404);
         }
+    }
+
+    /**
+     * Protected set container filters
+     */
+    protected function setContainerFilters($container)
+    {
+        $line = $container['line'];
+        $func = $container['function'];
+
+        if( $func === 'container' )
+        {
+            if( isset($this->lines[$line]) )
+            {
+                $this->filters = array_merge($this->lines[$line], $this->filters);
+            }
+            else
+            {
+                $this->lines[$line] = $this->filters;
+            }
+        }
+    }
+
+    /**
+     * Protected set path
+     */
+    protected function setPath($path, &$routeConfig)
+    {
+        $path = rtrim($path, '/');
+
+        $routeConfig = $this->getConfig;
+
+        if( ! strstr($path, '/') )
+        {
+            $path = Base::suffix($path) . $routeConfig['openFunction'];
+        }
+
+        return $path;
     }
 
     /**
@@ -332,8 +361,10 @@ class Route extends FilterProperties implements RouteInterface
     /**
      * Protected Filter
      */
-    protected function setFilters($lowerPath)
+    protected function setFilters($path)
     {
+        $lowerPath = strtolower($path);
+
         $filterKeys = array_keys($this->filters);
 
         $this->allFilterKeys = array_merge($this->allFilterKeys, $filterKeys);
@@ -342,6 +373,8 @@ class Route extends FilterProperties implements RouteInterface
         {
             $this->setFilters[$type . 's'][$lowerPath][$type] = $this->filters[$type];
         }
+
+        $this->filters = [];
     }
 
     /**
