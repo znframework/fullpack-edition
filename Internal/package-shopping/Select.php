@@ -12,6 +12,25 @@
 class Select extends CartExtends
 {
     /**
+     * Select all items object type
+     * 
+     * @param void
+     * 
+     * @return array
+     */
+    public function objects() : array
+    {
+        $objects = [];
+
+        foreach( Properties::$items as $item );
+        {
+            $objects[] = (object) $item;
+        }
+
+        return $objects;
+    }
+
+    /**
      * Select all items
      * 
      * @param void

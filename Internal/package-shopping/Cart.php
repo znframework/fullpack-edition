@@ -21,6 +21,7 @@ class Cart extends Factory
             'insert'        => 'Insert::item',
             'selectitems'   => 'Select::items',
             'selectall'     => 'Select::items',
+            'selectobjects' => 'Select::objects',
             'selectitem'    => 'Select::item',
             'select'        => 'Select::item',
             'totalitems'    => 'Total::items',
