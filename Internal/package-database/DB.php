@@ -99,6 +99,7 @@ class DB extends Connection
     private $groupBy    , $having    , $orderBy          , $limit       , $join         ;
     private $transStart , $transError, $duplicateCheck   , $duplicateCheckUpdate        ;
     private $joinType   , $joinTable , $unionQuery = NULL, $caching = [], $jsonDecode   ;
+    private $hashId     , $hashIdColumn;
 
     /**
      * Callable talking queries.
@@ -718,7 +719,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected paging
+     * protected paging
      */
     protected function paging($start, $limit)
     {
@@ -1540,6 +1541,8 @@ class DB extends Connection
         }
         else
         {
+            $this->isHashIdColumn($datas);
+
             $this->ignoreData($table, $datas);
 
             $datas = $this->addPrefixForTableAndColumn($datas, 'column');
@@ -1559,6 +1562,51 @@ class DB extends Connection
         $this->resetInsertQueryVariables();
 
         return $this->runQuery($insertQuery);
+    }
+
+    /**
+     * Set hash id column
+     * 
+     * @param string $column
+     * 
+     * @return self
+     */
+    public function hashIdColumn(string $column)
+    {
+        $this->hashIdColumn = $column;
+
+        return $this;
+    }
+
+    /**
+     * Create hash id
+     * 
+     * @param array $data
+     * 
+     * @return string
+     */
+    public function createHashId(array $data) : string
+    {
+        $output = '';
+
+        foreach( $data as $value )
+        {
+            $output .= $value;
+        }
+
+        $output .= microtime();
+
+        return md5($output);
+    }
+
+    /**
+     * Get hash Id 
+     * 
+     * @return string
+     */
+    public function hashId()
+    {
+        return $this->hashId;
     }
 
     /**
@@ -2191,7 +2239,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected IN Table
+     * protected IN Table
      * 
      * @param string ...$value 
      * 
@@ -2203,7 +2251,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected IN Query
+     * protected IN Query
      * 
      * @param string ...$value 
      * 
@@ -2212,6 +2260,19 @@ class DB extends Connection
     public function inQuery(string ...$value) : string
     {
         return $this->buildInClause(__FUNCTION__, ...$value);
+    }
+
+    /**
+     * protected is hash id column
+     */
+    protected function isHashIdColumn(&$datas)
+    {
+        $this->hashId = NULL;
+
+        if( $this->hashIdColumn )
+        {
+            $this->hashId = $datas[$this->hashIdColumn] = $this->createHashId($datas);
+        }
     }
 
     /**
@@ -2375,7 +2436,7 @@ class DB extends Connection
     }
 
      /**
-     * Protected default transaction variables
+     * protected default transaction variables
      */
     protected function defaultTransactionVariables()
     {
@@ -2386,7 +2447,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected run transaction queries
+     * protected run transaction queries
      */
     protected function runTransactionQueries()
     {
@@ -2400,7 +2461,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected special defined where
+     * protected special defined where
      */
     protected function specialDefinedWhere($column, string $value = NULL, string $logical = NULL, $type = 'whereJson')
     {
@@ -2408,7 +2469,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected IN
+     * protected IN
      * 
      * @param string    $type = 'in'
      * @param string ...$value 
@@ -2442,7 +2503,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected is nonscalar value encode json
+     * protected is nonscalar value encode json
      */
     protected function isNonscalarValueEncodeJson(&$value)
     {
@@ -2453,7 +2514,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Select
+     * protected Select
      * 
      * @return string
      */
@@ -2482,7 +2543,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Values
+     * protected Values
      * 
      * @param string $data
      * @param string $values
@@ -2495,7 +2556,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Result Cache
+     * protected Result Cache
      * 
      * @param string $type
      */
@@ -2519,7 +2580,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Ignore Data
+     * protected Ignore Data
      * 
      * @param string & $table
      * @param string & $data
@@ -2553,7 +2614,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected CSV
+     * protected CSV
      * 
      * @param string & $data
      */
@@ -2572,7 +2633,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Delete Join Tables
+     * protected Delete Join Tables
      * 
      * @param string $table
      * 
@@ -2607,7 +2668,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Where Key Control
+     * protected Where Key Control
      * 
      * @param string $column
      * @param string $value
@@ -2628,7 +2689,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Equal Control
+     * protected Equal Control
      * 
      * @param string $column
      * 
@@ -2652,7 +2713,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Where Having
+     * protected Where Having
      * 
      * @param mixed  $column
      * @param string $value
@@ -2675,7 +2736,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Where
+     * protected Where
      * 
      * @param mixed  $column
      * @param string $value
@@ -2716,7 +2777,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Where Having Group
+     * protected Where Having Group
      * 
      * @param array $condition = []
      * 
@@ -2768,7 +2829,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Where Having Conjuction Control
+     * protected Where Having Conjuction Control
      * 
      * @param string $type
      * 
@@ -2789,7 +2850,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Where Having Conjuction Clean
+     * protected Where Having Conjuction Clean
      * 
      * @param string $str
      * 
@@ -2830,7 +2891,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Where
+     * protected Where
      * 
      * @return string
      */
@@ -2840,7 +2901,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Having
+     * protected Having
      * 
      * @return string
      */
@@ -2850,7 +2911,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Join
+     * protected Join
      * 
      * @param string $tableAndColumn = ''
      * @param string $otherColumn    = ''
@@ -2869,7 +2930,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Table Prefix Column Control
+     * protected Table Prefix Column Control
      * 
      * @param string $column
      * @param string & $table = NULL
@@ -2890,7 +2951,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Group By
+     * protected Group By
      * 
      * @return mixed
      */
@@ -2905,7 +2966,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Order By
+     * protected Order By
      * 
      * @return mixed
      */
@@ -2920,7 +2981,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Increment & Decrement
+     * protected Increment & Decrement
      * 
      * @param string $table
      * @param array  $columns
@@ -3012,7 +3073,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Cache Query
+     * protected Cache Query
      * 
      * @return string
      */
@@ -3022,7 +3083,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Select Reset Query
+     * protected Select Reset Query
      */
     protected function resetSelectQueryVariables()
     {
@@ -3055,7 +3116,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Reset Insert Query
+     * protected Reset Insert Query
      */
     protected function resetInsertQueryVariables()
     {
@@ -3071,7 +3132,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Reset Update Query
+     * protected Reset Update Query
      */
     protected function resetUpdateQueryVariables()
     {
@@ -3086,7 +3147,7 @@ class DB extends Connection
     }
 
     /**
-     * Protected Reset Delete Query
+     * protected Reset Delete Query
      */
     protected function resetDeleteQueryVariables()
     {

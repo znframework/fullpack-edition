@@ -160,7 +160,7 @@ class Regex
      */
     public function matchAll(string $pattern, string $str, string $ex = NULL, string $delimiter = '/') : array
     {
-        $pattern = $this->_regularConverting($pattern, $ex, $delimiter);
+        $pattern = $this->_regularConverting($pattern, $ex, $delimiter);      
 
         preg_match_all($pattern, $str , $return);
 
@@ -251,6 +251,8 @@ class Regex
         {
             $ex = str_ireplace(array_keys($settingChars), array_values($settingChars), $ex);
         }
+
+        $pattern = preg_replace('/\{\\\\\?(\w+)\}/', '?<$1>', $pattern);
 
         return Base::presuffix($pattern, $delimiter).$ex;
     }

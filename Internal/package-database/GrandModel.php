@@ -171,6 +171,18 @@ class GrandModel
         return $this->connect->insertID();
     }
 
+    /** 
+     * Last hash id
+     * 
+     * @param void
+     * 
+     * @return int
+     */
+    public function hashId()
+    {
+        return $this->connect->hashId();
+    }
+
     /**
      * Is exists value into table
      * 

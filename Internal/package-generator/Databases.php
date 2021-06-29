@@ -137,20 +137,6 @@ class Databases extends DatabaseDefinitions
     }
 
     /**
-     * Protected add id column to active table if not exists
-     */
-    protected function addIdColumnToActiveTableIfNotExists(&$activeTable)
-    {
-        if( ! isset($activeTable['id']) )
-        {
-            $activeTable = array_merge
-            ([
-                'id' => [$this->db->int(11), $this->db->notNull(), $this->db->autoIncrement(), $this->db->primaryKey()]
-            ], $activeTable);                        
-        }
-    }
-
-    /**
      * Protected get active table columns
      */
     protected function getActiveTableColumns($table, $db)
@@ -239,8 +225,6 @@ class Databases extends DatabaseDefinitions
                 {
                     $activeTableColumnSchema = $this->getActiveTableColumnSchema($database, $table);
 
-                    $this->addIdColumnToActiveTableIfNotExists($activeTableColumnSchema);
-
                     $activeTableColumns = $this->getActiveTableColumns($table = $this->getTableNameWithoutExtension($table), $db);
 
                     $this->getActiveTableKeyAndColumns($activeTableColumns, $activeTableKey, $activeTableColumns);
@@ -275,7 +259,7 @@ class Databases extends DatabaseDefinitions
                     else
                     {
                         $activeTableColumnSchema[$currentTableKey] = $tableKeyColumnDesignData;
-
+                        
                         $dbForge->createTable($table, $activeTableColumnSchema);
                     }
                 }
