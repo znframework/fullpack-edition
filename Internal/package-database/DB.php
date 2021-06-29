@@ -1591,7 +1591,7 @@ class DB extends Connection
 
         foreach( $data as $value )
         {
-            $output .= $value;
+            $output .= json_encode($value);
         }
 
         $output .= microtime();
