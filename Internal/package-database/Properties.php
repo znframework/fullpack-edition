@@ -24,4 +24,11 @@ class Properties
      * @var string
      */
     public static $prefix = NULL;
+
+    /**
+     * Keeps Postgres Driver Returning ID
+     * 
+     * @var string 
+     */
+    public static $returningId = 'id';
 }

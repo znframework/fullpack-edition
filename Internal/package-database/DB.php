@@ -92,13 +92,13 @@ class DB extends Connection
     |
     */
 
-    private $select     , $where     , $distinct         , $highPriority, $lowPriority  ;
-    private $delayed    , $procedure , $outFile          , $characterSet, $into         ;
-    private $forUpdate  , $quick     , $ignore           , $partition   , $straightJoin ;
-    private $smallResult, $bigResult , $bufferResult     , $cache       , $calcFoundRows;
-    private $groupBy    , $having    , $orderBy          , $limit       , $join         ;
-    private $transStart , $transError, $duplicateCheck   , $duplicateCheckUpdate        ;
-    private $joinType   , $joinTable , $unionQuery = NULL, $caching = [], $jsonDecode   ;
+    private $select     , $where       , $distinct         , $highPriority, $lowPriority  ;
+    private $delayed    , $procedure   , $outFile          , $characterSet, $into         ;
+    private $forUpdate  , $quick       , $ignore           , $partition   , $straightJoin ;
+    private $smallResult, $bigResult   , $bufferResult     , $cache       , $calcFoundRows;
+    private $groupBy    , $having      , $orderBy          , $limit       , $join         ;
+    private $transStart , $transError  , $duplicateCheck   , $duplicateCheckUpdate        ;
+    private $joinType   , $joinTable   , $unionQuery = NULL, $caching = [], $jsonDecode   ;
     private $hashId     , $hashIdColumn;
 
     /**
@@ -1451,11 +1451,25 @@ class DB extends Connection
     /**
      * Get Insert ID
      * 
-     * @return int
+     * @return int|string
      */
-    public function insertID() : int
+    public function insertID()
     {
         return $this->db->insertId();
+    }
+
+    /**
+     * Set postgres driver returning id
+     * 
+     * @param string $returningId
+     * 
+     * @return self
+     */
+    public function returningId(string $returningId)
+    {
+        Properties::$returningId = $returningId;
+
+        return $this;
     }
 
     /**

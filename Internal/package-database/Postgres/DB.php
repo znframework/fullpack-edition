@@ -11,6 +11,7 @@
 
 use stdClass;
 use ZN\Support;
+use ZN\Database\Properties;
 use ZN\ErrorHandling\Errors;
 use ZN\Database\DriverMappingAbstract;
 use ZN\Database\Exception\ConnectionErrorException;
@@ -207,7 +208,7 @@ class DB extends DriverMappingAbstract
     /**
      * Insert Last ID
      * 
-     * @return int|false
+     * @return int|string
      */
     public function insertID()
     {
@@ -216,7 +217,11 @@ class DB extends DriverMappingAbstract
             return false; // @codeCoverageIgnore
         }
 
-        return pg_last_oid($this->query) ?: ($this->fetchArray()['id'] ?? NULL) ?: $this->fetchRow()[0] ?? false;
+        $returningId = Properties::$returningId;
+
+        Properties::$returningId = 'id';
+
+        return pg_last_oid($this->query) ?: ($this->fetchArray()[$returningId] ?? NULL) ?: $this->fetchRow()[0] ?? false;
     }
 
     /**
@@ -427,6 +432,6 @@ class DB extends DriverMappingAbstract
      */
     public function getInsertExtrasByDriver()
     {
-        return ' RETURNING id;';
+        return ' RETURNING ' . Properties::$returningId . ';';
     }
 }

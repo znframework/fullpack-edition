@@ -392,11 +392,11 @@ class Form
     }
 
     /**
-     * Protected create select element
-     */
+    * Protected create select element
+    */
     protected function createSelectElement($options, $selected, $_attributes, &$return)
-    {
-        $return = '<select'.$this->attributes($_attributes).'>';
+    {        
+        $option = '';
 
         if( is_string($selected) && Json::check($selected) )
         {
@@ -430,11 +430,20 @@ class Form
 
             if( is_numeric($value) || ! empty($value) )
             {
-                $return .= '<option value="'.$key.'"'.$select.'>'.$value.'</option>'.EOL;
+                $option .= '<option value="'.$key.'"'.$select.'>'.$value.'</option>'.EOL;
             }
         }
 
-        $return .= '</select>'.EOL;
+        if( isset($this->settings['attr']['only-options']) )
+        {
+            unset($this->settings['attr']['only-options']);
+            
+            $return = $option;
+        }
+        else
+        {
+            $return = '<select'.$this->attributes($_attributes).'>' . $option . '</select>'.EOL;
+        }
     }
 
     /**
