@@ -2286,6 +2286,8 @@ class DB extends Connection
         if( $this->hashIdColumn )
         {
             $this->hashId = $datas[$this->hashIdColumn] = $this->createHashId($datas);
+
+            $this->hashIdColumn = NULL;
         }
     }
 
