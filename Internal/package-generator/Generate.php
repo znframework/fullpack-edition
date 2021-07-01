@@ -56,12 +56,19 @@ class Generate extends File implements GenerateInterface
         return Project::generate($name);
     }
 
+    
     /**
      * Process databases
+     * 
+     * @return array
      */
     public function databases()
     {
-        (new Databases)->generate();
+        $databases = new Databases;
+
+        $databases->generate();
+
+        return $databases->info();
     }
 
     /**

@@ -34,11 +34,28 @@ class Databases extends DatabaseDefinitions
     protected $archivesPath = DATABASES_DIR . 'Archives/';
 
     /**
+     * Info
+     *
+     * @var array
+     */
+    protected $info;
+
+    /**
      * Process databases
      */
     public function generate()
     {
         $this->active(); $this->archive();
+    }
+
+    /**
+     * Info
+     * 
+     * @return array
+     */
+    public function info()
+    {
+        return $this->info;
     }
 
     /**
@@ -249,6 +266,8 @@ class Databases extends DatabaseDefinitions
                             {
                                 $this->addColumnFromActiveTable($table, $key, $val, $dbForge, $status);
                             }
+
+                            $this->addInfo($dbForge, __FUNCTION__);
                         }
 
                         if( $status === true )
@@ -261,10 +280,20 @@ class Databases extends DatabaseDefinitions
                         $activeTableColumnSchema[$currentTableKey] = $tableKeyColumnDesignData;
                         
                         $dbForge->createTable($table, $activeTableColumnSchema);
+
+                        $this->addInfo($dbForge, __FUNCTION__);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * protected add info
+     */
+    protected function addInfo($dbForge, $type)
+    {
+        $this->info[$type][$dbForge->stringQuery()] = $dbForge->error() ?: 'success';
     }
 
     /**
@@ -339,6 +368,8 @@ class Databases extends DatabaseDefinitions
                     foreach( $tables as $table )
                     {
                         $dbForge->dropTable($this->getTableNameWithoutExtension($table));
+
+                        $this->addInfo($dbForge, __FUNCTION__);
                     }
                 }
     
