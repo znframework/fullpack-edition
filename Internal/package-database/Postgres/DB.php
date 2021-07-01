@@ -134,19 +134,14 @@ class DB extends DriverMappingAbstract
         {
             return false; // @codeCoverageIgnore
         }
+        
+        set_error_handler(function(){});
 
-        if( pg_send_query($this->connect, $query) ) 
-        {
-            if( $result = pg_get_result($this->connect) )
-            {
-                if( ! pg_result_error_field($result, PGSQL_DIAG_SQLSTATE) ) 
-                {
-                    return pg_query($this->connect, $query);
-                }
-            }  
-        }
+        $return = pg_query($this->connect, $query);
 
-        return false;
+        restore_error_handler();
+
+        return $return;
     }
 
     /**
