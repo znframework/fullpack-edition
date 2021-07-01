@@ -177,10 +177,12 @@ class GrandModel
      * @param void
      * 
      * @return int
+     * 
+     * @codeCoverageIgnore
      */
     public function hashId()
     {
-        return $this->connect->hashId();
+        return $this->connect->hashId(); 
     }
 
     /**
