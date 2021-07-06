@@ -196,4 +196,16 @@ class IS
     {
         return ! empty($array) && is_array($array);
     }
+
+    /**
+     * Slug
+     * 
+     * @param string $slug
+     * 
+     * @return bool
+     */
+    public static function slug(string $slug) : bool
+    {
+        return (bool) preg_match('/^([a-z0-9]+\-*){1,}$/', $slug);
+    }
 }

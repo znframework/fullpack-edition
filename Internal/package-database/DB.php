@@ -774,25 +774,27 @@ class DB extends Connection
 
         $returnQuery = $this->retunQueryType ?? 'query';
 
-        $this->resetSelectQueryVariables();
-        
-        $secureFinalQuery = $this->querySecurity($finalQuery);
+        $isString = $this->string === true || $return === 'string';
 
-        if( $this->string === true || $return === 'string' )
+        $finalQuery = $this->querySecurity($finalQuery, $isString);
+
+        $this->resetSelectQueryVariables();
+
+        if( $isString )
         {
             $this->string = NULL;
 
-            return $secureFinalQuery;
+            return $finalQuery;
         }
 
         if( $this->transaction === true )
         {
-            $this->transactionQueries[] = $secureFinalQuery;
+            $this->transactionQueries[] = $finalQuery;
 
             return $this;
         }
 
-        return $this->$returnQuery($secureFinalQuery, $this->secure);
+        return $this->$returnQuery($finalQuery, $this->secure);
     }
 
     /**
@@ -864,6 +866,20 @@ class DB extends Connection
     public function getString(string $table = NULL) : string
     {
         return $this->get($table, 'string');
+    }
+
+    /**
+     * Set aliases
+     * 
+     * @param array $aliases
+     * 
+     * @return self
+     */
+    public function aliases(array $aliases)
+    {
+        $this->aliases = $aliases;
+
+        return $this;
     }
 
     /**

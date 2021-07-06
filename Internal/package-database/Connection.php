@@ -62,6 +62,13 @@ class Connection
     protected $secure = [];
 
     /**
+     * Keeps aliases data
+     * 
+     * @var array
+     */
+    protected $aliases = [];
+
+    /**
      * Select table name
      * 
      * @var string
@@ -472,54 +479,90 @@ class Connection
      * protected query security
      * 
      * @param string $query
+     * @param string $isString = false
      * 
      * @return string
      */
-    protected function querySecurity($query)
+    protected function querySecurity($query, $isString = false)
     {
         if( ! empty($this->secure) )
         {
-            $secure = $this->secure;
-
-            $secureParams = [];
-
-            // @codeCoverageIgnoreStart
-            if( is_numeric(key($secure)) )
-            {
-                $strex  = explode('?', $query);
-                $newstr = '';
-
-                if( ! empty($strex) ) for( $i = 0; $i < count($strex) - 1; $i++ )
-                {
-                    $sec = $secure[$i] ?? NULL;
-
-                    $newstr .= $strex[$i].$this->escapeStringAddNail($sec);
-                }
-
-                $query = $newstr;
-            }
-            // @codeCoverageIgnoreEnd
-            else
-            {
-                foreach( $this->secure as $k => $v )
-                {
-                    $this->convertVartype($k, $v);
-
-                    $secureParams[$k] = $this->escapeStringAddNail($v);
-                }
-            }
-
-            $query = str_replace(array_keys($secureParams), array_values($secureParams), $query);
+            $query = $this->applySecure($query);
         }
 
-        if( ($this->config['queryLog'] ?? NULL) === true )
+        if( ! empty($this->aliases) )
+        {
+            $query = $this->applyAliases($query);
+        }
+
+        if( $isString === false && ($this->config['queryLog'] ?? NULL) === true )
         {
             Logger::report('DatabaseQueries', $query, 'DatabaseQueries'); // @codeCoverageIgnore
         }
 
         $this->stringQueries[] = $this->stringQuery = $query;
 
-        $this->secure = [];
+        return $query;
+    }
+
+    /**
+     * protected apply secure
+     */
+    protected function applySecure($query)
+    {
+        $secure = $this->secure; $this->secure = []; $secureParams = [];
+
+        // @codeCoverageIgnoreStart
+        if( is_numeric(key($secure)) )
+        {
+            $strex  = explode('?', $query);
+            $newstr = '';
+
+            if( ! empty($strex) ) for( $i = 0; $i < count($strex) - 1; $i++ )
+            {
+                $sec = $secure[$i] ?? NULL;
+
+                $newstr .= $strex[$i].$this->escapeStringAddNail($sec);
+            }
+
+            $query = $newstr;
+        }
+        // @codeCoverageIgnoreEnd
+        else
+        {
+            foreach( $secure as $k => $v )
+            {
+                $this->convertVartype($k, $v);
+
+                $secureParams[$k] = $this->escapeStringAddNail($v);
+            }
+        }
+
+        return str_replace(array_keys($secureParams), array_values($secureParams), $query);
+    }
+
+    /**
+     * protected apply aliases
+     */
+    protected function applyAliases($query)
+    {
+        $aliases = $this->aliases; $this->aliases = [];
+
+        foreach( $aliases as $alias => $origin )
+        {
+            $query = preg_replace
+            (
+                [
+                    '/(^|\s)' . $this->prefix . $alias . '($|\s)/i', 
+                    '/(^|\W)' . $this->prefix . $alias . '($|\W)/i'
+                ], 
+                [
+                    '$1' . $this->prefix . $origin . ' ' . $alias . '$2', 
+                    '$1' . $alias . '$2'
+                ], 
+                $query
+            );
+        }
 
         return $query;
     }
