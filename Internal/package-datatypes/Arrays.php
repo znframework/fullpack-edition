@@ -106,7 +106,6 @@ class Arrays extends Factory
         'sum'               => 'array_sum',
         'intersect'         => 'array_intersect',
         'intersectkey'      => 'array_intersect_key',
-        'combine'           => 'array_combine',
         'chunk'             => 'array_chunk',
         'apportion'         => 'array_chunk',
         'key'               => 'key',
@@ -115,6 +114,24 @@ class Arrays extends Factory
         'values'            => 'array_values',
         'keys'              => 'array_keys'
     ];
+
+    /**
+     * Combine
+     * 
+     * @param array $keys
+     * @param array $values = []
+     * 
+     * @return array
+     */
+    public static function combine(array $keys, array $values = []) : array
+    {
+        if( empty($values) )
+        {
+            $values = $keys;
+        }
+
+        return array_combine($keys, $values);
+    }
 
     /**
      * Multiple Key
@@ -128,7 +145,6 @@ class Arrays extends Factory
     {
         return Datatype::multikey($array, $keySplit);
     }
-
 
     /**
      * Value Exists

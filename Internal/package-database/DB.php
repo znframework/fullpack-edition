@@ -2445,7 +2445,8 @@ class DB extends Connection
                 ' SET ' . substr($data, 0, -1) .
                 $this->buildWhereClause().
                 $this->buildOrderByClause().
-                $this->limit;
+                $this->limit . 
+                $this->db->getInsertExtrasByDriver();
     }
 
     /**
