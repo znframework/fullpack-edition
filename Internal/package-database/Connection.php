@@ -408,7 +408,7 @@ class Connection
             return $value;
         }
 
-        return Base::presuffix($this->db->realEscapeString($value), "'");
+        return Base::presuffix($this->nailEncode($value), "'");
     }
 
     /**
