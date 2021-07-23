@@ -99,7 +99,7 @@ class DB extends Connection
     private $groupBy    , $having      , $orderBy          , $limit       , $join         ;
     private $transStart , $transError  , $duplicateCheck   , $duplicateCheckUpdate        ;
     private $joinType   , $joinTable   , $unionQuery = NULL, $caching = [], $jsonDecode   ;
-    private $hashId     , $hashIdColumn;
+    private $hashId     , $hashIdColumn, $isUpdate = false , $unset   = [], $object       ;
 
     /**
      * Callable talking queries.
@@ -1591,7 +1591,57 @@ class DB extends Connection
         
         $this->resetInsertQueryVariables();
 
-        return $this->runQuery($insertQuery);
+        if( $return = $this->runQuery($insertQuery) )
+        {
+            if( is_string($this->object) )
+            {
+                Properties::$returningId = $processColumn = $this->object; $this->object = NULL;
+
+                $insertId = $this->insertId(); Properties::$returningId = 'id';
+
+                return $this->where($processColumn, $insertId)->get($table)->row();
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * Object
+     * 
+     * @param string $processColumn = 'id'
+     * 
+     * @return self
+     */
+    public function object(string $processColumn = 'id')
+    {
+        $this->object = $processColumn;
+
+        return $this;
+    }
+
+    /**
+     * Unset
+     * 
+     * @param variadic ...$argument
+     * 
+     * @return self
+     */
+    public function unset(...$columns)
+    {
+        $this->unset = $columns;
+
+        return $this;
+    }
+
+    /**
+     * Is update
+     *
+     * @return boolean
+     */
+    public function isUpdate() : bool
+    {
+        return $this->isUpdate;
     }
 
     /**
@@ -1655,11 +1705,21 @@ class DB extends Connection
         
         $this->buildDataValuesQueryForUpdate($datas, $data);
 
-        $updateQuery = $this->buildUpdateQuery($table, $data);
+        $updateQuery = $this->buildUpdateQuery($table, $data, $where);
 
         $this->resetUpdateQueryVariables();
 
-        return $this->runQuery($updateQuery);
+        if( $return = $this->runQuery($updateQuery) )
+        {
+            if( $this->object )
+            {
+                $this->object = NULL;
+
+                return $this->where('exp:' . str_ireplace('WHERE ', '', $where))->get($table)->row(-1);
+            }
+        }
+
+        return $return;
     }
 
     /**
@@ -2329,13 +2389,17 @@ class DB extends Connection
      */
     protected function duplicateCheckProcess($duplicateCheckWhere, $table, $datas, &$return = NULL)
     {
-        if( ! empty($duplicateCheckWhere) && $this->where($duplicateCheckWhere)->get($table)->totalRows() )
+        $this->isUpdate = false;
+        
+        if( ! empty($duplicateCheckWhere) && $this->where($duplicateCheckWhere)->count('*')->get($table)->value() )
         {
             $this->duplicateCheck = NULL; $return = false;
 
             if( $this->duplicateCheckUpdate === true )
             {
                 $this->duplicateCheckUpdate = NULL;
+
+                $this->isUpdate = true;
 
                 $return = $this->where($duplicateCheckWhere)->update($table, $datas);
             }
@@ -2435,15 +2499,17 @@ class DB extends Connection
     /**
      * protected build update query
      */
-    protected function buildUpdateQuery($table, $data)
+    protected function buildUpdateQuery($table, $data, &$where = NULL)
     {
+        $where = $this->buildWhereClause();
+
         return 'UPDATE '.
                 $this->lowPriority.
                 $this->ignore.
                 $this->addPrefixForTableAndColumn($table).
                 $this->join.
                 ' SET ' . substr($data, 0, -1) .
-                $this->buildWhereClause().
+                $where.
                 $this->buildOrderByClause().
                 $this->limit . 
                 $this->db->getInsertExtrasByDriver();
@@ -2638,11 +2704,31 @@ class DB extends Connection
                 $columns = array_flip($this->setQueryByDriver('SELECT * FROM ' . $table)->columns());
                 $data    = array_intersect_key($data, $columns);
 
-                if( $find = preg_grep('/(^id$)/i', array_keys($data)) )
-                {
-                    $current = current($find); unset($data[$current]); // @codeCoverageIgnore
-                }
+                $this->unsetData($data);
             }
+        }
+    }
+
+    /**
+     * protected unset data
+     */
+    protected function unsetData(&$data)
+    {
+        # The ID column is removed by default.
+        if( $find = preg_grep('/(^(id)$)/i', array_keys($data)) )
+        {
+            $id = current($find); unset($data[$id]);
+        }
+
+        # The columns you specified are removed.
+        if( ! empty($this->unset) )
+        {
+            foreach( $this->unset as $column )
+            {
+                unset($data[$column]);
+            }
+
+            $this->unset = [];
         }
     }
 
@@ -3033,7 +3119,7 @@ class DB extends Connection
 
         if( is_array($columns) ) foreach( $columns as $v )
         {
-            $newColumns[$v] = "$v + $incdec"; // @codeCoverageIgnore
+            $newColumns[$v] = "$v + $incdec";
         }
         else
         {

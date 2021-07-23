@@ -1,6 +1,7 @@
 <?php namespace ZN\Payment\Nestpay;
 
 use ZN\Request\URL;
+use ZN\Services\CURL;
 use ZN\Request\Method;
 use ZN\Payment\Currency;
 use ZN\Payment\Exception;
@@ -20,7 +21,9 @@ class Request extends GatewayRequestAbstract
         'finansbank'    => 'https://www.fbwebpos.com/servlet/est3Dgate',
         'halkbank'      => 'https://sanalpos.halkbank.com.tr/servlet/est3Dgate',
         'anadolubank'   => 'https://anadolusanalpos.est.com.tr/servlet/est3Dgate',
-        'test'          => 'https://entegrasyon.asseco-see.com.tr/fim/est3Dgate',
+        'ziraatbank'    => 'https://sanalpos2.ziraatbank.com.tr/fim/est3Dgate',
+        'teb'           => 'https://sanalpos.teb.com.tr/fim/est3Dgate',
+        'test'          => 'https://entegrasyon.asseco-see.com.tr/fim/est3Dgate'
     ];
 
      /**
@@ -173,7 +176,7 @@ class Request extends GatewayRequestAbstract
     /**
      * Sets company name.
      * 
-     * @param string $type
+     * @param string $name
      * 
      * @return $this
      */
@@ -185,9 +188,9 @@ class Request extends GatewayRequestAbstract
     }
 
     /**
-     * Sets taksit.
+     * Sets installment.
      * 
-     * @param string $count
+     * @param string $name
      * 
      * @return $this
      */
@@ -224,6 +227,34 @@ class Request extends GatewayRequestAbstract
         $this->settings['storeKey'] = $key;
 
         return $this;
+    }
+
+    /**
+     * Send request.
+     * 
+     * @param string $type;
+     */
+    public function send(string $type)
+    {
+        $this->missingInformation();
+        
+        $this->default();
+
+        $_POST = $_POST + $this->settings;
+        
+        if( ! isset($this->banks[$type]) )
+        {
+            throw new Exception\InvalidBankException(NULL, $type);
+        }
+
+        $curl = new CURL;
+
+        return $curl->init($this->banks[$type])
+                    ->post(true)
+                    ->postfields(URL::buildQuery($_POST))
+                    ->returntransfer(true)
+                    ->sslVerifypeer(false)
+                    ->exec();
     }
 
     /**

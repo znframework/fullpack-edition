@@ -182,15 +182,20 @@ class Currency
     /**
      * Get currency
      * 
+     * @param string|int $short
+     * @param string     &key = NULL
+     * 
      * @return 
      */
-    public static function get($short)
+    public static function get($short, &$code = NULL)
     {
         if( is_numeric($short) && in_array($short, self::$list) )
         {
+            $code = array_flip(self::$list)[$short];
+
             return $short;
         }
-        elseif( $currency = (self::$list[strtoupper($short)] ?? NULL) )
+        elseif( $currency = (self::$list[$code = strtoupper($short)] ?? NULL) )
         {
             return $currency;
         }

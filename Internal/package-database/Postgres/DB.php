@@ -220,7 +220,7 @@ class DB extends DriverMappingAbstract
 
         Properties::$returningId = 'id';
 
-        return pg_last_oid($this->query) ?: ($this->fetchArray()[$returningId] ?? NULL) ?: $this->fetchRow()[0] ?? false;
+        return $returningId === '*' ? (object) $this->fetchAssoc() : ( $this->fetchAssoc()[$returningId] ?? false );
     }
 
     /**

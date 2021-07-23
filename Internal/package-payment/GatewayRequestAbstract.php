@@ -1,8 +1,6 @@
 <?php namespace ZN\Payment;
 
 use ZN\Singleton;
-use ZN\Request\URL;
-use ZN\Services\CURL;
 use ZN\DateTime\Date;
 
 abstract class GatewayRequestAbstract
@@ -34,29 +32,10 @@ abstract class GatewayRequestAbstract
 
     /**
      * Send request.
+     * 
+     * @param string $type;
      */
-    public function send(string $bank)
-    {
-        $this->missingInformation();
-        
-        $this->default();
-
-        $_POST = $_POST + $this->settings;
-        
-        if( ! isset($this->banks[$bank]) )
-        {
-            throw new Exception\InvalidBankException(NULL, $bank);
-        }
-
-        $curl = new CURL;
-
-        return $curl->init($this->banks[$bank])
-                    ->post(true)
-                    ->postfields(URL::buildQuery($_POST))
-                    ->returntransfer(true)
-                    ->sslVerifypeer(false)
-                    ->exec();
-    }
+    abstract public function send(string $type);
 
     /**
      * Protected signature encoder
@@ -75,7 +54,7 @@ abstract class GatewayRequestAbstract
         {
             if( ! isset($this->settings[$data]) )
             {
-                throw new MissingInformationExpception(NULL, $value);  
+                throw new Exception\MissingInformationExpception(NULL, $value);  
             }
         }
     }

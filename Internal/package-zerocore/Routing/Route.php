@@ -312,7 +312,7 @@ class Route extends FilterProperties implements RouteInterface
             '/\[(?<table>\w+|\.)\:(?<column>\w+|\.)(\s*\,\s*(?<separator>json|serial|separator)(\:(?<key>.*?))*)*\]/i', 
             function($match) use (&$count, &$return, $routeSegment)
             {
-                $count   = array_search($match[0], $routeSegment);
+                $count   = key(preg_grep('/' . preg_quote($match[0], '/') . '/', $routeSegment));
                 $decoder = $match['separator'] ?? NULL;
                 $value   = $val = URI::segment($count + 1);
                 $column  = $select = $match['column'];

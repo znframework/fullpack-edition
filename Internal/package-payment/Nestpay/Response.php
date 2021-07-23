@@ -24,13 +24,15 @@ class Response
     /**
      * Is valid hash
      * 
-     * @param string $storeKey
-     * 
      * @return bool
      */
     public function isValidHash() : bool
     {
-        $hash   = $_POST['HASHPARAMS'];
+        if( ! $hash = ($_POST['HASHPARAMS'] ?? NULL) )
+        {
+            return false;
+        }
+
         $hashEx = explode(':', $hash);
         $real   = NULL;
 
@@ -62,7 +64,7 @@ class Response
      */
     public function isApproved() : bool
     {
-        return empty($_POST["ErrMsg"]) && $_POST["Response"] === 'Approved';
+        return empty($_POST["ErrMsg"]) && ($_POST["Response"] ?? NULL) === 'Approved';
     }
 
     /**
@@ -72,6 +74,11 @@ class Response
      */
     public function error() 
     {
-        return $_POST["ErrMsg"] ?: false;
+        if( ! empty($_POST["ErrMsg"]) )
+        {
+            return $_POST["ErrMsg"];
+        }
+
+        return false;
     }
 }
