@@ -54,7 +54,7 @@ abstract class GatewayRequestAbstract
         {
             if( ! isset($this->settings[$data]) )
             {
-                throw new Exception\MissingInformationExpception(NULL, $value);  
+                throw new Exception\MissingInformationException(NULL, $value);  
             }
         }
     }
