@@ -240,8 +240,6 @@ class Request extends GatewayRequestAbstract
         
         $this->default();
 
-        $_POST = $_POST + $this->settings;
-        
         if( ! isset($this->banks[$type]) )
         {
             throw new Exception\InvalidBankException(NULL, $type);
@@ -251,7 +249,7 @@ class Request extends GatewayRequestAbstract
 
         return $curl->init($this->banks[$type])
                     ->post(true)
-                    ->postfields(URL::buildQuery($_POST))
+                    ->postfields(URL::buildQuery($this->settings))
                     ->returntransfer(true)
                     ->sslVerifypeer(false)
                     ->exec();
