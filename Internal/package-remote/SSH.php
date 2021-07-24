@@ -176,7 +176,7 @@ class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
         }
         else
         {
-            throw new FileRemoteDownloadException(NULL, $localPath);
+            throw new FileRemoteDownloadException(NULL, $remotePath);
         }
     }
 

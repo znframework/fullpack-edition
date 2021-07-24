@@ -25,10 +25,11 @@ class FTPDefaultConfiguration
     |
     */
    
-    public $host       = '';
-    public $user       = '';  
-    public $password   = '';   
-    public $timeout    = 90; 
-    public $port       = 21;
-    public $sslConnect = false;
+    public $host        = '';
+    public $user        = '';  
+    public $password    = '';   
+    public $timeout     = 90; 
+    public $port        = 21;
+    public $sslConnect  = false;
+    public $passiveMode = false;
 }

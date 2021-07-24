@@ -297,7 +297,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
         }
         else
         {
-            throw new FileRemoteUploadException($localPath);
+            throw new FileRemoteUploadException(NULL, $localPath);
         }
     }
 
@@ -318,7 +318,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
         }
         else
         {
-            throw new FileRemoteDownloadException($localPath);
+            throw new FileRemoteDownloadException(NULL, $remotePath);
         }
     }
 
@@ -334,6 +334,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
         $user     = $config['user'];
         $password = $config['password'];
         $ssl      = $config['sslConnect'];
+        $passive  = $config['passiveMode'] ?? NULL;
  
         $this->connect = $ssl === false
                        ? ftp_connect($host, $port, $timeout)
@@ -350,6 +351,11 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
         {
             throw new IOException('Error', 'emptyVariable', 'Login');
         }
+
+        if( $passive === true )
+        {
+            ftp_pasv($this->connect, true);
+        }  
     }
 
     /**

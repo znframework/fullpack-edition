@@ -15,7 +15,7 @@ class FileRemoteUploadException extends Exception
 {
     const lang = 
     [
-        'en' => '`%` file is not installed on the server!',
-        'tr' => '`%` Argüman dizilimi böyle olmalıdır'
+        'en' => '`%` file is not uploaded from the server!',
+        'tr' => '`%` dosyası sunucuya yüklenemiyor!'
     ];
 }
