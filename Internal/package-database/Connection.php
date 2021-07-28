@@ -495,6 +495,8 @@ class Connection
             $query = $this->applyAliases($query);
         }
 
+        $this->applyNullable($query);
+       
         if( $isString === false && ($this->config['queryLog'] ?? NULL) === true )
         {
             Logger::report('DatabaseQueries', $query, 'DatabaseQueries'); // @codeCoverageIgnore
@@ -506,13 +508,20 @@ class Connection
     }
 
     /**
+     * protected apply nullable
+     */
+    protected function applyNullable(&$query)
+    {
+        $query = str_ireplace('\'null\'', 'null', $query);
+    }
+
+    /**
      * protected apply secure
      */
     protected function applySecure($query)
     {
         $secure = $this->secure; $this->secure = []; $secureParams = [];
 
-        // @codeCoverageIgnoreStart
         if( is_numeric(key($secure)) )
         {
             $strex  = explode('?', $query);
@@ -525,9 +534,8 @@ class Connection
                 $newstr .= $strex[$i].$this->escapeStringAddNail($sec);
             }
 
-            $query = $newstr;
+            $query = $newstr . end($strex);
         }
-        // @codeCoverageIgnoreEnd
         else
         {
             foreach( $secure as $k => $v )
@@ -658,6 +666,11 @@ class Connection
      */
     protected function nailEncode($data)
     {
+        if( $data === NULL )
+        {
+            return 'NULL';
+        }
+
         return str_replace(["'", "\&#39;", "\\&#39;"], "&#39;", $data);
     }
 

@@ -2435,13 +2435,9 @@ class DB extends Connection
             {
                 $values .= Base::suffix($value, ','); unset($isExp);
             }
-            elseif( $value !== '?' )
-            {
-                $values .= Base::suffix(Base::presuffix($value, "'"), ',');
-            }
             else
             {
-                $values .= Base::suffix($value, ','); // @codeCoverageIgnore
+                $values .= Base::suffix(Base::presuffix($value, "'"), ',');
             }
         }
     }
