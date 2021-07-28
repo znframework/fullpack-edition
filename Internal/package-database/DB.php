@@ -143,9 +143,9 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function where($column, string $value = NULL, string $logical = NULL) : DB
+    public function where($column, $value = NULL, string $logical = NULL) : DB
     {
-        $this->buildWhereHavingClause($column, (string) $value, $logical, __FUNCTION__);
+        $this->buildWhereHavingClause($column, $value, $logical, __FUNCTION__);
 
         return $this;
     }
@@ -158,7 +158,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereAnd($column, string $value = NULL) : DB
+    public function whereAnd($column, $value = NULL) : DB
     {
         $this->where($column, $value, 'AND');
 
@@ -173,7 +173,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereOr($column, string $value = NULL) : DB
+    public function whereOr($column, $value = NULL) : DB
     {
         $this->where($column, $value, 'OR');
 
@@ -265,7 +265,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNot($column, string $value = NULL, string $logical = NULL) : DB
+    public function whereNot($column, $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' != ', $value, $logical);
 
@@ -281,7 +281,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereJson($column, string $value = NULL, string $logical = NULL) : DB
+    public function whereJson($column, $value = NULL, string $logical = NULL) : DB
     {
         $this->specialDefinedWhere($column, $value, $logical, __FUNCTION__);
 
@@ -297,7 +297,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereNotJson($column, string $value = NULL, string $logical = NULL) : DB
+    public function whereNotJson($column, $value = NULL, string $logical = NULL) : DB
     {
         $this->specialDefinedWhere($column, $value, $logical, __FUNCTION__);
 
@@ -315,7 +315,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function whereFullText($column, string $value = NULL, string $type = NULL, string $logical = NULL) : DB
+    public function whereFullText($column, $value = NULL, string $type = NULL, string $logical = NULL) : DB
     {
         $this->where('exp:' . $this->db->fullText($column, $this->escapeStringAddNail($value), $type), '', $logical);
 
@@ -348,7 +348,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereLike($column, string $value = NULL, string $logical = NULL) : DB
+    public function whereLike($column, $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'inside'), $logical);
 
@@ -364,7 +364,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereStartLike($column, string $value = NULL, string $logical = NULL) : DB
+    public function whereStartLike($column, $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'starting'), $logical);
 
@@ -380,7 +380,7 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function whereEndLike($column, string $value = NULL, string $logical = NULL) : DB
+    public function whereEndLike($column, $value = NULL, string $logical = NULL) : DB
     {
         $this->where($column . ' like', $this->like($value, 'ending'), $logical);
 
@@ -488,9 +488,9 @@ class DB extends Connection
      * 
      * @return DB
      */
-    public function having($column, string $value = NULL, string $logical = NULL) : DB
+    public function having($column, $value = NULL, string $logical = NULL) : DB
     {
-        $this->buildWhereHavingClause($column, (string) $value, $logical, __FUNCTION__);
+        $this->buildWhereHavingClause($column, $value, $logical, __FUNCTION__);
 
         return $this;
     }
@@ -2026,7 +2026,7 @@ class DB extends Connection
      * 
      * @return object
      */
-    public function simpleResult(string $table, string $column = NULL, string $value = NULL, $type = 'result')
+    public function simpleResult(string $table, string $column = NULL, $value = NULL, $type = 'result')
     {
         if( $column !== NULL && $value !== NULL )
         {
@@ -2045,7 +2045,7 @@ class DB extends Connection
      * 
      * @return array
      */
-    public function simpleResultArray(string $table, string $column = NULL, string $value = NULL)
+    public function simpleResultArray(string $table, string $column = NULL, $value = NULL)
     {
         return $this->simpleResult($table, $column, $value, 'resultArray');
     }
@@ -2059,7 +2059,7 @@ class DB extends Connection
      * 
      * @return object
      */
-    public function simpleRow(string $table, string $column = NULL, string $value = NULL)
+    public function simpleRow(string $table, string $column = NULL, $value = NULL)
     {
         return $this->simpleResult($table, $column, $value, 'row');
     }
@@ -2558,7 +2558,7 @@ class DB extends Connection
     /**
      * protected special defined where
      */
-    protected function specialDefinedWhere($column, string $value = NULL, string $logical = NULL, $type = 'whereJson')
+    protected function specialDefinedWhere($column, $value = NULL, string $logical = NULL, $type = 'whereJson')
     {
         $this->where('exp:' . $this->db->$type($column, $this->escapeStringAddNail((string) $value)), '', $logical, 'where');
     }
