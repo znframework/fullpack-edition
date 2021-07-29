@@ -2908,7 +2908,7 @@ class DB extends Connection
             $con        = Arrays\GetElement::last($conditions);
             $conditions = $conditions[0];
         }
-        // @codeCoverageEnd
+        // @codeCoverageIgnoreEnd
 
         $getLast = Arrays\GetElement::last($conditions);
 

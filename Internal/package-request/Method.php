@@ -12,6 +12,7 @@
 use ZN\In;
 use ZN\Security\Html;
 use ZN\Protection\Json;
+use ZN\DataTypes\Arrays;
 
 class Method implements MethodInterface
 {
@@ -145,28 +146,39 @@ class Method implements MethodInterface
         {
             if( is_scalar($input[$name]) )
             {
-                if( Json::check($input[$name]) )
-                {
-                    return $input[$name];
-                }
-                else
-                {
-                    if( $type === 'get' || ($type === 'request' && isset($_GET[$name])) )
-                    {
-                        $input[$name] = In::cleanInjection($input[$name]);
-                    }
-
-                    return Html::encode($input[$name]);
-                }
+                return self::checkData($input[$name], $type, $name);
             }
             elseif( is_array($input[$name]) )
             {
-                return array_map('ZN\Security\Html::encode', $input[$name]);
+                $input[$name] = Arrays\Force::recursive($input[$name], function($value) use($type, $name)
+                {
+                    return self::checkData($value, $type, $name);                   
+                });
             }
 
             return $input[$name];
         }
 
         return false;
+    }
+
+    /**
+     * protected check data
+     */
+    protected static function checkData($value, $type, $name)
+    {
+        if( Json::check($value) )
+        {
+            return Html::encode($value, 'noquotes');
+        }
+        else
+        {
+            if( $type === 'get' || ($type === 'request' && isset($_GET[$name])) )
+            {
+                $value = In::cleanInjection($value);
+            }
+
+            return Html::encode($value);
+        }
     }
 }

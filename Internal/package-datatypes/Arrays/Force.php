@@ -54,4 +54,17 @@ class Force
 
         return array_combine($keys, $values);
     }
+
+    /**
+     * Force Recursive
+     * 
+     * @param array $array
+     * @param callable $callback
+     * 
+     * @return array
+     */
+    public static function recursive(array $array, callable $callback) : array
+    {
+        return filter_var($array, FILTER_CALLBACK, ['options' => $callback]);
+    }
 }

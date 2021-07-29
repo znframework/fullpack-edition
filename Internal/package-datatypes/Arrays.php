@@ -61,6 +61,7 @@ class Arrays extends Factory
             'force'                        => 'Arrays\Force::do',
             'forcevalues'                  => 'Arrays\Force::values',
             'forcekeys'                    => 'Arrays\Force::keys',
+            'forcerecursive'               => 'Arrays\Force::recursive',
             'keyval'                       => 'Arrays\Element::use',
             'element'                      => 'Arrays\Element::use',
             'unidimensional'               => 'Arrays\Unidimensional::do',
