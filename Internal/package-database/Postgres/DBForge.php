@@ -31,8 +31,18 @@ class DBForge extends DriverForge
      */
     public function modifyColumn($table, $column)
     {
-        return 'ALTER TABLE '.$table.' ALTER COLUMN ' . $this->buildForgeColumnsSyntax($column, 'TYPE') . ';';
+        $col = key($column); $values = (array) current($column); $query = NULL;
+        
+        foreach( $values as $value )
+        {
+            $type = preg_match('/(NULL|DEFAULT|CONSTRAINT|EXISTS|UNIQUE|KEY|BIGSERIAL)/i', $value) ? 'SET' : 'TYPE';
+
+            $query .= 'ALTER TABLE ' . $table . ' ALTER COLUMN ' . $this->buildForgeColumnsSyntax([$col => [$value]], $type) . ';';
+        }
+
+        return $query;
     }
+
 
     /**
      * Rename Column
