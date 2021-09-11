@@ -214,15 +214,23 @@ class Converter
      */
     public static function money(Float $money = 0, string $type = NULL, bool $float = true) : string
     {
+        $negativeFix = '';
+        
+        if( substr($money, 0, 1) === '-' )
+        {
+            $money = substr($money, 1);
+            $negativeFix = '-';
+        }
+
         $moneyFormat = '';
         $money       = round($money, 2);
-        $strEx      = explode(".",$money);
+        $strEx       = explode(".", $money);
         $join        = [];
         $str         = strrev($strEx[0]);
 
         for( $i = 0; $i < strlen($str); $i++ )
         {
-            if( $i%3 === 0 )
+            if( $i % 3 === 0 )
             {
                 array_unshift($join, '.');
             }
@@ -251,12 +259,13 @@ class Converter
 
         if( strlen($remaining) === 1 )
         {
-            $remaining .= '0'; // @codeCoverageIgnore
+            $remaining .= '0';
         }
+        
 
-        $moneyFormat = $left . substr($moneyFormat,0,-1).($float === true ? ','.$remaining : '') . $right;
+        $moneyFormat = trim($left . $negativeFix . substr($moneyFormat, 0, -1) . ($float === true ? ',' . $remaining : '') . $right);
 
-        return trim($moneyFormat);
+        return $moneyFormat;
     }
 
     /**
