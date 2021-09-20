@@ -233,8 +233,6 @@ class Converter
             $left  = NULL;
         }
 
-        $remaining = $strEx[1] ?? '00';
-
         $moneyFormat = trim($left . $moneyFormat . $right);
 
         return $moneyFormat;

@@ -263,6 +263,8 @@ class Form
      */
     public function select(string $name = NULL, array $options = [], $selected = NULL, array $_attributes = [], bool $multiple = false)
     {
+        $this->isRepeatData($options);
+
         $this->isTableOrQueryData($options);
 
         $this->setOptionAttribute($options);
@@ -510,6 +512,31 @@ class Form
     protected function setOptionAttribute(&$options)
     {
         $options = $this->settings['option'] ?? $options;
+    }
+
+    /**
+     * Protected is repeat data
+     */
+    protected function isRepeatData(&$options)
+    {
+        if( ! empty($this->settings['attr']['repeat']) )
+        {
+            $key = key($options); $current = current($options);
+
+            if( $key > $current )
+            {
+                $ocurrent = $current;
+                $current  = $key;
+                $key      = $ocurrent;
+            }
+
+            for( $i = $key; $i <= $current; $i++ )
+            {
+                $options[$i] = $i;
+            }
+
+            unset($this->settings['attr']['repeat']);
+        }
     }
 
     /**
