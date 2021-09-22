@@ -219,14 +219,20 @@ class DriverTool extends DriverExtends
                 {
                     $v = preg_replace("/\n/","\\n", $v );
 
-                    if ( isset($v) )
+                    if( is_numeric($v) )
                     {
-                        $return.= '"' . addslashes(stripslashes($v)) . '", ' ;
+                        $return.= $v;
+                    }
+                    else if( empty($v) )
+                    {
+                        $return.= 'NULL';
                     }
                     else
                     {
-                        $return.= '"", ';
+                        $return.= '"' . addslashes(stripslashes($v)) .'"' ;
                     }
+
+                    $return.= ', ';
                 }
 
                 $return = rtrim(trim($return), ', ');
