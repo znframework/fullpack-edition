@@ -99,3 +99,17 @@ function redirect(string $url = NULL, int $time = 0, array $data = NULL, bool $e
 {
     ZN\Response::redirect($url, $time, $data, $exit);
 }
+
+/**
+ * Get data.
+ * 
+ * @param string $string
+ * @param array  $data   = []
+ * @param array  $config = []
+ * 
+ * @return string
+ */
+function wizard(string $string, array $data = [], array $config = []) : string
+{
+    return ZN\Wizard::data($string, $data, $config);
+}
