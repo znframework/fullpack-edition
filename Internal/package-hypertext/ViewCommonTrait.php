@@ -146,6 +146,27 @@ trait ViewCommonTrait
     }
 
     /**
+     * On key wait event
+     * 
+     * @param callable $callback
+     * @param int      $time = 100
+     * 
+     * @return this
+     */
+    public function onkeywait($callback, int $time = 300)
+    {
+        $timer = 'timer' . md5(uniqid()); $callback = $this->stringOrCallback($callback);
+
+        $this->settings['attr']['onkeywaititem'] = $timer;
+
+        $compress = (new Script)->compress(function() use($timer, $time, $callback){ return "function {$timer}Function(callback, ms){var $timer = 0; return function(){var context = this, args = arguments; clearTimeout($timer); $timer = setTimeout(function(){callback.apply(context, args);}, ms || 0);};} $('input[onkeywaititem=\"$timer\"]').keyup({$timer}Function(function(e){ $callback }, $time));"; });
+
+        $this->settings['attr']['onkeywait'] = "<script>$compress</script>" . EOL;
+        
+        return $this;
+    }
+
+    /**
      * Protected string or callback
      */
     protected function stringOrCallback($content)
@@ -445,9 +466,19 @@ trait ViewCommonTrait
         }
     }
 
+    /**
+     * Protected create form input element by type
+     */
     protected function createFormInputElementByType($type, $attributes, &$return)
     {
-        $return .= '<input type="' . $type . '"' . $this->attributes($attributes) . '>' . EOL;
+        if( isset($this->settings['attr']['onkeywait']) )
+        {
+            $onkeywait = $this->settings['attr']['onkeywait'];
+
+            unset($this->settings['attr']['onkeywait']);
+        }
+
+        $return .= '<input type="' . $type . '"' . $this->attributes($attributes) . '>' . EOL . ( $onkeywait ?? NULL );
     }
 
     /**

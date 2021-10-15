@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Helpers\Converter;
+
 class Select extends CartExtends
 {
     /**
@@ -18,16 +20,9 @@ class Select extends CartExtends
      * 
      * @return array
      */
-    public function objects() : array
+    public function objects() : object
     {
-        $objects = [];
-
-        foreach( Properties::$items as $item );
-        {
-            $objects[] = (object) $item;
-        }
-
-        return $objects;
+        return Converter::toObjectRecursive($this->items());
     }
 
     /**
