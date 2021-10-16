@@ -32,10 +32,10 @@ class Validator implements ValidatorInterface
     /**
      * Is valid cvc
      * 
-     * @param int    $cvc
+     * @param string $cvc
      * @param string $type
      */
-    public static function cvc(int $cvc, string $type = NULL) : bool
+    public static function cvc(string $cvc, string $type = NULL) : bool
     {
         return CreditCard\Validator::cvc($cvc, $type);
     }
