@@ -3056,12 +3056,23 @@ class DB extends Connection
     {
         $column = explode('.', $column);
 
-        switch( count($column) )
+        # For table
+        switch( $count = count($column) )
         {
-            case 2 : return $this->prefix.($table = $column[0]).'.'.$column[1];
-            case 3 : return $column[0].'.'.$this->prefix.($table = $column[1]).'.'.$column[2];
+            case 3 : $table = $column[0] . '.' . $column[1]; break;
             case 1 : 
-            default: return $table = $column[0];
+            case 2 :
+            default: $table = $column[0]; break;
+        }
+
+        # For column
+        switch( $count )
+        {
+            case 2 : return $this->prefix . $column[0] . '.' . $column[1];
+            case 3 : return $column[0] . '.' . $this->prefix . $column[1] . '.' . $column[2];
+            case 1 : 
+
+            default: return $column[0];
         }
     }
 
