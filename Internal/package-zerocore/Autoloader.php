@@ -823,7 +823,7 @@ class Autoloader
      */
     protected static function getRelativeFilePath($file)
     {
-        return str_replace(REAL_BASE_DIR, NULL, $file);
+        return str_replace(REAL_BASE_DIR, '', $file);
     }
 
     /**
@@ -836,6 +836,6 @@ class Autoloader
     protected static function cleanNailClassMapContent($string)
     {
         # If the class or namespace information contains quotes, these quotes are cleared.
-        return str_replace(["'", '"'], NULL, $string);
+        return str_replace(["'", '"'], '', $string);
     }
 }

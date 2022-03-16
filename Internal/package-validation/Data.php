@@ -212,9 +212,12 @@ class Data implements DataInterface
      * Get error
      * 
      * @param string $name = 'array' - options[array|string]
+     * @param string $separator = '<br>'
      */
-    public function error(string $name = 'array')
+    public function error(string $name = 'array', string $separator = '<br>')
     {
+        $defaultSeparator = '<br>';
+        
         if( $name === 'string' || $name === 'array' || $name === 'echo' )
         {
             if( count($this->errors) > 0 )
@@ -227,13 +230,13 @@ class Data implements DataInterface
                     if( is_array($value) ) foreach($value as $k => $val)
                     {
                         $result .= $val;
-                        $resultArray[] = str_replace('<br>', '', $val);
+                        $resultArray[] = str_replace($defaultSeparator, '', $val);
                     }
                 }
 
                 if( $name === 'string' || $name === 'echo' )
                 {
-                    return $result;
+                    return str_replace($defaultSeparator, $separator, $result);
                 }
 
                 if( $name === 'array')
@@ -242,12 +245,9 @@ class Data implements DataInterface
                 }
             }
         }
-        else
+        else if( isset($this->error[$name]) )        
         {
-            if( isset($this->error[$name]) )
-            {
-                return $this->error[$name];
-            }
+            return $this->error[$name];
         }
 
         return false;

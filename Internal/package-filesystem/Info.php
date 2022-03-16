@@ -184,7 +184,7 @@ class Info
      */
     public static function relativepath(string $string) : string
     {
-        return str_replace(REAL_BASE_DIR, NULL, self::originpath($string));
+        return str_replace(REAL_BASE_DIR, '', self::originpath($string));
     }
 
     /**

@@ -20,7 +20,7 @@ class MimeTypeFinder
      */
     public static function get($file)
     {
-        $type = str_replace('image/', NULL, Singleton::class('ZN\Helpers\Mime')->type($file));
+        $type = str_replace('image/', '', Singleton::class('ZN\Helpers\Mime')->type($file));
 
         return $type === 'jpg' ? 'jpeg' : $type;
     }

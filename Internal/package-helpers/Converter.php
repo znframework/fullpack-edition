@@ -247,7 +247,7 @@ class Converter
      */
     public static function moneyToNumber($money) : Float
     {
-        return str_replace('.', NULL, Datatype::divide($money, ','));
+        return str_replace('.', '', Datatype::divide($money, ','));
     }
 
     /**

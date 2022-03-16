@@ -51,9 +51,10 @@ interface DataInterface
     /**
      * Get error
      * 
-     * @param string $name = 'array' - options[array|string]
+     * @param string $name      = 'array' - options[array|string]
+     * @param string $separator = '<br>'
      */
-    public function error(string $name = 'array');
+    public function error(String $name = 'array', string $separator = '<br>');
 
     /**
      * Get input post back.

@@ -471,7 +471,7 @@ class Wizard
      */
     protected static function phpClean($string)
     {
-        return str_replace('?>', NULL, $string);
+        return str_replace('?>', '', $string);
     }
 
     /**
