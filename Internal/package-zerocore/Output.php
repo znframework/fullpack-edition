@@ -107,7 +107,7 @@ class Output
 
         $output = '';
         $eof    = '<br>';
-        $tab    = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $start);
+        $tab    = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', (int) $start);
 
         $lengthstyle = ' style="color:'.$lengthColor.'"';
         $keystyle    = ' style="color:'.$keyColor.'"';

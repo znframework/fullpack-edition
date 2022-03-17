@@ -90,7 +90,7 @@ class Builder
 
         $eof     = EOL;
         $output  = '';
-        $tab     = str_repeat("\t", $start);
+        $tab     = str_repeat("\t", (int) $start);
 
         if( ! isset($xml[0]) )
         {

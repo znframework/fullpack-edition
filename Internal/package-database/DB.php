@@ -1884,7 +1884,7 @@ class DB extends Connection
         }
         else
         {
-            return current($row);
+            return current((array) $row);
         }
     }
 
@@ -1909,7 +1909,7 @@ class DB extends Connection
         {
             if( $printable === true )
             {
-                return current($result[0] ?? []);
+                return current((array) $result[0] ?? []);
             }
 
             return isset($result[$printable]) ? (object) $result[$printable] : false;

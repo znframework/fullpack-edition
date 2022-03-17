@@ -36,7 +36,7 @@ class Lists extends HtmlHelpersAbstract
         $eof     = EOL;
         $output  = '';
         $attrs   = '';
-        $tab     = str_repeat("\t", $start);
+        $tab     = str_repeat("\t", (int) $start);
 
         if( ! is_array($data) )
         {

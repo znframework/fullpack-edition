@@ -407,7 +407,7 @@ class MDB implements MDBInterface
         {
             if( $printable === true )
             {
-                return current($result[0] ?? []);
+                return current((array) $result[0] ?? []);
             }
 
             return isset($result[$printable]) ? (object) $result[$printable] : false;
@@ -604,7 +604,7 @@ class MDB implements MDBInterface
 
         foreach( $indexes as $index )
         {
-            $returnIndexes[] = ['key' => key($index['key']), 'name' => $index['name'], 'value' => current($index['key'])];
+            $returnIndexes[] = ['key' => key((array) $index['key']), 'name' => $index['name'], 'value' => current((array) $index['key'])];
         }
 
         return $returnIndexes;
