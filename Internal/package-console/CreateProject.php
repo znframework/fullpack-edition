@@ -13,7 +13,7 @@ use Generate;
 
 /**
  * @command create-project
- * @description create-project project name 
+ * @description create-project {ProjectName}
  */
 class CreateProject
 {

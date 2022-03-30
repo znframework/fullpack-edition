@@ -13,7 +13,7 @@ use ZN\Restoration;
 
 /**
  * @command start-restoration
- * @description start-restoration project name [full, standart or [directories]] 
+ * @description start-restoration {ProjectName} [full, standart or [directories]] 
  */
 class StartRestoration
 {

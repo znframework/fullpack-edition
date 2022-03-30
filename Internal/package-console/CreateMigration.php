@@ -13,7 +13,7 @@ use Migration;
 
 /**
  * @command create-migration
- * @description create-migration {migration-name} 
+ * @description create-migration {MigrationName}
  */
 class CreateMigration
 {

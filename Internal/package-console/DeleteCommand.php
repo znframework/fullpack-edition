@@ -13,7 +13,7 @@ use Generate;
 
 /**
  * @command delete-command
- * @description delete-command command name 
+ * @description delete-command {CommandName}
  */
 class DeleteCommand
 {

@@ -13,7 +13,7 @@ use ZN\Restoration;
 
 /**
  * @command end-restoration-delete
- * @description end-restoration-delete project name  
+ * @description end-restoration-delete {ProjectName}  
  */
 class EndRestorationDelete
 {

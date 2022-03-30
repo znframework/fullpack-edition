@@ -14,7 +14,7 @@ use ZN\Config;
 
 /**
  * @command create-controller
- * @description create-controller controller name 
+ * @description create-controller {ControllerName} 
  */
 class CreateController
 {

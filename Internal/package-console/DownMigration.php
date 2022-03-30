@@ -13,7 +13,7 @@ use Migration;
 
 /**
  * @command down-migration
- * @description down-migration {migration-name} 
+ * @description down-migration {MigrationName} 
  */
 class DownMigration
 {

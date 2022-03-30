@@ -13,7 +13,7 @@ use Generate;
 
 /**
  * @command create-command
- * @description create-command command name 
+ * @description create-command {CommandName} 
  */
 class CreateCommand
 {

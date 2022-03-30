@@ -13,7 +13,7 @@ use ZN\Filesystem;
 
 /**
  * @command delete-project
- * @description delete-project project name
+ * @description delete-project {ProjectName}
  */
 class DeleteProject
 {

@@ -13,7 +13,7 @@ use Migration;
 
 /**
  * @command delete-migration
- * @description delete-migration {migration-name} 
+ * @description delete-migration {MigrationName} 
  */
 class DeleteMigration
 {

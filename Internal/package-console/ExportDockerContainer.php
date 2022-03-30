@@ -13,7 +13,7 @@ use ZN\Filesystem;
 
 /**
  * @command export-docker-container
- * @description export-docker-container version
+ * @description export-docker-container {version}
  * 
  * @codeCoverageIgnore
  */

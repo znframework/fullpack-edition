@@ -13,7 +13,7 @@ use Generate;
 
 /**
  * @command create-model
- * @description create-model model name 
+ * @description create-model {ModelName} 
  */
 class CreateModel
 {
