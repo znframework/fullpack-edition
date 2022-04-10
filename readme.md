@@ -1,4 +1,4 @@
-<p align="center">
+<p>
 <a href="https://github.com/znframework/fullpack-edition/actions/workflows/phpunit.yml">
 	<img src="https://img.shields.io/github/workflow/status/znframework/fullpack-edition/PHPUnit/develop?label=build&logo=github&logoColor=%2300BFFF&style=flat-square" style="max-width:100%;"></a>
 <a href="https://coveralls.io/github/znframework/fullpack-edition" rel="nofollow">
