@@ -13,7 +13,7 @@
 	<img src="https://img.shields.io/github/license/znframework/fullpack-edition?style=flat-square" style="max-width:100%;"></a>
 </p>
 
-<h2>What is ZN</h2>
+<h2>What is ZN?</h2>
 
 <p>
 The basic principle of ZN Framework is to let users write simple and readable codes. Because of this principle, our libraries are built by using both dynamic and static access methods with a Powerful Autoloading Architecture.
