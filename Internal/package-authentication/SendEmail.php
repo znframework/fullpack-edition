@@ -78,7 +78,7 @@ class SendEmail extends UserExtends
                 }
 			}
 
-            $this->emailClass->send($subject, $body);
+            $this->emailClass->send($subject, $body); // @codeCoverageIgnore
 		}
     }
     
