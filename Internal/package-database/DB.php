@@ -1909,7 +1909,7 @@ class DB extends Connection
         {
             if( $printable === true )
             {
-                return current((array) $result[0] ?? []);
+                return isset($result[0]) ? current($result[0]) : [];
             }
 
             return isset($result[$printable]) ? (object) $result[$printable] : false;
