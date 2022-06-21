@@ -204,8 +204,19 @@ class DB extends DriverMappingAbstract
         {
             return false; // @codeCoverageIgnore
         }
+        
+        if( $this->query = $this->connect->multi_query($query) )
+        {
+            while( $this->connect->next_result() )
+            {
+                if( ! $this->connect->more_results() ) 
+                {
+                    break;
+                }
+            }
+        }
 
-        return (bool) ($this->query = $this->connect->multi_query($query));
+        return (bool) $this->query;
     }
 
     /**
