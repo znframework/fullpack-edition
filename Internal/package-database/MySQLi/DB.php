@@ -154,6 +154,8 @@ class DB extends DriverMappingAbstract
             throw new ConnectionErrorException(NULL, $this->connect->connect_error); // @codeCoverageIgnore
         }
 
+        mysqli_report(MYSQLI_REPORT_OFF);
+
         if( ! empty($this->config['charset']  ) ) $this->query("SET NAMES '".$this->config['charset']."'");  
         if( ! empty($this->config['charset']  ) ) $this->query('SET CHARACTER SET '.$this->config['charset']);  
         if( ! empty($this->config['collation']) ) $this->query('SET COLLATION_CONNECTION = "'.$this->config['collation'].'"');
