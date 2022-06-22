@@ -654,7 +654,7 @@ class MDB implements MDBInterface
     /**
      * protected is auto increment
      */
-    protected function isAutoIncrement(String &$table)
+    protected function isAutoIncrement(string &$table)
     {
         return in_array($table = $this->getIndexCollectionName($table), $this->collections());
     }

@@ -97,14 +97,14 @@ class Robots
         switch( $key )
         {
             case 'userAgent':
-                $robots .= ! empty( $val ) ? 'User-agent: '.$val.EOL : '';
+                $robots .= ! empty( $val ) ? 'User-agent: ' . $val . EOL : '';
             break;
 
             case 'allow'    :
             case 'disallow' :
                 if( ! empty($val) ) foreach( $val as $v )
                 {
-                    $robots .= ucfirst($key).': '.$v.EOL;
+                    $robots .= ucfirst($key) . ': ' . $v . EOL;
                 }
             break;
         }

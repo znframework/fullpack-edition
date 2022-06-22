@@ -30,7 +30,7 @@ class Logout extends UserExtends
                 $this->setUserStatePassive($this->isUserStateActive());
             }
 
-            $this->endUserProcessAndRedirect((string) $redirectUrl, $time);
+            $this->endUserProcessAndRedirect($redirectUrl, $time);
         }
     }
 

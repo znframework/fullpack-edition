@@ -618,7 +618,6 @@ class GrandModel
     {
         $func = $type;
         $col  = substr($method, strlen($type));
-        $data = NULL;
 
         if( $func === 'update' )
         {

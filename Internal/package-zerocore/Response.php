@@ -47,7 +47,9 @@ class Response
      */
     public static function redirect(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true, $type = 'location')
     {
-        if( ! IS::url((string) $url) )
+        $url = $url ?? '';
+
+        if( ! IS::url($url) )
         {
             $url = Request::getSiteURL($url);
         }

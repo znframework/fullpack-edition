@@ -428,7 +428,7 @@ class Html
         }
         else
         {
-            $metas = NULL;
+            $metas = '';
 
             foreach( $name as $key => $val )
             {
@@ -446,7 +446,7 @@ class Html
      */
     protected function _content($html, $type)
     {
-        $type = strtolower($type);
+        $type = strtolower($type ?? '');
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
@@ -460,7 +460,7 @@ class Html
      */
     protected function _contentAttribute($content, $_attributes, $type)
     {
-        $type   = strtolower($type);
+        $type   = strtolower($type ?? '');
 
         $perm   = $this->settings['attr']['perm'] ?? NULL;
         
@@ -488,7 +488,7 @@ class Html
      */
     protected function _mediaContent($src, $content, $_attributes, $type)
     {
-        $type = strtolower($type);
+        $type = strtolower($type ?? '');
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
@@ -502,7 +502,7 @@ class Html
      */
     protected function _multiElement($element, $str, $attributes = [])
     {
-        $element = strtolower($element);
+        $element = strtolower($element ?? '');
 
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
@@ -518,7 +518,7 @@ class Html
     {
         $perm = $this->settings['attr']['perm'] ?? NULL;
 
-        $this->outputElement .= $this->_perm($perm, '<'.strtolower($element).$this->attributes($attributes).'>');
+        $this->outputElement .= $this->_perm($perm, '<'.strtolower($element ?? '').$this->attributes($attributes).'>');
 
         return $this;
     }
@@ -530,15 +530,15 @@ class Html
     {
         if( stripos($name, 'http:') === 0 )
         {
-            $name = ' http-equiv="'.str_ireplace('http:', NULL, $name).'"';
+            $name = ' http-equiv="'.str_ireplace('http:', '', $name).'"';
         }
         elseif( stripos($name, 'property:') === 0 )
         {
-            $name = ' property="'.str_ireplace('property:', NULL, $name).'"';
+            $name = ' property="'.str_ireplace('property:', '', $name).'"';
         }
         else
         {
-            $name = ' name="'.str_ireplace('name:', NULL, $name).'"';
+            $name = ' name="'.str_ireplace('name:', '', $name).'"';
         }
 
         if( ! empty($content) )

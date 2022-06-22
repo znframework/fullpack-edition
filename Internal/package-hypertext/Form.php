@@ -340,7 +340,7 @@ class Form
 
         $this->settings['attr'] = [];
 
-        $hiddens = NULL;
+        $hiddens = '';
         
         if( is_array($name) ) foreach( $name as $key => $val )
         {
@@ -348,7 +348,7 @@ class Form
         }
         else
         {
-            $hiddens =  $this->createHiddenElement($name, $value);
+            $hiddens = $this->createHiddenElement($name, $value);
         }
 
         $this->outputElement .= $hiddens;
@@ -568,7 +568,7 @@ class Form
 
                 if( strstr($table, ':') )
                 {
-                    $tableEx = explode(':', $tableEx);
+                    $tableEx = explode(':', $table);
                     $table   = $tableEx[1];
                     $db      = $tableEx[0];
 

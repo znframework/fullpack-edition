@@ -75,7 +75,7 @@ class Theme
      * 
      * @return void
      */
-    public static function integration(string $themeName, String &$data)
+    public static function integration(string $themeName, string &$data)
     {
         $data = preg_replace_callback
         (

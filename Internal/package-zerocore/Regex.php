@@ -240,7 +240,7 @@ class Regex
     {
         $specialChars = $this->specialChars;
 
-        $pattern = str_ireplace(array_keys($specialChars), array_values($specialChars), $pattern);
+        $pattern = str_ireplace(array_keys($specialChars), array_values($specialChars), $pattern ?? '');
 
         $regexChars   = Datatype::multikey($this->regexChars);
         $settingChars = Datatype::multikey($this->settingChars);

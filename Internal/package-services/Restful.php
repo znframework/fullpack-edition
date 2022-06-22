@@ -168,7 +168,7 @@ class Restful implements RestfulInterface
      */
     public function info(string $key = NULL)
     {
-        return $key === NULL ? $this->info : ($this->info[strtolower($key)] ?? false);
+        return $key === NULL ? $this->info : ($this->info[strtolower($key ?? '')] ?? false);
     }
 
     /**
@@ -350,7 +350,7 @@ class Restful implements RestfulInterface
     {
         $data = $this->data ?? $data;
 
-        return is_string($data) ? $data : http_build_query($data, NULL, '&', PHP_QUERY_RFC1738);
+        return is_string($data) ? $data : http_build_query($data, '', '&', PHP_QUERY_RFC1738);
     }
 
     /**

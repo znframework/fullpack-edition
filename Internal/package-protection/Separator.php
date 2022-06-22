@@ -44,7 +44,7 @@ class Separator extends StoreAbstract implements StoreInterface
             $data = (array) $data;
         }
         
-        $word      = NULL;
+        $word      = '';
         $key       = $key       ?: self::$key;
         $separator = $separator ?: self::$separator;
  
@@ -122,6 +122,6 @@ class Separator extends StoreAbstract implements StoreInterface
      */
     protected static function _security($data)
     {
-        return str_replace([self::$key, self::$separator], '', $data);
+        return str_replace([self::$key, self::$separator], '', $data ?? '');
     }
 }

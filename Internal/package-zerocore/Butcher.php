@@ -253,7 +253,7 @@ class Butcher
      */
     protected function getLangValue($key, $string = NULL)
     {
-        return str_replace('%', $string, $this->lang['butcher:' . $key]);
+        return str_replace('%', $string ?? '', $this->lang['butcher:' . $key] ?? '');
     }
 
     /**
@@ -369,7 +369,7 @@ class Butcher
             return $directory; // @codeCoverageIgnore
         }
 
-        $directory = str_replace([' ', '_'], '-', $directory);
+        $directory = str_replace([' ', '_'], '-', $directory ?? '');
 
         switch( $case )
         {
@@ -378,7 +378,7 @@ class Butcher
             case 'lower': return $this->mbConvertCase($directory, $case);
             default     : 
             {
-                $case = explode(':', $case); $type = $case[1] ?? NULL;
+                $case = explode(':', $case); $type = $case[1] ?? '';
                 $name = $case[0];
                 
                 if( strpos($type, 'inc') === 0 )
@@ -445,7 +445,7 @@ class Butcher
      */
     protected function mbConvertCase($string, $type)
     {
-        return str_replace(' ', '', mb_convert_case(str_replace('-', ' ', $string), Helper::toConstant($type, 'MB_CASE_')));
+        return str_replace(' ', '', mb_convert_case(str_replace('-', ' ', $string ?? ''), Helper::toConstant($type, 'MB_CASE_')));
     }
 
     /**
@@ -626,7 +626,7 @@ class Butcher
      */
     protected function convertSlugSeparator($string)
     {
-        return str_replace([' ', '_', '.'], '-', $string);
+        return str_replace([' ', '_', '.'], '-', $string ?? '');
     }
 
     /**
@@ -642,7 +642,7 @@ class Butcher
      */
     protected function addSlashesToAt($string)
     {
-        return str_replace('@', '/@', $string);
+        return str_replace('@', '/@', $string ?? '');
     }
 
     /**
@@ -901,7 +901,7 @@ class Butcher
      */
     protected function convertControllerName($controller)
     {
-        return str_replace(['index'], [$this->routeConfig()['openController']], $controller);
+        return str_replace(['index'], [$this->routeConfig()['openController']], $controller ?? '');
     }
 
     /**

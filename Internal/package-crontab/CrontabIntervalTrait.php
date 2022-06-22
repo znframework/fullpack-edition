@@ -347,7 +347,7 @@ trait CrontabIntervalTrait
     protected function _format($varname, $objectname, $data)
     {
         $format      = $this->$varname;
-        $replaceData = str_ireplace(array_keys($format), array_values($format), $data);
+        $replaceData = str_ireplace(array_keys($format), array_values($format), $data ?? '');
 
         $this->$objectname = $this->_slashes($replaceData);
     }

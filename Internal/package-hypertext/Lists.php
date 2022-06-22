@@ -53,7 +53,7 @@ class Lists extends HtmlHelpersAbstract
                 }
                 else
                 {
-                    $value = NULL;
+                    $value = '';
                 }
 
                 $end = Base::prefix(Arrays\GetElement::first(explode(' ', $k)));
@@ -73,7 +73,7 @@ class Lists extends HtmlHelpersAbstract
                     }
                     else
                     {
-                        $value = NULL;
+                        $value = '';
                     }
 
                     $output .= $tab."<$k>$value$eof".$this->_element($v, $tab, $start++).$tab."<$end>".$tab.$eof;

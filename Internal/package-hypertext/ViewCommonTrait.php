@@ -285,7 +285,7 @@ trait ViewCommonTrait
         {
             $attribute = $this->settings['attr'][$attr];
 
-            if( $attribute === str_replace('-', '', $attr) )
+            if( $attribute === str_replace('-', '', $attr ?? '') )
             {
                 $attribute = NULL;
             }
@@ -486,7 +486,7 @@ trait ViewCommonTrait
      */
     protected function createBootstrapFormInputElementByType($type, $value, $attributes, &$return)
     {
-        $return = NULL;
+        $return = '';
 
         if( $class = ($this->settings['group']['class'] ?? NULL) )
         {
@@ -651,6 +651,6 @@ trait ViewCommonTrait
             $element = htmlentities($element, ENT_COMPAT);
         }
 
-        $this->settings['attr'][strtolower($function)] = $element;
+        $this->settings['attr'][strtolower($function ?? '')] = $element;
     }
 }

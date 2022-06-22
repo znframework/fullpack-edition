@@ -37,7 +37,7 @@ trait Revolving
             }
         }
      
-        $this->$method = (count($param ?? NULL) > 1) ? $param : ($param[0] ?? NULL);
+        $this->$method = (count($param ?? []) > 1) ? $param : ($param[0] ?? NULL);
         
         $this->revolvings[$method] = $this->$method;
 

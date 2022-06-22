@@ -211,7 +211,7 @@ abstract class DriverMappingAbstract
      */
     public function fullText($column, $value, $type = NULL)
     {
-        $against = NULL;
+        $against = '';
 
         switch( $type )
         {
@@ -222,7 +222,7 @@ abstract class DriverMappingAbstract
             case 'languageExpansion': $against = ' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION'; break;
         }
 
-        return 'MATCH('.$column.') AGAINST('.$value.$against.')';
+        return 'MATCH(' . $column . ') AGAINST(' . $value . $against . ')';
     }
 
     /**
@@ -307,13 +307,13 @@ abstract class DriverMappingAbstract
      */
     public function statements($state = NULL, $len = NULL, $type = true)
     {
-        $state = strtolower($state);
+        $state = strtolower($state ?? '');
 
         if( $isstate = ($this->statements[$state] ?? NULL) )
         {
             if( strstr($isstate, '%') )
             {
-                $vartype = str_replace('%', $len, $isstate); // @codeCoverageIgnore
+                $vartype = str_replace('%', $len ?? '', $isstate); // @codeCoverageIgnore
 
                 return $this->cvartype($vartype); // @codeCoverageIgnore
             }
@@ -357,7 +357,7 @@ abstract class DriverMappingAbstract
      */
     public function variableTypes($vartype = NULL, $len = NULL, $type = true)
     {
-        $vartype = strtolower($vartype);
+        $vartype = strtolower($vartype ?? '');
 
         if( $isvartype = ($this->variableTypes[$vartype] ?? NULL) )
         {

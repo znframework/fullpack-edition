@@ -547,7 +547,7 @@ class DB extends Connection
             break;
         }
 
-        $type = strtoupper($type);
+        $type = strtoupper($type ?? '');
 
         $this->joinType  = $type;
         $this->joinTable = $table;
@@ -1925,7 +1925,7 @@ class DB extends Connection
      */
     public function value(string $column = NULL)
     {
-        if( preg_match('/[a-z]\w+/i', $column) )
+        if( preg_match('/[a-z]\w+/i', $column ?? '') )
         {
             return $this->row()->$column ?? false;
         }
@@ -2155,11 +2155,11 @@ class DB extends Connection
     {
         $case  = ' CASE '.$switch;
 
-        $alias = NULL;
+        $alias = '';
 
         if( isset($conditions['as']) )
         {
-            $alias = ' as '.$conditions['as'].' ';
+            $alias = ' as ' . $conditions['as'] . ' ';
 
             unset($conditions['as']);
         }
@@ -2172,13 +2172,13 @@ class DB extends Connection
             }
             else
             {
-                $key = ' WHEN '.$key.' THEN ';
+                $key = ' WHEN ' . $key . ' THEN ';
             }
 
-            $case .= $key.$val;
+            $case .= $key . $val;
         }
 
-        $case .= ' END '.$alias;
+        $case .= ' END ' . $alias;
 
         if( $return === true )
         {
@@ -2411,7 +2411,7 @@ class DB extends Connection
      */
     protected function buildDataValuesQueryForInsert($datas, &$data, &$values, &$duplicateCheckWhere)
     {
-        $data = NULL; $values = NULL; $duplicateCheckWhere = [];
+        $data = ''; $values = ''; $duplicateCheckWhere = [];
     
         foreach( $datas as $key => $value )
         {
@@ -2453,7 +2453,7 @@ class DB extends Connection
         
         foreach( $datas as $values )
         {
-            $value = NULL;
+            $value = '';
 
             foreach( $values as $val )
             {
@@ -2471,7 +2471,7 @@ class DB extends Connection
      */
     protected function buildDataValuesQueryForUpdate($datas, &$data)
     {
-        $data = NULL;
+        $data = '';
         
         foreach( $datas as $key => $value )
         {
@@ -2682,7 +2682,9 @@ class DB extends Connection
      */
     protected function ignoreData(&$table, &$data)
     {
-        $methods = ['ignore', 'post', 'get', 'request'];
+        $table = $table ?? '';
+        
+        $methods = ['ignore', 'post', 'get', 'request'];        
 
         if( stristr($table, ':') )
         {
@@ -2758,11 +2760,11 @@ class DB extends Connection
     {
         if( $this->join )
         {
-            $joinType = strtolower($this->joinType);
+            $joinType = strtolower($this->joinType ?? '');
 
             if( $joinType === 'inner' )
             {
-                $joinTables = $this->addPrefixForTableAndColumn($table).', '.$this->joinTable; // @codeCoverageIgnore
+                $joinTables = $this->addPrefixForTableAndColumn($table) . ', ' . $this->joinTable; // @codeCoverageIgnore
             }
             elseif( $joinType === 'right' )
             {

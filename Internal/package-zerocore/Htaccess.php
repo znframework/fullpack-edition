@@ -78,7 +78,7 @@ class Htaccess
 
         if( $modExpires['status'] === true )
         {
-            $exp = NULL;
+            $exp = '';
             $settings = $modExpires['fileTypeTime'];
 
             foreach( $settings as $type => $value )
@@ -107,7 +107,7 @@ class Htaccess
         
         if( $modHeaders['status'] === true )
         {
-            $fmatch = NULL;
+            $fmatch = '';
             $fileExtensionTimeAccess = $modHeaders['fileExtensionTimeAccess'];
 
             foreach( $fileExtensionTimeAccess as $type => $value )
@@ -210,18 +210,18 @@ class Htaccess
         }
         else
         {
-            $indexSuffix = NULL; $flag = 'L';
+            $indexSuffix = ''; $flag = 'L';
         }
 
-        $htaccess .= "<IfModule mod_rewrite.c>".EOL;
-        $htaccess .= HT."RewriteEngine On".EOL;
-        $htaccess .= HT."RewriteBase /".EOL;
-        $htaccess .= HT."RewriteCond %{REQUEST_FILENAME} !-f".EOL;
-        $htaccess .= HT."RewriteCond %{REQUEST_FILENAME} !-d".EOL;
-        $htaccess .= HT.'RewriteRule ^(.*)$  '.($_SERVER['SCRIPT_NAME'] ?? NULL).$indexSuffix.'/$1 ['.$flag.']'.EOL;
-        $htaccess .= "</IfModule>".EOL.EOL;
-        $htaccess .= 'ErrorDocument 403 /'.BASE_DIR.DIRECTORY_INDEX.EOL.EOL;
-        $htaccess .= 'DirectoryIndex '.DIRECTORY_INDEX.EOL;
+        $htaccess .= "<IfModule mod_rewrite.c>" . EOL;
+        $htaccess .= HT . "RewriteEngine On" . EOL;
+        $htaccess .= HT . "RewriteBase /" . EOL;
+        $htaccess .= HT . "RewriteCond %{REQUEST_FILENAME} !-f" . EOL;
+        $htaccess .= HT . "RewriteCond %{REQUEST_FILENAME} !-d" . EOL;
+        $htaccess .= HT . 'RewriteRule ^(.*)$  ' . ($_SERVER['SCRIPT_NAME'] ?? NULL) . $indexSuffix . '/$1 [' . $flag . ']' . EOL;
+        $htaccess .= "</IfModule>" . EOL . EOL;
+        $htaccess .= 'ErrorDocument 403 /' . BASE_DIR . DIRECTORY_INDEX . EOL . EOL;
+        $htaccess .= 'DirectoryIndex ' . DIRECTORY_INDEX . EOL;
     }
 
     /**
@@ -244,13 +244,13 @@ class Htaccess
 
         if( ! empty($settings) )
         {
-            $sets = NULL;
+            $sets = '';
 
             foreach( $settings as $k => $v )
             {
                 if( $v !== '' && ! empty($k) )
                 {
-                    $sets .= HT."php_value $k $v".EOL;
+                    $sets .= HT . "php_value $k $v" . EOL;
                 }
             }
 

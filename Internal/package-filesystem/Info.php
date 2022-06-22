@@ -100,6 +100,8 @@ class Info
      */
     public static function rpath(string $file = NULL) : string
     {
+        $file = $file ?? '';
+
         $config = Config::get('Filesystem', 'file', self::$access);
 
         self::$access = NULL;

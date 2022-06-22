@@ -20,7 +20,7 @@ class Lang
      * 
      * @var mixed
      */
-    protected static $lang = NULL;
+    protected static $lang = [];
 
     /**
      * Keeps default configuration
@@ -99,6 +99,8 @@ class Lang
      */
     public static function select(string $file = NULL, string $str = NULL, $changed = NULL)
     {
+        $langstr = '';
+
         if( ! isset(self::$lang[$file]) )
         {      
             $file          = ($getLang = self::get()).'/'.Base::suffix($file, '.php');

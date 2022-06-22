@@ -199,7 +199,7 @@ class Validator implements ValidatorInterface
         
         $index = rand(0, count($questions) - 1);
 
-        $_SESSION[md5('answerToQuestion')] = strtolower(array_values($questions)[$index]);
+        $_SESSION[md5('answerToQuestion')] = strtolower(array_values($questions)[$index] ?? '');
 
         return array_keys($questions)[$index];
     }

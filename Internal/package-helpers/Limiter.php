@@ -35,14 +35,14 @@ class Limiter
 
         preg_match('/^\s*+(?:\S++\s*+){1,'.(int) $limit.'}/', $str, $matches);
 
-        $match = $matches[0] ?? NULL;
+        $match = $matches[0] ?? '';
 
         if( mb_strlen($str, $encoding) === mb_strlen($match, $encoding) )
         {
             $endChar = '';
         }
 
-        return rtrim($match ?? NULL).$endChar;
+        return rtrim($match) . $endChar;
     }
 
     /**

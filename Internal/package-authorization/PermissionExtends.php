@@ -236,7 +236,7 @@ class PermissionExtends
             return Method::$process($page);
         }
 
-        return strpos(strtolower($currentUrl), strtolower($page)) > -1;
+        return strpos(strtolower($currentUrl ?? ''), strtolower($page ?? '')) > -1;
     }
 
     /**

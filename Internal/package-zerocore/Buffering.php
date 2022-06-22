@@ -18,7 +18,7 @@ class Buffering
      */
     public static function start()
     {
-        if( (HTACCESS_CONFIG['cache']['obGzhandler'] ?? true) === true && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'] ?? NULL, 'gzip') )
+        if( (HTACCESS_CONFIG['cache']['obGzhandler'] ?? true) === true && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'] ?? '', 'gzip') )
         {
             ob_start('ob_gzhandler');
         }

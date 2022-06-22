@@ -69,7 +69,7 @@ class Migration implements MigrationInterface
 
         $this->db = Singleton::class('ZN\Database\DB');
         $this->forge = Singleton::class('ZN\Database\DBForge');
-        $this->migrateTableName = defined('static::table') ? static::table : false;
+        $this->migrateTableName = defined('static::table') ? static::table : '';
 
         $this->createMigrationTableIfNotExists();
     }
@@ -453,9 +453,9 @@ class Migration implements MigrationInterface
      */
     protected function getValidVersionNumber($numeric)
     {
-        $length = strlen((string)$numeric);
+        $length = strlen((string) $numeric);
 
-        if( (int)$numeric > 999 || (int)$numeric < 0 )
+        if( (int) $numeric > 999 || (int) $numeric < 0 )
         {
             return false; // @codeCoverageIgnore
         }

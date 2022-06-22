@@ -109,7 +109,7 @@ class Sender implements SenderInterface
      */
     protected function getLang(string $type, string $changes = NULL) : string
     {
-        return str_replace('%', $changes, $this->getLang[$type]);
+        return str_replace('%', $changes ?? '', $this->getLang[$type]);
     }
 
     /**
@@ -600,7 +600,7 @@ class Sender implements SenderInterface
         }
 
         # Is it a real mime?
-        if( ! strstr($mime, '/') )
+        if( ! strstr($mime ?? '', '/') )
         {
             # Check it out from the list
             if( $mimes = (Singleton::class('ZN\Helpers\Mime')->mimeTypes[$mime] ?? NULL) )

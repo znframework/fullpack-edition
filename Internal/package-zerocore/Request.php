@@ -164,6 +164,6 @@ class Request
      */
     public static function getHostName(string $uri = NULL) : string
     {
-        return SSL_STATUS . Base::host() . '/' . In::cleanInjection(ltrim($uri, '/'));
+        return SSL_STATUS . Base::host() . '/' . In::cleanInjection(ltrim($uri ?? '', '/'));
     }
 }

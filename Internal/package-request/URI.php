@@ -78,7 +78,7 @@ class URI implements URIInterface
      */
     public static function manipulation(array $rules, string $type = 'none') : string
     {
-        $query = NULL;
+        $query = '';
 
         foreach( $rules as $key => $value )
         {
@@ -110,7 +110,7 @@ class URI implements URIInterface
      */
     public static function buildQuery(array $data, string $separator = '/', string $type = 'none') : string
     {
-        $query = NULL;
+        $query = '';
 
         foreach( $data as $key => $value )
         {

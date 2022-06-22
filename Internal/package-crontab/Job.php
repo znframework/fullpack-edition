@@ -573,9 +573,9 @@ class Job implements JobInterface, CrontabIntervalInterface
         $command        = $this->command;
         $debug          = $this->debug;
 
-        $match = '(\*|[0-9]{1,2}|\*\/[0-9]{1,2}|[0-9]{1,2}\s*\-\s*[0-9]{1,2}|(([0-9]{1,2})*\s*\,\s*[0-9]{1,2})+)\s+';
+        $pattern = str_repeat('(\*|[0-9]{1,2}|\*\/[0-9]{1,2}|[0-9]{1,2}\s*\-\s*[0-9]{1,2}|(([0-9]{1,2})*\s*\,\s*[0-9]{1,2})+)\s+', 5);
 
-        if( ! preg_match('/^'.$match.$match.$match.$match.$match.'$/', $datetimeFormat) )
+        if( ! preg_match('/^' . $pattern . '$/', $datetimeFormat) )
         {
             throw new InvalidTimeFormatException('Services', 'crontab:timeFormatError');
         }

@@ -90,6 +90,6 @@ class Substitution
             $function = 'str_ireplace';
         }
 
-        return $function($oldChar, $newChar, $string);
+        return $function($oldChar ?? '', $newChar ?? '', $string);
     }
 }

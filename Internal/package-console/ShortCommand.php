@@ -26,9 +26,9 @@ class ShortCommand
      */
     public function __construct($command)
     {   
-        $commandEx   = explode(':', $command);
+        $commandEx   = explode(':', $command ?? '');
         $classEx     = explode('\\', $commandEx[0]);
-        $funcparamEx = explode(' ', $commandEx[1]);
+        $funcparamEx = explode(' ', $commandEx[1] ?? '');
         $function    = $funcparamEx[0];
         $parameters  = [];
 

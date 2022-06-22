@@ -91,7 +91,7 @@ class Debugger
         $class          = $debug[$layer2]['class']    ?? NULL;
         $args           = $debug[$layer2]['args']     ?? NULL;
         $type           = $debug[$layer1]['type']     ?? NULL;
-        $type           = str_replace('->', '::', $type);
+        $type           = str_replace('->', '::', $type ?? '');
         $classSuffix    = $type.$function.'()';
         $method         = $class.$classSuffix;
         $internalMethod = Classes::onlyName((string) $class).$classSuffix;

@@ -155,6 +155,8 @@ class Base
      */
     public static function removePrefix(string $data = NULL, string $fix = '/') : string
     {
+        $data = $data ?? '';
+
         if( strpos($data, $fix) === 0 ) 
         {
             $data = substr($data, strlen($fix));
@@ -173,6 +175,8 @@ class Base
      */
     public static function removeSuffix(string $data = NULL, string $fix = '/') : string
     {
+        $data = $data ?? '';
+
         if( strrpos($data, $fix) === ($start = strlen($data) - strlen($fix)) ) 
         {
             $data = substr($data, 0, $start);
@@ -221,6 +225,8 @@ class Base
      */
     public static function prefix(string $string = NULL, string $fix = '/', $type = __FUNCTION__) : string
     {
+        $string = $string ?? '';
+
         $stringFix = $type === 'prefix' ? $fix . $string : $string . $fix;
 
         if( strlen($fix) <= strlen($string) )

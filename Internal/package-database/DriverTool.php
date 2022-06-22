@@ -188,7 +188,7 @@ class DriverTool extends DriverExtends
                       : explode(',',$tables);
         }
 
-        $return = NULL;
+        $return = '';
 
         foreach( $tables as $table )
         {

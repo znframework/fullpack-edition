@@ -76,7 +76,7 @@ class Datatype
      */
     public static function divide(string $str = NULL, string $separator = '|', string $index = '0', string $count = '1')
     {
-        $arrayEx = explode($separator, $str);
+        $arrayEx = explode($separator, $str ?? '');
 
         if( $index === 'all' )
         {

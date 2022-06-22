@@ -343,7 +343,7 @@ class Connection
 
         array_shift($array);
 
-        $math  = $this->setMathFunction(isset($args[0]) ? strtoupper($args[0]) : false, $array);
+        $math  = $this->setMathFunction(isset($args[0]) ? strtoupper($args[0] ?? '') : false, $array);
 
         if( $math->return === true )
         {
@@ -432,7 +432,7 @@ class Connection
      */
     protected function clearExpression($column, $exp = 'exp')
     {
-        return str_ireplace($exp . ':', '', $column);
+        return str_ireplace($exp . ':', '', $column ?? '');
     }
 
     /**
@@ -512,7 +512,7 @@ class Connection
      */
     protected function applyNullable(&$query)
     {
-        $query = str_ireplace('\'null\'', 'null', $query);
+        $query = str_ireplace('\'null\'', 'null', $query ?? '');
     }
 
     /**
@@ -520,6 +520,8 @@ class Connection
      */
     protected function applySecure($query)
     {
+        $query = $query ?? '';
+
         $secure = $this->secure; $this->secure = []; $secureParams = [];
 
         if( is_numeric(key($secure)) )
@@ -585,8 +587,8 @@ class Connection
      */
     protected function setMathFunction($type, $args)
     {
-        $type    = strtoupper($type);
-        $getLast = Arrays\GetElement::last($args);
+        $type    = strtoupper($type ?? '');
+        $getLast = Arrays\GetElement::last($args) ?? '';
         $asparam = ' ';
 
         if( $getLast === true )
@@ -594,7 +596,7 @@ class Connection
             array_pop($args);
 
             $return = true;
-            $as     = Arrays\GetElement::last($args);
+            $as     = Arrays\GetElement::last($args) ?? '';
 
             // @codeCoverageIgnoreStart
             if( stripos(trim($as), 'as') === 0 )
@@ -652,7 +654,7 @@ class Connection
     {
         Support::driver(array_keys($this->drivers), $this->driver);
 
-        $class = 'ZN\Database\\'.$this->drivers[$this->driver].'\\DB'.$suffix;
+        $class = 'ZN\Database\\' . $this->drivers[$this->driver] . '\\DB' . $suffix;
 
         return new $class($settings);
     }

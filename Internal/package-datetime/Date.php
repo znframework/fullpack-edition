@@ -72,7 +72,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
         }
         elseif( in_array($methodType, ['next', 'prev']) )
         {
-            return $this->$methodType($parameters[0] ?? NULL, ($type = strtolower($parts[1])) . ($parts[2] ?? NULL), $type);
+            return $this->$methodType($parameters[0] ?? NULL, ($type = strtolower($parts[1] ?? '')) . ($parts[2] ?? NULL), $type);
         }
 
         return parent::__call($method, $parameters);
@@ -119,7 +119,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function current(string $date = 'd.m.Y') : string
     {
-        return $this->_datetime($date);
+        return $this->returnDatetime($date);
     }
 
     /**
@@ -131,7 +131,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function default(string $date = '{year}/{monthNumber0}/{dayNumber0}') : string
     {
-        return $this->_datetime($date);
+        return $this->returnDatetime($date);
     }
 
     /**
@@ -144,7 +144,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function convert(string $date, string $format = 'd-m-Y H:i:s') : string
     {
-        return $this->_datetime($format, strtotime($date));
+        return $this->returnDatetime($format, strtotime($date));
     }
 
     /**
@@ -154,7 +154,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function standart() : string
     {
-        return $this->_datetime("d F Y l, H:i:s");
+        return $this->returnDatetime("d F Y l, H:i:s");
     }
 
     /**

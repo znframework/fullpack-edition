@@ -189,7 +189,7 @@ class File
      * @param string & $controller
      * @param string   $namespace = NULL
      */
-    protected function alias(String & $controller, string $namespace = NULL)
+    protected function alias(string & $controller, string $namespace = NULL)
     {
         if( ! empty($this->settings['alias']) )
         {
@@ -202,9 +202,9 @@ class File
      * 
      * @param string & $controller
      */
-    protected function functions(String & $controller)
+    protected function functions(string & $controller)
     {
-        $parameters = NULL;
+        $parameters = '';
 
         $functions = (array) ($this->settings['functions'] ?? []);
 
@@ -216,20 +216,17 @@ class File
                 {
                     if( is_array($function) )
                     {
-                        $subValue = '';
-                        
-
                         foreach( $function as $key => $val )
                         {
-                            $subValue = NULL;
+                            $subvalue = '';
                             
                             if( ! is_numeric($key) )
                             {
-                                $subValue = $val;
+                                $subvalue = $val;
                                 $val      = $key;
                             }
 
-                            $vartype = NULL;
+                            $vartype = '';
 
                             if( strstr($val, ' ') )
                             {
@@ -240,15 +237,15 @@ class File
                             
                             if( strpos($val, '...') === 0 )
                             {
-                                $varprefix = str_replace('...', '...$', $val);
-                                $subValue  = '';
+                                $varprefix = str_replace('...', '...$', $val ?? '');
+                                $subvalue  = '';
                             }
                             else
                             {
                                 $varprefix = '$'.$val;
                             }
 
-                            $parameters .= $vartype . $varprefix.( ! empty($subValue) ? ' = '.$subValue : '').', ';
+                            $parameters .= $vartype . $varprefix.( ! empty($subvalue) ? ' = '.$subvalue : '').', ';
                         }
 
                         $parameters = rtrim($parameters, ', ');
@@ -273,7 +270,7 @@ class File
      * @param string & $controller
      * @param string & $namespace = NULL
      */
-    protected function namespace(String & $controller, String & $namespace = NULL)
+    protected function namespace(string & $controller, string & $namespace = NULL)
     {
         if( ! empty($this->settings['namespace']) )
         {
@@ -287,7 +284,7 @@ class File
      * 
      * @param string & $controller
      */
-    protected function uses(String & $controller)
+    protected function uses(string & $controller)
     {
         if( ! empty($this->settings['use']) )
         {
@@ -312,7 +309,7 @@ class File
      * 
      * @param string & $controller
      */
-    protected function extends(String & $controller)
+    protected function extends(string & $controller)
     {
         if( ! empty($this->settings['extends']) )
         {
@@ -325,7 +322,7 @@ class File
      * 
      * @param string & $controller
      */
-    protected function implements(String & $controller)
+    protected function implements(string & $controller)
     {
         if( ! empty($this->settings['implements']) )
         {
@@ -341,7 +338,7 @@ class File
      * 
      * @param string & $controller
      */
-    protected function traits(String & $controller)
+    protected function traits(string & $controller)
     {
         if( ! empty($this->settings['traits']) )
         {
@@ -363,7 +360,7 @@ class File
      * 
      * @param string & $controller
      */
-    protected function constants(String & $controller)
+    protected function constants(string & $controller)
     {
         if( ! empty($this->settings['constants']) )
         {
@@ -381,7 +378,7 @@ class File
      * 
      * @param string & $controller
      */
-    protected function vars(String & $controller)
+    protected function vars(string & $controller)
     {
         if( ! empty($this->settings['vars']) )
         {
@@ -427,7 +424,7 @@ class File
         {
             $priority = $match['type'];
             $static   = $match['access'] ?? $static;
-            $variable = str_ireplace($match[1], NULL, $variable);
+            $variable = str_ireplace($match[1], '', $variable ?? '');
         }
         else
         {
@@ -448,7 +445,7 @@ class File
             case 'command'   : $return = COMMANDS_DIR;    break;
         }
 
-        $path = PROJECT_TYPE === 'EIP' ? Datatype::divide(rtrim($return ?? NULL, '/'), '/', -1) : $return;
+        $path = PROJECT_TYPE === 'EIP' ? Datatype::divide(rtrim($return ?? '', '/'), '/', -1) : $return;
 
         return Base::suffix($path);
     }

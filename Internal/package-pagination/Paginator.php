@@ -564,13 +564,13 @@ class Paginator implements PaginatorInterface
     protected function getNumberLinks($perPage, $startRowNumber, $startIndexNumber = 1)
     {
         # It keeps the links to be added to the end of the bar.
-        $afterLinks  = NULL;
+        $afterLinks  = '';
 
         # It keeps the links to be added to the begin of the bar.
-        $beforeLinks = NULL;
+        $beforeLinks = '';
 
         # It keeps the links to be formed.
-        $numberLinks = NULL;
+        $numberLinks = '';
 
         # It keeps the last page information.
         $lastPage    = $this->getPerPage();  

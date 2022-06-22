@@ -55,6 +55,6 @@ class PHP
      */
     public static function tagClean(string $str) : string
     {
-        return str_ireplace(['<?php', '<?', '?>'], NULL, $str);
+        return str_ireplace(['<?php', '<?', '?>'], '', $str);
     }
 }

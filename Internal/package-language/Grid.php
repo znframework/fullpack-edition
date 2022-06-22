@@ -312,7 +312,7 @@ class Grid extends MLExtends
         // @codeCoverageIgnoreStart
         if( ! empty($styleElementConfig) )
         {
-            $attributes = NULL;
+            $attributes = '';
 
             $sheet = Singleton::class('ZN\Hypertext\Sheet');
             $style = Singleton::class('ZN\Hypertext\Style');

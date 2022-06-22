@@ -721,7 +721,7 @@ class ZN
             DEFAULT_PROJECT === $getProjectNameFromURI
             ||
             # The subdomain can not be run outside of itself.
-            ($isHost = ($flipOthersArray[$getProjectNameFromURI] ?? NULL)) && preg_match('/\w+\.\w+\.\w+/', $isHost)
+            ($isHost = ($flipOthersArray[$getProjectNameFromURI] ?? '')) && preg_match('/\w+\.\w+\.\w+/', $isHost)
         )
         {
             

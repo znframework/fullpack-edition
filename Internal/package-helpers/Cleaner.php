@@ -30,7 +30,7 @@ class Cleaner
 
         if( ! is_array($searchData) )
         {
-            $result = str_replace($cleanWord, '', $searchData);
+            $result = str_replace($cleanWord ?? '', '', $searchData ?? '');
         }
         else
         {

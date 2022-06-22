@@ -173,7 +173,7 @@ class Forge
             if( is_numeric($key) )
             {
                 $file = $val;
-                $fileName = NULL;
+                $fileName = '';
             }
             else
             {

@@ -575,7 +575,7 @@ trait FormElementsTrait
      */
     protected function setCustomValidity($key, $check = [])
     {
-        $message = NULL;
+        $message = '';
         
         if( is_scalar($key) )
         {

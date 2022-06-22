@@ -225,12 +225,12 @@ class Converter
         if( ($type[0] ?? NULL) === '!' )
         {
             $left  = ltrim($type, '!') . ' ';
-            $right = NULL;
+            $right = '';
         }
         else
         {
             $right = ' ' . $type;
-            $left  = NULL;
+            $left  = '';
         }
 
         $moneyFormat = trim($left . $moneyFormat . $right);
@@ -297,7 +297,7 @@ class Converter
      */
     public static function word(string $string, $badWords = NULL, $changeChar = '[badwords]') : string
     {
-        return str_ireplace($badWords, $changeChar, $string);
+        return str_ireplace($badWords ?? '', $changeChar, $string);
     }
 
     /**

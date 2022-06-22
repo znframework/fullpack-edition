@@ -42,15 +42,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function check(string $time) : bool
     {
-        $timeEx    = explode(':', $this->convert($time, '{hour}:{minute}:{second}'));
-        $validTime = implode('/', $timeEx);
-        
-        if( $time !== $validTime && $validTime === '01/00/00' )
-        {
-            return false; // @codeCoverageIgnore
-        }
-
-        return $this->checktime($timeEx[0] ?? NULL, $timeEx[1] ?? NULL, $timeEx[2] ?? NULL);
+        return (new Date)->check($time);
     }
 
     /**
@@ -72,9 +64,9 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function current(string $clock = '%H:%M:%S') : string
+    public function current(string $clock = 'H:i:s') : string
     {
-        return $this->_datetime($clock);
+        return $this->returnDatetime($clock);
     }
 
     /**
@@ -86,7 +78,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function default(string $time = '{hour}:{minute}:{second}') : string
     {
-        return $this->_datetime($time);
+        return $this->returnDatetime($time);
     }
 
     /**
@@ -97,9 +89,9 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function convert(string $date, string $format = '%d-%B-%Y %A, %H:%M:%S') : string
+    public function convert(string $date, string $format = 'd-m-Y H:i:s') : string
     {
-        return $this->_datetime($format, strtotime($date));
+        return $this->returnDatetime($format, strtotime($date));
     }
 
     /**
@@ -109,7 +101,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function standart() : string
     {
-        return strftime("%d %B %Y %A, %H:%M:%S");
+        return (new Date)->standart();
     }
 
     /**
@@ -128,24 +120,5 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     protected function prev(string $time = NULL, $type = 'hour') : string
     {
         return $this->next($time, $type, '-');
-    }
-
-    /**
-     * Protected checktime
-     */
-    protected function checktime($hour, $min, $sec) 
-    {
-        if
-        (
-            ($hour < 0 || $hour > 23 || ! is_numeric($hour)) ||
-            ($min  < 0 || $min  > 59 || ! is_numeric($min))  ||
-            ($sec  < 0 || $sec  > 59 || ! is_numeric($sec)) 
-        ) 
-        {
-            return false; // @codeCoverageIgnore
-        }
-
-        return true;
-   }
-   
+    }   
 }

@@ -49,11 +49,11 @@ class Select extends MLExtends
         {
             if( is_array($convert) )
             {
-                $return = str_replace(array_keys($convert), array_values($convert), Properties::$select[$key]);
+                $return = str_replace(array_keys($convert), array_values($convert), Properties::$select[$key] ?? '');
             }
             else
             {
-                $return = str_replace('%', $convert, Properties::$select[$key]);
+                $return = str_replace('%', $convert ?? '', Properties::$select[$key] ?? '');
             }
         }
         else

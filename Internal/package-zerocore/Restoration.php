@@ -79,7 +79,7 @@ class Restoration
      */
     public static function mode($settings = NULL)
     {
-        $restorable = NULL;
+        $restorable = '';
 
         if( isset($settings['machinesIP']) )
         {

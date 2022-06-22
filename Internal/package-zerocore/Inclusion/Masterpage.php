@@ -216,18 +216,18 @@ class Masterpage
      */
     protected function _contentCharset($contentCharset)
     {
-        $header = NULL;
+        $header = '';
 
         if( is_array($contentCharset) )
         {
             foreach( $contentCharset as $v )
             {
-                $header .= "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$v\">".EOL;
+                $header .= "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$v\">" . EOL;
             }
         }
         else
         {
-            $header .= '<meta http-equiv="Content-Type" content="text/html; charset='.$contentCharset.'">'.EOL; // @codeCoverageIgnore
+            $header .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $contentCharset . '">' . EOL; // @codeCoverageIgnore
         }
 
         return $header;
@@ -289,7 +289,7 @@ class Masterpage
             $metas = array_merge($metas, $headMeta);
         }
 
-        $header = NULL;
+        $header = '';
 
         if( ! empty($metas) ) foreach( $metas as $name => $content )
         {

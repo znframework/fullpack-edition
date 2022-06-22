@@ -28,7 +28,7 @@ class LuhnAlgorithm implements LuhnAlgorithmInterface
 
 		$total = 0; $transform = 0;
 
-		for( $i = strlen($number) - 1; $i >= 0; $i-- )
+		for( $i = strlen($number ?? '') - 1; $i >= 0; $i-- )
 		{
 			$total += $table[$transform++ & 0x1][$number[$i]];
 		}

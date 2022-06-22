@@ -63,11 +63,11 @@ class DateTimeCommon
         $parts = $this->splitUpperCase($method);
 
         $methodType = $parts[0] ?? NULL;
-        $expression = strtolower($parts[1]) ?? NULL;
+        $expression = strtolower($parts[1] ?? '') ?? NULL;
 
         if( $methodType === 'diff' )
         {
-            return $this->different($parameters[0], $parameters[1] ?? NULL, $expression, strtolower($parameters[2] ?? $parts[2] ?? NULL));
+            return $this->different($parameters[0], $parameters[1] ?? NULL, $expression, strtolower($parameters[2] ?? $parts[2] ?? ''));
         }
         elseif( in_array($methodType, ['add', 'remove']) )
         {
@@ -151,7 +151,7 @@ class DateTimeCommon
             $now = time();
         }
 
-        return strtotime($this->_datetime($dateFormat), $now);
+        return strtotime($this->returnDatetime($dateFormat), $now);
     }
 
     /**
@@ -164,7 +164,7 @@ class DateTimeCommon
      */
     public function toReadable(int $time, string $dateFormat = 'Y-m-d H:i:s') : string
     {
-        return $this->_datetime($dateFormat, $time);
+        return $this->returnDatetime($dateFormat, $time);
     }
 
     /**
@@ -180,18 +180,18 @@ class DateTimeCommon
     {
         if( ! preg_match('/^[0-9]/', $input) )
         {
-            $input = $this->_datetime($input);
+            $input = $this->returnDatetime($input);
         }
 
         # 5.3.5[added]
-        if( $this->_classname() === 'ZN\DateTime\Time' && $output === 'Y-m-d' )
+        if( get_called_class() === 'ZN\DateTime\Time' && $output === 'Y-m-d' )
         {
             $output = '{Hour}:{minute}:{second}';
         }
 
-        $output = $this->_convert($output);
+        $output = $this->convertPattern($output);
 
-        return $this->_datetime($output, strtotime($calculate, strtotime($input)));
+        return $this->returnDatetime($output, strtotime($calculate, strtotime($input)));
     }
 
     /**
@@ -203,75 +203,35 @@ class DateTimeCommon
      */
     public function set(string $exp) : string
     {
-        return $this->_datetime($exp);
+        return $this->returnDatetime($exp);
     }
 
     /**
      * Protected Convert
      */
-    protected function _convert($change)
+    protected function convertPattern($change)
     {
-        $config = $this->_chartype();
+        $chars  = Properties::$setDateFormatChars;
 
-        $chars  = Properties::${$config};
-
-        if( $config === 'setDateFormatChars' )
-        {
-            $chars['{dayInYear}|{yearDayNumber0}|{yearDayNum0}|{YDN0}'] = strftime('%j');
-            $chars['{century-}|{cen-}']                                 = strftime('%C');
-            $chars['{century}|{cen}']                                   = strftime('%C') + 1;
-        }
-        else
-        {
-            $chars['{dayInYear-}|{yearDayNumber}|{yearDayNum}|{YDN}']   = date('z');
-            $chars['{dayCountInMonth}|{totalDays}|{TD}']                = date('t');
-            $chars['{monthInYear-}|{monthNumber}|{monNum}|{MN}']        = date('n');
-            $chars['{century}|{cen}']                                   = strftime('%C') + 1;
-            $chars['{isLeapYear}|{ILY}']                                = date('L');
-            $chars['{msecond}|{microSecond}|{micSec}|{MS}']             = date('u');
-            $chars['{iso}']                                             = date('c');
-            $chars['{rfc}']                                             = date('r');
-            $chars['{unix}']                                            = date('U');
-        }
-
+        $chars['{century-}|{cen-}'] = $century = substr(date('Y'), 0, 2);
+        $chars['{century}|{cen}']   = $century + 1;
+        
         $chars  = Datatype::multikey($chars);
 
-        return str_ireplace(array_keys($chars), array_values($chars), $change);
-    }
-
-    /**
-     * Protected Class Name
-     */
-    protected function _classname()
-    {
-        return $className = get_called_class();
+        return str_ireplace(array_keys($chars), array_values($chars), $change ?? '');
     }
 
     /**
      * Protected Date Time
      */
-    protected function _datetime($format, $timestamp = NULL)
+    protected function returnDatetime($format, $timestamp = NULL)
     {
         if( $timestamp === NULL )
         {
             $timestamp = time();
         }
 
-        $className = $this->_classname();
-
-        $func = $className === $this->className ? 'date' : 'strftime';
-
-        return $func($this->_convert($format), $timestamp);
-    }
-
-    /**
-     * Protected Chartype
-     */
-    protected function _chartype()
-    {
-        $className = $this->_classname();
-
-        return $className === $this->className ? 'setDateFormatChars' : 'setTimeFormatChars';
+        return date($this->convertPattern($format), $timestamp);
     }
 
     /**

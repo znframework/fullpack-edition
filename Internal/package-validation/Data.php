@@ -230,7 +230,7 @@ class Data implements DataInterface
                     if( is_array($value) ) foreach($value as $k => $val)
                     {
                         $result .= $val;
-                        $resultArray[] = str_replace($defaultSeparator, '', $val);
+                        $resultArray[] = str_replace($defaultSeparator, '', $val ?? '');
                     }
                 }
 
@@ -317,7 +317,7 @@ class Data implements DataInterface
      */
     protected function isMatchMethods($key, &$check)
     {
-        if( in_array(strtolower($key), $this->matchMethods) && isset($check[0]) )
+        if( in_array(strtolower($key ?? ''), $this->matchMethods) && isset($check[0]) )
         {
             $check[0] = Method::{$this->method}($check[0]);
         }
@@ -347,7 +347,7 @@ class Data implements DataInterface
      */
     protected function replaceUserMessage($check, $userMessage)
     {
-        return str_replace(array_keys($check), array_values($check), $userMessage);
+        return str_replace(array_keys($check), array_values($check), $userMessage ?? '');
     }
 
     /**

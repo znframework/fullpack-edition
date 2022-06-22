@@ -613,7 +613,7 @@ class Autoloader
      */
     protected static function getOriginalClassName($className)
     {
-        return str_ireplace(INTERNAL_ACCESS, '', $className);
+        return str_ireplace(INTERNAL_ACCESS, '', $className ?? '');
     }
 
     /**
@@ -746,7 +746,7 @@ class Autoloader
      */
     protected static function getClassNamespace(&$facade, &$namespace)
     {
-        $namespace = NULL;
+        $namespace = '';
         $facadeEx  = explode('\\', $facade);
 
         if( count($facadeEx) > 1 )
@@ -823,7 +823,7 @@ class Autoloader
      */
     protected static function getRelativeFilePath($file)
     {
-        return str_replace(REAL_BASE_DIR, '', $file);
+        return str_replace(REAL_BASE_DIR, '', $file ?? '');
     }
 
     /**
@@ -836,6 +836,6 @@ class Autoloader
     protected static function cleanNailClassMapContent($string)
     {
         # If the class or namespace information contains quotes, these quotes are cleared.
-        return str_replace(["'", '"'], '', $string);
+        return str_replace(["'", '"'], '', $string ?? '');
     }
 }

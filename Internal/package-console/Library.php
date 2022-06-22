@@ -45,7 +45,7 @@ class Library
      */
     protected function classMethod(&$class = NULL, &$method = NULL, $command)
     {
-        $commandEx = explode(':', $command);
+        $commandEx = explode(':', $command ?? '');
         $class     = $commandEx[0];
         $method    = $commandEx[1] ?? NULL;
     }

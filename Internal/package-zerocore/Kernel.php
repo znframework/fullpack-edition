@@ -465,6 +465,6 @@ class Kernel
      */
     protected static function viewLoader($path)
     {
-        return Inclusion\View::use(str_replace(PAGES_DIR, '', $path), NULL, true);
+        return Inclusion\View::use(str_replace(PAGES_DIR, '', $path ?? ''), NULL, true);
     }
 }

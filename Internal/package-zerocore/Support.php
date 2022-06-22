@@ -101,7 +101,7 @@ class Support
      */
     public static function driver(array $drivers, string $driver = NULL)
     {
-        if( ! in_array(strtolower($driver), $drivers) )
+        if( ! in_array(strtolower($driver ?? ''), $drivers) )
         {
             throw new Exception('Error', 'driverError', $driver);
         }

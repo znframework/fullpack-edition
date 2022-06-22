@@ -207,7 +207,7 @@ class Config
 
             if( $val !== '' )
             {
-                ini_set($key, $val);
+                ini_set($key, $val ?? '');
             }
         }
         else
@@ -216,7 +216,7 @@ class Config
             {
                 if( $v !== '' )
                 {
-                    ini_set($k, $v);
+                    ini_set($k, $v ?? '');
                 }
             }
         }

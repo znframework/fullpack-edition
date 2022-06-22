@@ -140,6 +140,6 @@ class Server
         }
 
         // 5.4.3[edited]
-        return str_replace('&amp;', '&', $return) ?: false;
+        return str_replace('&amp;', '&', $return ?? '') ?: false;
     }
 }

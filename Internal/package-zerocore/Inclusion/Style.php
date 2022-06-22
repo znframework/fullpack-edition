@@ -20,7 +20,7 @@ class Style extends BootstrapExtends
      */
     public static function tag(string $src = NULL) : string
     {
-        return '<link href="'.$src.'" rel="stylesheet" type="text/css" />' . EOL;
+        return '<link href="' . $src . '" rel="stylesheet" type="text/css" />' . EOL;
     }
 
     /**

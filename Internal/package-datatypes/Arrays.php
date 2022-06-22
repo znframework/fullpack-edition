@@ -172,7 +172,7 @@ class Arrays extends Factory
      */
     public static function valueExistsInsensitive(array $array, $element, bool $strict = false) : bool
     {
-        return self::valueExists(array_map('strtolower', $array), strtolower($element), $strict);
+        return self::valueExists(array_map('strtolower', $array), strtolower($element ?? ''), $strict);
     }
 
     /**
@@ -198,7 +198,7 @@ class Arrays extends Factory
      */
     public static function keyEsistsInsensitive(array $array, $key) : bool
     {
-        return self::keyExists(array_change_key_case($array), strtolower($key));
+        return self::keyExists(array_change_key_case($array), strtolower($key ?? ''));
     }
 
     /**

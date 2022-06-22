@@ -114,7 +114,7 @@ trait CallableTalkingQueries
      */
     protected function callOrderGroupByTalkingQuery($split)
     {
-        $column = strtolower($split[2] ?? NULL);
+        $column = strtolower($split[2] ?? '');
         $type   = $split[0] === 'order' ? $split[3] ?? 'asc' : NULL;
         $met    = $split[0] . 'By';
 
@@ -136,7 +136,7 @@ trait CallableTalkingQueries
         }
         else
         {
-            $prefix = NULL;
+            $prefix = '';
             $data   = $parameters[0];
         }
 
@@ -146,7 +146,7 @@ trait CallableTalkingQueries
             # For delete: tableDeleteColumn($value)
             if( $method === 'Delete' && isset($parameters[0]) )
             {
-                $prefix = NULL;
+                $prefix = '';
 
                 $this->where($split[2], $parameters[0]);
             }
@@ -166,7 +166,7 @@ trait CallableTalkingQueries
     protected function callWhereHavingTalkingQuery($split, $parameters)
     {
         $met       = $split[0];
-        $column    = strtolower($split[1]);
+        $column    = strtolower($split[1] ?? '');
         $condition = $split[2] ?? NULL;
         $operator  = isset($parameters[1]) ? ' ' . $parameters[1] : NULL;
 
@@ -197,7 +197,7 @@ trait CallableTalkingQueries
         {
             if( isset($parameters[0]) )
             {
-                $this->where(strtolower($split[2]), $parameters[0]);    
+                $this->where(strtolower($split[2] ?? ''), $parameters[0]);    
 
                 $whereClause = 0;
             }

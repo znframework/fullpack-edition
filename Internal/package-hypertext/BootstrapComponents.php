@@ -463,7 +463,7 @@ trait BootstrapComponents
      */
     public function progressbar4(string $type, Float $percent, Float $height = NULL)
     {
-        $attr = NULL;
+        $attr = '';
 
         if( isset($this->settings['progressbarAnimated']) )
         {
@@ -503,7 +503,7 @@ trait BootstrapComponents
      */
     public function progressbar(string $type, Float $percent, Float $height = NULL)
     {
-        $attr = NULL;
+        $attr = '';
 
         if( isset($this->settings['progressbarAnimated']) )
         {
@@ -839,7 +839,7 @@ trait BootstrapComponents
     {
         return $this->ol(function($option) use($options)
         {
-            $link  = NULL;
+            $link  = '';
             $count = count($options);
 
             if( $count === 2 && $options[1] === CURRENT_COPEN_PAGE )

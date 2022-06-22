@@ -133,7 +133,7 @@ trait ViewTrait
         return is_scalar($parameter) && preg_match
         (
             '/^(?<method>' . implode('|', self::$usableViewMethods + self::$usableResourcesMethods) . ')\:(?<parameter>.*)/', 
-            $parameter, 
+            $parameter ?? '', 
             $match
         );
     }

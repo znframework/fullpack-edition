@@ -102,7 +102,7 @@ class Run
      */
     protected static function titleCase($command)
     {
-        $words = explode('-', $command);
+        $words = explode('-', $command ?? '');
 
         $words = array_map(function($data){ return mb_convert_case($data, MB_CASE_TITLE);}, $words);
 

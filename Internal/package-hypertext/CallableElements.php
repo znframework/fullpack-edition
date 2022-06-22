@@ -135,7 +135,6 @@ trait CallableElements
         # Convert exampleData to example-data [4.6.1]
         if( ! ctype_lower($realMethod) )
         {
-            $newMethod = NULL;
             $split     = Datatype::splitUpperCase($realMethod);
             $method    = implode('-', Arrays\Casing::lower($split));
         }

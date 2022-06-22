@@ -166,7 +166,9 @@ class In
      */
     public static function cleanURIPrefix(string $uri = NULL, string $cleanData = NULL) : string
     {
-        $suffixData = Base::suffix((string) $cleanData);
+        $uri = $uri ?? ''; $cleanData = $cleanData ?? '';
+
+        $suffixData = Base::suffix($cleanData);
 
         if( ! empty($cleanData) && stripos($uri, $suffixData) === 0 )
         {
@@ -187,7 +189,7 @@ class In
     {
         $urlInjectionChangeChars = Config::get('Security', 'urlChangeChars') ?: [];
 
-        return str_ireplace(array_keys($urlInjectionChangeChars), array_values($urlInjectionChangeChars), $string);
+        return str_ireplace(array_keys($urlInjectionChangeChars), array_values($urlInjectionChangeChars), $string ?? '');
     }
 
     /**
@@ -270,7 +272,7 @@ class In
      */
     public static function startingController(string $startController = NULL, array $param = [])
     {
-        $controllerEx = explode(':', $startController);
+        $controllerEx = explode(':', $startController ?? '');
 
         $controllerPath  = $controllerEx[0] ?? '';
         $controllerFunc  = $controllerEx[1] ?? Config::get('Routing', 'openFunction') ?: 'main';
@@ -387,7 +389,7 @@ class In
                 $parameterName = $parameter->getName();
                 $parameterType = method_exists($getType = $parameter->getType() ?? '', 'getName') ? $getType->getName() : NULL;
                 
-                if( ! preg_match('/^[A-Z]/', $parameterType) )
+                if( ! preg_match('/^[A-Z]/', $parameterType ?? '') )
                 {
                     $parameterType = NULL;
                 }

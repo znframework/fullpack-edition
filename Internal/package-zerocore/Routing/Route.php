@@ -258,7 +258,7 @@ class Route extends FilterProperties implements RouteInterface
      */
     protected function setPath($path, &$routeConfig)
     {
-        $path = rtrim($path, '/');
+        $path = rtrim($path ?? '', '/');
 
         $routeConfig = $this->getConfig;
 
@@ -294,7 +294,7 @@ class Route extends FilterProperties implements RouteInterface
         // @codeCoverageIgnoreEnd
 
         # 5.3.21[edited] is empty
-        if( trim($routeString, '/') )
+        if( trim($routeString ?? '', '/') )
         {
             $this->routes['changeUri'][$routeString] = $this->getStringRoute($path, $this->route)[$this->route];
         }
@@ -363,7 +363,7 @@ class Route extends FilterProperties implements RouteInterface
      */
     protected function setFilters($path)
     {
-        $lowerPath = strtolower($path);
+        $lowerPath = strtolower($path ?? '');
 
         $filterKeys = array_keys($this->filters);
 
@@ -382,7 +382,7 @@ class Route extends FilterProperties implements RouteInterface
      */
     protected function getStringRoute($functionName, $route)
     {
-        preg_match_all('/\:\w+/', $route, $match);
+        preg_match_all('/\:\w+/', $route ?? '', $match);
 
         $newMatch = [];
 
@@ -395,7 +395,7 @@ class Route extends FilterProperties implements RouteInterface
             $newMatch[] = "$$key"; // @codeCoverageIgnore
         }
 
-        $changeRoute = str_replace($matchAll, $newMatch, $route);
+        $changeRoute = str_replace($matchAll, $newMatch, $route ?? '');
         $changeRoute = str_replace(Datatype::divide($route, '/'), $functionName, $changeRoute);
         $route       = [$route => $changeRoute];
 

@@ -23,7 +23,7 @@ class CryptographyDefaultConfiguration
     |
     | Sets the predefined driver for the Crypto library.
     |
-    | Options: openssl, mcrypt, hash, phash, mhash
+    | Options: openssl
     |
     */
 

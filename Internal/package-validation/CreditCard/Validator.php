@@ -128,7 +128,7 @@ class Validator implements ValidatorInterface
      */
     protected static function validCardNumberLength($number, string $type = NULL, $function = 'length') : bool
     {
-        return in_array(strlen($number), self::getCardFormats()[$type][$function]);
+        return in_array(strlen($number ?? ''), self::getCardFormats()[$type][$function]);
     }
 
     /**

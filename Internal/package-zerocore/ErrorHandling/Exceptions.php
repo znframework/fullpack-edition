@@ -403,7 +403,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     protected static function convertPHPTagToWizardTag(&$content)
     {
-        $content = str_replace(['<?php', '?>', '<?='], ['{[', ']}', '{[='], $content);
+        $content = str_replace(['<?php', '?>', '<?='], ['{[', ']}', '{[='], $content ?? '');
     }
 
     /**

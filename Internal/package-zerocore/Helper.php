@@ -41,20 +41,20 @@ class Helper
             mkdir($logDir, 0755);
         }
 
-        if( is_file($logDir.Base::suffix($destination, $extension)) )
+        if( is_file($logFile = $logDir . Base::suffix($destination, $extension)) )
         {
             if( empty($time) )
             {
                 $time = Config::get('Project', 'log')['fileTime'];
             }
 
-            $createDate = date('d.m.Y', filectime($logDir . Base::suffix($destination, $extension)));
+            $createDate = date('d.m.Y', filectime($logFile));
             $endDate    = strtotime("$time", strtotime($createDate));
             $endDate    = date('Y.m.d', $endDate);
 
             if( date('Y.m.d')  >  $endDate )
             {
-                unlink($logDir.Base::suffix($destination, $extension)); // @codeCoverageIgnore
+                unlink($logFile); // @codeCoverageIgnore
             }
         }
 
@@ -63,7 +63,7 @@ class Helper
                    ' | Date: '.Singleton::class('ZN\DateTime\Date')->set('{dayNumber0}.{monthNumber0}.{year} {H024}:{minute}:{second}').
                    ' | Message: ' . $message . EOL;
 
-        return error_log($message, 3, $logDir.Base::suffix($destination, $extension));
+        return error_log($message, 3, $logFile);
     }
 
     /**

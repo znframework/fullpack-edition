@@ -133,6 +133,6 @@ trait Factory
      */
     protected static function isValidClassAndMethodName($class, &$resolve)
     {
-        return preg_match('/(?<class>([a-zA-Z]\w+(\\\\)*){1,})\:\:(?<method>\w+)(?<this>\:this)*/', $class, $resolve);
+        return preg_match('/(?<class>([a-zA-Z]\w+(\\\\)*){1,})\:\:(?<method>\w+)(?<this>\:this)*/', $class ?? '', $resolve);
     }
 }

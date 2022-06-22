@@ -125,7 +125,7 @@ class URL implements URLInterface
     {
         $rfc = $enctype === '+' ? PHP_QUERY_RFC1738 : PHP_QUERY_RFC3986;
 
-        return http_build_query($data, $numericPrefix, $separator ?? '&', $rfc);
+        return http_build_query($data, $numericPrefix ?? '', $separator ?? '&', $rfc);
     }
 
     /**
