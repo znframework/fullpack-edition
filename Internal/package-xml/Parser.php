@@ -151,6 +151,6 @@ class Parser
      */
     private static function cleanXMLElement($xml)
     {
-        return preg_replace('/<\?xml(.*?)>/', '', $xml);
+        return preg_replace('/<\?xml(.*?)>/', '', $xml ?? '');
     }
 }

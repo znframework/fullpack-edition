@@ -222,7 +222,7 @@ trait ViewCommonTrait
         ],
         [
             'col-$1'
-        ], $class);
+        ], $class ?? '');
     }
 
     /**

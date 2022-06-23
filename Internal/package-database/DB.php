@@ -2814,7 +2814,7 @@ class DB extends Connection
      */
     protected function setEqualClause($column)
     {
-        $control = trim($column);
+        $column = $column ?? ''; $control = trim($column);
 
         if( strstr($column, '.') )
         {

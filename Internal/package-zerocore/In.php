@@ -482,11 +482,11 @@ class In
         {
             if( $patternType === 'classic' )
             {
-                $requestUri = preg_replace(Base::presuffix($key).'xi', $val, $requestUri);
+                $requestUri = preg_replace(Base::presuffix($key).'xi', $val, $requestUri ?? '');
             }
             else
             {
-                $requestUri = Singleton::class('ZN\Regex')->replace($key, $val, $requestUri, 'xi'); // @codeCoverageIgnore
+                $requestUri = Singleton::class('ZN\Regex')->replace($key, $val, $requestUri ?? '', 'xi'); // @codeCoverageIgnore
             }
         }
 

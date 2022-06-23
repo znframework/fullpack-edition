@@ -833,7 +833,7 @@ class Paginator implements PaginatorInterface
     {
         if( $this->output === 'bootstrap' )
         {
-            $fix = preg_replace('/class\=\"(.*?)\"/', 'class="page-item $1"', $fix);
+            $fix = preg_replace('/class\=\"(.*?)\"/', 'class="page-item $1"', $fix ?? '');
 
             return '<li'.$fix.'>' . $link . '</li>';
         }

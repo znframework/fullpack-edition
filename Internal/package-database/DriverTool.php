@@ -217,7 +217,7 @@ class DriverTool extends DriverExtends
 
                 foreach( $row as $k => $v )
                 {
-                    $v = preg_replace("/\n/","\\n", $v );
+                    $v = preg_replace("/\n/","\\n", $v ?? '');
 
                     if( is_numeric($v) )
                     {

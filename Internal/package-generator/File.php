@@ -420,7 +420,7 @@ class File
     {
         $static = NULL;
 
-        if( preg_match('/^((?<type>public|protected|private)(?<access>\sstatic)*\:)/', $variable, $match) )
+        if( preg_match('/^((?<type>public|protected|private)(?<access>\sstatic)*\:)/', $variable ?? '', $match) )
         {
             $priority = $match['type'];
             $static   = $match['access'] ?? $static;

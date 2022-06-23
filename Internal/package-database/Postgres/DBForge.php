@@ -35,7 +35,7 @@ class DBForge extends DriverForge
         
         foreach( $values as $value )
         {
-            $type = preg_match('/(NULL|DEFAULT|CONSTRAINT|EXISTS|UNIQUE|KEY|BIGSERIAL)/i', $value) ? 'SET' : 'TYPE';
+            $type = preg_match('/(NULL|DEFAULT|CONSTRAINT|EXISTS|UNIQUE|KEY|BIGSERIAL)/i', $value ?? '') ? 'SET' : 'TYPE';
 
             $query .= 'ALTER TABLE ' . $table . ' ALTER COLUMN ' . $this->buildForgeColumnsSyntax([$col => [$value]], $type) . ';';
         }

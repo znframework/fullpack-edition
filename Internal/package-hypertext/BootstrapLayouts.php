@@ -120,7 +120,7 @@ trait BootstrapLayouts
      */
     protected function isBootstrapColumn($method, &$match)
     {
-        return preg_match('/col(?<type>[a-z][a-z])(?<number>[0-9]{1,})*/', $method, $match);
+        return preg_match('/col(?<type>[a-z][a-z])(?<number>[0-9]{1,})*/', $method ?? '', $match);
     }   
 
     /**

@@ -68,7 +68,7 @@ abstract class DriverMappingAbstract
      */
     public function getLimitValues($data)
     {
-        preg_match('/limit\s+(?<limit>[0-9]+)(\s*OFFSET\s*(?<start>[0-9]+))*/xi', $data, $match);
+        preg_match('/limit\s+(?<limit>[0-9]+)(\s*OFFSET\s*(?<start>[0-9]+))*/xi', $data ?? '', $match);
 
         return $match;
     }

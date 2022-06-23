@@ -86,7 +86,7 @@ class Reflect
             }
         } 
         
-        preg_match_all('/@(\w+.*?)\s+(.*?)\s+\*/s', $class->getDocComment(), $match);
+        preg_match_all('/@(\w+.*?)\s+(.*?)\s+\*/s', $class->getDocComment() ?? '', $match);
 
         $keys   = $match[1] ?? [];
         $values = $match[2] ?? [];

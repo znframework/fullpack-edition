@@ -115,7 +115,7 @@ class Validator implements ValidatorInterface
      */
     protected static function validCardFormat($number, $type) : bool
     {
-        return preg_match(self::getCardFormats()[$type]['pattern'], $number);
+        return preg_match(self::getCardFormats()[$type]['pattern'], $number ?? '');
     }
 
     /**

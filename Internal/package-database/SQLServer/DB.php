@@ -445,7 +445,7 @@ class DB extends DriverMappingAbstract
      */
     public function getLimitValues($data)
     {
-        preg_match('/OFFSET\s+(?<start>[0-9]+)\s+ROWS\sFETCH\sNEXT\s+(?<limit>[0-9]+)\s+ROWS\sONLY/xi', $data, $match);
+        preg_match('/OFFSET\s+(?<start>[0-9]+)\s+ROWS\sFETCH\sNEXT\s+(?<limit>[0-9]+)\s+ROWS\sONLY/xi', $data ?? '', $match);
 
         return $match;
     }
