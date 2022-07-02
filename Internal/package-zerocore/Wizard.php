@@ -26,11 +26,18 @@ class Wizard
     const END = '((\s|\n|' . PHP_EOL . ')|\:|$)';
 
     /**
-     * PARENTHESIS
+     * PARENTHESIS_PATTERN
      * 
      * @const string
      */
-    const PARENTHESIS = '\+\[symbol\?\?parenthesis\]\+';
+    const PARENTHESIS_PATTERN = '\+\[symbol\?\?parenthesis\]\+';
+
+    /**
+     * STATIC_PATTERN
+     * 
+     * @const string
+     */
+    const STATIC_PATTERN = '\+\[symbol\?\?static\]\+';
 
     /**
      * Get config
@@ -121,9 +128,9 @@ class Wizard
         {
             $array    =
             [
-                '/\[\<(\s*(\$\w+\,*\s*){1,}\s*)\>\](\s*\{\<)/s'                                     => 'function() use($1)$3',    # Use
-                '/(function\((.*?)\)\s*)*(use\(.*?(\)|' . self::PARENTHESIS . ')\s*)*\{\<(\s)/s'    => 'function($2)$3{$5?>',     # Function
-                '/(\s)\>\}/s'                                                                       => '$1<?php }'                # Close
+                '/\[\<(\s*(\$\w+\,*\s*){1,}\s*)\>\](\s*\{\<)/s'                                             => 'function() use($1)$3',    # Use
+                '/(function\((.*?)\)\s*)*(use\(.*?(\)|' . self::PARENTHESIS_PATTERN . ')\s*)*\{\<(\s)/s'    => 'function($2)$3{$5?>',     # Function
+                '/(\s)\>\}/s'                                                                               => '$1<?php }'                # Close
             ];   
         }
 
@@ -341,7 +348,7 @@ class Wizard
             [   
                 '/((\W)@|^@)(\w+)/'                                   => '$2<?php echo $3',
                 '/\)\:(\"|\'|\<|\s|\n|'.PHP_EOL.'|$)/sm'              => ') ?>$1',
-                '/\)\s*(?!\s*(\-\>|\)|\{|\?\>))(\n|'.PHP_EOL.'|$)/sm' => ') ?>$1$2$3'
+                '/\)\s*(?!\s*(\-\>|' . self::STATIC_PATTERN . '|\)|\{|\?\>))(\n|'.PHP_EOL.'|$)/sm' => ') ?>$1$2$3'
             ];
         }
 
@@ -490,7 +497,7 @@ class Wizard
      */
     protected static function decodeParenthesis($string)
     {
-        return preg_replace('/' . self::PARENTHESIS . '/', ')' . PHP_EOL, $string);
+        return preg_replace('/' . self::PARENTHESIS_PATTERN . '/', ')' . PHP_EOL, $string);
     }
 
     /**
@@ -500,7 +507,7 @@ class Wizard
     {
         return preg_replace_callback('/{<.*?>}/s', function($data)
         {
-            return preg_replace('/' . self::PARENTHESIS . '/', ')' . PHP_EOL, $data[0]);
+            return preg_replace('/' . self::PARENTHESIS_PATTERN . '/', ')' . PHP_EOL, $data[0]);
 
         }, $string);
     }
