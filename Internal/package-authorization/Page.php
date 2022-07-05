@@ -37,14 +37,12 @@ class Page extends PermissionExtends
      */
     public static function use($roleId = NULL, array $table = NULL, $callback = NULL)
     {
+        $realpath = self::$realpath; self::$realpath = NULL;
+
         if( $roleId !== NULL && $table !== NULL )
         {
-           return self::predefinedPermissionConfiguration($roleId, $table, $callback, 'page', [$roleId, NULL, NULL, 'page']);
+           return self::predefinedPermissionConfiguration($roleId, $table, $callback, 'page', [$roleId, NULL, NULL, 'page', $realpath]);
         }
-
-        $realpath = self::$realpath;
-
-        self::$realpath = NULL;
 
         return self::common(self::$roleId ?? $roleId, NULL, NULL, 'page', $realpath);
     }
