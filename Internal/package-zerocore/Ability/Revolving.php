@@ -95,6 +95,6 @@ trait Revolving
     protected function defaultRevolvingVariables()
     {
         # It only converts the properties that this property creates to a null value.
-        $this->defaultRevolvings('revolving');
+        $this->defaultVariables('revolving');
     }
 }
