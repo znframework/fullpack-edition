@@ -92,4 +92,41 @@ class Substitution
 
         return $function($oldChar ?? '', $newChar ?? '', $string);
     }
+
+    /**
+     * Repeat Complate
+     * 
+     * @param string $string
+     * @param int    $completeCount 
+     * @param string $completeSymbol = '0'
+     * @param string $direction      = 'left' - options[left|right]
+     * 
+     * @return string
+     */
+    public static function repeatComplete(string $string, int $completeCount, string $completeSymbol = '0', string $direction = 'left')
+    {
+        $length = strlen($string);
+
+        $diff = $completeCount - $length;
+
+        if( $direction === 'left' )
+        {
+            $end = $string;
+        }
+        else
+        {
+            $start = $string;
+        }
+
+        if( $diff > 0 )
+        {
+            $fix = str_repeat($completeSymbol, $diff);
+        }
+        else
+        {
+            $fix = '';
+        }
+
+        return $start . $fix . $end;
+    }
 }

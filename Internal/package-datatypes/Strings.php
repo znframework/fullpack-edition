@@ -44,6 +44,7 @@ class Strings extends Factory
             'reshuffle'        => 'Strings\Substitution::reshuffle',
             'placement'        => 'Strings\Substitution::placement',
             'replace'          => 'Strings\Substitution::replace',
+            'repeatcomplete'   => 'Strings\Substitution::repeatComplete',
             'addslashes'       => 'Strings\Security::addSlashes',
             'removeslashes'    => 'Strings\Security::removeSlashes',
             'section'          => 'Strings\Section::use',
