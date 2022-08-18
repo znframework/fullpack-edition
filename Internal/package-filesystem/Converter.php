@@ -19,9 +19,9 @@ class Converter
      * @param array  $data
      * @param string $file = 'excel.xls'
      */
-    public static function arrayToXLS(array $data, string $file = 'excel.xls')
+    public static function arrayToXLS(array $data, string $file = 'excel', $extension = '.xls')
     {
-        $file = Base::suffix($file, '.xls');
+        $file = Base::suffix($file, $extension);
 
         header("Content-Disposition: attachment; filename=\"$file\"");
         header("Content-Type: application/vnd.ms-excel;");
@@ -32,10 +32,21 @@ class Converter
 
         foreach( $data as $column )
         {
-            fputcsv($output, $column, "\t");
+            fputcsv($output, $column, $extension === '.csv' ? ";" : "\t");
         }
 
         fclose($output);
+    }
+
+    /**
+     * Array to CSV
+     * 
+     * @param array  $data
+     * @param string $file = 'excel.csv'
+     */
+    public static function arrayToCSV(array $data, string $file = 'excel')
+    {
+        self::arrayToXLS($data, $file, '.csv');
     }
 
     /**

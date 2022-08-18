@@ -103,7 +103,7 @@ class Substitution
      * 
      * @return string
      */
-    public static function repeatComplete(string $string, int $completeCount, string $completeSymbol = '0', string $direction = 'left')
+    public static function repeatComplete(string $string, int $completeCount, string $completeSymbol = '0', string $direction = 'left') : string
     {
         $length = strlen($string);
 
