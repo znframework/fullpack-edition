@@ -30,11 +30,16 @@ class Form
     protected $validateUsageThisForm = false;
 
     /**
-     * Keeps form name.
+     * Keeps validation form name.
      * 
      * @var string
      */
     protected $getValidationFormName = NULL;
+
+    /**
+     * Keeps real form name.
+     */
+    protected $getFormName = NULL;
 
     /**
      * Keeps form input objects.
@@ -123,6 +128,16 @@ class Form
     }
 
     /**
+     * Get form name
+     * 
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->getFormName;
+    }
+
+    /**
      * Validate error message.
      * 
      * @param void
@@ -172,6 +187,8 @@ class Form
     {
         unset($this->settings['getrow']);
 
+        $this->getFormName = NULL;
+
         if( isset($this->getJavascriptValidationFunction) )
         {
             $this->outputElement .= Inclusion\View::use('JavascriptValidationFunctions', $this->getJavascriptValidationFunction, true, __DIR__ . '/');
@@ -190,7 +207,6 @@ class Form
         
         $this->outputElement .= '</form>' . EOL;
         
-
         return $this;
     }
 
@@ -631,7 +647,7 @@ class Form
      */
     protected function setFormName(&$name, &$_attributes)
     {
-        $this->getValidationFormName = $name = $this->settings['attr']['name'] ?? $name;
+        $this->getFormName = $this->getValidationFormName = $name = $this->settings['attr']['name'] ?? $name;
   
         $_attributes['name'] = $name;
     }
