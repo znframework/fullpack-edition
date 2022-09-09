@@ -59,6 +59,13 @@ class Upload implements UploadInterface
     protected $errors;
 
     /**
+    * Keeps manuel errors
+    * 
+    * @var array
+    */
+   protected $error;
+
+    /**
      * Keeps manuel error
      * 
      * @var string
@@ -313,7 +320,9 @@ class Upload implements UploadInterface
         {
             for( $index = 0; $index < count($name); $index++ )
             {
-                $this->_upload($rootDir, $root, $source[$index], $name[$index], $extensions, $mimes, $encryption);
+                $status = $this->_upload($rootDir, $root, $source[$index], $name[$index], $extensions, $mimes, $encryption);
+
+                $this->error[] = $status === true ? 0 : $status;
             }
 
             $return = true;
@@ -321,6 +330,8 @@ class Upload implements UploadInterface
         else
         {
             $return = $this->_upload($rootDir, $root, $source, $name, $extensions, $mimes, $encryption);
+
+            $this->error = $return === true ? 0 : $return;
         }
 
         $this->_default();
@@ -354,6 +365,11 @@ class Upload implements UploadInterface
 
             if( ! is_array($_FILES[$this->file]['name']) ) foreach( $datas as $key => $val )
             {
+                if( $key === 'error' )
+                {
+                    $val = $val ?: $this->error;
+                }
+                
                 $values[$key] = $val;
             }
             else
@@ -362,8 +378,13 @@ class Upload implements UploadInterface
                 {
                     if( ! empty($datas[$key]) )
                     {
-                        foreach( (array) $datas[$key] as $v )
+                        foreach( (array) $datas[$key] as $k => $v )
                         {
+                            if( $key === 'error' )
+                            {
+                                $v = $v ?: $this->error[$k];
+                            }
+
                             $values[$key][] = $v;
                         }
                     }
@@ -448,6 +469,22 @@ class Upload implements UploadInterface
         else
         {
             return $lang['upload:unknownError']; // @codeCoverageIgnore
+        }
+    }
+
+    /**
+     * Clean
+     */
+    public function clean()
+    {
+        $uploadFiles = (array) Upload::info()->path;
+
+        foreach( $uploadFiles as $file )
+        {
+            if( is_file($file) )
+            {
+                unlink($file);
+            }
         }
     }
 

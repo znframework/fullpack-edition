@@ -155,7 +155,7 @@ class Output
                         $type = 'boolean';
                     }
 
-                    $output .= "$tab<span$keystyle>$k</span> => <span$typestyle>$type</span> <span$valstyle>$v</span> <span$lengthstyle>( length = ".strlen($v)." )</span>$eof";
+                    $output .= "$tab<span$keystyle>$k</span> => <span$typestyle>$type</span> <span$valstyle>$v</span> <span$lengthstyle>( length = ".strlen((string) $v)." )</span>$eof";
                 }
                 else
                 {

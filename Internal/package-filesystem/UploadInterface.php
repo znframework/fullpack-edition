@@ -146,4 +146,9 @@ interface UploadInterface
      * @return string|false
      */
     public function error();
+
+    /**
+     * Clean
+     */
+    public function clean();
 }
