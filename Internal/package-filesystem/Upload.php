@@ -477,7 +477,7 @@ class Upload implements UploadInterface
      */
     public function clean()
     {
-        $uploadFiles = (array) Upload::info()->path;
+        $uploadFiles = (array) $this->info()->path;
 
         foreach( $uploadFiles as $file )
         {
