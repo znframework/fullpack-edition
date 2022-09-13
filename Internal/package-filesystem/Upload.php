@@ -396,9 +396,9 @@ class Upload implements UploadInterface
             return false; // @codeCoverageIgnore
         }
 
-        if( ! empty($values[$info]) )
+        if( isset($values[$info]) )
         {
-            return $values[$info]; // @codeCoverageIgnore
+            return $values[$info];
         }
 
         return (object) $values;
