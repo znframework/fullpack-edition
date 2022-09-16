@@ -17,36 +17,41 @@ class Converter
      * Array to XLS
      * 
      * @param array  $data
-     * @param string $file = 'excel.xls'
+     * @param string $file    = 'excel.xls'
+     * @param bool   $useBoom = false
      */
-    public static function arrayToXLS(array $data, string $file = 'excel', $extension = '.xls')
+    public static function arrayToXLS(array $data, string $file = 'excel', bool $useBom = false, string $extension = '.xls')
     {
         $file = Base::suffix($file, $extension);
 
         header("Content-Disposition: attachment; filename=\"$file\"");
-        header("Content-Type: application/vnd.ms-excel;");
+        header("Content-Type: application/vnd.ms-excel; charset=utf-8");
         header("Pragma: no-cache");
         header("Expires: 0");
 
         $output = fopen("php://output", 'w');
 
+        if( $useBom === true )
+        {
+            echo "\xEF\xBB\xBF";
+        }
+        
         foreach( $data as $column )
         {
-            fputcsv($output, $column, $extension === '.csv' ? ";" : "\t");
+            echo implode($extension === '.csv' ? ';' : '\t', $column) . EOL;
         }
-
-        fclose($output);
     }
 
     /**
      * Array to CSV
      * 
      * @param array  $data
-     * @param string $file = 'excel.csv'
+     * @param string $file    = 'excel.csv'
+     * @param bool   $useBoom = false
      */
-    public static function arrayToCSV(array $data, string $file = 'excel')
+    public static function arrayToCSV(array $data, string $file = 'excel', bool $useBom = false)
     {
-        self::arrayToXLS($data, $file, '.csv');
+        self::arrayToXLS($data, $file, $useBom, '.csv');
     }
 
     /**
