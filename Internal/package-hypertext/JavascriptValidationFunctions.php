@@ -118,22 +118,27 @@ function <?php echo $ZNValidationIdentity ?>(element, message)
     v4 = Number(value[4]); v5 = Number(value[5]); v6 = Number(value[6]); v7 = Number(value[7]);
     v8 = Number(value[8]); v9 = Number(value[9]); v10 = Number(value[10]);
 
-    numone   = (v0 + v2 + v4 + v6  + v8) * 7;
-    numtwo   = v1 + v3 + v5 + v7;
-    result   = numone - numtwo;
-    tenth    = result % 10;
-    total    = v0 + v1 + v2 + v3 + v4 + v5 + v6 + v7 + v8 + v9;
-    elewenth = total % 10;
+    firstNumbers  = v0 + v2 + v4 + v6  + v8;
+    secondNumbers = v1 + v3 + v5 + v7;
+
+    numone   = firstNumbers  * 7;
+    numtwo   = secondNumbers * 9;
+    numthree = firstNumbers  * 8;
+
+    totalOneAndTwo = numone + numtwo;
+
+    firstLastChar  = String(totalOneAndTwo).substr(-1, 1);
+    secondLastChar = String(numthree).substr(-1, 1);
     
     if( v0 == 0 )
     {
         element.setCustomValidity(message);
     }
-    else if( v9 != tenth )
+    else if( v9 != firstLastChar )
     {
         element.setCustomValidity(message);
     }
-    else if( v10 != elewenth )
+    else if( v10 != secondLastChar )
     {
         element.setCustomValidity(message);
     }

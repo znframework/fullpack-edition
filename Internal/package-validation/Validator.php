@@ -375,22 +375,26 @@ class Validator implements ValidatorInterface
 
         $no = (string) $no;
 
-        $numone     = ($no[0] + $no[2] + $no[4] + $no[6]  + $no[8]) * 7;
-        $numtwo     = $no[1] + $no[3] + $no[5] + $no[7];
-        $result     = $numone - $numtwo;
-        $tenth      = $result % 10;
-        $total      = ($no[0] + $no[1] + $no[2] + $no[3] + $no[4] + $no[5] + $no[6] + $no[7] + $no[8] + $no[9]);
-        $elewenth   = $total % 10;
+        $firstNumbers   = $no[0] + $no[2] + $no[4] + $no[6] + $no[8];
+        $secondNumbers  = $no[1] + $no[3] + $no[5] + $no[7];
+
+        $numone         = $firstNumbers  * 7;
+        $numtwo         = $secondNumbers * 9;
+        $numthree       = $firstNumbers  * 8;
+
+        $totalOneAndTwo = $numone + $numtwo;
+        $firstLastChar  = substr($totalOneAndTwo, -1, 1);
+        $secondLastChar = substr($numthree, -1, 1);
 
         if( $no[0] == 0 )
         {
             return false;
         }
-        elseif( $no[9] != $tenth )
+        elseif( $no[9] != $firstLastChar )
         {
             return false; // @codeCoverageIgnore
         }
-        elseif( $no[10] != $elewenth )
+        elseif( $no[10] != $secondLastChar )
         {
             return false; // @codeCoverageIgnore
         }
