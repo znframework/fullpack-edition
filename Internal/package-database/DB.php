@@ -19,6 +19,7 @@ use ZN\Protection\Json;
 use ZN\DataTypes\Arrays;
 use ZN\Filesystem\Converter;
 use ZN\Database\Exception\UnconditionalException;
+use ArrayObject;
 
 class DB extends Connection
 {
@@ -1909,7 +1910,9 @@ class DB extends Connection
         {
             if( $printable === true )
             {
-                return current(((array) $result)[0] ?? []);
+                $resultObject = new ArrayObject($result[0] ?? []);
+
+                return $resultObject->getIterator()->current();
             }
 
             return isset($result[$printable]) ? (object) $result[$printable] : false;
