@@ -21,7 +21,7 @@ function once(string $key, callable $data)
 {
     if( ! isset($GLOBALS[$key]) )
     {
-        $GLOBALS[$key] = $data();
+        $GLOBALS[$key] = $data($key);
     }
 
     return $GLOBALS[$key] ?? NULL;
