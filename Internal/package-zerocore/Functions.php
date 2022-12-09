@@ -10,6 +10,24 @@
  */
 
 /**
+ * Once
+ * 
+ * @param string   $key
+ * @param callable $data
+ * 
+ * @return mixed
+ */
+function once(string $key, callable $data)
+{
+    if( ! isset($GLOBALS[$key]) )
+    {
+        $GLOBALS[$key] = $data();
+    }
+
+    return $GLOBALS[$key] ?? NULL;
+}
+
+/**
  * Data length
  * 
  * @param mixed
