@@ -43,10 +43,11 @@ interface DataInterface
      * Add errors
      * 
      * @param string $error
+     * @param string $name = NULL
      * 
      * @return self
      */
-    public function addError(string $error);
+    public function addError(string $error, string $name = NULL);
 
     /**
      * Get error
@@ -63,4 +64,11 @@ interface DataInterface
      * @param string $met = 'post' - options[post|get]
      */
     public function postBack(string $name, string $met = 'post');
+
+    /**
+     * Get error inputs.
+     * 
+     * @return array
+     */
+    public function errorInputs();
 }

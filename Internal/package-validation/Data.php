@@ -153,11 +153,17 @@ class Data implements DataInterface
      * Add errors
      * 
      * @param string $error
+     * @param string $name = NULL
      * 
      * @return self
      */
-    public function addError(string $error)
+    public function addError(string $error, string $name = NULL)
     {
+        if( $name )
+        {
+            $this->error[$name] = $error;
+        }
+        
         $this->errors[][$this->index] = $error . '<br>'; $this->index++;
     }
 
@@ -264,6 +270,16 @@ class Data implements DataInterface
         $method = $this->setMethodType($name, $met);
 
         return $method;
+    }
+
+    /**
+     * Get error inputs.
+     * 
+     * @return array
+     */
+    public function errorInputs()
+    {
+        return array_keys($this->error);
     }
 
     /**
