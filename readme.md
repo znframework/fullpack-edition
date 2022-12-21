@@ -1,6 +1,6 @@
 <p>
 <a href="https://github.com/znframework/fullpack-edition/actions/workflows/phpunit.yml">
-	<img src="https://img.shields.io/github/actions/workflow/status/znframework/fullpack-edition/test.yml?branch=main&label=build&logo=github&logoColor=%2300BFFF&style=flat-square" style="max-width:100%;"></a>
+	<img src="https://img.shields.io/github/actions/workflow/status/znframework/fullpack-edition/test.yml?branch=develop&label=build&logo=github&logoColor=%2300BFFF&style=flat-square" style="max-width:100%;"></a>
 <a href="https://coveralls.io/github/znframework/fullpack-edition" rel="nofollow">
 	<img src="https://img.shields.io/coveralls/github/znframework/fullpack-edition/develop?color=brightgreen&style=flat-square" style="max-width:100%;"></a>
 <a href="https://packagist.org/packages/znframework/package-zerocore" rel="nofollow">
