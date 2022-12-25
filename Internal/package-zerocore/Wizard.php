@@ -130,7 +130,7 @@ class Wizard
             [
                 '/\[\<(\s*(\$\w+\,*\s*){1,}\s*)\>\](\s*\{\<)/s'                                             => 'function() use($1)$3',    # Use
                 '/(function\((.*?)\)\s*)*(use\(.*?(\)|' . self::PARENTHESIS_PATTERN . ')\s*)*\{\<(\s)/s'    => 'function($2)$3{$5?>',     # Function
-                '/(\s)\>\}/s'                                                                               => '$1<?php }'                # Close
+                '/(\s)\>\}/s'                                                                               => '$1<?php } '               # Close
             ];   
         }
 
