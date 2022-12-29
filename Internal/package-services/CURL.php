@@ -26,11 +26,25 @@ class CURL implements CURLInterface
     protected $multiple;
 
     /**
+     * Keeps multiple informations
+     * 
+     * @var array
+     */
+    protected $multipleInformations;
+
+    /**
      * Init
      * 
      * @var resource
      */
     protected $init;
+
+    /**
+     * Inits
+     * 
+     * @var resource
+     */
+    protected $inits;
 
     /**
      * Options

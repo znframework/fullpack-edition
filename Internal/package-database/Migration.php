@@ -52,6 +52,13 @@ class Migration implements MigrationInterface
     private $versionDir = 'Version/';
 
     /**
+     * Keeps database classeses
+     * 
+     * @var object
+     */
+    private $db, $forge;
+
+    /**
      * Magic constructor
      * 
      * @param void

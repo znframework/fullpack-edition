@@ -28,6 +28,11 @@ use ZN\Database\Exception\OrderByInvalidSecondArgumentException;
 class MDB implements MDBInterface
 {
     /**
+     * Keeps database
+     */
+    protected $database;
+
+    /**
      * Keeps manager
      * 
      * @var Manager

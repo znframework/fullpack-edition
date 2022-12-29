@@ -25,6 +25,13 @@ class Thumb implements ThumbInterface
     protected $sets;
 
     /**
+     * Keeps render class
+     * 
+     * @var object
+     */
+    protected $image;
+
+    /**
      * Magic Constructor
      */
     public function __construct()

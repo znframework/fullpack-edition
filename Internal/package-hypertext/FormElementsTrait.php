@@ -52,6 +52,13 @@ trait FormElementsTrait
     protected $vMethodMessages = NULL;
 
     /**
+     * Keeps javascript validation function
+     * 
+     * @var array
+     */
+    protected $getJavascriptValidationFunction;
+
+    /**
      * Email control
      * 
      * @return string

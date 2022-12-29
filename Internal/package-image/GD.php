@@ -43,6 +43,11 @@ class GD implements GDInterface
     protected $output = true;
 
     /**
+     * Keeps mime class
+     */
+    protected $mime;
+
+    /**
      * Magic Constructor
      */
     public function __construct()

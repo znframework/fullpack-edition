@@ -31,32 +31,11 @@ class Sheet
     protected $attr;
 
     /**
-     * easing
-     * 
-     * @var string
-     */
-    protected $easing;
-
-    /**
-     * transitions
-     * 
-     * @var string
-     */
-    protected $transitions = '';
-
-    /**
      * tag
      * 
      * @var bool
      */
     protected $tag = false;
-
-    /**
-     * Current browser list.
-     * 
-     * @var array
-     */
-    protected $browserList = ['', '-o-', '-ms-', '-moz-', '-webkit-'];
 
     /**
      * Magic construct
@@ -67,8 +46,6 @@ class Sheet
      */
     public function __construct($tag = false)
     {
-        $this->browsers = $this->browserList;
-
         $this->tag = $tag;
     }
 
@@ -81,7 +58,7 @@ class Sheet
      */
     public function attr(array $attributes)
     {
-        $this->attr = $this->_attr($attributes);
+        $this->attr = $this->attrCreator($attributes);
 
         return $this;
     }
@@ -101,21 +78,6 @@ class Sheet
     }
 
     /**
-     * Get complete.
-     * 
-     * @param void
-     * 
-     * @return string
-     */
-    public function complete() : string
-    {
-        $trans = $this->transitions;
-        $this->_defaultVariable();
-
-        return $trans;
-    }
-
-    /**
      * Creates element.
      * 
      * @param string ...$args
@@ -126,18 +88,21 @@ class Sheet
     {
         $combineTransitions = $args;
 
-        $str  = $this->selector."{";
-        if( ! empty($this->attr) ) $str .= EOL.$this->attr.EOL;
-        $str .= $this->complete();
+        $str  = $this->selector . '{';
+
+        if( ! empty($this->attr) )
+        {
+            $str .= EOL . $this->attr . EOL;
+        } 
 
         if( ! empty($combineTransitions) ) foreach( $combineTransitions as $transition )
         {
             $str .= $transition;
         }
 
-        $str .= "}".EOL;
+        $str .= '}' . EOL;
 
-        return $this->_tag($str);
+        return $this->tagCreator($str);
     }
 
     /**
@@ -147,14 +112,16 @@ class Sheet
      * 
      * @return string
      */
-    protected function _tag($code)
+    protected function tagCreator($code)
     {
         if( $this->tag === true )
         {
             $style = Singleton::class('ZN\Hypertext\Style');
 
-            return $style->open().$code.$style->close();
+            return $style->open() . $code . $style->close();
         }
+
+        $this->defaultVariables();
 
         return $code;
     }
@@ -166,7 +133,7 @@ class Sheet
      * 
      * @return string
      */
-    protected function _attr($attributes = [])
+    protected function attrCreator($attributes = [])
     {
         $attribute = '';
 
@@ -179,7 +146,7 @@ class Sheet
                     $key = $values;
                 }
 
-                $attribute .= ' '.$key.':'.$values.';';
+                $attribute .= ' ' . $key . ':' . $values . ';';
             }
         }
 
@@ -187,35 +154,15 @@ class Sheet
     }
 
     /**
-     * protected transitions
-     * 
-     * @param string $data
-     * 
-     * @return string
-     */
-    protected function _transitions($data)
-    {
-        $transitions = "";
-
-        foreach( $this->browsers as $val )
-        {
-            $transitions .= "$val$data";
-        }
-
-        return EOL.$transitions;
-    }
-
-    /**
-     * protected default variable
+     * protected default variables
      * 
      * @param void
      * 
      * @return void
      */
-    protected function _defaultVariable()
+    protected function defaultVariables()
     {
         $this->attr        = NULL;
-        $this->transitions = '';
         $this->selector    = 'this';
     }
 }

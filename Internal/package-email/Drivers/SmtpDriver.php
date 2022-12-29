@@ -33,6 +33,28 @@ class SmtpDriver extends DriverMappingAbstract
     protected $connect;
 
     /**
+     * Keeps config variables
+     */
+    protected $to, 
+              $subject, 
+              $body, 
+              $header,
+              $host, 
+              $user, 
+              $password, 
+              $from, 
+              $port,
+              $encoding, 
+              $timeout, 
+              $cc, 
+              $bcc, 
+              $auth,
+              $encode, 
+              $keepAlive, 
+              $dsn, 
+              $tos;
+
+    /**
      * Magic Constructor
      * 
      * @param string $to

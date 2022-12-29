@@ -18,6 +18,11 @@ use ZN\Request\URI;
 trait BootstrapComponents
 {
     /**
+     * Keeps callable group
+     */
+    protected $callableGroup;
+
+    /**
      * Use of bootstrap group
      * 
      * @param string|callable $code  = ''
@@ -39,7 +44,7 @@ trait BootstrapComponents
                            ->class('form-group row' . Base::prefix($class, ' '))
                            ->div(EOL . Buffering\Callback::do($code));
 
-            unset($this->callableGroup);
+            $this->callableGroup = NULL;
             
             return $result;
         }

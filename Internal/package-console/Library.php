@@ -43,9 +43,9 @@ class Library
      * 
      * @return void
      */
-    protected function classMethod(&$class = NULL, &$method = NULL, $command)
+    protected function classMethod(&$class = NULL, &$method = NULL, $command = NULL)
     {
-        $commandEx = explode(':', $command ?? '');
+        $commandEx = explode(':', (string) $command);
         $class     = $commandEx[0];
         $method    = $commandEx[1] ?? NULL;
     }

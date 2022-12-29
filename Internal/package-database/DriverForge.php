@@ -411,7 +411,7 @@ class DriverForge
      */
     protected function buildForgeColumnsQuery($columns)
     {
-        $con = NULL;
+        $con = '';
 
         foreach( $columns as $column => $values )
         {

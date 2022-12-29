@@ -22,6 +22,11 @@ class Table extends HtmlHelpersAbstract
     protected $attr = [];
 
     /**
+     * Keeps html class
+     */
+    protected $html;
+
+    /**
      * Magic Call
      * 
      * @param string $method
@@ -154,7 +159,6 @@ class Table extends HtmlHelpersAbstract
         $table .= $this->_content(...$elements);
         $table .= '</table>';
 
-        if( ! empty($this->table)) $this->table = NULL;
         if( ! empty($this->attr))  $this->attr = [];
 
         return $table;

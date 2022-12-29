@@ -30,6 +30,13 @@ class CartExtends
     ];
 
     /**
+     * Keeps key
+     * 
+     * @var string
+     */
+    protected $key;
+
+    /**
      *  Constructor
      * 
      * @param void

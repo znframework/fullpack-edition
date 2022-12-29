@@ -139,6 +139,11 @@ class Paginator implements PaginatorInterface
     protected $output = 'classic';
 
     /**
+     * Keeps pagination config
+     */
+    protected $config;
+
+    /**
      * Magic constructor
      * 
      * @param void

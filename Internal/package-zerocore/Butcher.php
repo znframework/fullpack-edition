@@ -80,6 +80,11 @@ class Butcher
     protected $supportedFileExtensions = ['html', 'htm', 'php'];
 
     /**
+     * Keeps extract delete
+     */
+    protected $extractDelete;
+
+    /**
      * Magic constructor
      */
     public function __construct()

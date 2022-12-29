@@ -218,8 +218,6 @@ trait StorageCommonMethods
      */
     protected function defaultVariable()
     {
-        $this->name       = NULL;
-        $this->value      = NULL;
         $this->encode     = [];
         $this->regenerate = true;
     }

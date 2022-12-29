@@ -30,6 +30,11 @@ class Processor implements ProcessorInterface
     protected $driver;
 
     /**
+     * @var array
+     */
+    protected $getConfig;
+
+    /**
      * Magic Constructor
      */
     public function __construct()

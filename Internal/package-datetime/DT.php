@@ -21,6 +21,13 @@ class DT
     protected $class;
 
     /**
+     * Protected data
+     * 
+     * @var mixed
+     */
+    protected $data;
+
+    /**
      * Magic Call
      * 
      * @param string $method

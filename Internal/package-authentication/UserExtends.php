@@ -26,6 +26,37 @@ class UserExtends
     protected $getConfig;
 
     /**
+     * Keeps config variables
+     * 
+     * @var string
+     */
+    protected $encodeType, 
+              $spectator, 
+              $tableName, 
+              $usernameColumn, 
+              $passwordColumn,
+              $emailColumn, 
+              $bannedColumn, 
+              $activeColumn, 
+              $activationColumn, 
+              $verificationColumn, 
+              $otherLoginColumns,
+              $joinTables,
+              $joinColumn,
+              $senderMail,
+              $senderName;
+
+    /**
+     * Keeps references
+     * 
+     * @var object
+     */
+    protected $getLang,
+              $dbClass,
+              $sessionClass,
+              $cookieClass;
+
+    /**
      * Magic constructor
      * 
      * @param void
@@ -58,7 +89,6 @@ class UserExtends
         $this->usernameColumn     = $matchingColumn['username'];
         $this->passwordColumn     = $matchingColumn['password'];
         $this->emailColumn        = $matchingColumn['email'];
-        $this->bannedColumn       = $matchingColumn['banned'];
         $this->activeColumn       = $matchingColumn['active'];
         $this->activationColumn   = $matchingColumn['activation'];
         $this->bannedColumn       = $matchingColumn['banned'];

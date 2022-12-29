@@ -23,6 +23,11 @@ class GrandVision extends DatabaseDefinitions
     protected $visionDirectory = 'Visions/';
 
     /**
+     * Keeps default database name
+     */
+    protected $defaultDatabaseName;
+
+    /**
      * Magic Constructor
      */
     public function __construct()

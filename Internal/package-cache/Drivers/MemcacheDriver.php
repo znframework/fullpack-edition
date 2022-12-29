@@ -21,6 +21,13 @@ use ZN\Cache\Exception\ConnectionRefusedException;
 class MemcacheDriver extends DriverMappingAbstract
 {
     /**
+     * Keeps memcahce class
+     * 
+     * @param object
+     */
+    protected $memcache;
+
+    /**
      * Magic constructor
      * 
      * @param void

@@ -46,6 +46,11 @@ class Restful implements RestfulInterface
     protected $sslVerifyPeer = false;
 
     /**
+     * Keeps curl class
+     */
+    protected $curl;
+
+    /**
      * Magic Call
      * 
      * @param string $method

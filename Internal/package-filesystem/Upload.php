@@ -63,7 +63,7 @@ class Upload implements UploadInterface
     * 
     * @var array
     */
-   protected $error;
+    protected $error;
 
     /**
      * Keeps manuel error
@@ -92,6 +92,11 @@ class Upload implements UploadInterface
      * @var string
      */
     protected $uploadDirectory = UPLOADS_DIR ?: 'upload/';
+
+    /**
+     * Keeps lang
+     */
+    protected $getLang;
 
     /**
      * Magic Constructor

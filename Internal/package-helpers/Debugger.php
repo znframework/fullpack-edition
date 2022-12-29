@@ -39,7 +39,7 @@ class Debugger
      */
     public function current() : stdClass
     {
-        return $this->_layer($this->debug, 0, 1);
+        return $this->layerInfo($this->debug, 0, 1);
     }
 
     /**
@@ -51,7 +51,7 @@ class Debugger
      */
     public function parent(int $index = 1) : stdClass
     {
-        return $this->_layer($this->debug, $index, $index + 1);
+        return $this->layerInfo($this->debug, $index, $index + 1);
     }
 
     /**
@@ -68,7 +68,7 @@ class Debugger
 
         if( is_numeric($type) )
         {
-            return (object) ( $debug[$type] ?? $this->_default() );
+            return (object) ( $debug[$type] ?? $this->defaultVariables() );
         }
         else if( $type === 'array' )
         {
@@ -76,14 +76,14 @@ class Debugger
         }
         else
         {
-            return $this->_default();
+            return $this->defaultVariables();
         }
     }
 
     /**
      * Protected Layer
      */
-    protected function _layer($debug, $layer1 = 0, $layer2 = 1)
+    protected function layerInfo($debug, $layer1 = 0, $layer2 = 1)
     {
         $file           = $debug[$layer1]['file']     ?? NULL;
         $line           = $debug[$layer1]['line']     ?? NULL;
@@ -112,7 +112,7 @@ class Debugger
     /**
      * Protected Default
      */
-    protected function _default()
+    protected function defaultVariables()
     {
         return (object)
         [

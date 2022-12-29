@@ -100,9 +100,9 @@ trait CallableTalkingQueries
     protected function callJoinTalkingQuery($split, $parameters)
     {
         $type    = $split[0] ?? 'left';
-        $table1  = $split[2] ?? NULL;
+        $table1  = $split[2] ?? '';
         $column1 = strtolower($table1 . '.' . $split[3]);
-        $table2  = $split[4] ?? NULL;
+        $table2  = $split[4] ?? '';
         $column2 = strtolower($table2 . '.' . $split[5]);
         $met     = $type . $split[1];
 
@@ -115,7 +115,7 @@ trait CallableTalkingQueries
     protected function callOrderGroupByTalkingQuery($split)
     {
         $column = strtolower($split[2] ?? '');
-        $type   = $split[0] === 'order' ? $split[3] ?? 'asc' : NULL;
+        $type   = $split[0] === 'order' ? $split[3] ?? 'asc' : '';
         $met    = $split[0] . 'By';
 
         return $this->$met($column, $type);
@@ -167,8 +167,8 @@ trait CallableTalkingQueries
     {
         $met       = $split[0];
         $column    = strtolower($split[1] ?? '');
-        $condition = $split[2] ?? NULL;
-        $operator  = isset($parameters[1]) ? ' ' . $parameters[1] : NULL;
+        $condition = $split[2] ?? '';
+        $operator  = isset($parameters[1]) ? ' ' . $parameters[1] : '';
 
         return $this->$met($column . $operator, $parameters[0], $condition);
     }

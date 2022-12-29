@@ -101,6 +101,7 @@ class DB extends Connection
     private $transStart , $transError  , $duplicateCheck   , $duplicateCheckUpdate        ;
     private $joinType   , $joinTable   , $unionQuery = NULL, $caching = [], $jsonDecode   ;
     private $hashId     , $hashIdColumn, $isUpdate = false , $unset   = [], $object       ;
+    private $paging;
 
     /**
      * Callable talking queries.
@@ -548,7 +549,7 @@ class DB extends Connection
             break;
         }
 
-        $type = strtoupper($type ?? '');
+        $type = strtoupper((string) $type);
 
         $this->joinType  = $type;
         $this->joinTable = $table;
@@ -1339,7 +1340,7 @@ class DB extends Connection
         $caching    = $this->caching;           $this->caching    = [];
         $tableName  = $this->tableName;         $this->tableName  = '';
         $jsonDecode = $this->jsonDecode;        $this->jsonDecode = [];
-        $paging     = $this->paging ?? 'row';
+        $paging     = $this->paging ?? 'row';   $this->paging     = NULL;
 
         return (new self($this->config))->setQueryByDriver($query, $secure, 
         [
@@ -1440,7 +1441,7 @@ class DB extends Connection
 
         $status = ! (bool) $this->transError;
 
-        $this->defaultTransactionVariables();
+        $this->resetTransactionQueryVariables();
 
         return $status;
     }
@@ -2533,17 +2534,6 @@ class DB extends Connection
                 $this->limit;
     }
 
-     /**
-     * protected default transaction variables
-     */
-    protected function defaultTransactionVariables()
-    {
-        $this->transStart         = NULL;
-        $this->transError         = NULL;
-        $this->transaction        = false;
-        $this->transactionQueries = [];
-    }
-
     /**
      * protected run transaction queries
      */
@@ -3211,6 +3201,17 @@ class DB extends Connection
     protected function getEncryptedCacheQuery()
     {
         return md5(Json::encode($this->config) . $this->stringQuery());
+    }
+    
+    /**
+     * protected reset transaction query variables
+     */
+    protected function resetTransactionQueryVariables()
+    {
+        $this->transStart         = NULL;
+        $this->transError         = NULL;
+        $this->transaction        = false;
+        $this->transactionQueries = [];
     }
 
     /**

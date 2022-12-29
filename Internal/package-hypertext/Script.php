@@ -103,7 +103,7 @@ class Script implements TextInterface
      */
     public function open() : string
     {
-        $script = "<script type=\"$this->type\">".EOL;
+        $script = '<script type="' . $this->type .'">' . EOL;
 
         $this->default();
 
@@ -119,7 +119,7 @@ class Script implements TextInterface
      */
     public function close() : string
     {
-        $script =  '</script>'.EOL;
+        $script =  '</script>' . EOL;
         return $script;
     }
 

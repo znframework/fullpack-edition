@@ -43,6 +43,19 @@ class Controller
     }
 
     /**
+     * Magic set
+     * 
+     * @param string $propery
+     * @param mixed  $value
+     * 
+     * @return void
+     */
+    protected function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
      * Magic Get
      * 
      * @param string $class

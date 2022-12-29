@@ -105,6 +105,24 @@ class Sender implements SenderInterface
     protected $message;
 
     /**
+     * Keeps lang
+     * 
+     * @var array
+     */
+    protected $getLang;
+
+    /**
+     * Magic set
+     * 
+     * @var string $method
+     * @var mixed  $data
+     */
+    protected function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
      * Protected Lang
      */
     protected function getLang(string $type, string $changes = NULL) : string

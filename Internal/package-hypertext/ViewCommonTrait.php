@@ -17,7 +17,13 @@ use ZN\Authorization;
 
 trait ViewCommonTrait
 {
-    use OutputElements, CallableElements, FormElementsTrait, HtmlElementsTrait, BootstrapAttributes, BootstrapComponents, BootstrapLayouts;
+    use OutputElements, 
+        CallableElements, 
+        FormElementsTrait,
+        HtmlElementsTrait,
+        BootstrapAttributes, 
+        BootstrapComponents, 
+        BootstrapLayouts;
 
     /**
      * Keeps settings
@@ -25,6 +31,13 @@ trait ViewCommonTrait
      * @var array
      */
     protected $settings = [];
+
+    /**
+     * Keeps bootstrap options
+     * 
+     * @var array
+     */
+    protected $bootstrapOptions = [];
 
     /**
      * Sets attributes

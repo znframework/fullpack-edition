@@ -34,6 +34,13 @@ class Connection
     ];
 
     /**
+     * Keeps database driver
+     * 
+     * @var object
+     */
+    protected $db;
+
+    /**
      * Keeps database config
      * 
      * @var array
@@ -444,7 +451,7 @@ class Connection
      */
     protected function clearNail($value)
     {
-        return trim($value, '\'');
+        return trim((string) $value, '\'');
     }
 
     /**

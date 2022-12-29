@@ -47,6 +47,13 @@ class Route extends FilterProperties implements RouteInterface
     protected $route = [], $routes = [], $status = [], $setFilters = [], $recursion = [], $recursionFilters = [], $allFilterKeys = [], $lines;
 
     /**
+     * Keeps routing config
+     * 
+     * @var array
+     */
+    protected $getConfig;
+
+    /**
      * Magic Constructor
      * 
      * Get route configuration.

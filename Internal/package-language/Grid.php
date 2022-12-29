@@ -32,6 +32,13 @@ class Grid extends MLExtends
     protected $url = NULL;
 
     /**
+     * Keeps lang
+     * 
+     * @var array
+     */
+    protected $getLang;
+
+    /**
      * Magic Constructor
      */
     public function __construct()

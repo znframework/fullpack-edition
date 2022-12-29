@@ -15,6 +15,8 @@ use ZN\Buffering;
 class Result
 {
     protected $title = 'RESULT';
+    protected $return;
+    protected $print;
 
     /**
      * Magic constructor

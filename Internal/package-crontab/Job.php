@@ -107,12 +107,18 @@ class Job implements JobInterface, CrontabIntervalInterface
     protected $stringQuery;
 
     /**
+     * @var processor class
+     */
+    protected $processor;
+
+    /**
      * Magic Constructor
      */
     public function __construct()
     {
-        $this->getConfig = Config::default('ZN\Prompt\PromptDefaultConfiguration')
-                                 ::get('Services', 'processor');
+        $getConfig = Config::default('ZN\Prompt\PromptDefaultConfiguration')
+                           ::get('Services', 'processor');
+
         $this->directoryIndexCommand = $this->getDirectoryIndexCommand();
         $this->processor = Singleton::class('ZN\Prompt\Processor');
 
@@ -130,7 +136,7 @@ class Job implements JobInterface, CrontabIntervalInterface
 
         $this->createCrontabDirectoryIfNotExists();
 
-        $this->path       = $this->getConfig['path'];
+        $this->path       = $getConfig['path'];
         $this->crontabDir = Filesystem\Info::originpath(STORAGE_DIR.'Crontab'.DS);
     }
 

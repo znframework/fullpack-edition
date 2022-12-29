@@ -30,20 +30,6 @@ class RedisDriver extends DriverMappingAbstract
     protected $redis;
 
     /**
-     * Serialized data
-     * 
-     * @var array
-     */
-    protected $serialized = [];
-
-    /**
-     * Private redis members key
-     * 
-     * @var string
-     */
-    private $sMembersKey = 'ZNRedisSerialized';
-
-    /**
      * Magic constructor
      * 
      * @param array $settings = NULL

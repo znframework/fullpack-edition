@@ -15,6 +15,11 @@ use ZN\Datatype;
 trait Initialize
 {
     /**
+     * Keeps storage config 
+     */
+    protected $config;
+
+    /**
      * Magic constructor
      * 
      * @param void

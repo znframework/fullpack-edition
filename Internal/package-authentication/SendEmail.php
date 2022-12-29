@@ -15,6 +15,13 @@ use ZN\Singleton;
 class SendEmail extends UserExtends
 {
     /**
+     * Keeps email class
+     * 
+     * @var object
+     */
+    protected $emailClass;
+
+    /**
      * Magic construct
      * 
      * @param void
@@ -70,7 +77,7 @@ class SendEmail extends UserExtends
 
                 $email = IS::email($username)
                        ? $username
-                       : ($user->{$this->emailColumn} ?? NULL);
+                       : ($user->{$this->emailColumn} ?? '');
 
                 if( IS::email($email) )
                 {

@@ -33,7 +33,6 @@ class Lists extends HtmlHelpersAbstract
     {
         static $start;
 
-        $eof     = EOL;
         $output  = '';
         $attrs   = '';
         $tab     = str_repeat("\t", (int) $start);
@@ -61,7 +60,7 @@ class Lists extends HtmlHelpersAbstract
                 if( ! is_array($v) )
                 {
 
-                    $output .= "$tab<$k>$v<$end>$eof";
+                    $output .= $tab . '<' . $k . '>' . $v . '<' . $end . '>' . EOL;
                 }
                 else
                 {
@@ -76,7 +75,7 @@ class Lists extends HtmlHelpersAbstract
                         $value = '';
                     }
 
-                    $output .= $tab."<$k>$value$eof".$this->_element($v, $tab, $start++).$tab."<$end>".$tab.$eof;
+                    $output .= $tab . '<' . $k . '>' . $value . EOL . $this->_element($v, $tab, $start++) . $tab . '<' . $end . '>' . $tab . EOL;
                     $start--;
                 }
             }

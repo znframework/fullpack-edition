@@ -57,9 +57,9 @@ class Style implements TextInterface
      */
     public function open() : string
     {
-        $script = "<style type=\"$this->type\">".EOL;
+        $script = '<style type="' . $this->type . '">' . EOL;
 
-        $this->default();
+        $this->defaultVariables();
 
         return $script;
     }
@@ -73,14 +73,15 @@ class Style implements TextInterface
      */
     public function close() : string
     {
-        $script =  '</style>'.EOL;
+        $script =  '</style>' . EOL;
+        
         return $script;
     }
 
     /**
-     * protected default
+     * protected default variables
      */
-    protected function default()
+    protected function defaultVariables()
     {
         $this->type = 'text/css';
     }

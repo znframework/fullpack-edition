@@ -33,6 +33,13 @@ trait BootstrapLayouts
     protected $bootstrapGridsystemColumnCount = 0;
 
     /**
+     * Protected bootstrap container div element attributes
+     * 
+     * @var string
+     */
+    protected $bootstrapContainerDivElementAttributes = 'container';
+
+    /**
      * Container fluid
      * 
      * @return this
@@ -152,7 +159,7 @@ trait BootstrapLayouts
      */
     protected function createBootstrapGridsystem()
     {
-        $return = (string) $this->class($this->bootstrapContainerDivElementAttributes ?? 'container')->div($this->getBootstrapGridsystem());
+        $return = (string) $this->class($this->bootstrapContainerDivElementAttributes)->div($this->getBootstrapGridsystem());
 
         $this->bootstrapGridsystemRow = '';
 

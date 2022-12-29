@@ -14,6 +14,11 @@ use ZN\Singleton;
 class DatabaseDefinitions
 {
     /**
+     * Keeps database classes
+     */
+    protected $db, $tool, $forge;
+
+    /**
      * Magic Constructor
      */
     public function __construct()

@@ -35,6 +35,26 @@ class Render implements RenderInterface
     protected $path = FILES_DIR ?? 'captcha/';
 
     /**
+     * Keeps session class
+     * 
+     * @var object
+     */
+    protected $session;
+
+    /**
+     * Keeps session key
+     * 
+     * @var string
+     */
+    protected $key;
+
+    /**
+     * Keeps config variables
+     */
+    protected $sizeWidthC,
+              $sizeHeightC;
+
+    /**
      * Magic constructor
      * 
      * @param void
