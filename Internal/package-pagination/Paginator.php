@@ -13,9 +13,12 @@ use ZN\Base;
 use ZN\Config;
 use ZN\Request\URL;
 use ZN\Request\URI;
+use ZN\Ability\Revolving;
 
 class Paginator implements PaginatorInterface
 {
+    use Revolving;
+
     /**
      * Keep settings
      * 
