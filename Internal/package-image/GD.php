@@ -17,6 +17,8 @@ use ZN\Ability\Revolving;
 use ZN\Image\Exception\InvalidArgumentException;
 use ZN\Image\Exception\InvalidImageFileException;
 
+#[\AllowDynamicProperties]
+
 class GD implements GDInterface
 {
     use Revolving, CallableFilterMethod;

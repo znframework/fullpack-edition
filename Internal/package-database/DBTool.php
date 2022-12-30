@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+#[\AllowDynamicProperties]
+
 class DBTool extends Connection
 {
     /**

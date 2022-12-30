@@ -13,6 +13,8 @@ use ZN\Support;
 use ZN\Datatype;
 use ZN\Singleton;
 
+#[\AllowDynamicProperties]
+
 class DBForge extends Connection
 {   
     /**

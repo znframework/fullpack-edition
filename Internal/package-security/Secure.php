@@ -11,6 +11,8 @@
 
 use ZN\Ability\Serialization;
 
+#[\AllowDynamicProperties]
+
 class Secure
 {
     use Serialization;

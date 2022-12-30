@@ -22,6 +22,8 @@ use ZN\Ability\Information;
 use ZN\Email\Exception\InvalidCharsetException;
 use ZN\Email\Exception\BadEmailAddressException;
 
+#[\AllowDynamicProperties]
+
 class Sender implements SenderInterface
 {
     use Driver, Information;
@@ -110,17 +112,6 @@ class Sender implements SenderInterface
      * @var array
      */
     protected $getLang;
-
-    /**
-     * Magic set
-     * 
-     * @var string $method
-     * @var mixed  $data
-     */
-    protected function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
 
     /**
      * Protected Lang

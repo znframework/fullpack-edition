@@ -12,19 +12,6 @@
 trait Serialization
 {
     /**
-     * Magic set
-     * 
-     * @param string $propery
-     * @param mixed  $value
-     * 
-     * @return void
-     */
-    protected function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    /**
      * Magic call
      * 
      * @param string $method

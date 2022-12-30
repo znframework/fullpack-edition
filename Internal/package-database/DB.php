@@ -21,6 +21,8 @@ use ZN\Filesystem\Converter;
 use ZN\Database\Exception\UnconditionalException;
 use ArrayObject;
 
+#[\AllowDynamicProperties]
+
 class DB extends Connection
 {
     /**
@@ -101,7 +103,7 @@ class DB extends Connection
     private $transStart , $transError  , $duplicateCheck   , $duplicateCheckUpdate        ;
     private $joinType   , $joinTable   , $unionQuery = NULL, $caching = [], $jsonDecode   ;
     private $hashId     , $hashIdColumn, $isUpdate = false , $unset   = [], $object       ;
-    private $paging;
+    private $paging     , $from        , $returnQueryType  , $results;
 
     /**
      * Callable talking queries.
@@ -740,7 +742,7 @@ class DB extends Connection
      */
     public function basic() : DB
     {
-        $this->retunQueryType = 'basicQuery';
+        $this->returnQueryType = 'basicQuery';
 
         return $this;
     }
@@ -774,7 +776,7 @@ class DB extends Connection
             $this->unionQuery = NULL;
         }
 
-        $returnQuery = $this->retunQueryType ?? 'query';
+        $returnQuery = $this->returnQueryType ?? 'query';
 
         $isString = $this->string === true || $return === 'string';
 
@@ -3244,7 +3246,7 @@ class DB extends Connection
         $this->characterSet    = NULL;
         $this->into            = NULL;
         $this->forUpdate       = NULL;
-        $this->retunQueryType  = NULL;
+        $this->returnQueryType  = NULL;
     }
 
     /**

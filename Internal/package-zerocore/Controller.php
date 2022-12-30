@@ -12,6 +12,8 @@
 use stdClass;
 use ZN\Inclusion\Project\View;
 
+#[\AllowDynamicProperties]
+
 class Controller
 {
     /**
@@ -40,19 +42,6 @@ class Controller
     public function restart()
     {
         return Autoloader::restart();
-    }
-
-    /**
-     * Magic set
-     * 
-     * @param string $propery
-     * @param mixed  $value
-     * 
-     * @return void
-     */
-    protected function __set($property, $value)
-    {
-        $this->$property = $value;
     }
 
     /**

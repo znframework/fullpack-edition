@@ -13,12 +13,9 @@ use ZN\Base;
 use ZN\Config;
 use ZN\Request\URL;
 use ZN\Request\URI;
-use ZN\Ability\Revolving;
 
 class Paginator implements PaginatorInterface
 {
-    use Revolving;
-
     /**
      * Keep settings
      * 
@@ -341,8 +338,8 @@ class Paginator implements PaginatorInterface
             $this->$key = $value;
         }        
 
-        $this->class = array_merge($this->config['class'], $this->class ?? []);
-        $this->style = array_merge($this->config['style'], $this->style ?? []);
+        $this->class = array_merge($this->config['class'] ?? [], $this->class ?? []);
+        $this->style = array_merge($this->config['style'] ?? [], $this->style ?? []);
 
         if( isset($config['url']) && $this->type !== 'ajax' )
         {
@@ -390,7 +387,7 @@ class Paginator implements PaginatorInterface
         {
             $return = $this->isBasicPaginationBar() ? $this->createBasicPaginationBar($startRowNumber) : $this->createAdvancedPaginationBar($startRowNumber);
 
-            $this->defaultVariables('all', true);
+            $this->defaultVariables();
 
             return $return;
         }
@@ -923,5 +920,26 @@ class Paginator implements PaginatorInterface
         {
             return ' prow="' . $value . '" ptype="ajax"';
         }
+    }
+
+    protected function defaultVariables()
+    {
+        $this->settings = [];
+        $this->classAttribute = NULL;
+        $this->styleAttribute = NULL;
+        $this->totalRows = 50;
+        $this->start = 0;
+        $this->type = 'classic';
+        $this->paging = 'row';
+        $this->limit = 10;
+        $this->countLinks = 10;
+        $this->class = [];
+        $this->style = [];
+        $this->prevName = '[prev]';
+        $this->nextName = '[next]';
+        $this->firstName = '[first]';
+        $this->lastName = '[last]';
+        $this->url = CURRENT_CFPATH;
+        $this->output = 'classic';
     }
 }

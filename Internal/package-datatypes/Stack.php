@@ -11,6 +11,8 @@
 
 use ZN\Ability\Serialization;
 
+#[\AllowDynamicProperties]
+
 class Stack
 {
     use Serialization;
