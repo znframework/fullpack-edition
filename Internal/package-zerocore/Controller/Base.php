@@ -12,6 +12,8 @@
 use ZN\Singleton;
 use ZN\Autoloader;
 
+#[\AllowDynamicProperties]
+
 class Base
 {
     /**

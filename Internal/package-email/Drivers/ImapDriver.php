@@ -111,7 +111,7 @@ class ImapDriver extends DriverMappingAbstract
 
         return (object)
         [
-            'subject'       => mb_convert_encoding(imap_utf8($overview[0]->subject, 'ISO-8859-1', 'UTF-8')),
+            'subject'       => mb_convert_encoding(imap_utf8($overview[0]->subject), 'ISO-8859-1', 'UTF-8'),
             'body'          => imap_qprint($message),
             'from'          => $this->cc($header->from ?? NULL),
             'replyTo'       => $this->cc($header->reply_to ?? NULL),
