@@ -18,13 +18,6 @@ use ZN\Helpers\Converter;
 class DateTimeCommon
 {
     /**
-     * Keeps datetime config.
-     * 
-     * @var array
-     */
-    protected $config;
-
-    /**
      * Keeps Class Name
      * 
      * @var string
@@ -32,14 +25,19 @@ class DateTimeCommon
     protected $className = 'ZN\DateTime\Date';
 
     /**
+     * Keeps datetime config.
+     * 
+     * @var array
+     */
+    protected $config;
+
+    /**
      * Magic Constructor
      */
     public function __construct()
     {
         $this->config = Config::default('ZN\DateTime\DateTimeDefaultConfiguration')
-                              ::get('Project');
-
-        setlocale(LC_ALL, $this->config['locale']['charset'], $this->config['locale']['language']);
+                              ::get('Expressions');
     }
 
     /**
@@ -226,12 +224,7 @@ class DateTimeCommon
      */
     protected function returnDatetime($format, $timestamp = NULL)
     {
-        if( $timestamp === NULL )
-        {
-            $timestamp = time();
-        }
-
-        return date($this->convertPattern($format), $timestamp);
+        return date($this->convertPattern($format), $timestamp ?? time());
     }
 
     /**

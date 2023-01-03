@@ -9,6 +9,8 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Lang;
+
 class Date extends DateTimeCommon implements DateTimeCommonInterface
 {
     /**
@@ -58,6 +60,13 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      */
     public function __call($method, $parameters)
     {
+        if( $method[0] === 'l' )
+        {
+            $method = substr($method, 1); $langParam = end($parameters);
+
+            return $this->convertDateExpressions($this->$method(...$parameters), isset($this->config['date'][$langParam]) ? $langParam : NULL);
+        }
+
         $parts = $this->splitUpperCase($method);
         
         $methodType = $parts[0] ?? NULL;
@@ -78,6 +87,18 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
         return parent::__call($method, $parameters);
     }
 
+    /**
+     * Gets year quarter
+     * 
+     * @param string $date = NULL
+     * 
+     * @return string
+     */
+    public function quarter(string $date = NULL)
+    {
+        return ceil($this->convert($date ?? $this->now(), 'n') / 3);
+    }
+    
     /**
      * Gets current datetime.
      * 
@@ -105,9 +126,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
             return false;
         }
 
-        return checkdate($dateEx[1] ?? NULL, $dateEx[2] ?? NULL, $dateEx[0] ?? NULL);
-
-       
+        return checkdate($dateEx[1] ?? NULL, $dateEx[2] ?? NULL, $dateEx[0] ?? NULL); 
     }
 
     /**
@@ -272,5 +291,30 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     protected function isMonth($method, $date)
     {
         return $this->convert($date ?? $this->default(), '{month}') === ltrim($method, 'is');
+    }
+
+     /**
+     * Protected convert date expressions
+     */
+    protected function convertDateExpressions(string $date, string $lang = NULL) : string
+    {
+        return str_ireplace
+        ( 
+            $this->mergeDateExpressions('en'),
+            $this->mergeDateExpressions($lang ?? Lang::get()),
+            $date
+        );
+    }
+
+    /**
+     * Protected merge date expressions
+     */
+    protected function mergeDateExpressions($lang)
+    {
+        $expressions = $this->config['date'][$lang];
+
+        $mergeExpressions = array_merge(...array_values($expressions));
+
+        return $mergeExpressions;
     }
 }
