@@ -2317,7 +2317,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function notIn(string ...$value) : string
+    public function notIn(...$value) : string
     {
         return $this->buildInClause('in', ...$value);
     }
@@ -2329,7 +2329,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function in(string ...$value) : string
+    public function in(...$value) : string
     {
         return $this->buildInClause(__FUNCTION__, ...$value);
     }
@@ -2341,7 +2341,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function inTable(string ...$value) : string
+    public function inTable(...$value) : string
     {
         return $this->buildInClause(__FUNCTION__, ...$value);
     }
@@ -2353,7 +2353,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function inQuery(string ...$value) : string
+    public function inQuery(...$value) : string
     {
         return $this->buildInClause(__FUNCTION__, ...$value);
     }

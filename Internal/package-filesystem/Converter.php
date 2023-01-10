@@ -83,7 +83,7 @@ class Converter
                 
                 for( $c = 0; $c < $num; $c++ )
                 {
-                    $rows[] = explode(';', $data[$c]);
+                    $rows[] = explode(';', (string) $data[$c]);
                 }
             }
 
