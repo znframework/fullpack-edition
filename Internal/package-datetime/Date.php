@@ -64,7 +64,13 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
         {
             $method = substr($method, 1); $langParam = end($parameters);
 
-            return $this->convertDateExpressions($this->$method(...$parameters), isset($this->config['date'][$langParam]) ? $langParam : NULL);
+            $this->lang = isset($this->config['date'][$langParam]) ? $langParam : Lang::get();
+
+            $return = $this->$method(...$parameters);
+
+            $this->lang = NULL;
+            
+            return $return;
         }
 
         $parts = $this->splitUpperCase($method);
@@ -291,30 +297,5 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     protected function isMonth($method, $date)
     {
         return $this->convert($date ?? $this->default(), '{month}') === ltrim($method, 'is');
-    }
-
-     /**
-     * Protected convert date expressions
-     */
-    protected function convertDateExpressions(string $date, string $lang = NULL) : string
-    {
-        return str_ireplace
-        ( 
-            $this->mergeDateExpressions('en'),
-            $this->mergeDateExpressions($lang ?? Lang::get()),
-            $date
-        );
-    }
-
-    /**
-     * Protected merge date expressions
-     */
-    protected function mergeDateExpressions($lang)
-    {
-        $expressions = $this->config['date'][$lang];
-
-        $mergeExpressions = array_merge(...array_values($expressions));
-
-        return $mergeExpressions;
     }
 }

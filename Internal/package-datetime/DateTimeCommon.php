@@ -32,6 +32,13 @@ class DateTimeCommon
     protected $config;
 
     /**
+     * Keeps datetime lang.
+     * 
+     * @var array
+     */
+    protected $lang;
+
+    /**
      * Magic Constructor
      */
     public function __construct()
@@ -187,8 +194,6 @@ class DateTimeCommon
             $output = '{Hour}:{minute}:{second}';
         }
 
-        $output = $this->convertPattern($output);
-
         return $this->returnDatetime($output, strtotime($calculate, strtotime($input)));
     }
 
@@ -224,7 +229,37 @@ class DateTimeCommon
      */
     protected function returnDatetime($format, $timestamp = NULL)
     {
-        return date($this->convertPattern($format), $timestamp ?? time());
+        $classicFormat = $this->convertPattern($format);
+        $timestamp     = $timestamp ?? time();
+
+        if( $this->lang )
+        {
+            $chars = str_split($classicFormat);
+
+            $dateFunction = function($type, $char, $timestamp)
+            {
+                return str_ireplace($this->config['date']['en'][$type], $this->config['date'][$this->lang][$type], date($char, $timestamp));
+            };
+
+            $newDate = '';
+
+            foreach( $chars as $char )
+            {
+                switch( $char )
+                {
+                    case 'M': $newDate .= $dateFunction('shortMonths'  , $char, $timestamp); break;
+                    case 'D': $newDate .= $dateFunction('shortWeekdays', $char, $timestamp); break;
+                    case 'F': $newDate .= $dateFunction('months'       , $char, $timestamp); break;
+                    case 'l': $newDate .= $dateFunction('weekdays'     , $char, $timestamp); break;
+                    
+                    default : $newDate .= in_array($char, Properties::$setDateFormatChars) ? date($char, $timestamp) : $char;
+                }
+            }
+
+            return $newDate;
+        }
+        
+        return date($classicFormat, $timestamp);
     }
 
     /**
