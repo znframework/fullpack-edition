@@ -79,10 +79,11 @@ interface DateTimeCommonInterface
      * @param string $input
      * @param string $calculate
      * @param string $output = 'Y-m-d'
+     * @param string $type   = NULL
      * 
      * @return string
      */
-    public function calculate(string $input, string $calculate, string $output = 'Y-m-d') : string;
+    public function calculate(string $input, string $calculate, string $output = 'Y-m-d', string $type = NULL) : string;
 
     /**
      * Sets the date and time.

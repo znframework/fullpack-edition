@@ -181,7 +181,7 @@ class DateTimeCommon
      * 
      * @return string
      */
-    public function calculate(string $input, string $calculate, string $output = 'Y-m-d') : string
+    public function calculate(string $input, string $calculate, string $output = 'Y-m-d', string $type = NULL) : string
     {
         if( ! preg_match('/^[0-9]/', $input) )
         {
@@ -191,7 +191,12 @@ class DateTimeCommon
         # 5.3.5[added]
         if( get_called_class() === 'ZN\DateTime\Time' && $output === 'Y-m-d' )
         {
-            $output = '{Hour}:{minute}:{second}';
+            $output = 'H:i:s';
+        }
+        # 8.0.3[added]
+        else if( in_array($type, ['hour', 'minute', 'second']) )
+        {
+            $output = 'Y-m-d H:i:s';
         }
 
         return $this->returnDatetime($output, strtotime($calculate, strtotime($input)));
@@ -273,7 +278,7 @@ class DateTimeCommon
             $datetime = $this->default();
         }
 
-        return $this->calculate($datetime ?? $this->default(), $signal . $count . $type);
+        return $this->calculate($datetime ?? $this->default(), $signal . $count . $type, 'Y-m-d', $type);
     }
 
     /**
