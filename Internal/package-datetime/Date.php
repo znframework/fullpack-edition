@@ -94,6 +94,20 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     }
 
     /**
+     * Day count
+     * 
+     * @param string $date = NULL
+     * 
+     * @return int
+     */
+    public function dayCount(string $date = NULL) : int
+    {
+        $date = $date ?? $this->now();
+
+        return cal_days_in_month(CAL_GREGORIAN, (int) $this->convert($date, 'm'), (int) $this->convert('Y'));
+    }
+
+    /**
      * Gets year quarter
      * 
      * @param string $date = NULL
