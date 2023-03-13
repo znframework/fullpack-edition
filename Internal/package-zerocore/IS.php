@@ -208,4 +208,16 @@ class IS
     {
         return (bool) preg_match('/^([a-z0-9]+\-*){1,}$/', $slug);
     }
+
+    /**
+     * Closure
+     * 
+     * @param mixed $data
+     * 
+     * @return bool
+     */
+    public static function closure($data) : bool
+    {
+        return ! is_string($data) && is_callable($data);
+    }
 }
