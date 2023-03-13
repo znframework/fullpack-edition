@@ -17,6 +17,7 @@ use ZN\Buffering;
 use ZN\Singleton;
 use ZN\Inclusion;
 use ZN\Base;
+use ZN\IS;
 
 class Form
 {
@@ -565,7 +566,7 @@ class Form
             $key     = key($options);
             $current = current($options);
 
-            if( is_callable($current) )
+            if( IS::closure($current) )
             {
                 $selectedColumns = ['*'];
             }
@@ -603,7 +604,7 @@ class Form
 
             foreach( $result as $row )
             {
-                if( is_callable($current) )
+                if( IS::closure($current) )
                 {
                     $options[$row->$key] = $current($row);
                 }
