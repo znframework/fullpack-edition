@@ -2694,7 +2694,7 @@ class DB extends Connection
                     $data = Method::$method();
                 }
 
-                $columns = array_flip($this->setQueryByDriver('SELECT * FROM ' . $table)->columns());
+                $columns = array_flip($this->setQueryByDriver('SELECT * FROM ' . $table . ' LIMIT 1')->columns());
                 $data    = array_intersect_key($data, $columns);
 
                 $this->unsetData($data);
