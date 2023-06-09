@@ -103,7 +103,7 @@ class DB extends Connection
     private $transStart , $transError  , $duplicateCheck   , $duplicateCheckUpdate        ;
     private $joinType   , $joinTable   , $unionQuery = NULL, $caching = [], $jsonDecode   ;
     private $hashId     , $hashIdColumn, $isUpdate = false , $unset   = [], $object       ;
-    private $paging     , $from        , $returnQueryType  , $results;
+    private $from       , $results     , $returnQueryType  , $paging  = 'row'             ;
 
     /**
      * Callable talking queries.
@@ -1342,7 +1342,7 @@ class DB extends Connection
         $caching    = $this->caching;           $this->caching    = [];
         $tableName  = $this->tableName;         $this->tableName  = '';
         $jsonDecode = $this->jsonDecode;        $this->jsonDecode = [];
-        $paging     = $this->paging ?? 'row';   $this->paging     = NULL;
+        $paging     = $this->paging;            
 
         return (new self($this->config))->setQueryByDriver($query, $secure, 
         [
@@ -3173,7 +3173,7 @@ class DB extends Connection
         $this->caching     = $data['caching']    ?? [];
         $this->tableName   = $data['tableName']  ?? '';
         $this->jsonDecode  = $data['jsonDecode'] ?? [];
-        $this->paging      = $data['paging']     ?? 'page';
+        $this->paging      = $data['paging'];
 
         if( empty($this->caching) || ! Singleton::class('ZN\Cache\Processor')->select($this->getEncryptedCacheQuery()) )
         {
