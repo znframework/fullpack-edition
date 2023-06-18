@@ -59,18 +59,28 @@ class Async
     }
 
     /**
+     * Get process Id.
+     */
+    public static function getProcId() : string
+    {
+        return self::$procId;
+    }
+
+    /**
      * Run command
      * 
      * @param string $command
      * @param array  $data = []
      */
-    public static function run(string $command, array $data = []) : void
+    public static function run(string $command, array $data = []) : string
     {
-        $procId = self::$procDir . uniqid();
+        self::$procId = $procId = self::$procDir . uniqid();
 
         file_put_contents($procId, Json::encode($data));
 
         proc_open('php zerocore ' . $command . ' "' . $procId . '"', [], $arr);
+        
+        return $procId;
     }
 
     /**
@@ -117,5 +127,39 @@ class Async
     public static function report(array $data) : int
     {
         return file_put_contents(self::$procId . '-report', Json::encode($data));
+    }
+
+    /**
+     * Status
+     * 
+     * @param string ...$procIds
+     * 
+     * @return array
+     */
+    public static function status(string ...$procIds) : array
+    {
+        $pending = [];
+        
+        foreach( $procIds as $procId )
+        {
+            if( is_file($procId) )
+            {
+                $pending[$procId] = 1; # pending.
+            }
+        }
+
+        return $pending;
+    }
+
+    /**
+     * Is finish
+     * 
+     * @param string ...$procIds
+     * 
+     * @return bool
+     */
+    public static function isFinish(string ...$procIds) : bool
+    {
+        return  ! in_array(1, self::status(...$procIds));
     }
 }
