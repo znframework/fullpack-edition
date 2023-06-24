@@ -76,10 +76,12 @@ class Async
     {
         self::$procId = $procId = self::$procDir . uniqid();
 
+        $open = proc_open('php zerocore ' . $command . ' "' . $procId . '"', [], $arr);
+
+        $data['status'] = proc_get_status($open);
+        
         file_put_contents($procId, Json::encode($data));
 
-        proc_open('php zerocore ' . $command . ' "' . $procId . '"', [], $arr);
-        
         return $procId;
     }
 
