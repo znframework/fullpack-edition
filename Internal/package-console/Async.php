@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use ZN\Config;
 use ZN\Protection\Json;
 
 /**
@@ -76,7 +77,18 @@ class Async
     {
         self::$procId = $procId = self::$procDir . uniqid();
 
-        $open = proc_open('php zerocore ' . $command . ' "' . $procId . '"', [], $arr);
+        $processor = Config::default('ZN\Prompt\PromptDefaultConfiguration')::get('Services', 'processor');
+
+        if( ! file_exists($processor['path']) )
+        {
+            $path = 'php';
+        }
+        else
+        {
+            $path = $processor['path'];
+        }
+
+        $open = proc_open($path . ' zerocore ' . $command . ' "' . $procId . '"', [], $arr);
 
         $data['status'] = proc_get_status($open);
         
