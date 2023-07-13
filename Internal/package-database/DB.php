@@ -103,12 +103,19 @@ class DB extends Connection
     private $transStart , $transError  , $duplicateCheck   , $duplicateCheckUpdate        ;
     private $joinType   , $joinTable   , $unionQuery = NULL, $caching = [], $jsonDecode   ;
     private $hashId     , $hashIdColumn, $isUpdate = false , $unset   = [], $object       ;
-    private $from       , $results     , $returnQueryType  , $paging  = 'row'             ;
+    private $preselect  , $results     , $returnQueryType  , $paging  = 'row'             ;
 
     /**
      * Callable talking queries.
      */
     use CallableTalkingQueries;
+
+    public function preselect($preselect)
+    {
+        $this->preselect = $preselect . ' ';
+
+        return $this;
+    }
 
     /**
      * Defines SQL SELECT
@@ -759,7 +766,8 @@ class DB extends Connection
     {
         $this->tableName = $table = $this->addPrefixForTableAndColumn($table, 'table');
      
-        $finalQuery =     'SELECT '         . 
+        $finalQuery =     $this->preselect  . 
+                          'SELECT '         . 
                           $this->distinct   . $this->highPriority . $this->straightJoin . 
                           $this->smallResult. $this->bigResult    . $this->bufferResult . 
                           $this->cache      . $this->calcFoundRows. $this->buildSelectClause()    .
@@ -3229,8 +3237,8 @@ class DB extends Connection
         $this->bufferResult    = NULL;
         $this->cache           = NULL;
         $this->calcFoundRows   = NULL;
+        $this->preselect       = NULL;
         $this->select          = NULL;
-        $this->from            = NULL;
         $this->table           = NULL;
         $this->where           = NULL;
         $this->groupBy         = NULL;
