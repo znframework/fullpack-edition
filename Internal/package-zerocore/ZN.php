@@ -133,6 +133,12 @@ class ZN
         # Provides data about the current working url.
         Structure::defines();
 
+        # Configures the use of Composer autoloader.
+        if( $composer = Config::get('Autoloader', 'composer') ) 
+        {
+            Composer::loader($composer);
+        }
+
         # If the operation is executed via console, the code flow is not continue.  
         if( defined('CONSOLE_ENABLED') || $type === NULL )
         {
@@ -501,7 +507,7 @@ class ZN
         $restoreFix = 'Restore';
 
         # Does the project name have a 'restore' prefix?
-        $isRestorePrefix = strpos(REQUESTED_CURRENT_PROJECT, $restoreFix) === 0;
+        $isRestorePrefix = strpos((string) REQUESTED_CURRENT_PROJECT, $restoreFix) === 0;
 
         # If the requested project is a sub-project, the project containing this project is called.
         if( ( ! empty($containers) || $isRestorePrefix ) && REQUESTED_CURRENT_PROJECT !== NULL )

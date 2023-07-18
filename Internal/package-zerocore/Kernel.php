@@ -84,12 +84,6 @@ class Kernel
         {
             Lang::setByURI(); // @codeCoverageIgnore
         }
-
-        # Configures the use of Composer autoloader.
-        if( $composer = Config::get('Autoloader', 'composer') ) 
-        {
-            Composer::loader($composer);
-        }
         
         # If the setting is active, it loads the startup files.
         if( ($starting = Config::get('Starting'))['autoload']['status'] === true ) 
