@@ -11,7 +11,10 @@
 
 use Throwable;
 use ZN\Config;
+use ZN\Buffering;
 use ZN\Protection\Json;
+use ZN\ErrorHandling\Errors;
+use ZN\ErrorHandling\Exceptions;
 
 /**
  * @codeCoverageIgnore
@@ -103,9 +106,9 @@ class Async
      * 
      * @param string   $procId
      * @param callback $callable
-     * @param bool     $report = false
+     * @param bool     $displayError = false
      */
-    public static function process(string $procId, callable $callable, bool $report = false) : void
+    public static function process(string $procId, callable $callable, bool $displayError = false) : void
     {
         self::$procId = $procId;
 
@@ -117,17 +120,18 @@ class Async
         }
         catch( Throwable $e )
         {
-            if( $report )
+            if( $displayError )
             {
                 $error = 
                 [
+                    'code'    => $e->getCode(),
                     'message' => $e->getMessage(),
                     'file'    => $e->getFile(),
                     'line'    => $e->getLine(),
                     'trace'   => $e->getTrace()
                 ];
 
-                self::report($error);
+                self::report($error, 'error');
             }
         }
 
@@ -158,9 +162,9 @@ class Async
      * 
      * @return int
      */
-    public static function report(array $data) : int
+    public static function report(array $data, string $suffix = 'report') : int
     {
-        return file_put_contents(self::$procId . '-report', Json::encode($data));
+        return file_put_contents(self::$procId . '-' . $suffix, Json::encode($data));
     }
 
     /**
@@ -195,5 +199,31 @@ class Async
     public static function isFinish(string ...$procIds) : bool
     {
         return  ! in_array(1, self::status(...$procIds));
+    }
+
+    /**
+     * Dispay Report
+     * 
+     * @param string $errorFile
+     * 
+     * @return string
+     */
+    public static function displayError(string $errorFile) : string
+    {
+        if( $fileContent = file_get_contents(self::$procDir . $errorFile) ) 
+        {
+            $data = Json::decodeArray($fileContent);
+
+            $display = Buffering\Callback::do(function() use($data)
+            { 
+                Exceptions::table($data['code'] ?? NULL, $data['message'], $data['file'], $data['line'], $data['trace']); 
+            });
+        }
+        else
+        {
+            $display = Errors::message('File not found!');
+        }
+        
+        return $display;
     }
 }
