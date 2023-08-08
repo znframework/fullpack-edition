@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use Throwable;
 use ZN\Config;
 use ZN\Protection\Json;
 
@@ -100,16 +101,35 @@ class Async
     /**
      * Command process
      * 
-     * @param string $procId
+     * @param string   $procId
      * @param callback $callable
+     * @param bool     $report = false
      */
-    public static function process(string $procId, callable $callable) : void
+    public static function process(string $procId, callable $callable, bool $report = false) : void
     {
         self::$procId = $procId;
 
         $data = self::getData($procId);
 
-        $callable($data, $procId);
+        try
+        {
+            $callable($data, $procId);
+        }
+        catch( Throwable $e )
+        {
+            if( $report )
+            {
+                $error = 
+                [
+                    'message' => $e->getMessage(),
+                    'file'    => $e->getFile(),
+                    'line'    => $e->getLine(),
+                    'trace'   => $e->getTrace()
+                ];
+
+                self::report($error);
+            }
+        }
 
         self::remove($procId);
     }

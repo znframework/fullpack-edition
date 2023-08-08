@@ -29,9 +29,6 @@ class Kernel
     {    
         # The system starts the load time.
         define('START_BENCHMARK', microtime(true));
-        
-        # It keeps the selected project configuration.
-        define('PROJECT_CONFIG', Config::get('Project'));
 
         # Enables the ob_gzhandler method if it is turned on.
         define('HTACCESS_CONFIG', Config::get('Htaccess'));

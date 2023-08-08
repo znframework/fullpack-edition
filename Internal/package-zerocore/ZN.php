@@ -9,6 +9,7 @@
  * @author  Ozan UYKUN [ozan@znframework.com]
  */
 
+use Throwable;
 use ZN\Filesystem;
 use ZN\Services\Restful;
 use ZN\Protection\Separator;
@@ -145,10 +146,16 @@ class ZN
             return false;
         }
  
+         # It keeps the selected project configuration.
+        define('PROJECT_CONFIG', Config::get('Project'));
+
+        # It keeps the selected project mode.
+        define('PROJECT_MODE', strtolower(PROJECT_CONFIG['mode'] ?? 'development'));
+
         # Run Kernel
         try 
         { 
-            Kernel::run();  
+            Kernel::run();
         }
         catch( Throwable $e )
         {

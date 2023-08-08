@@ -42,9 +42,6 @@ class In
      */
     public static function projectMode()
     {
-        # It keeps the selected project mode.
-        define('PROJECT_MODE', strtolower(PROJECT_CONFIG['mode'] ?? 'development'));
-        
         # Controls project mode.
         switch( strtolower(PROJECT_MODE) )
         {
