@@ -173,6 +173,14 @@ class Connection
     }
 
     /**
+     * Restructure
+     */
+    public function restruct()
+    {
+        $this->__construct();
+    }
+
+    /**
      * Alias different connection
      * 
      * @param mixed $connectName = NULL
