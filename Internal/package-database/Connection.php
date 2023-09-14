@@ -174,10 +174,14 @@ class Connection
 
     /**
      * Restructure
+     * 
+     * @param array $config
+     * 
+     * @return void
      */
-    public function restruct()
+    public function restruct(array $config = [])
     {
-        $this->__construct();
+        $this->__construct($config);
     }
 
     /**
