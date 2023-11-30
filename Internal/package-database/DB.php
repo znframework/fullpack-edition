@@ -1303,7 +1303,7 @@ class DB extends Connection
      */
     public function union(string $table = NULL, $name = 'UNION') : DB
     {
-        $this->unionQuery .= $this->get($table, 'string') . $name;
+        $this->unionQuery .= $this->get($table, 'string') . ' ' . $name;
 
         return $this;
     }
