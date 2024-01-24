@@ -114,4 +114,18 @@ class Strings extends Factory
     {
         return count(explode($char, $str)) - 1;
     }
+
+    /**
+     * Unserialize
+     * 
+     * @param string $str
+     * 
+     * @return array
+     */
+    public static function unserialize(string $str) : array
+    {
+        parse_str(urldecode($str), $array);
+
+        return $array;
+    }
 }
