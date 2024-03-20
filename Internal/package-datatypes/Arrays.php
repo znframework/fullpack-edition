@@ -234,4 +234,35 @@ class Arrays extends Factory
 
         return $return;
     }
+
+    /**
+     * Fil Keys Range
+     * 
+     * @param array
+     * @param scalar $char = ''
+     * @param mixed  $min  = NULL
+     * @param mixed  $max  = NULL
+     * 
+     * @return array
+     */
+    public static function fillKeysRange(array $array, $char = '', $min = NULL, $max = NULL) : array
+    {
+        $rearray = [];
+    
+        if( ! $array )
+        {
+            return $rearray;
+        }
+    
+        $keys = range($min ?? min(array_keys($array)), $max ?? max(array_keys($array)));
+    
+        foreach( $keys as $key ) 
+        {
+            $value = isset($array[$key]) ? $array[$key] : $char;
+    
+            $rearray[$key] = $value;
+        }
+    
+        return $rearray;
+    }
 }
