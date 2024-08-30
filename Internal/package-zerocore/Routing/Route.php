@@ -320,6 +320,7 @@ class Route extends FilterProperties implements RouteInterface
             function($match) use (&$count, &$return, $routeSegment)
             {
                 $count   = key(preg_grep('/' . preg_quote($match[0], '/') . '/', $routeSegment));
+                unset($routeSegment[$count]);
                 $decoder = $match['separator'] ?? NULL;
                 $value   = $val = URI::segment($count + 1);
                 $column  = $select = $match['column'];
