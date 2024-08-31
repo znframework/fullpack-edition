@@ -317,7 +317,7 @@ class Route extends FilterProperties implements RouteInterface
         return preg_replace_callback
         (
             '/\[(?<table>\w+|\.)\:(?<column>\w+|\.)(\s*\,\s*(?<separator>json|serial|separator)(\:(?<key>.*?))*)*\]/i', 
-            function($match) use (&$count, &$return, $routeSegment)
+            function($match) use (&$count, &$return, &$routeSegment)
             {
                 $count   = key(preg_grep('/' . preg_quote($match[0], '/') . '/', $routeSegment));
                 unset($routeSegment[$count]);
