@@ -229,7 +229,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function from(string $from, string $name = NULL, string $returnPath = NULL) : Sender;
+    public function from(string $from, ?string $name = NULL, ?string $returnPath = NULL) : Sender;
 
     /**
      * From / Sender
@@ -240,7 +240,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function sender(string $from, string $name = NULL, string $returnPath = NULL) : Sender;
+    public function sender(string $from, ?string $name = NULL, ?string $returnPath = NULL) : Sender;
 
     /**
      * Subject
@@ -300,7 +300,7 @@ interface SenderInterface
      * 
      * @return Sender
      */
-    public function attachment(string $file, string $disposition = NULL, string $newName = NULL, $mime = NULL) : Sender;
+    public function attachment(string $file, ?string $disposition = NULL, ?string $newName = NULL, $mime = NULL) : Sender;
 
     /**
      * Attachment Content ID
@@ -319,5 +319,5 @@ interface SenderInterface
      * 
      * @return bool
      */
-    public function send(string $subject = NULL, string $message = NULL) : bool;
+    public function send(?string $subject = NULL, ?string $message = NULL) : bool;
 }

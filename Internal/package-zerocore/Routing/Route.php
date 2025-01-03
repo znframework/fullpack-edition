@@ -162,7 +162,7 @@ class Route extends FilterProperties implements RouteInterface
      * 
      * @param string $path   = NULL
      */
-    public function uri(string $path = NULL)
+    public function uri(?string $path = NULL)
     {
         $path = $this->setPath($path, $routeConfig);
 

@@ -50,7 +50,7 @@ class Login extends UserExtends
      * 
      * @return bool
      */
-    public function do(string $username = NULL, string $password = NULL, $rememberMe = false) : bool
+    public function do(?string $username = NULL, ?string $password = NULL, $rememberMe = false) : bool
     {
         $rpassword = $password;
 

@@ -117,7 +117,7 @@ class Sender implements SenderInterface
     /**
      * Protected Lang
      */
-    protected function getLang(string $type, string $changes = NULL) : string
+    protected function getLang(string $type, ?string $changes = NULL) : string
     {
         return str_replace('%', $changes ?? '', $this->getLang[$type]);
     }
@@ -400,7 +400,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function to($to, string $name = NULL) : Sender
+    public function to($to, ?string $name = NULL) : Sender
     {
         $this->toEmail($to, $name, 'to');
 
@@ -415,7 +415,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function receiver($to, string $name = NULL) : Sender
+    public function receiver($to, ?string $name = NULL) : Sender
     {
         $this->to($to, $name);
 
@@ -430,7 +430,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function replyTo($replyTo, string $name = NULL) : Sender
+    public function replyTo($replyTo, ?string $name = NULL) : Sender
     {
         $this->toEmail($replyTo, $name, 'replyTo');
 
@@ -445,7 +445,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function cc($cc, string $name = NULL) : Sender
+    public function cc($cc, ?string $name = NULL) : Sender
     {
         $this->toEmail($cc, $name, 'cc');
 
@@ -460,7 +460,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function bcc($bcc, string $name = NULL) : Sender
+    public function bcc($bcc, ?string $name = NULL) : Sender
     {
         $this->toEmail($bcc, $name, 'bcc');
 
@@ -476,7 +476,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function from(string $from, string $name = NULL, string $returnPath = NULL) : Sender
+    public function from(string $from, ?string $name = NULL, ?string $returnPath = NULL) : Sender
     {
         if( ! IS::email($from) )
         {
@@ -501,7 +501,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function sender(string $from, string $name = NULL, string $returnPath = NULL) : Sender
+    public function sender(string $from, ?string $name = NULL, ?string $returnPath = NULL) : Sender
     {
         $this->from($from, $name, $returnPath);
 
@@ -628,7 +628,7 @@ class Sender implements SenderInterface
      * 
      * @return Sender
      */
-    public function attachment(string $file, string $disposition = NULL, string $newName = NULL, $mime = NULL) : Sender
+    public function attachment(string $file, ?string $disposition = NULL, ?string $newName = NULL, $mime = NULL) : Sender
     {
         if( $newName === NULL )
         {
@@ -734,7 +734,7 @@ class Sender implements SenderInterface
      * 
      * @return bool
      */
-    public function send(string $subject = NULL, string $message = NULL) : bool
+    public function send(?string $subject = NULL, ?string $message = NULL) : bool
     {
         if( ! isset($this->headers['From']) )
         {

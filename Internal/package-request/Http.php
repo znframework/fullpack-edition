@@ -316,7 +316,7 @@ class Http implements HttpInterface
      * 
      * @return mixed
      */
-    public static function select(string $name = NULL)
+    public static function select(?string $name = NULL)
     {
         $name  = self::$settings['name']  ?? $name;
         $input = self::$settings['input'] ?? false;
@@ -334,7 +334,7 @@ class Http implements HttpInterface
      * 
      * @return bool
      */
-    public static function insert(string $name = NULL, $value = NULL) : bool
+    public static function insert(?string $name = NULL, $value = NULL) : bool
     {
         $name  = self::$settings['name']  ?? $name;
         $input = self::$settings['input'] ?? false;
@@ -352,7 +352,7 @@ class Http implements HttpInterface
      * 
      * @return bool
      */
-    public static function delete(string $name = NULL) : bool
+    public static function delete(?string $name = NULL) : bool
     {
         $name  = self::$settings['name']  ?? $name;
         $input = self::$settings['input'] ?? false;

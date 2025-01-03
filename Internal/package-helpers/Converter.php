@@ -212,7 +212,7 @@ class Converter
      * 
      * @return string
      */
-    public static function money(Float $money = 0, string $type = NULL, bool $float = true) : string
+    public static function money(Float $money = 0, ?string $type = NULL, bool $float = true) : string
     {
         $moneyFormat = number_format($money, 2, ',', '.');
 
@@ -482,7 +482,7 @@ class Converter
      * @param string $prefix = NULL
      * @param string $suffix = NULL
      */
-    public static function toConstant(string $var, string $prefix = NULL, string $suffix = NULL)
+    public static function toConstant(string $var, ?string $prefix = NULL, ?string $suffix = NULL)
     {
         return Helper::toConstant($var, $prefix, $suffix);
     }

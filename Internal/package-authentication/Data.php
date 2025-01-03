@@ -18,7 +18,7 @@ class Data extends UserExtends
      * 
      * @return object
      */
-    public function get(string $tbl = NULL)
+    public function get(?string $tbl = NULL)
     {
         if( $this->getUsernameSessionCookie() )
         {

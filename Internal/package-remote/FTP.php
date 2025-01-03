@@ -192,7 +192,7 @@ class FTP extends RemoteExtends implements FTPInterface, RemoteInterface
      * 
      * @return array
      */
-    public function files(string $path, string $extension = NULL) : array
+    public function files(string $path, ?string $extension = NULL) : array
     {
         $list = ftp_nlist($this->connect, $path);
 

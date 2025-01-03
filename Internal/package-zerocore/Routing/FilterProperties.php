@@ -26,7 +26,7 @@ class FilterProperties
      * 
      * @return Route
      */
-    public function restore($ips, string $uri = NULL)
+    public function restore($ips, ?string $uri = NULL)
     {
         $this->filters['restore']['ips'] = (array) $ips;
         $this->filters['restore']['uri'] = $uri;

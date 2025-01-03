@@ -40,7 +40,7 @@ interface RouteInterface
      * 
      * @return Route
      */
-    public function restore($ips, string $uri = NULL);
+    public function restore($ips, ?string $uri = NULL);
 
     /**
      * CSRF
@@ -104,7 +104,7 @@ interface RouteInterface
      * 
      * @param string $path   = NULL
      */
-    public function uri(string $path = NULL);
+    public function uri(?string $path = NULL);
 
     /**
      * Sets all route

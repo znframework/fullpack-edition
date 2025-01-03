@@ -47,7 +47,7 @@ interface DataInterface
      * 
      * @return self
      */
-    public function addError(string $error, string $name = NULL);
+    public function addError(string $error, ?string $name = NULL);
 
     /**
      * Get error

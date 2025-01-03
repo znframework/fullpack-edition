@@ -36,5 +36,5 @@ interface SSHInterface
      * 
      * @return resource|false
      */
-    public function run(string $command = NULL);
+    public function run(?string $command = NULL);
 }

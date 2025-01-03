@@ -63,7 +63,7 @@ interface JobInterface
      * 
      * @return int
      */
-    public function run(string $cmd = NULL);
+    public function run(?string $cmd = NULL);
 
     /**
      * Get string query
@@ -119,5 +119,5 @@ interface JobInterface
      * 
      * @return Job
      */
-    public function path(string $path = NULL);
+    public function path(?string $path = NULL);
 }

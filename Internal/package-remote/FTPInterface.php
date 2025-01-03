@@ -28,7 +28,7 @@ interface FTPInterface
      * 
      * @return array
      */
-    public function files(string $path, string $extension = NULL) : array;
+    public function files(string $path, ?string $extension = NULL) : array;
 
     /**
      * Get File Size

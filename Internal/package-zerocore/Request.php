@@ -127,7 +127,7 @@ class Request
      * 
      * @return string
      */
-    public static function getSiteURL(string $uri = NULL) : string
+    public static function getSiteURL(?string $uri = NULL) : string
     {
         $return = self::getHostName
         (
@@ -149,7 +149,7 @@ class Request
      * 
      * @return string
      */
-    public static function getBaseURL(string $uri = NULL) : string
+    public static function getBaseURL(?string $uri = NULL) : string
     {
         return self::getHostName(BASE_DIR . $uri);
     }
@@ -162,7 +162,7 @@ class Request
      * 
      * @return string
      */
-    public static function getHostName(string $uri = NULL) : string
+    public static function getHostName(?string $uri = NULL) : string
     {
         return SSL_STATUS . Base::host() . '/' . In::cleanInjection(ltrim($uri ?? '', '/'));
     }

@@ -39,7 +39,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function base(string $uri = NULL) : string
+    public static function base(?string $uri = NULL) : string
     {
         return Request::getBaseURL($uri);
     }
@@ -51,7 +51,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function site(string $uri = NULL) : string
+    public static function site(?string $uri = NULL) : string
     {
         return Request::getSiteURL($uri);
     }
@@ -63,7 +63,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function sites(string $uri = NULL) : string
+    public static function sites(?string $uri = NULL) : string
     {
         return str_replace(SSL_STATUS, Http::fix(true), self::site($uri));
     }
@@ -75,7 +75,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function host(string $uri = NULL) : string
+    public static function host(?string $uri = NULL) : string
     {
         return Request::getHostName($uri);
     }
@@ -87,7 +87,7 @@ class URL implements URLInterface
      * 
      * @return string
      */
-    public static function current(string $fix = NULL) : string
+    public static function current(?string $fix = NULL) : string
     {
         $currentUrl = Request::getHostName(Server::data('requestUri'));
 
@@ -121,7 +121,7 @@ class URL implements URLInterface
      * 
      * @return mixed
      */
-    public static function buildQuery($data, string $numericPrefix = NULL, string $separator = NULL, string $enctype = '+') : string
+    public static function buildQuery($data, ?string $numericPrefix = NULL, ?string $separator = NULL, string $enctype = '+') : string
     {
         $rfc = $enctype === '+' ? PHP_QUERY_RFC1738 : PHP_QUERY_RFC3986;
 

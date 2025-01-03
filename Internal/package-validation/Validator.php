@@ -24,7 +24,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function card(string $data, string $type = NULL) : bool
+    public static function card(string $data, ?string $type = NULL) : bool
     {
         return CreditCard\Validator::card($data, $type);
     }
@@ -35,7 +35,7 @@ class Validator implements ValidatorInterface
      * @param string $cvc
      * @param string $type
      */
-    public static function cvc(string $cvc, string $type = NULL) : bool
+    public static function cvc(string $cvc, ?string $type = NULL) : bool
     {
         return CreditCard\Validator::cvc($cvc, $type);
     }
@@ -308,7 +308,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function phone(string $data, string $pattern = NULL) : bool
+    public static function phone(string $data, ?string $pattern = NULL) : bool
     {
         if( $pattern !== NULL)
         {

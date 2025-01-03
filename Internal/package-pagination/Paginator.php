@@ -319,7 +319,7 @@ class Paginator implements PaginatorInterface
      * 
      * @return string
      */
-    public function getURI(string $page = NULL) : string
+    public function getURI(?string $page = NULL) : string
     {
         return $this->checkGetRequest($page);
     }

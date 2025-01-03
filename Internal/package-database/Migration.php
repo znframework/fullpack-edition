@@ -214,7 +214,7 @@ class Migration implements MigrationInterface
      * 
      * @return Migration
      */
-    public function path(string $path = NULL) : Migration
+    public function path(?string $path = NULL) : Migration
     {
         $this->path = Base::suffix($path);
 

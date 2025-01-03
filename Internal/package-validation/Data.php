@@ -157,7 +157,7 @@ class Data implements DataInterface
      * 
      * @return self
      */
-    public function addError(string $error, string $name = NULL)
+    public function addError(string $error, ?string $name = NULL)
     {
         if( $name )
         {

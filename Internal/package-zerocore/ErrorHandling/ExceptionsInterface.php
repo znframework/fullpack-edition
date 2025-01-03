@@ -20,7 +20,7 @@ interface ExceptionsInterface
      * 
      * @return void
      */
-    public static function throws(string $message = NULL, string $key = NULL, $send = NULL);
+    public static function throws(?string $message = NULL, ?string $key = NULL, $send = NULL);
 
     /**
      * Get exception table
@@ -33,7 +33,7 @@ interface ExceptionsInterface
      * 
      * @return void
      */
-    public static function table($no = NULL, string $msg = NULL, string $file = NULL, string $line = NULL, array $trace = NULL);
+    public static function table($no = NULL, ?string $msg = NULL, ?string $file = NULL, ?string $line = NULL, array $trace = NULL);
 
     /**
      * Restore exception

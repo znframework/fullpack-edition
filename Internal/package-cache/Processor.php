@@ -71,7 +71,7 @@ class Processor implements ProcessorInterface
      * 
      * @return Cache
      */
-    public function key(string $key = NULL) : Processor
+    public function key(?string $key = NULL) : Processor
     {
         $this->key = $key;
 

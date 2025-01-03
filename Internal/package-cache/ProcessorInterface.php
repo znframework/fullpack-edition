@@ -36,7 +36,7 @@ interface ProcessorInterface
      * 
      * @return Cache
      */
-    public function key(string $key = NULL) : Processor;
+    public function key(?string $key = NULL) : Processor;
 
     /**
      * Cache code

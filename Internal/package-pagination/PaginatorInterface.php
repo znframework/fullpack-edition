@@ -120,7 +120,7 @@ interface PaginatorInterface
      * 
      * @return string
      */
-    public function getURI(string $page = NULL) : string;
+    public function getURI(?string $page = NULL) : string;
 
     /**
      * Configures all settings of the page.

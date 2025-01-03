@@ -21,7 +21,7 @@ class Helper
      * 
      * @return bool
      */
-    public static function report(string $subject, string $message, string $destination = NULL, string $time = NULL) : bool
+    public static function report(string $subject, string $message, ?string $destination = NULL, ?string $time = NULL) : bool
     {
         if( ! Config::get('Project', 'log')['createFile'] )
         {
@@ -128,7 +128,7 @@ class Helper
      * @param string $prefix = NULL
      * @param string $suffix = NULL
      */
-    public static function toConstant(string $var, string $prefix = NULL, string $suffix = NULL)
+    public static function toConstant(string $var, ?string $prefix = NULL, ?string $suffix = NULL)
     {
         preg_match('/^[A-Z]+/', $var, $match);
         

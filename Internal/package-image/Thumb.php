@@ -44,7 +44,7 @@ class Thumb implements ThumbInterface
      * 
      * @return Thumb
      */
-    public function watermark(string $source, string $align = NULL, $margin = 0) : Thumb
+    public function watermark(string $source, ?string $align = NULL, $margin = 0) : Thumb
     {
         $this->sets['watermark'] = [Base::removePrefix($source, Request::getBaseURL()), $align, $margin]; 
 
@@ -182,7 +182,7 @@ class Thumb implements ThumbInterface
      * 
      * @return string
      */
-    public function create(string $path = NULL) : string
+    public function create(?string $path = NULL) : string
     {
         if( isset($this->sets['filePath']) )
         {

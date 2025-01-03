@@ -165,7 +165,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function returnUrl(string $success, string $fail = NULL)
+    public function returnUrl(string $success, ?string $fail = NULL)
     {
         $this->settings['okUrl'] = URL::site($success);
         $this->settings['failUrl'] = URL::site($fail ?? $success);

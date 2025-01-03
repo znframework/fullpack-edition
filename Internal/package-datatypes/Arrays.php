@@ -223,7 +223,7 @@ class Arrays extends Factory
      * 
      * @return int|false
      */
-    public static function countSameValues(array $array, string $key = NULL)
+    public static function countSameValues(array $array, ?string $key = NULL)
     {
         $return = array_count_values($array);
 

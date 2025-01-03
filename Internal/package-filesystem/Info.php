@@ -98,7 +98,7 @@ class Info
      * 
      * @return string
      */
-    public static function rpath(string $file = NULL) : string
+    public static function rpath(?string $file = NULL) : string
     {
         $file = $file ?? '';
 
@@ -481,7 +481,7 @@ class Info
      * 
      * @return array
      */
-    public static function fileInfo(string $dir, string $extension = NULL) : array
+    public static function fileInfo(string $dir, ?string $extension = NULL) : array
     {
         $dir = self::rpath($dir);
 

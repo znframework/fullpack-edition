@@ -58,5 +58,5 @@ interface GenerateInterface
      * 
      * @return bool
      */
-    public function delete(string $name, string $type = 'controller', string $app = NULL) : bool;
+    public function delete(string $name, string $type = 'controller', ?string $app = NULL) : bool;
 }

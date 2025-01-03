@@ -168,7 +168,7 @@ class Html
      * 
      * @return string
      */
-    public function label(string $for, $value = NULL, string $form = NULL, array $attributes = []) : string
+    public function label(string $for, $value = NULL, ?string $form = NULL, array $attributes = []) : string
     {
         if( ! empty($for) )
         {
@@ -232,7 +232,7 @@ class Html
      * 
      * @return string
      */
-    public function mailTo(string $mail, string $value = NULL, array $attributes = []) : string
+    public function mailTo(string $mail, ?string $value = NULL, array $attributes = []) : string
     {
         if( ! IS::email($mail) )
         {
@@ -255,7 +255,7 @@ class Html
      * 
      * @return string
      */
-    public function font($str, string $size = NULL, string $color = NULL, string $face = NULL, array $attributes = []) : string
+    public function font($str, ?string $size = NULL, ?string $color = NULL, ?string $face = NULL, array $attributes = []) : string
     {
         if( ! empty($size) )
         {
@@ -420,7 +420,7 @@ class Html
      * 
      * @return string
      */
-    public function meta($name, string $content = NULL)
+    public function meta($name, ?string $content = NULL)
     {
         if( ! is_array($name) )
         {

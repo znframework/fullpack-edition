@@ -113,7 +113,7 @@ function output($data, array $settings = NULL, bool $content = false)
  * 
  * @return void
  */
-function redirect(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true)
+function redirect(?string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true)
 {
     ZN\Response::redirect($url, $time, $data, $exit);
 }

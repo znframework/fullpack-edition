@@ -951,7 +951,7 @@ class Initialize extends Controller
      * It enters the circuit before all controllers. 
      * You can change this setting in Config/Starting.php file.
      */
-    public function main(string $params = NULL)
+    public function main(?string $params = NULL)
     {
         # The theme is activated.
         # Location: Resources/Themes/'.$this->getThemeDirectoryName().'/

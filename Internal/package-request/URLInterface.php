@@ -18,7 +18,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function base(string $uri = NULL) : string;
+    public static function base(?string $uri = NULL) : string;
 
     /**
      * Get site URL
@@ -27,7 +27,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function site(string $uri = NULL) : string;
+    public static function site(?string $uri = NULL) : string;
 
     /**
      * Get site URLs
@@ -36,7 +36,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function sites(string $uri = NULL) : string;
+    public static function sites(?string $uri = NULL) : string;
 
     /**
      * Get host name
@@ -45,7 +45,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function host(string $uri = NULL) : string;
+    public static function host(?string $uri = NULL) : string;
 
     /**
      * Get current URL
@@ -54,7 +54,7 @@ interface URLInterface
      * 
      * @return string
      */
-    public static function current(string $fix = NULL) : string;
+    public static function current(?string $fix = NULL) : string;
 
     /**
      * Get prev URL
@@ -73,7 +73,7 @@ interface URLInterface
      * 
      * @return mixed
      */
-    public static function buildQuery($data, string $numericPrefix = NULL, string $separator = NULL, string $enctype = '+') : string;
+    public static function buildQuery($data, ?string $numericPrefix = NULL, ?string $separator = NULL, string $enctype = '+') : string;
 
     /**
      * Parse URL

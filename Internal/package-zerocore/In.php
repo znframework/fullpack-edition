@@ -107,7 +107,7 @@ class In
      * 
      * @return string
      */
-    public static function secretProjectKey(string $fix = NULL) : string
+    public static function secretProjectKey(?string $fix = NULL) : string
     {
         return hash('ripemd320', CONTAINER_PROJECT . $fix);
     }
@@ -119,7 +119,7 @@ class In
      * 
      * @return string
      */
-    public static function defaultProjectKey(string $fix = NULL) : string
+    public static function defaultProjectKey(?string $fix = NULL) : string
     {
         return md5(Request::getBaseURL(strtolower(CONTAINER_PROJECT)) . $fix);
     }
@@ -161,7 +161,7 @@ class In
      * 
      * @return string
      */
-    public static function cleanURIPrefix(string $uri = NULL, string $cleanData = NULL) : string
+    public static function cleanURIPrefix(?string $uri = NULL, ?string $cleanData = NULL) : string
     {
         $uri = $uri ?? ''; $cleanData = $cleanData ?? '';
 
@@ -182,7 +182,7 @@ class In
      * 
      * @return string
      */
-    public static function cleanInjection(string $string = NULL) : string
+    public static function cleanInjection(?string $string = NULL) : string
     {
         $urlInjectionChangeChars = Config::get('Security', 'urlChangeChars') ?: [];
 
@@ -267,7 +267,7 @@ class In
      * 
      * @return bool
      */
-    public static function startingController(string $startController = NULL, array $param = [])
+    public static function startingController(?string $startController = NULL, array $param = [])
     {
         $controllerEx = explode(':', $startController ?? '');
 
@@ -466,7 +466,7 @@ class In
     /**
      * Protected apply route on uri.
      */
-    protected static function applyRouteOnURI(string $requestUri = NULL) : string
+    protected static function applyRouteOnURI(?string $requestUri = NULL) : string
     {
         self::applyRouteAll();
 

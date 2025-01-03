@@ -97,7 +97,7 @@ class Lang
      * 
      * @return mixed
      */
-    public static function select(string $file = NULL, string $str = NULL, $changed = NULL)
+    public static function select(?string $file = NULL, ?string $str = NULL, $changed = NULL)
     {
         $langstr = '';
 
@@ -173,7 +173,7 @@ class Lang
      * 
      * @return bool
      */
-    public static function set(string $l = NULL) : bool
+    public static function set(?string $l = NULL) : bool
     {
         if( empty($l) )
         {

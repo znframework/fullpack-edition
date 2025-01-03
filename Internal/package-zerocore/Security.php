@@ -41,7 +41,7 @@ class Security
      * 
      * @return void
      */
-    public static function CSRFToken(string $uri = NULL, string $type = 'post', $name = 'token')
+    public static function CSRFToken(?string $uri = NULL, string $type = 'post', $name = 'token')
     {
         if( ! self::validCSRFToken($name, $type) )
         {

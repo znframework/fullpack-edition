@@ -129,7 +129,7 @@ interface UploadInterface
      * 
      * @return bool
      */
-    public  function start(string $fileName = 'upload', string $rootDir = NULL) : bool;
+    public  function start(string $fileName = 'upload', ?string $rootDir = NULL) : bool;
 
     /**
      * Gets info
@@ -138,7 +138,7 @@ interface UploadInterface
      * 
      * @return object|false
      */
-    public function info(string $info = NULL);
+    public function info(?string $info = NULL);
 
     /**
      * Gets error

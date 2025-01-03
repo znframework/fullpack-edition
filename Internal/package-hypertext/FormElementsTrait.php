@@ -196,7 +196,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vPhone(string $pattern = NULL)
+    public function vPhone(?string $pattern = NULL)
     {
         return $this->setJavascriptValidation('ZNValidationPhone', 'phone', ['phone' => $pattern], [Base::presuffix($pattern, '\'')]);
     }
@@ -382,7 +382,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function where($column, string $value = NULL, string $logical = 'and')
+    public function where($column, ?string $value = NULL, string $logical = 'and')
     {
         $this->settings['where']       = true;
         $this->settings['whereValue']  = $value;
@@ -465,7 +465,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function action(string $url = NULL)
+    public function action(?string $url = NULL)
     {
         $this->settings['attr']['action'] = IS::url($url) ? $url : Request::getSiteURL($url);
 
@@ -499,7 +499,7 @@ trait FormElementsTrait
      * 
      * @return self
      */
-    public function option($key, string $value = NULL)
+    public function option($key, ?string $value = NULL)
     {
         if( is_array($key) )
         {

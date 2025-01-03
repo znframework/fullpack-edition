@@ -98,7 +98,7 @@ class SSH extends RemoteExtends implements SSHInterface, RemoteInterface
      * 
      * @return resource|false
      */
-    public function run(string $command = NULL)
+    public function run(?string $command = NULL)
     {
         if( ! empty($this->connect) )
         {

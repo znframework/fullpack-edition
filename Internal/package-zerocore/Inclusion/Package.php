@@ -25,7 +25,7 @@ class Package
      * 
      * @return mixed
      */
-    public static function use($packages, bool $recursive = false, bool $getContents = false, string $dir = NULL)
+    public static function use($packages, bool $recursive = false, bool $getContents = false, ?string $dir = NULL)
     {
         if( ! empty(Properties::$parameters['usable']) )
         {

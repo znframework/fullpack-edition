@@ -153,7 +153,7 @@ class Base
      * 
      * @return string
      */
-    public static function removePrefix(string $data = NULL, string $fix = '/') : string
+    public static function removePrefix(?string $data = NULL, string $fix = '/') : string
     {
         $data = $data ?? '';
 
@@ -173,7 +173,7 @@ class Base
      * 
      * @return string
      */
-    public static function removeSuffix(string $data = NULL, string $fix = '/') : string
+    public static function removeSuffix(?string $data = NULL, string $fix = '/') : string
     {
         $data = $data ?? '';
 
@@ -193,7 +193,7 @@ class Base
      * 
      * @return string
      */
-    public static function removePresuffix(string $data = NULL, string $fix = '/') : string
+    public static function removePresuffix(?string $data = NULL, string $fix = '/') : string
     {
         return self::removeSuffix(self::removePrefix($data, $fix), $fix);
     }
@@ -208,7 +208,7 @@ class Base
      * 
      * @return string
      */
-    public static function suffix(string $string = NULL, string $fix = '/') : string
+    public static function suffix(?string $string = NULL, string $fix = '/') : string
     {
         return self::prefix($string, $fix, __FUNCTION__);
     }
@@ -223,7 +223,7 @@ class Base
      * 
      * @return string
      */
-    public static function prefix(string $string = NULL, string $fix = '/', $type = __FUNCTION__) : string
+    public static function prefix(?string $string = NULL, string $fix = '/', $type = __FUNCTION__) : string
     {
         $string = $string ?? '';
 
@@ -261,7 +261,7 @@ class Base
      * 
      * @return string
      */
-    public static function presuffix(string $string = NULL, string $fix = '/') : string
+    public static function presuffix(?string $string = NULL, string $fix = '/') : string
     {
         return self::suffix(self::prefix(empty($string) ? $fix . $string . $fix : $string, $fix), $fix);
     }

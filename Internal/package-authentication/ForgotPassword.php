@@ -62,7 +62,7 @@ class ForgotPassword extends UserExtends
      * 
      * @return bool
      */
-    public function do(string $email = NULL, string $returnLinkPath = NULL, string $changePassword = 'before') : bool
+    public function do(?string $email = NULL, ?string $returnLinkPath = NULL, string $changePassword = 'before') : bool
     {
         $this->controlPropertiesParameters($email, $verification, $returnLinkPath, $changePassword);
 
@@ -121,7 +121,7 @@ class ForgotPassword extends UserExtends
     /**
      * Password change complete
      */
-    public function passwordChangeComplete(string $redirect = NULL)
+    public function passwordChangeComplete(?string $redirect = NULL)
     {
         $this->decryptionReturnLink($username, $password);
 

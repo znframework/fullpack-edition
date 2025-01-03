@@ -45,7 +45,7 @@ class Response
      * @param array  $data = NULL
      * @param bool   $exit = true
      */
-    public static function redirect(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true, $type = 'location')
+    public static function redirect(?string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true, $type = 'location')
     {
         $url = $url ?? '';
 

@@ -67,7 +67,7 @@ interface RestfulInterface
      * 
      * @return mixed
      */
-    public function info(string $key = NULL);
+    public function info(?string $key = NULL);
 
     /**
      * URL
@@ -103,7 +103,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function get(string $url = NULL);
+    public function get(?string $url = NULL);
 
     /**
      * Post 
@@ -113,7 +113,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function post(string $url = NULL, $data = NULL);
+    public function post(?string $url = NULL, $data = NULL);
 
     /**
      * Post Json
@@ -123,7 +123,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function postJson(string $url = NULL, $data = NULL);
+    public function postJson(?string $url = NULL, $data = NULL);
 
     /**
      * Put 
@@ -133,7 +133,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function put(string $url = NULL, $data = NULL);
+    public function put(?string $url = NULL, $data = NULL);
 
     /**
      * Put Json
@@ -143,7 +143,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function putJson(string $url = NULL, $data = NULL);
+    public function putJson(?string $url = NULL, $data = NULL);
 
     /**
      * Patch 
@@ -153,7 +153,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function patch(string $url = NULL, $data = NULL);
+    public function patch(?string $url = NULL, $data = NULL);
 
     /**
      * Patch Json
@@ -163,7 +163,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function patchJson(string $url = NULL, $data = NULL);
+    public function patchJson(?string $url = NULL, $data = NULL);
 
     /**
      * Delete 
@@ -173,7 +173,7 @@ interface RestfulInterface
      * 
      * @return object
      */
-    public function delete(string $url = NULL, $data = NULL);
+    public function delete(?string $url = NULL, $data = NULL);
 
     /**
      * Return

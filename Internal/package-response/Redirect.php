@@ -43,7 +43,7 @@ class Redirect implements RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = true
      */
-    public function __construct(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true)
+    public function __construct(?string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true)
     {
         if( $url !== NULL )
         {
@@ -103,7 +103,7 @@ class Redirect implements RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = false
      */
-    public function refresh(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = false)
+    public function refresh(?string $url = NULL, int $time = 0, array $data = NULL, bool $exit = false)
     {
         $this->location($url, $time, $data, $exit, __FUNCTION__);
     }
@@ -116,7 +116,7 @@ class Redirect implements RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = true
      */
-    public function location(string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true, $type = 'location')
+    public function location(?string $url = NULL, int $time = 0, array $data = NULL, bool $exit = true, $type = 'location')
     {
         return Response::redirect($url, $time, $data, $exit, $type);
     }
@@ -174,7 +174,7 @@ class Redirect implements RedirectInterface
      * 
      * @param string $action = NULL
      */
-    public function action(string $action = NULL)
+    public function action(?string $action = NULL)
     {
         $time = $this->redirect['time'] ?? 0;
         $data = $this->redirect['data'] ?? [];

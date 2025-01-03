@@ -496,7 +496,7 @@ class URI implements URIInterface
      * 
      * @return string
      */
-    public static function base(string $uri = NULL) : string
+    public static function base(?string $uri = NULL) : string
     {
         return In::cleanInjection(BASE_DIR . $uri);
     }

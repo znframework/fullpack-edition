@@ -181,7 +181,7 @@ class DateTimeCommon
      * 
      * @return string
      */
-    public function calculate(string $input, string $calculate, string $output = 'Y-m-d', string $type = NULL) : string
+    public function calculate(string $input, string $calculate, string $output = 'Y-m-d', ?string $type = NULL) : string
     {
         if( ! preg_match('/^[0-9]/', $input) )
         {
@@ -270,7 +270,7 @@ class DateTimeCommon
     /**
      * Protected add day
      */
-    protected function add(string $datetime = NULL, int $count = 1, $type = 'day', $signal = '+') : string
+    protected function add(?string $datetime = NULL, int $count = 1, $type = 'day', $signal = '+') : string
     {
         if( ! $this->check((string) $datetime) && is_numeric($datetime) && $count = 1 )
         {
@@ -284,7 +284,7 @@ class DateTimeCommon
     /**
      * Protected remove day
      */
-    protected function remove(string $datetime = NULL, int $count = 1, $type = 'day') : string
+    protected function remove(?string $datetime = NULL, int $count = 1, $type = 'day') : string
     {
         return $this->add($datetime, $count, $type, '-');
     }

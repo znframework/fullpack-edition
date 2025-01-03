@@ -51,7 +51,7 @@ class Update extends UserExtends
      * 
      * @return bool
      */
-    public function do(string $old = NULL, string $new = NULL, string $newAgain = NULL, $data = []) : bool
+    public function do(?string $old = NULL, ?string $new = NULL, ?string $newAgain = NULL, $data = []) : bool
     {
         if( $this->isLogin() )
         {

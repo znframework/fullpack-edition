@@ -66,7 +66,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return void
      */
-    public static function throws(string $message = NULL, string $key = NULL, $send = NULL)
+    public static function throws(?string $message = NULL, ?string $key = NULL, $send = NULL)
     {
         $debug = self::throwFinder(debug_backtrace(2), 0, 2);
 
@@ -89,7 +89,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return void
      */
-    public static function table($no = NULL, string $msg = NULL, string $file = NULL, string $line = NULL, array $trace = NULL)
+    public static function table($no = NULL, ?string $msg = NULL, ?string $file = NULL, ?string $line = NULL, array $trace = NULL)
     {
         if( is_object($no) )
         {

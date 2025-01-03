@@ -28,7 +28,7 @@ interface ThumbInterface
      * 
      * @return Thumb
      */
-    public function watermark(string $source, string $align = NULL, $margin = 0) : Thumb;
+    public function watermark(string $source, ?string $align = NULL, $margin = 0) : Thumb;
 
     /**
      * Refresh image filtering.

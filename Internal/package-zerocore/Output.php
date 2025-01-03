@@ -95,7 +95,7 @@ class Output
      * 
      * @return void
      */
-    protected static function _output($data, string $tab = NULL, int $start = 0, array $settings = []) : string
+    protected static function _output($data, ?string $tab = NULL, int $start = 0, array $settings = []) : string
     {
         static $start;
 

@@ -45,7 +45,7 @@ class File
      * 
      * @return bool
      */
-    public function delete(string $name, string $type = 'controller', string $app = NULL) : bool
+    public function delete(string $name, string $type = 'controller', ?string $app = NULL) : bool
     {
         if( ! empty($app) )
         {
@@ -189,7 +189,7 @@ class File
      * @param string & $controller
      * @param string   $namespace = NULL
      */
-    protected function alias(string & $controller, string $namespace = NULL)
+    protected function alias(string & $controller, ?string $namespace = NULL)
     {
         if( ! empty($this->settings['alias']) )
         {

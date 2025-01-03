@@ -22,7 +22,7 @@ class Errors
      * 
      * @return string
      */
-    public static function message(string $langFile, string $errorMsg = NULL, $ex = NULL) : string
+    public static function message(string $langFile, ?string $errorMsg = NULL, $ex = NULL) : string
     {
         $style  = 'border:solid 1px #E1E4E5;';
         $style .= 'background:#FEFEFE;';
@@ -74,7 +74,7 @@ class Errors
      * 
      * @return mixed
      */
-    public static function last(string $type = NULL)
+    public static function last(?string $type = NULL)
     {
         $result = error_get_last();
 
@@ -98,7 +98,7 @@ class Errors
      * 
      * @return bool
      */
-    public static function log(string $message, int $type = 0, string $destination = NULL, string $header = NULL) : bool
+    public static function log(string $message, int $type = 0, ?string $destination = NULL, ?string $header = NULL) : bool
     {
         return error_log($message, $type, $destination, $header);
     }

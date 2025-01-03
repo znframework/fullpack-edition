@@ -24,7 +24,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function post(string $name = NULL, $value = NULL)
+    public static function post(?string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_POST ,__FUNCTION__);
     }
@@ -37,7 +37,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function get(string $name = NULL, $value = NULL)
+    public static function get(?string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_GET, __FUNCTION__);
     }
@@ -50,7 +50,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function request(string $name = NULL, $value = NULL)
+    public static function request(?string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_REQUEST, __FUNCTION__);
     }
@@ -63,7 +63,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function env(string $name = NULL, $value = NULL)
+    public static function env(?string $name = NULL, $value = NULL)
     {
         return self::_method($name, $value, $_ENV, __FUNCTION__);
     }
@@ -95,7 +95,7 @@ class Method implements MethodInterface
      * 
      * @return mixed
      */
-    public static function files(string $fileName = NULL, string $type = 'name')
+    public static function files(?string $fileName = NULL, string $type = 'name')
     {
         return $_FILES[$fileName][$type] ?? false;
     }

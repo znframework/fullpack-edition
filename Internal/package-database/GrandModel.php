@@ -207,7 +207,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function update($data = NULL, string $column = NULL, string $value = NULL) : bool
+    public function update($data = NULL, ?string $column = NULL, ?string $value = NULL) : bool
     {
         $this->postGetExpression($table, $data);
 
@@ -227,7 +227,7 @@ class GrandModel
      * 
      * @return bool
      */
-    public function delete(string $column = NULL, string $value = NULL) : bool
+    public function delete(?string $column = NULL, ?string $value = NULL) : bool
     {
         if( $column !== NULL )
         {
@@ -364,7 +364,7 @@ class GrandModel
      * 
      * @return mixed
      */
-    public function pagination(string $url = NULL, array $settings = [], bool $output = true)
+    public function pagination(?string $url = NULL, array $settings = [], bool $output = true)
     {
         return $this->getCurrent()->pagination($url, $settings, $output);
     }
@@ -500,7 +500,7 @@ class GrandModel
      * 
      * @return string
      */
-    public function backup(string $fileName = NULL, string $path = STORAGE_DIR) : string
+    public function backup(?string $fileName = NULL, string $path = STORAGE_DIR) : string
     {
         return $this->returnQuery($this->connectTool->backup($this->grandTable, $fileName, $path), 'tool');
     }

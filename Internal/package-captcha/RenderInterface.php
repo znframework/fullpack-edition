@@ -73,7 +73,7 @@ interface RenderInterface
      * 
      * @return Captcha
      */
-    public function borderColor(string $color = NULL) : Render;
+    public function borderColor(?string $color = NULL) : Render;
 
     /**
      * Sets the background color.
@@ -128,7 +128,7 @@ interface RenderInterface
      * 
      * @return Captcha
      */
-    public function gridColor(string $color = NULL) : Render;
+    public function gridColor(?string $color = NULL) : Render;
 
     /**
      * Sets the grid space.

@@ -58,7 +58,7 @@ class Theme
      * 
      * @param array $elements
      */
-    public static function matchElement(string $inputs = NULL, string $attributes = NULL)
+    public static function matchElement(?string $inputs = NULL, ?string $attributes = NULL)
     {
         self::$elements = [Base::prefix($inputs, '|'), Base::prefix($attributes, '|')];
 

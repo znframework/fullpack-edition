@@ -102,7 +102,7 @@ class ZN
      * 
      * @return void|false
      */
-    public static function run(string $type = NULL, string $version = NULL, string $dedicate = NULL)
+    public static function run(?string $type = NULL, ?string $version = NULL, ?string $dedicate = NULL)
     {
         # PHP shows code errors.
         ini_set('display_errors', true); error_reporting(1);

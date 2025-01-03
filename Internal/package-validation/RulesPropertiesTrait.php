@@ -222,7 +222,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function pattern(string $pattern, string $char = NULL) : Data
+    public function pattern(string $pattern, ?string $char = NULL) : Data
     {
         $this->settings['config']['pattern'] = Base::presuffix($pattern).$char;
 
@@ -236,7 +236,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function phone(string $design = NULL) : Data
+    public function phone(?string $design = NULL) : Data
     {
         if( empty($design) )
         {

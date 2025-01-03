@@ -19,7 +19,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    public static function card(string $number, string $type = NULL) : bool
+    public static function card(string $number, ?string $type = NULL) : bool
     {
         $number = preg_replace('/[^0-9]/', '', $number);
 
@@ -42,7 +42,7 @@ class Validator implements ValidatorInterface
      * @param string $cvc
      * @param string $type
      */
-    public static function cvc(string $cvc, string $type = NULL) : bool
+    public static function cvc(string $cvc, ?string $type = NULL) : bool
     {
         return ctype_digit($cvc) && (self::getCardFormats()[$type] ?? NULL) && self::validCvcLength($cvc, $type);
     }
@@ -100,7 +100,7 @@ class Validator implements ValidatorInterface
      * 
      * @return string
      */
-    protected static function validCard(string $number, string $type = NULL) : bool
+    protected static function validCard(string $number, ?string $type = NULL) : bool
     {
         return self::validCardFormat($number, $type) && self::validCardNumberLength($number, $type) && self::validLuhnAlgorithm($number, $type);
     }
@@ -126,7 +126,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    protected static function validCardNumberLength($number, string $type = NULL, $function = 'length') : bool
+    protected static function validCardNumberLength($number, ?string $type = NULL, $function = 'length') : bool
     {
         return in_array(strlen($number ?? ''), self::getCardFormats()[$type][$function]);
     }
@@ -139,7 +139,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    protected static function validCvcLength($cvc, string $type = NULL) : bool
+    protected static function validCvcLength($cvc, ?string $type = NULL) : bool
     {
         return self::validCardNumberLength($cvc, $type, 'cvcLength');
     }
@@ -152,7 +152,7 @@ class Validator implements ValidatorInterface
      * 
      * @return bool
      */
-    protected static function validLuhnAlgorithm(string $number, string $type = NULL) : bool
+    protected static function validLuhnAlgorithm(string $number, ?string $type = NULL) : bool
     {
         return self::getCardFormats()[$type]['luhn'] ? LuhnAlgorithm::check($number) : true;
     }

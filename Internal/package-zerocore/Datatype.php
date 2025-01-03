@@ -74,7 +74,7 @@ class Datatype
      * @param string $index     = '0'
      * @param string $count     = '1'
      */
-    public static function divide(string $str = NULL, string $separator = '|', string $index = '0', string $count = '1')
+    public static function divide(?string $str = NULL, string $separator = '|', string $index = '0', string $count = '1')
     {
         $arrayEx = explode($separator, $str ?? '');
 

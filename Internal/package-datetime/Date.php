@@ -100,7 +100,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return int
      */
-    public function dayCount(string $date = NULL) : int
+    public function dayCount(?string $date = NULL) : int
     {
         $date = $date ?? $this->now();
 
@@ -114,7 +114,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function quarter(string $date = NULL)
+    public function quarter(?string $date = NULL)
     {
         return ceil($this->convert($date ?? $this->now(), 'n') / 3);
     }
@@ -217,7 +217,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return bool
      */
-    public function isWeekend(string $date = NULL) : bool
+    public function isWeekend(?string $date = NULL) : bool
     {
         $weekDayNumber = $this->convert($date ?? $this->default(), '{weekDayNumber}');
 
@@ -229,7 +229,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function today(string $date = NULL, $type = 'dayName') : string
+    public function today(?string $date = NULL, $type = 'dayName') : string
     {
         $type = '{'.$type.'}';
 
@@ -246,7 +246,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function todayNumber(string $date = NULL) : string
+    public function todayNumber(?string $date = NULL) : string
     {
         return $this->today($date, 'dayNumber');
     }
@@ -260,7 +260,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function yesterday(string $date = NULL) : string
+    public function yesterday(?string $date = NULL) : string
     {
         return $this->prev($date, 'day');
     }
@@ -274,7 +274,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
      * 
      * @return string
      */
-    public function tomorrow(string $date = NULL) : string
+    public function tomorrow(?string $date = NULL) : string
     {
         return $this->next($date, 'day');
     }
@@ -282,7 +282,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected next
      */
-    protected function next(string $date = NULL, $type = 'day', $unit = 'day', $signal = '+') : string
+    protected function next(?string $date = NULL, $type = 'day', $unit = 'day', $signal = '+') : string
     {
         $calculate = $this->calculate($date ?? $this->default(), $signal . '1' . $unit, 'Y/m/d');
 
@@ -292,7 +292,7 @@ class Date extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected prev
      */
-    protected function prev(string $date = NULL, $type = 'day' , $unit = 'day') : string
+    protected function prev(?string $date = NULL, $type = 'day' , $unit = 'day') : string
     {
         return $this->next($date, $type, $unit, '-');
     }

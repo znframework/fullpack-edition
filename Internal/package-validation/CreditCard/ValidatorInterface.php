@@ -19,7 +19,7 @@ interface ValidatorInterface
      * 
      * @return bool
      */
-    public static function card(string $data, string $type = NULL) : bool;
+    public static function card(string $data, ?string $type = NULL) : bool;
 
     /**
      * Is valid cvc
@@ -27,7 +27,7 @@ interface ValidatorInterface
      * @param string $cvc
      * @param string $type
      */
-    public static function cvc(string $cvc, string $type = NULL) : bool;
+    public static function cvc(string $cvc, ?string $type = NULL) : bool;
 
     /**
      * Is valid date

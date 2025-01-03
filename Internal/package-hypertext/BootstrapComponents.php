@@ -61,7 +61,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function label(string $for = NULL, string $value = NULL, string $class = NULL)
+    public function label(?string $for = NULL, ?string $value = NULL, ?string $class = NULL)
     {
         $this->settings['label']['for'  ] = $for;
         $this->settings['label']['value'] = $value;
@@ -290,7 +290,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function carousel(string $id = NULL, array $images = [], $view = 'standart')
+    public function carousel(?string $id = NULL, array $images = [], $view = 'standart')
     {
         $images = $this->transferAttributesAndUnset('attr', 'item') ?: $images;
 
@@ -327,7 +327,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function carousel4(string $id = NULL, array $images = [])
+    public function carousel4(?string $id = NULL, array $images = [])
     {
         return $this->carousel($id, $images, 'standart4');
     }
@@ -544,7 +544,7 @@ trait BootstrapComponents
      * 
      * @return string
      */
-    public function filterEvent(string $source, string $target, string $event = NULL, $template = 'standart')
+    public function filterEvent(string $source, string $target, ?string $event = NULL, $template = 'standart')
     {
         $data = 
         [
@@ -611,7 +611,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function faIcon(string $icon, string $size = NULL, $type = '')
+    public function faIcon(string $icon, ?string $size = NULL, $type = '')
     {
         return '<i class="fa' . $type . ' fa-' . $icon . ($size ? ' fa-' . $size : NULL) . '"></i>';
     }
@@ -623,7 +623,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function falIcon(string $icon, string $size = NULL)
+    public function falIcon(string $icon, ?string $size = NULL)
     {
         return $this->faIcon($icon, $size, 'l');
     }
@@ -635,7 +635,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function fasIcon(string $icon, string $size = NULL)
+    public function fasIcon(string $icon, ?string $size = NULL)
     {
         return $this->faIcon($icon, $size, 's');
     }
@@ -647,7 +647,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function fadIcon(string $icon, string $size = NULL)
+    public function fadIcon(string $icon, ?string $size = NULL)
     {
         return $this->faIcon($icon, $size, 'd');
     }
@@ -659,7 +659,7 @@ trait BootstrapComponents
      * @param string $size = NULL
      * @param string $type = '
      */
-    public function farIcon(string $icon, string $size = NULL)
+    public function farIcon(string $icon, ?string $size = NULL)
     {
         return $this->faIcon($icon, $size, 'r');
     }
@@ -673,7 +673,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function flex($content, string $class = NULL)
+    public function flex($content, ?string $class = NULL)
     {
         $attr =  $this->settings['attr'] ?? [];
 
@@ -715,7 +715,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function flexItem($content, string $class = NULL)
+    public function flexItem($content, ?string $class = NULL)
     {
         $attr =  $this->settings['attr'] ?? [];
 
@@ -748,7 +748,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function spinner(string $type = 'border', string $color = NULL, string $size = NULL)
+    public function spinner(string $type = 'border', ?string $color = NULL, ?string $size = NULL)
     {
         return $this->class('spinner-' . $type . ($color ? ' text-' . $color : NULL) . ($size ? ' spinner-' . $type . '-' . $size : NULL) )->div();
     }
@@ -762,7 +762,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function spinnerBorder(string $color = NULL, string $size = NULL)
+    public function spinnerBorder(?string $color = NULL, ?string $size = NULL)
     {
         return $this->spinner('border', $color, $size);
     }
@@ -776,7 +776,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function spinnerGrow(string $color = NULL, string $size = NULL)
+    public function spinnerGrow(?string $color = NULL, ?string $size = NULL)
     {
         return $this->spinner('grow', $color, $size);
     }
@@ -786,7 +786,7 @@ trait BootstrapComponents
      * 
      * @param string $uri = NULL
      */
-    public function breadcrumb(string $uri = NULL, int $segmentCount = -1) 
+    public function breadcrumb(?string $uri = NULL, int $segmentCount = -1) 
     {
         $uris = $this->getURIsegments($uri, $segmentCount);
         $list = $this->breadcrumbOlList($uris);

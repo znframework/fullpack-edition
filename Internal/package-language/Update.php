@@ -20,7 +20,7 @@ class Update
      * 
      * @return bool
      */
-    public function do(string $app = NULL, $key, string $data = NULL) : bool
+    public function do(?string $app = NULL, $key, ?string $data = NULL) : bool
     {
         return (new Insert)->do($app, $key, $data);
     }

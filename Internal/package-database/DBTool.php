@@ -99,7 +99,7 @@ class DBTool extends Connection
      * 
      * @return string
      */
-    public function backup($tables = '*', string $fileName = NULL, string $path = STORAGE_DIR)
+    public function backup($tables = '*', ?string $fileName = NULL, string $path = STORAGE_DIR)
     {
         return $this->tool->backup($tables, $fileName, $path);
     }

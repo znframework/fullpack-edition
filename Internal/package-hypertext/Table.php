@@ -92,7 +92,7 @@ class Table extends HtmlHelpersAbstract
      * 
      * @return Table
      */
-    public function border(int $border, string $color = NULL) : Table
+    public function border(int $border, ?string $color = NULL) : Table
     {
         $this->attr['border'] = $border;
 

@@ -74,7 +74,7 @@ class DT
      * 
      * @return mixed
      */
-    public function get(string $output = NULL)
+    public function get(?string $output = NULL)
     {
         if( $output !== NULL )
         {

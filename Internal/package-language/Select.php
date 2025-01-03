@@ -21,7 +21,7 @@ class Select extends MLExtends
      * @param string $key     = NULL
      * @param mixed  $convert = NULL
      */
-    public function do(string $key = NULL, $convert = NULL)
+    public function do(?string $key = NULL, $convert = NULL)
     {
         if( Properties::$select === NULL )
         {

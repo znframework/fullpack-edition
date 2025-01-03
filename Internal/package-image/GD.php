@@ -895,7 +895,7 @@ class GD implements GDInterface
      * 
      * @return resource
      */
-    public function generate(string $type = NULL, string $save = NULL)
+    public function generate(?string $type = NULL, ?string $save = NULL)
     {
         $canvas = $this->canvas;
         

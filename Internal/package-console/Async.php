@@ -122,7 +122,7 @@ class Async
      * @param array  $data = []
      * @param string $name = NULL
      */
-    public static function run(string $command, array $data = [], string $name = NULL) : string
+    public static function run(string $command, array $data = [], ?string $name = NULL) : string
     {
         self::$procId = $procId = self::$procDir . ($uniq = $name ? preg_replace('/\W+/', '', $name) : uniqid());
 

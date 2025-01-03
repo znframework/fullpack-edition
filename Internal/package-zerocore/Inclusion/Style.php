@@ -18,7 +18,7 @@ class Style extends BootstrapExtends
      * 
      * @return string
      */
-    public static function tag(string $src = NULL) : string
+    public static function tag(?string $src = NULL) : string
     {
         return '<link href="' . $src . '" rel="stylesheet" type="text/css" />' . EOL;
     }

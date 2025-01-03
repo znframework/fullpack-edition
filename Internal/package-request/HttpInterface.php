@@ -154,7 +154,7 @@ interface HttpInterface
      * 
      * @return mixed
      */
-    public static function select(string $name = NULL);
+    public static function select(?string $name = NULL);
 
     /**
      * Insert
@@ -164,7 +164,7 @@ interface HttpInterface
      * 
      * @return bool
      */
-    public static function insert(string $name = NULL, $value = NULL) : bool;
+    public static function insert(?string $name = NULL, $value = NULL) : bool;
 
     /**
      * Insert
@@ -173,5 +173,5 @@ interface HttpInterface
      * 
      * @return bool
      */
-    public static function delete(string $name = NULL) : bool;
+    public static function delete(?string $name = NULL) : bool;
 }

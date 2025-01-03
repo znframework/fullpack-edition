@@ -19,7 +19,7 @@ class Security
      * 
      * @return string
      */
-    public static function addSlashes(string $string, string $addDifferentChars = NULL) : string
+    public static function addSlashes(string $string, ?string $addDifferentChars = NULL) : string
     {
         $return = addslashes($string);
 

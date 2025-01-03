@@ -171,7 +171,7 @@ class Restful implements RestfulInterface
      * 
      * @return mixed
      */
-    public function info(string $key = NULL)
+    public function info(?string $key = NULL)
     {
         return $key === NULL ? $this->info : ($this->info[strtolower($key ?? '')] ?? false);
     }
@@ -225,7 +225,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function get(string $url = NULL)
+    public function get(?string $url = NULL)
     {
         $response = $this->curl
                          ->init($this->url ?? $url)
@@ -244,7 +244,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function post(string $url = NULL, $data = NULL)
+    public function post(?string $url = NULL, $data = NULL)
     {
         $response = $this->curl
                          ->init($this->url ?? $url)
@@ -265,7 +265,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function postJson(string $url = NULL, $data = NULL)
+    public function postJson(?string $url = NULL, $data = NULL)
     {
         return $this->post($url, json_encode($this->data ?? $data));
     }
@@ -278,7 +278,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function put(string $url = NULL, $data = NULL)
+    public function put(?string $url = NULL, $data = NULL)
     {
         return $this->_customRequest($url, $this->buildQuery($data), __FUNCTION__);
     }
@@ -291,7 +291,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function putJson(string $url = NULL, $data = NULL)
+    public function putJson(?string $url = NULL, $data = NULL)
     {
         return $this->_customRequest($url, json_encode($this->data ?? $data), 'put');
     }
@@ -305,7 +305,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function patch(string $url = NULL, $data = NULL)
+    public function patch(?string $url = NULL, $data = NULL)
     {
         return $this->_customRequest($url, $this->buildQuery($data), __FUNCTION__);
     }
@@ -318,7 +318,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function patchJson(string $url = NULL, $data = NULL)
+    public function patchJson(?string $url = NULL, $data = NULL)
     {
         return $this->_customRequest($url, json_encode($this->data ?? $data), 'patch');
     }
@@ -331,7 +331,7 @@ class Restful implements RestfulInterface
      * 
      * @return object
      */
-    public function delete(string $url = NULL, $data = NULL)
+    public function delete(?string $url = NULL, $data = NULL)
     {
         return $this->_customRequest($url, $this->data ?? $data, __FUNCTION__);
     }

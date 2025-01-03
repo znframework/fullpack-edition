@@ -38,7 +38,7 @@ trait Driver
      * 
      * @return void
      */
-    public function __construct(string $driver = NULL)
+    public function __construct(?string $driver = NULL)
     {
         # If parent class does not contain driver constant, the operation is stopped.
         if( ! defined('static::driver') )

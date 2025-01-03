@@ -371,7 +371,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return Job
      */
-    public function path(string $path = NULL)
+    public function path(?string $path = NULL)
     {
         $this->path = $path;
         
@@ -385,7 +385,7 @@ class Job implements JobInterface, CrontabIntervalInterface
      * 
      * @return int
      */
-    public function run(string $cmd = NULL)
+    public function run(?string $cmd = NULL)
     {
         $this->createExecFileIfNotExists();
 

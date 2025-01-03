@@ -20,7 +20,7 @@ interface ForceInterface
      * 
      * @return bool
      */
-    public function extract(string $source, string $target = NULL, string $password = NULL) : bool;
+    public function extract(string $source, ?string $target = NULL, ?string $password = NULL) : bool;
 
     /**
      * Write data to file

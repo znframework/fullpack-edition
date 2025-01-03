@@ -152,7 +152,7 @@ interface URIInterface
      * 
      * @return string
      */
-    public static function base(string $uri = NULL) : string;
+    public static function base(?string $uri = NULL) : string;
 
     /**
      * Prev

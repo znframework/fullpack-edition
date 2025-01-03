@@ -22,7 +22,7 @@ class Filesystem
      * 
      * @return bool
      */
-    public static function zipExtract(string $source, string $target = NULL) : bool
+    public static function zipExtract(string $source, ?string $target = NULL) : bool
     {
         $source = Base::suffix($source, '.zip');
 

@@ -209,7 +209,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @param bool
      */
-    public function delete(string $name, string $path = NULL) : bool
+    public function delete(string $name, ?string $path = NULL) : bool
     {
         $this->setCookiePath($path);
 

@@ -180,7 +180,7 @@ class UserExtends
      * @param string $message
      * @param string $subject = NULL [6.7.0]
      */
-    public function setEmailTemplate(string $message, string $subject = NULL)
+    public function setEmailTemplate(string $message, ?string $subject = NULL)
     {
         Properties::$setEmailTemplate = $message;
         Properties::$setEmailTemplateSubject = $subject;

@@ -101,7 +101,7 @@ class Form
      * 
      * @return string|object
      */
-    public function open(string $name = NULL, array $_attributes = [])
+    public function open(?string $name = NULL, array $_attributes = [])
     {
         $this->setFormName($name, $_attributes);
 
@@ -220,7 +220,7 @@ class Form
      * 
      * @return string|object
      */
-    public function datetimeLocal(string $name = NULL, string $value = NULL, array $_attributes = [])
+    public function datetimeLocal(?string $name = NULL, ?string $value = NULL, array $_attributes = [])
     {
         return $this->_input($name, $value, $_attributes, 'datetime-local');
     }
@@ -234,7 +234,7 @@ class Form
      * 
      * @return string|object
      */
-    public function textarea(string $name = NULL, string $value = NULL, array $_attributes = [])
+    public function textarea(?string $name = NULL, ?string $value = NULL, array $_attributes = [])
     {
         $this->setNameAttribute($name);
 
@@ -278,7 +278,7 @@ class Form
      * 
      * @return string|object
      */
-    public function select(string $name = NULL, array $options = [], $selected = NULL, array $_attributes = [], bool $multiple = false)
+    public function select(?string $name = NULL, array $options = [], $selected = NULL, array $_attributes = [], bool $multiple = false)
     {
         $this->isRepeatData($options);
 
@@ -337,7 +337,7 @@ class Form
      * 
      * @return string|object
      */
-    public function multiselect(string $name = NULL, array $options = [], $selected = NULL, array $_attributes = [])
+    public function multiselect(?string $name = NULL, array $options = [], $selected = NULL, array $_attributes = [])
     {
         return $this->select($name, $options, $selected, $_attributes, true);
     }
@@ -350,7 +350,7 @@ class Form
      * 
      * @return string
      */
-    public function hidden($name = NULL, string $value = NULL)
+    public function hidden($name = NULL, ?string $value = NULL)
     {
         $name  = $this->settings['attr']['name' ] ?? $name ;
         $value = $this->settings['attr']['value'] ?? $value;
@@ -382,7 +382,7 @@ class Form
      * 
      * @return string|object
      */
-    public function file(string $name = NULL, bool $multiple = false, array $_attributes = [])
+    public function file(?string $name = NULL, bool $multiple = false, array $_attributes = [])
     {
         if( ! empty($this->settings['attr']['multiple']) )
         {

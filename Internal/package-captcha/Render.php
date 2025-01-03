@@ -160,7 +160,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function borderColor(string $color = NULL) : Render
+    public function borderColor(?string $color = NULL) : Render
     {
         $this->sets['border']['status'] = true;
 
@@ -251,7 +251,7 @@ class Render implements RenderInterface
      * 
      * @return Captcha
      */
-    public function gridColor(string $color = NULL) : Render
+    public function gridColor(?string $color = NULL) : Render
     {
         $this->sets['grid']['status'] = true;
 

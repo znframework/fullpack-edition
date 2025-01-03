@@ -87,7 +87,7 @@ trait ViewCommonTrait
      * 
      * @return string
      */
-    public function input(string $type = NULL, string $name = NULL, string $value = NULL, array $attributes = []) : string
+    public function input(?string $type = NULL, ?string $name = NULL, ?string $value = NULL, array $attributes = []) : string
     {
         if( isset($this->settings['attr']['type']) )
         {

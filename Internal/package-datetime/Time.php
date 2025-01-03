@@ -107,7 +107,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected next
      */
-    protected function next(string $time = NULL, $type = 'hour', $signal = '+') : string
+    protected function next(?string $time = NULL, $type = 'hour', $signal = '+') : string
     {
         $calculate = $this->calculate($time ?? $this->default(), $signal . '1' . $type);
 
@@ -117,7 +117,7 @@ class Time extends DateTimeCommon implements DateTimeCommonInterface
     /**
      * Protected prev
      */
-    protected function prev(string $time = NULL, $type = 'hour') : string
+    protected function prev(?string $time = NULL, $type = 'hour') : string
     {
         return $this->next($time, $type, '-');
     }   

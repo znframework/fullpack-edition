@@ -183,7 +183,7 @@ class Register extends UserExtends
      * 
      * @return bool
      */
-    public function resendActivationEmail(string $username, string $returnLink, string $email = NULL) : bool
+    public function resendActivationEmail(string $username, string $returnLink, ?string $email = NULL) : bool
     {
         if( empty($this->activationColumn) )
         {

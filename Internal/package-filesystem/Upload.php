@@ -302,7 +302,7 @@ class Upload implements UploadInterface
      * 
      * @return bool
      */
-    public  function start(string $fileName = 'upload', string $rootDir = NULL) : bool
+    public  function start(string $fileName = 'upload', ?string $rootDir = NULL) : bool
     {
         $fileName = $this->settings['source'] ?? $fileName;
         $rootDir  = $this->settings['target'] ?? $rootDir ?? $this->uploadDirectory;
@@ -351,7 +351,7 @@ class Upload implements UploadInterface
      * 
      * @return object|false
      */
-    public function info(string $info = NULL)
+    public function info(?string $info = NULL)
     {
         if( ! empty($_FILES[$this->file]) )
         {

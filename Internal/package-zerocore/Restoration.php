@@ -172,7 +172,7 @@ class Restoration
      * 
      * @return bool
      */
-    public static function end(string $project, string $type = NULL)
+    public static function end(string $project, ?string $type = NULL)
     {
         self::deleteClassMapIfExists($project);
 

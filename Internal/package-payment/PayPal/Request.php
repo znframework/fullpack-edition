@@ -90,7 +90,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function returnUrl(string $notify, string $success, string $cancel = NULL)
+    public function returnUrl(string $notify, string $success, ?string $cancel = NULL)
     {
         $this->settings['notify_url'] = URL::site($notify);
 
@@ -114,7 +114,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function item(string $name, string $number = NULL, float $amount = NULL, int $quantity = NULL)
+    public function item(string $name, ?string $number = NULL, float $amount = NULL, int $quantity = NULL)
     {
         $this->settings['items'][] = ['item_name' => $name, 'item_number' => $number, 'amount' => $amount, 'quantity' => $quantity];
 
@@ -159,7 +159,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function buyer(string $email, string $id = NULL)
+    public function buyer(string $email, ?string $id = NULL)
     {
         $this->settings['payer_email'] = $email;
         
@@ -179,7 +179,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function seller(string $email, string $id = NULL)
+    public function seller(string $email, ?string $id = NULL)
     {
         $this->settings['receiver_email'] = $email;
 

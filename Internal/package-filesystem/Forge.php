@@ -107,7 +107,7 @@ class Forge
      * 
      * @return bool
      */
-    public static function zipExtract(string $source, string $target = NULL) : bool
+    public static function zipExtract(string $source, ?string $target = NULL) : bool
     {
         $source = Info::rpath($source);
         $target = Info::rpath($target);
@@ -225,7 +225,7 @@ class Forge
      * @param string $fileName = NULL
      * @param bool   $real     = false
      */
-    public static function cleanCache(string $fileName = NULL, bool $real = false)
+    public static function cleanCache(?string $fileName = NULL, bool $real = false)
     {
         $fileName = Info::rpath($fileName);
 

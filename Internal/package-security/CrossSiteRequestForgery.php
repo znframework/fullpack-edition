@@ -21,7 +21,7 @@ class CrossSiteRequestForgery
      * 
      * @return void
      */
-    public static function token(string $uri = NULL, string $type = 'post')
+    public static function token(?string $uri = NULL, string $type = 'post')
     {
         Security::CSRFToken($uri, $type);
     }
@@ -33,7 +33,7 @@ class CrossSiteRequestForgery
      * 
      * @return void
      */
-    public static function get(string $uri = NULL)
+    public static function get(?string $uri = NULL)
     {
         self::token($uri, 'get');
     }

@@ -27,7 +27,7 @@ interface CURLInterface
      * 
      * @return CURL
      */
-    public function init(string $url = NULL) : CURL;
+    public function init(?string $url = NULL) : CURL;
 
     /**
      * Execute
@@ -61,7 +61,7 @@ interface CURLInterface
      * 
      * @return mixed
      */
-    public function info(string $opt = NULL);
+    public function info(?string $opt = NULL);
 
     /**
      * Error

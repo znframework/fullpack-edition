@@ -107,7 +107,7 @@ class CURL implements CURLInterface
      * 
      * @return CURL
      */
-    public function init(string $url = NULL) : CURL
+    public function init(?string $url = NULL) : CURL
     {
         if( $url !== NULL && ! IS::URL($url) )
         {
@@ -186,7 +186,7 @@ class CURL implements CURLInterface
      * 
      * @return mixed
      */
-    public function info(string $opt = NULL)
+    public function info(?string $opt = NULL)
     {
         if( isset($this->multipleInformations) )
         {
