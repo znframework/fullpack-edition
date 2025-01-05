@@ -38,7 +38,7 @@ interface GenerateInterface
      * @param string $database = '*'
      * @param array  $tables   = NULL
      */
-    public function deleteVision(string $database = '*', array $tables = NULL);
+    public function deleteVision(string $database = '*', ?array $tables = NULL);
 
     /**
      * Settings

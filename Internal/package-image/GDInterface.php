@@ -81,7 +81,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function alphaBlending(bool $blendMode = NULL) : GD;
+    public function alphaBlending(?bool $blendMode = NULL) : GD;
 
     /**
      * Sets save alpha
@@ -157,7 +157,7 @@ interface GDInterface
      * 
      * @return GD
      */
-    public function filter(string $filter, int $arg1 = NULL, int $arg2 = NULL, int $arg3 = NULL, int $arg4 = NULL) : GD;
+    public function filter(string $filter, ?int $arg1 = NULL, ?int $arg2 = NULL, ?int $arg3 = NULL, ?int $arg4 = NULL) : GD;
 
     /**
      * Flip

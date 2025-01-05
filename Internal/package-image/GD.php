@@ -218,7 +218,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function alphaBlending(bool $blendMode = NULL) : GD
+    public function alphaBlending(?bool $blendMode = NULL) : GD
     {
         imagealphablending($this->canvas, (bool) $blendMode);
 
@@ -420,7 +420,7 @@ class GD implements GDInterface
      * 
      * @return GD
      */
-    public function filter(string $filter, int $arg1 = NULL, int $arg2 = NULL, int $arg3 = NULL, int $arg4 = NULL) : GD
+    public function filter(string $filter, ?int $arg1 = NULL, ?int $arg2 = NULL, ?int $arg3 = NULL, ?int $arg4 = NULL) : GD
     {
         $filters = Singleton::class('ZN\DataTypes\Collection')->data(func_get_args())
                                                               ->removeFirst()

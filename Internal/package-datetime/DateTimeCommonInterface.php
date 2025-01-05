@@ -61,7 +61,7 @@ interface DateTimeCommonInterface
      * 
      * @return int
      */
-    public function toNumeric(string $dateFormat, int $now = NULL) : int;
+    public function toNumeric(string $dateFormat, ?int $now = NULL) : int;
 
      /**
      * Converts time data to readable form.

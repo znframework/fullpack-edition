@@ -120,7 +120,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function createTable(?string $table = NULL, array $columns = NULL, $extras = NULL)
+    public function createTable(?string $table = NULL, ?array $columns = NULL, $extras = NULL)
     {
         $query = $this->forge->createTable($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'), $this->addPrefixForTableAndColumn($extras, 'extras'));
 
@@ -138,7 +138,7 @@ class DBForge extends Connection
      * 
      * @codeCoverageIgnore
      */
-    public function createTempTable(?string $table = NULL, array $columns = NULL, $extras = NULL)
+    public function createTempTable(?string $table = NULL, ?array $columns = NULL, $extras = NULL)
     {
         $query = $this->forge->createTempTable($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'), $this->addPrefixForTableAndColumn($extras, 'extras'));
 
@@ -169,7 +169,7 @@ class DBForge extends Connection
      * 
      * @codeCoverageIgnore
      */
-    public function alterTable(?string $table = NULL, array $condition = NULL)
+    public function alterTable(?string $table = NULL, ?array $condition = NULL)
     {
         $table = $this->addPrefixForTableAndColumn($table);
         $key   = key($condition);
@@ -214,7 +214,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function addColumn(?string $table = NULL, array $columns = NULL)
+    public function addColumn(?string $table = NULL, ?array $columns = NULL)
     {
         $query = $this->forge->addColumn($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'));
 
@@ -252,7 +252,7 @@ class DBForge extends Connection
      * 
      * @codeCoverageIgnore
      */
-    public function addAutoIncrement(string $table, string $column = 'id', int $start = NULL)
+    public function addAutoIncrement(string $table, string $column = 'id', ?int $start = NULL)
     {
         if( $start !== NULL )
         {
@@ -467,7 +467,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function modifyColumn(?string $table = NULL, array $columns = NULL)
+    public function modifyColumn(?string $table = NULL, ?array $columns = NULL)
     {
         $query = $this->forge->modifyColumn($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'));
 
@@ -482,7 +482,7 @@ class DBForge extends Connection
      * 
      * @return bool
      */
-    public function renameColumn(?string $table = NULL , array $columns = NULL)
+    public function renameColumn(?string $table = NULL , ?array $columns = NULL)
     {
         $query = $this->forge->renameColumn($this->addPrefixForTableAndColumn($table), $this->addPrefixForTableAndColumn($columns, 'column'));
 

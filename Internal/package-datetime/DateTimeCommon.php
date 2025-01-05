@@ -149,7 +149,7 @@ class DateTimeCommon
      * 
      * @return int
      */
-    public function toNumeric(string $dateFormat, int $now = NULL) : int
+    public function toNumeric(string $dateFormat, ?int $now = NULL) : int
     {
         if( $now === NULL )
         {

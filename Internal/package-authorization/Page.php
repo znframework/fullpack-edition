@@ -35,7 +35,7 @@ class Page extends PermissionExtends
      * 
      * @return mixed
      */
-    public static function use($roleId = NULL, array $table = NULL, $callback = NULL)
+    public static function use($roleId = NULL, ?array $table = NULL, $callback = NULL)
     {
         $realpath = self::$realpath; self::$realpath = NULL;
 

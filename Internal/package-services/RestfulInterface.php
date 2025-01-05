@@ -58,7 +58,7 @@ interface RestfulInterface
      * 
      * @return Restful
      */
-    public function httpStatus(int $code = NULL) : Restful;
+    public function httpStatus(?int $code = NULL) : Restful;
 
     /**
      * Info

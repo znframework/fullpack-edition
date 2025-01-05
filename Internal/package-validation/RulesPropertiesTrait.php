@@ -148,7 +148,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function compare(int $min = NULL, int $max = NULL) : Data
+    public function compare(?int $min = NULL, ?int $max = NULL) : Data
     {
         $this->settings['config']['minchar'] = $min;
         $this->settings['config']['maxchar'] = $max;
@@ -164,7 +164,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function between(Float $min = NULL, Float $max = NULL) : Data
+    public function between(?float $min = NULL, ?float $max = NULL) : Data
     {
         $this->settings['config']['between'] = [$min, $max];
 
@@ -179,7 +179,7 @@ trait RulesPropertiesTrait
      * 
      * @return Data
      */
-    public function betweenBoth(Float $min = NULL, Float $max = NULL) : Data
+    public function betweenBoth(?float $min = NULL, ?float $max = NULL) : Data
     {
         $this->settings['config']['betweenBoth'] = [$min, $max];
 

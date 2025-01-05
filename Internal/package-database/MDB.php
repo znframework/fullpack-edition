@@ -329,7 +329,7 @@ class MDB implements MDBInterface
      * 
      * @return self
      */
-    public function limit(int $skip, int $limit = NULL)
+    public function limit(int $skip, ?int $limit = NULL)
     {
         if( $limit === NULL )
         {

@@ -110,7 +110,7 @@ class Errors
      * 
      * @return int
      */
-    public static function report(int $level = NULL) : int
+    public static function report(?int $level = NULL) : int
     {
         if( ! empty($level) )
         {

@@ -89,7 +89,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * 
      * @return void
      */
-    public static function table($no = NULL, ?string $msg = NULL, ?string $file = NULL, ?string $line = NULL, array $trace = NULL)
+    public static function table($no = NULL, ?string $msg = NULL, ?string $file = NULL, ?string $line = NULL, ?array $trace = NULL)
     {
         if( is_object($no) )
         {

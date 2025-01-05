@@ -231,7 +231,7 @@ trait FormElementsTrait
      * 
      * @return string
      */
-    public function vLimit(int $min = 0, int $max = NULL)
+    public function vLimit(int $min = 0, ?int $max = NULL)
     {
         $key['minchar'] = [':p1' => $min];
         $typ['minchar'] = $min;

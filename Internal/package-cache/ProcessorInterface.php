@@ -27,7 +27,7 @@ interface ProcessorInterface
      * 
      * @return Cache
      */
-    public function data(array $data = NULL);
+    public function data(?array $data = NULL);
 
     /**
      * Set key

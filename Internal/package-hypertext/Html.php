@@ -126,7 +126,7 @@ class Html
      * 
      * @return string
      */
-    public function image(string $src, int $width = NULL, int $height = NULL, array $attributes = []) : string
+    public function image(string $src, ?int $width = NULL, ?int $height = NULL, array $attributes = []) : string
     {
         if( ! IS::url($src) )
         {

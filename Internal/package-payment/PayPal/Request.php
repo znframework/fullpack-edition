@@ -114,7 +114,7 @@ class Request extends GatewayRequestAbstract
      * 
      * @return $this
      */
-    public function item(string $name, ?string $number = NULL, float $amount = NULL, int $quantity = NULL)
+    public function item(string $name, ?string $number = NULL, ?float $amount = NULL, ?int $quantity = NULL)
     {
         $this->settings['items'][] = ['item_name' => $name, 'item_number' => $number, 'amount' => $amount, 'quantity' => $quantity];
 

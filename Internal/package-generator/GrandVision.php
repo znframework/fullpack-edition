@@ -64,7 +64,7 @@ class GrandVision extends DatabaseDefinitions
      * @param string $databaes = '*'
      * @param array  $tables   = NULL
      */
-    public function delete(string $database = '*', array $tables = NULL)
+    public function delete(string $database = '*', ?array $tables = NULL)
     {
         if( $database === '*' )
         {

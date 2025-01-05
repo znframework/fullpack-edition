@@ -21,7 +21,7 @@ class Callback
      * 
      * @return mixed
      */
-    public static function code(string $randomBufferClassCallbackCode, array $randomBufferClassCallbackData = NULL)
+    public static function code(string $randomBufferClassCallbackCode, ?array $randomBufferClassCallbackData = NULL)
     {
         return Buffering::code($randomBufferClassCallbackCode, $randomBufferClassCallbackData);
     }

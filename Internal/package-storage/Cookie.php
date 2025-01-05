@@ -130,7 +130,7 @@ class Cookie implements CookieInterface, StorageInterface
      * 
      * @return bool
      */
-    public function insert(string $name, $value, int $time = NULL) : bool
+    public function insert(string $name, $value, ?int $time = NULL) : bool
     {
         if( ! empty($time) ) $this->time($time);
 

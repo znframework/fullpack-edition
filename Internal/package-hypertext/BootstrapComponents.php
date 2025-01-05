@@ -260,7 +260,7 @@ trait BootstrapComponents
      * 
      * @return this
      */
-    public function tooltip(string $placement, $content = NULL, bool $html = NULL)
+    public function tooltip(string $placement, $content = NULL, ?bool $html = NULL)
     {
         if( is_string($content) )
         {
@@ -466,7 +466,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function progressbar4(string $type, Float $percent, Float $height = NULL)
+    public function progressbar4(string $type, Float $percent, ?float $height = NULL)
     {
         $attr = '';
 
@@ -506,7 +506,7 @@ trait BootstrapComponents
      * @return string
      * 
      */
-    public function progressbar(string $type, Float $percent, Float $height = NULL)
+    public function progressbar(string $type, Float $percent, ?float $height = NULL)
     {
         $attr = '';
 

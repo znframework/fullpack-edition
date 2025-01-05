@@ -44,7 +44,7 @@ interface EventInterface
      * 
      * @return array|callback
      */
-    public static function get(string $event, int $priority = NULL);
+    public static function get(string $event, ?int $priority = NULL);
 
     /**
      * Delete a listener.
@@ -54,5 +54,5 @@ interface EventInterface
      * 
      * @return bool
      */
-    public static function remove(string $event, int $priority = NULL) : bool;
+    public static function remove(string $event, ?int $priority = NULL) : bool;
 }

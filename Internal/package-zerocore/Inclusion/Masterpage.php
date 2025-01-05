@@ -152,7 +152,7 @@ class Masterpage
      * @param array $randomDataVariable = NULL
      * @param array $head               = NULL
      */
-    public function use(array $randomDataVariable = NULL, array $head = NULL)
+    public function use(?array $randomDataVariable = NULL, ?array $head = NULL)
     {
         if( ! empty(Properties::$parameters['headData']) ) $head               = Properties::$parameters['headData'];
         if( ! empty(Properties::$parameters['data'])     ) $randomDataVariable = Properties::$parameters['data'];

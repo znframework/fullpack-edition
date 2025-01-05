@@ -129,7 +129,7 @@ class Sender implements SenderInterface
      * 
      * @param return Sender
      */
-    public function settings(array $settings = NULL) : Sender
+    public function settings(?array $settings = NULL) : Sender
     {
         $this->getLang = Lang::default('ZN\Email\EmailDefaultLanguage')
                              ::select('Services');

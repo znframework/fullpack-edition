@@ -57,7 +57,7 @@ class Processor implements ProcessorInterface
      * 
      * @return Cache
      */
-    public function data(array $data = NULL)
+    public function data(?array $data = NULL)
     {
         Inclusion\Properties::data($data);
 

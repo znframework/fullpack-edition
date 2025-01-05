@@ -309,7 +309,7 @@ class Converter
      * 
      * @return string
      */
-    public static function anchor(string $data, string $type = 'short', array $attributes = NULL) : string
+    public static function anchor(string $data, string $type = 'short', ?array $attributes = NULL) : string
     {
         return preg_replace
         (

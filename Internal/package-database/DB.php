@@ -2215,7 +2215,7 @@ class DB extends Connection
      * 
      * @return string
      */
-    public function vartype(string $type, int $len = NULL, bool $output = true) : string
+    public function vartype(string $type, ?int $len = NULL, bool $output = true) : string
     {
         return $this->db->variableTypes($type, $len, $output);
     }

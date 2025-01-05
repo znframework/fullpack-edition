@@ -40,7 +40,7 @@ interface SenderInterface
      * 
      * @param return Sender
      */
-    public function settings(array $settings = NULL) : Sender;
+    public function settings(?array $settings = NULL) : Sender;
 
     /**
      * Content Tyep

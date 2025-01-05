@@ -87,7 +87,7 @@ class Generate extends File implements GenerateInterface
      * @param string $databaes = '*'
      * @param array  $tables   = NULL
      */
-    public function deleteVision(string $database = '*', array $tables = NULL)
+    public function deleteVision(string $database = '*', ?array $tables = NULL)
     {
         (new GrandVision)->delete($database, $tables);
     }

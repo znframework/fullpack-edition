@@ -34,7 +34,7 @@ class MemcacheDriver extends DriverMappingAbstract
      * 
      * @return void
      */
-    public function __construct(array $settings = NULL)
+    public function __construct(?array $settings = NULL)
     {
         parent::__construct();
         

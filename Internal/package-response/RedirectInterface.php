@@ -49,7 +49,7 @@ interface RedirectInterface
      * @param array  $data = NULL
      * @param bool   $exit = false
      */
-    public function refresh(?string $url = NULL, int $time = 0, array $data = NULL, bool $exit = false);
+    public function refresh(?string $url = NULL, int $time = 0, ?array $data = NULL, bool $exit = false);
 
     /**
      * Location
