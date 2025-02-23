@@ -476,6 +476,46 @@ class Async
     } 
 
     /**
+     * Loop Every Hour
+     * 
+     * @param callable $callback
+     * @param bool     $firstTrigger = true
+     */
+    public static function loopEveryHour(callable $callback, bool $firstTrigger = true)
+    {
+        $check = false;
+
+        while( true )
+        {
+            if( ! $check )
+            {
+                $minute = (int) date('H');
+                $second = (int) date('i');
+    
+                $remaining = ((60 - $minute) * 60) - $second;
+            }
+            else
+            {
+                $remaining = 3600;
+            }
+
+            if( $firstTrigger === true )
+            {
+                $callback();
+            }
+            
+            sleep($remaining);
+
+            if( $firstTrigger === false )
+            {
+                $callback();
+            }
+
+            $check = true;
+        }
+    }
+
+    /**
      * Is Run
      * 
      * @param string $procId = current-process
