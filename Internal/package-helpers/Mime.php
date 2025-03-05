@@ -284,6 +284,10 @@ class Mime
             'image/jpeg',
             'image/pjpeg'
         ],
+        'webp'   =>
+        [
+            'image/webp'
+        ],
 
         'js'    =>
         [

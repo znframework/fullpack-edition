@@ -541,6 +541,7 @@ class Render implements RenderInterface
                 {
                     case 'jpeg':
                     case 'jpg' : $file = imagecreatefromjpeg($backgroundImageC); break;
+                    case 'webp': $file = imagecreatefromwebp($backgroundImageC); break;
                     case 'png' : $file = imagecreatefrompng($backgroundImageC);  break;
                     case 'gif' : $file = imagecreatefromgif($backgroundImageC);  break; // @codeCoverageIgnore
                     default    : $file = imagecreatefromjpeg($backgroundImageC);

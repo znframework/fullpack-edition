@@ -33,6 +33,7 @@ class ImageTypeCreator
                 }
                 return imagepng($files, $path, $quality ?: 8 );
             case 'gif' : return imagegif($files, $path);
+            case 'webp': return imagewebp($files, $path, $quality ?: 80);
             case 'jpg' :
             case 'jpeg': 
             default    : return imagejpeg($files, $path, $quality ?: 80);
@@ -48,6 +49,7 @@ class ImageTypeCreator
         {
             case 'png' : return imagecreatefrompng($path);
             case 'gif' : return imagecreatefromgif($path);
+            case 'webp': return imagecreatefromwebp($path);
             case 'jpg' :
             case 'jpeg':
             default    : return imagecreatefromjpeg($path);
