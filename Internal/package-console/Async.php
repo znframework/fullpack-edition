@@ -489,14 +489,53 @@ class Async
         {
             if( ! $check )
             {
-                $minute = (int) date('H');
-                $second = (int) date('i');
+                $minute = (int) date('i');
+                $second = (int) date('s');
     
                 $remaining = ((60 - $minute) * 60) - $second;
             }
             else
             {
                 $remaining = 3600;
+            }
+
+            if( $firstTrigger === true )
+            {
+                $callback();
+            }
+            
+            sleep($remaining);
+
+            if( $firstTrigger === false )
+            {
+                $callback();
+            }
+
+            $check = true;
+        }
+    }
+
+    /**
+     * Loop Every Minute
+     * 
+     * @param callable $callback
+     * @param bool     $firstTrigger = true
+     */
+    public static function loopEveryMinute(callable $callback, bool $firstTrigger = true)
+    {
+        $check = false;
+
+        while( true )
+        {
+            if( ! $check )
+            {
+                $second = (int) date('s');
+    
+                $remaining = 60 - $second;
+            }
+            else
+            {
+                $remaining = 60;
             }
 
             if( $firstTrigger === true )
