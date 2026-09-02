@@ -579,16 +579,15 @@ class Connection
 
         foreach( $aliases as $alias => $origin )
         {
-            $query = preg_replace
+            $tableAlias = preg_quote($this->prefix . $alias, '/');
+
+            $query = preg_replace_callback
             (
-                [
-                    '/(^|\s)' . $this->prefix . $alias . '($|\s)/i', 
-                    '/(^|\W)' . $this->prefix . $alias . '($|\W)/i'
-                ], 
-                [
-                    '$1' . $this->prefix . $origin . ' ' . $alias . '$2', 
-                    '$1' . $alias . '$2'
-                ], 
+                '/\b(FROM|JOIN|UPDATE|INTO)(\s+)' . $tableAlias . '(?=\s|$)/i',
+                function($match) use ($origin, $alias)
+                {
+                    return $match[1] . $match[2] . $this->prefix . $origin . ' ' . $alias;
+                },
                 $query
             );
         }
