@@ -1471,8 +1471,6 @@ class DB extends Connection
 
         $callback();
 
-        $this->runTransactionQueries();
-
         return $this->transEnd();
     }
 
