@@ -1993,7 +1993,7 @@ class DB extends Connection
         $start    = $getLimit['start'] ?? NULL;
         $limit    = $getLimit['limit'] ?? NULL;
 
-        $settings['totalRows'] = $this->totalRows(true);
+        $settings['totalRows'] = $settings['totalRows'] ?? $this->totalRows(true);
         $settings['limit']     = ! empty($limit) ? $limit : $pagcon['limit'];
         $settings['start']     = $start ?? $pagcon['start'];
         $settings['paging']    = $this->paging;

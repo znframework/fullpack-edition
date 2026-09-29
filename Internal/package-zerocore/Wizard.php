@@ -509,7 +509,22 @@ class Wizard
     {
         return preg_replace_callback('/{<.*?>}/s', function($data)
         {
-            return preg_replace('/' . self::PARENTHESIS_PATTERN . '/', ')' . PHP_EOL, $data[0]);
+            # {< ... >} (JS-callback) govdesinin icine baska bir {[ ... ]} (raw PHP)
+            # blogu ic ice girmis olabilir (orn. @ajax(...)->success({< {[ ... ]} >})).
+            # O ic blogun kendi satir-sonu parantez korumasini burada COZMEYELIM;
+            # bu blok kendi ]} kapanisina kadar korunmali, aksi halde functions()
+            # PHP etiketini satir ortasinda erken kapatip kalan ifadeyi sayfaya
+            # ciplak metin olarak sizdiriyor. Sadece {< >}'ye ait yer tutuculari coz.
+            return preg_replace_callback('/\{\[.*?\]\}|' . self::PARENTHESIS_PATTERN . '/s', function($inner)
+            {
+                if( $inner[0][0] === '{' )
+                {
+                    return $inner[0];
+                }
+
+                return ')' . PHP_EOL;
+
+            }, $data[0]);
 
         }, $string);
     }

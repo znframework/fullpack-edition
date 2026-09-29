@@ -10,9 +10,29 @@
  */
 
 use ZN\Lang;
+use ZN\Request;
 
 class Errors
 {
+    /**
+     * Outputs the browser-side AJAX error screen handler at the end of a page.
+     *
+     * @return void
+     */
+    public static function ajaxHandler()
+    {
+        if( Request::isAjax() )
+        {
+            return;
+        }
+
+        echo <<<'JS'
+<script>
+window.ZNErrorHandling=window.ZNErrorHandling||{};window.ZNErrorHandling.showAjaxError=function(xhr){var response=xhr.responseText;try{var debug=JSON.parse(response);response=debug.debug&&debug.debug.html?debug.debug.html:response}catch(e){}if(!response)return;var modal=document.getElementById('znAjaxErrorModal');if(!modal){modal=document.createElement('div');modal.id='znAjaxErrorModal';modal.style.cssText='position:fixed;z-index:2147483647;inset:0;display:none;padding:24px;background:rgba(0,0,0,.62);';modal.innerHTML='<div style="height:100%;max-width:1400px;margin:auto;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 12px 38px rgba(0,0,0,.45);"><button type="button" style="position:absolute;right:38px;top:34px;z-index:1;border:0;border-radius:4px;padding:7px 14px;color:#fff;background:#00a8e8;cursor:pointer">Kapat</button><iframe sandbox="allow-scripts" style="width:100%;height:100%;border:0"></iframe></div>';document.body.appendChild(modal);modal.querySelector('button').onclick=function(){modal.style.display='none'}}modal.querySelector('iframe').srcdoc=response;modal.style.display='block'};window.ZNErrorHandling.bindAjaxError=function(){if(window.jQuery&&!window.ZNErrorHandling.ajaxErrorBound){window.ZNErrorHandling.ajaxErrorBound=true;window.jQuery(document).on('ajaxError.znErrorHandling',function(event,xhr){window.ZNErrorHandling.showAjaxError(xhr)})}};if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',window.ZNErrorHandling.bindAjaxError)}else{window.ZNErrorHandling.bindAjaxError()}
+</script>
+JS;
+    }
+
     /**
      * Get error message 
      * 
@@ -110,7 +130,7 @@ class Errors
      * 
      * @return int
      */
-    public static function report(?int $level = NULL) : int
+    public static function report(int $level = NULL) : int
     {
         if( ! empty($level) )
         {

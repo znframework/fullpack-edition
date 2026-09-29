@@ -363,6 +363,12 @@ class Kernel
         # To open this table, follow the steps below.
         In::benchmarkReport();
 
+        # Adds the development AJAX error screen handler after page rendering.
+        if( PROJECT_MODE !== 'publication' )
+        {
+            Errors::ajaxHandler();
+        }
+
         # The buffer is being turned off.
         Buffering::end();
     }
