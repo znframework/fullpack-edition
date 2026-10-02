@@ -188,6 +188,16 @@ class Exceptions extends \Exception implements ExceptionsInterface
      * "first project file in the trace" rule stop early at an unrelated
      * project library that merely triggered the render.
      *
+     * The starting line fed into the compiled-line -> source-line remap
+     * (further down the pipeline, in getWizardSourceLine()) must be the
+     * line WITHIN THE EVAL'D BUFFER where the offending call was made. For
+     * a Wizard parse/syntax error that is simply the error's own line (it
+     * is thrown while eval()'ing). For a runtime error thrown from inside a
+     * Facade-dispatched call (see tracePassesThroughWizardEval()), the
+     * error's own line is some unrelated line deep in whatever class
+     * implements the call -- the eval-buffer line instead comes from the
+     * trace frame findWizardEvalTraceFrame() located.
+     *
      * @param string $file
      * @param int    $line
      * @param array  $trace
@@ -196,13 +206,15 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     protected static function resolveWizardSourceLocation($file, $line, $trace)
     {
-        if( ! self::tracePassesThroughWizardEval($file, $trace) )
+        $evalFrame = self::findWizardEvalTraceFrame($file, $trace);
+
+        if( ! $evalFrame )
         {
             return NULL;
         }
 
         $wizardFile = $file;
-        $wizardLine = $line;
+        $wizardLine = $evalFrame['line'] ?? $line;
 
         self::searchErrorWizardFile((array) $trace, $wizardFile, $wizardLine);
 
@@ -217,13 +229,69 @@ class Exceptions extends \Exception implements ExceptionsInterface
     }
 
     /**
-     * Only true when the error's OWN file is the Wizard eval buffer --
-     * deliberately narrow. Scanning the whole trace for a Buffering.php/
-     * Callback.php frame is far too broad on this framework: almost every
-     * request is rendered through Wizard, so nearly any unrelated error
-     * would have such a frame somewhere in its trace and would incorrectly
-     * be routed into wizard-file resolution below.
+     * Locate the trace frame representing Wizard's eval()'d compiled view
+     * code, if the error passes through it at all -- deliberately narrow.
+     * Scanning the whole trace for a Buffering.php/Callback.php frame is far
+     * too broad on this framework: almost every request is rendered through
+     * Wizard, so nearly any unrelated error would have such a frame
+     * somewhere in its (often deep) trace and would incorrectly be routed
+     * into wizard-file resolution below.
      *
+     * Two shapes are recognised, both bounded to a fixed-shape PREFIX of the
+     * trace (never a search through the whole thing):
+     *
+     *  1) The error's own file IS the eval buffer -- a Wizard compile/parse
+     *     error, thrown directly while eval()'ing. A synthetic frame is
+     *     returned with the error's own file and a NULL line (the caller
+     *     already has the correct line in this case: its own).
+     *  2) A runtime error (TypeError, ArgumentCountError, ...) thrown from
+     *     INSIDE a Facade-dispatched method call, e.g. a stray
+     *     `{{ Date::toReadable(null) }}` in a template: the error's own
+     *     file is wherever that method happens to be implemented, but the
+     *     trace's leading frames are the Facade dispatch mechanism itself
+     *     (Facade.php -- typically __callStatic/__call, then
+     *     useClassName(), i.e. `Singleton::class(...)->$method(...)`), and
+     *     the frame immediately after that fixed-shape prefix is the eval
+     *     buffer. Only that immediate next frame is inspected -- if it
+     *     is not Buffering.php/Callback.php, NULL is returned rather than
+     *     continuing to scan deeper.
+     *
+     * @param string $file
+     * @param array  $trace
+     *
+     * @return array|null
+     */
+    protected static function findWizardEvalTraceFrame($file, $trace)
+    {
+        if( stristr((string) $file, DS . 'Buffering.php') || stristr((string) $file, DS . 'Callback.php') )
+        {
+            return ['file' => $file, 'line' => NULL];
+        }
+
+        foreach( (array) $trace as $frame )
+        {
+            if( ! isset($frame['file']) )
+            {
+                continue;
+            }
+
+            if( stristr($frame['file'], DS . 'Facade.php') )
+            {
+                continue;
+            }
+
+            if( stristr($frame['file'], DS . 'Buffering.php') || stristr($frame['file'], DS . 'Callback.php') )
+            {
+                return $frame;
+            }
+
+            return NULL;
+        }
+
+        return NULL;
+    }
+
+    /**
      * @param string $file
      * @param array  $trace
      *
@@ -231,7 +299,7 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     protected static function tracePassesThroughWizardEval($file, $trace)
     {
-        return stristr((string) $file, DS . 'Buffering.php') || stristr((string) $file, DS . 'Callback.php');
+        return self::findWizardEvalTraceFrame($file, $trace) !== NULL;
     }
 
     /**
@@ -752,18 +820,14 @@ class Exceptions extends \Exception implements ExceptionsInterface
      */
     protected static function getErrorSuggestions($message, $language, $file = NULL)
     {
-        // A Wizard (.wizard.php) source error is not a plain-PHP authoring
-        // mistake from the developer's point of view -- it is a Wizard
-        // directive/block usage mistake. Mixing in the generic PHP-syntax
-        // rules below ("check for a missing semicolon", ...) is confusing
-        // noise there, so a confirmed Wizard file gets ONLY Wizard-specific
-        // suggestions.
+        // A Wizard (.wizard.php) source error benefits from an explicit
+        // Wizard directive/block-usage reminder IN ADDITION to the normal
+        // message-aware suggestions below -- not instead of them. Returning
+        // only the generic Wizard reminder would hide useful, message-
+        // specific detail (e.g. exactly which bracket/quote/token is
+        // involved) that the rules below already surface. Both are merged
+        // together at the end of this method.
         $wizardSuggestions = self::getWizardUsageSuggestions($file, $message, $language);
-
-        if( ! empty($wizardSuggestions) )
-        {
-            return $wizardSuggestions;
-        }
 
         $suggestions = self::getTypeMismatchSuggestions($message, $language);
         $detail      = self::getMessageDetailSuggestion($message, $language);
@@ -822,6 +886,11 @@ class Exceptions extends \Exception implements ExceptionsInterface
             }
         }
 
+        // Merge the Wizard-specific reminder (if any) together with the
+        // message-aware suggestions above -- the Wizard reminder goes
+        // first since it orients the developer to the file type, then the
+        // concrete, message-specific explanation follows.
+        $suggestions = array_merge($wizardSuggestions, $suggestions);
         $suggestions = array_values(array_unique(array_filter($suggestions)));
 
         if( empty($suggestions) )
@@ -897,6 +966,24 @@ class Exceptions extends \Exception implements ExceptionsInterface
         if( ! empty($suggestions) )
         {
             return $suggestions;
+        }
+
+        // The generic "this is a Wizard file, check directive/block syntax"
+        // reminder below is only useful for something that plausibly IS a
+        // Wizard authoring mistake (a syntax/parse-shaped message). A
+        // runtime error (TypeError, ArgumentCountError, a database error,
+        // ...) can just as easily be thrown from a perfectly well-formed
+        // Wizard template -- e.g. `{{ Date::toReadable($x->maybeNull) }}`
+        // when $x->maybeNull happens to be NULL at render time -- and
+        // telling the developer to go check directive syntax there is
+        // actively misleading (confirmed live: this exact message wrongly
+        // got the Wizard-syntax reminder instead of a null-argument one).
+        // Returning empty here lets getErrorSuggestions() fall through to
+        // its own message-aware rules instead -- getTypeMismatchSuggestions()
+        // in particular already has a dedicated "null given" suggestion.
+        if( ! preg_match('/syntax error|parse error|unexpected (token|variable|identifier)|unclosed|does not match|unterminated/i', $message) )
+        {
+            return [];
         }
 
         return array_filter([$language['wizardSuggestion'] ?? NULL]);
